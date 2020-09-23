@@ -17,7 +17,7 @@ export default async function ({projectRoot, frameworks, decisions, visibility, 
     {
       devDependencies: 'Public' === visibility ? ['codecov'] : [],
       scripts: {
-        'test:unit': 'nyc run-s test:unit:base',
+        'test:unit': 'cross-env NODE_ENV=test nyc run-s test:unit:base',
         ...'Public' === visibility && {'coverage:report': 'nyc report --reporter=text-lcov > coverage.lcov && codecov'}
       }
     },

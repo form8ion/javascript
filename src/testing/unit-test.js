@@ -58,7 +58,7 @@ suite('unit testing scaffolder', () => {
       {
         devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
-          'test:unit': 'nyc run-s test:unit:base',
+          'test:unit': 'cross-env NODE_ENV=test nyc run-s test:unit:base',
           ...unitTestScripts
         },
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs},
@@ -84,7 +84,7 @@ suite('unit testing scaffolder', () => {
       {
         devDependencies: ['codecov', ...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
-          'test:unit': 'nyc run-s test:unit:base',
+          'test:unit': 'cross-env NODE_ENV=test nyc run-s test:unit:base',
           ...unitTestScripts,
           'coverage:report': 'nyc report --reporter=text-lcov > coverage.lcov && codecov'
         },
