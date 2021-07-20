@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import scaffoldFrameworkChoice from '../choice-scaffolder';
 import validate from '../options-validator';
-import scaffoldNyc from '../config/nyc';
+import scaffoldNyc from '../coverage/nyc';
 import {unitTestFrameworksSchema} from './options-schemas';
 import chooseFramework from './prompt';
 

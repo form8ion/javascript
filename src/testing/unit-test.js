@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
-import * as nyc from '../config/nyc';
+import * as nyc from '../coverage/nyc';
 import * as choiceScaffolder from '../choice-scaffolder';
 import * as prompt from './prompt';
 import * as optionsValidator from '../options-validator';
