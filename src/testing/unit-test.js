@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
-import * as nyc from '../coverage/nyc';
+import * as coverageScaffolder from '../coverage/scaffolder';
 import * as choiceScaffolder from '../choice-scaffolder';
 import * as prompt from './prompt';
 import * as optionsValidator from '../options-validator';
@@ -26,7 +26,7 @@ suite('unit testing scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(nyc, 'default');
+    sandbox.stub(coverageScaffolder, 'default');
     sandbox.stub(prompt, 'default');
     sandbox.stub(choiceScaffolder, 'default');
     sandbox.stub(optionsValidator, 'default');
@@ -46,7 +46,7 @@ suite('unit testing scaffolder', () => {
 
   test('that the chosen framework is scaffolded', async () => {
     const visibility = any.word();
-    nyc.default
+    coverageScaffolder.default
       .withArgs({projectRoot, vcs, visibility})
       .resolves({
         devDependencies: nycDevDependencies,
@@ -71,7 +71,7 @@ suite('unit testing scaffolder', () => {
   test('that codecov is installed for public projects', async () => {
     const visibility = 'Public';
     const nycStatusBadges = any.simpleObject();
-    nyc.default
+    coverageScaffolder.default
       .withArgs({projectRoot, vcs, visibility})
       .resolves({
         devDependencies: nycDevDependencies,
@@ -82,11 +82,10 @@ suite('unit testing scaffolder', () => {
     assert.deepEqual(
       await scaffoldUnitTesting({projectRoot, frameworks, decisions, visibility, vcs}),
       {
-        devDependencies: ['codecov', ...unitTestDevDependencies, ...nycDevDependencies],
+        devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
           'test:unit': 'cross-env NODE_ENV=test nyc run-s test:unit:base',
-          ...unitTestScripts,
-          'coverage:report': 'nyc report --reporter=text-lcov > coverage.lcov && codecov'
+          ...unitTestScripts
         },
         badges: {status: nycStatusBadges},
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs},
