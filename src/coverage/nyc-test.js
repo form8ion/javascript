@@ -24,16 +24,7 @@ suite('nyc scaffolder', () => {
       {
         devDependencies: ['cross-env', 'nyc', '@istanbuljs/nyc-config-babel'],
         vcsIgnore: {files: [], directories: ['/coverage/', '/.nyc_output/']},
-        eslint: {ignore: {directories: ['/coverage/']}},
-        badges: {
-          status: {
-            coverage: {
-              img: `https://img.shields.io/codecov/c/github/${vcsOwner}/${vcsName}.svg`,
-              link: `https://codecov.io/github/${vcsOwner}/${vcsName}`,
-              text: 'Codecov'
-            }
-          }
-        }
+        eslint: {ignore: {directories: ['/coverage/']}}
       }
     );
     assert.calledWith(
@@ -44,30 +35,6 @@ suite('nyc scaffolder', () => {
         reporter: ['lcov', 'text-summary', 'html'],
         exclude: ['src/**/*-test.js', 'test/', 'thirdparty-wrappers/', 'vendor/']
       })
-    );
-  });
-
-  test('that the coverage badge is not provided when a project is not versioned', async () => {
-    assert.isUndefined((await scaffoldNyc({projectRoot, visibility: 'Public'})).badges.status.coverage);
-  });
-
-  test('that the coverage badge is not provided when a project is not hosted on github', async () => {
-    assert.isUndefined(
-      (await scaffoldNyc({
-        projectRoot,
-        vcs: {owner: vcsOwner, name: vcsName, host: any.word()},
-        visibility: 'Public'
-      })).badges.status.coverage
-    );
-  });
-
-  test('that the coverage badge is not provided for private projects', async () => {
-    assert.isUndefined(
-      (await scaffoldNyc({
-        projectRoot,
-        vcs: {owner: vcsOwner, name: vcsName, host: 'github'},
-        visibility: 'Private'
-      })).badges.status.coverage
     );
   });
 });

@@ -10,8 +10,8 @@ export function scaffold({vcs, visibility}) {
       badges: {
         status: {
           coverage: {
-            img: `https://img.shields.io/codecov/c/github/${vcs.owner}/${vcs.name}.svg`,
-            link: `https://codecov.io/github/${vcs.owner}/${vcs.name}`,
+            img: `https://img.shields.io/codecov/c/${vcs.host}/${vcs.owner}/${vcs.name}.svg`,
+            link: `https://codecov.io/${vcs.host}/${vcs.owner}/${vcs.name}`,
             text: 'Codecov'
           }
         }

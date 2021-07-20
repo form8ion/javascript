@@ -4,12 +4,10 @@ import {scaffold} from './codecov';
 
 suite('codecov', () => {
   test('that codecov details are scaffolded', () => {
-    const vcs = {
-      ...any.simpleObject(),
-      host: any.fromList(['github', 'gitlab', 'bitbucket']),
-      owner: any.word(),
-      name: any.word()
-    };
+    const vcsHost = any.fromList(['github', 'gitlab', 'bitbucket']);
+    const vcsOwner = any.word();
+    const vcsName = any.word();
+    const vcs = {...any.simpleObject(), host: vcsHost, owner: vcsOwner, name: vcsName};
 
     const {badges, devDependencies, scripts} = scaffold({vcs, visibility: 'Public'});
 
@@ -20,8 +18,8 @@ suite('codecov', () => {
       {
         status: {
           coverage: {
-            img: `https://img.shields.io/codecov/c/github/${vcs.owner}/${vcs.name}.svg`,
-            link: `https://codecov.io/github/${vcs.owner}/${vcs.name}`,
+            img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}.svg`,
+            link: `https://codecov.io/${vcsHost}/${vcsOwner}/${vcsName}`,
             text: 'Codecov'
           }
         }

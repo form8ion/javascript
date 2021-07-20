@@ -1,6 +1,6 @@
 import {promises} from 'fs';
 
-export default async function ({projectRoot, vcs, visibility}) {
+export default async function ({projectRoot}) {
   await promises.writeFile(
     `${projectRoot}/.nycrc`,
     JSON.stringify({
@@ -13,17 +13,6 @@ export default async function ({projectRoot, vcs, visibility}) {
   return {
     devDependencies: ['cross-env', 'nyc', '@istanbuljs/nyc-config-babel'],
     vcsIgnore: {files: [], directories: ['/coverage/', '/.nyc_output/']},
-    eslint: {ignore: {directories: ['/coverage/']}},
-    badges: {
-      status: {
-        ...vcs && 'github' === vcs.host && 'Public' === visibility && {
-          coverage: {
-            img: `https://img.shields.io/codecov/c/github/${vcs.owner}/${vcs.name}.svg`,
-            link: `https://codecov.io/github/${vcs.owner}/${vcs.name}`,
-            text: 'Codecov'
-          }
-        }
-      }
-    }
+    eslint: {ignore: {directories: ['/coverage/']}}
   };
 }
