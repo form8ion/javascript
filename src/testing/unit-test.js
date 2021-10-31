@@ -1,10 +1,9 @@
+import * as jsCore from '@form8ion/javascript-core';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 import * as coverageScaffolder from '../coverage/scaffolder';
-import * as choiceScaffolder from '../choice-scaffolder';
 import * as prompt from './prompt';
-import * as optionsValidator from '../options-validator';
 import {unitTestFrameworksSchema} from './options-schemas';
 import scaffoldUnitTesting from './unit';
 
@@ -28,13 +27,13 @@ suite('unit testing scaffolder', () => {
 
     sandbox.stub(coverageScaffolder, 'default');
     sandbox.stub(prompt, 'default');
-    sandbox.stub(choiceScaffolder, 'default');
-    sandbox.stub(optionsValidator, 'default');
+    sandbox.stub(jsCore, 'scaffoldChoice');
+    sandbox.stub(jsCore, 'validateOptions');
 
     const validatedFrameworks = any.simpleObject();
-    optionsValidator.default.withArgs(unitTestFrameworksSchema, frameworks).returns(validatedFrameworks);
+    jsCore.validateOptions.withArgs(unitTestFrameworksSchema, frameworks).returns(validatedFrameworks);
     prompt.default.withArgs({frameworks: validatedFrameworks, decisions}).resolves(chosenFramework);
-    choiceScaffolder.default.withArgs(validatedFrameworks, chosenFramework, {projectRoot}).resolves({
+    jsCore.scaffoldChoice.withArgs(validatedFrameworks, chosenFramework, {projectRoot}).resolves({
       devDependencies: unitTestDevDependencies,
       scripts: unitTestScripts,
       eslintConfigs: unitTestEslintConfigs,

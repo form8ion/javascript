@@ -79,5 +79,12 @@
     "rollup": "2.46.0",
     "rollup-plugin-auto-external": "2.0.0",
     "sinon": "10.0.0"
+  },
+  "dependencies": {
+    "@form8ion/javascript-core": "^3.1.0",
+    "@form8ion/overridable-prompts": "^1.1.1",
+    "@hapi/joi": "^17.1.1",
+    "deepmerge": "^4.2.2",
+    "inquirer": "^8.2.0"
   }
 }
