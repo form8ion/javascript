@@ -3,6 +3,9 @@
   "description": "JavaScript language plugin for the @form8ion toolset",
   "license": "MIT",
   "version": "0.0.0-semantically-released",
+  "engines": {
+    "node": ">=12.20"
+  },
   "files": [
     "example.js",
     "lib/"
