@@ -27,9 +27,11 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "run-s lint:js -- --fix",
     "lint:md": "remark . --frail",
+    "lint:sensitive": "ban",
+    "lint:peer": "npm ls >/dev/null",
+    "lint:engines": "ls-engines",
     "generate:md": "remark . --output",
     "pregenerate:md": "run-s build",
-    "lint:sensitive": "ban",
     "prepare": "husky install",
     "pretest:integration": "preview",
     "lint:gherkin": "gherkin-lint",
@@ -47,8 +49,7 @@
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test nyc run-s test:unit:base",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
-    "lint:peer": "npm ls >/dev/null"
+    "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'"
   },
   "devDependencies": {
     "@babel/register": "7.13.16",
@@ -71,6 +72,7 @@
     "gherkin-lint": "4.2.1",
     "husky": "6.0.0",
     "lockfile-lint": "4.6.2",
+    "ls-engines": "0.6.1",
     "mocha": "8.3.2",
     "mock-fs": "4.14.0",
     "npm-run-all": "4.1.5",
