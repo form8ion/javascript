@@ -24,6 +24,7 @@ toolset
 
 [![MIT license][license-badge]][license-link]
 [![npm][npm-badge]][npm-link]
+![node][node-badge]
 [![Try @form8ion/javascript on RunKit][runkit-badge]][runkit-link]
 
 <!--consumer-badges end -->
@@ -106,6 +107,8 @@ $ npm test
 [npm-link]: https://www.npmjs.com/package/@form8ion/javascript
 
 [npm-badge]: https://img.shields.io/npm/v/@form8ion/javascript.svg
+
+[node-badge]: https://img.shields.io/node/v/@form8ion/javascript.svg
 
 [runkit-link]: https://npm.runkit.com/@form8ion/javascript
 

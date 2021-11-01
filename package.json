@@ -3,6 +3,9 @@
   "description": "JavaScript language plugin for the @form8ion toolset",
   "license": "MIT",
   "version": "0.0.0-semantically-released",
+  "engines": {
+    "node": ">=12.20"
+  },
   "files": [
     "example.js",
     "lib/"
@@ -24,9 +27,11 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "run-s lint:js -- --fix",
     "lint:md": "remark . --frail",
+    "lint:sensitive": "ban",
+    "lint:peer": "npm ls >/dev/null",
+    "lint:engines": "ls-engines",
     "generate:md": "remark . --output",
     "pregenerate:md": "run-s build",
-    "lint:sensitive": "ban",
     "prepare": "husky install",
     "pretest:integration": "preview",
     "lint:gherkin": "gherkin-lint",
@@ -44,8 +49,7 @@
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test nyc run-s test:unit:base",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
-    "lint:peer": "npm ls >/dev/null"
+    "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'"
   },
   "devDependencies": {
     "@babel/register": "7.13.16",
@@ -57,6 +61,7 @@
     "@form8ion/eslint-config-mocha": "1.2.10",
     "@form8ion/remark-lint-preset": "1.0.13",
     "@istanbuljs/nyc-config-babel": "3.0.0",
+    "@rollup/plugin-babel": "5.3.0",
     "@travi/any": "2.0.16",
     "babel-plugin-istanbul": "6.0.0",
     "ban-sensitive-files": "1.9.15",
@@ -67,6 +72,7 @@
     "gherkin-lint": "4.2.1",
     "husky": "6.0.0",
     "lockfile-lint": "4.6.2",
+    "ls-engines": "0.6.1",
     "mocha": "8.3.2",
     "mock-fs": "4.14.0",
     "npm-run-all": "4.1.5",
@@ -79,5 +85,12 @@
     "rollup": "2.46.0",
     "rollup-plugin-auto-external": "2.0.0",
     "sinon": "10.0.0"
+  },
+  "dependencies": {
+    "@form8ion/javascript-core": "^3.1.0",
+    "@form8ion/overridable-prompts": "^1.1.1",
+    "@hapi/joi": "^17.1.1",
+    "deepmerge": "^4.2.2",
+    "inquirer": "^8.2.0"
   }
 }
