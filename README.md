@@ -14,6 +14,17 @@ toolset
 * [Usage](#usage)
   * [Installation](#installation)
   * [Example](#example)
+    * [Import](#import)
+    * [Execute](#execute)
+  * [API](#api)
+    * [`scaffoldUnitTesting`](#scaffoldunittesting)
+      * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
+      * [`frameworks` __object__ (_required_)](#frameworks-object-required)
+      * [`decisions` __object__ (_optional_)](#decisions-object-optional)
+      * [`visibility` __string__ (_required_)](#visibility-string-required)
+      * [`vcs` __object__ (_required_)](#vcs-object-required)
+    * [`unitTestFrameworksSchema`](#unittestframeworksschema)
+    * [`questionNames`](#questionnames)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -40,16 +51,73 @@ $ npm install @form8ion/javascript --save
 #### Import
 
 ```javascript
-import {scaffold} from '@form8ion/javascript';
+import {scaffoldUnitTesting, questionNames} from '@form8ion/javascript';
 ```
 
 #### Execute
 
 ```javascript
 (async () => {
-  await scaffold({projectRoot: process.cwd()});
+  await scaffoldUnitTesting({
+    projectRoot: process.cwd(),
+    frameworks: {
+      Mocha: {scaffolder: options => options},
+      Jest: {scaffolder: options => options}
+    },
+    visibility: 'Public',
+    vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
+    decisions: {[questionNames.UNIT_TEST_FRAMEWORK]: 'Mocha'}
+  });
 })();
 ```
+
+### API
+
+#### `scaffoldUnitTesting`
+
+Scaffolder for enabling unit-testing in a project with the ability to choose a
+desired framework from provided options.
+
+Takes a single options object as an argument, containing:
+
+##### `projectRoot` __string__ (_required_)
+
+path to the root of the project
+
+##### `frameworks` __object__ (_required_)
+
+A [`choices` object](https://github.com/form8ion/javascript-core#choices-object-required)
+for defining [unit-testing framework options](https://github.com/form8ion/awesome#unit-testing-frameworks)
+
+##### `decisions` __object__ (_optional_)
+
+Answers for prompt questions so that the prompt is skipped at execution time
+
+* keys: __string__ Name of the prompt question
+* values: Hard-coded answer for the prompt question
+
+##### `visibility` __string__ (_required_)
+
+visibility of the project (`Public` or `Private`)
+
+##### `vcs` __object__ (_required_)
+
+* `host` __string__ (_required_)
+  VCS hosting service
+* `owner` __string__ (_required_)
+  account name on the host service for the repository
+* `name` __string__ (_required_)
+  repository name
+
+#### `unitTestFrameworksSchema`
+
+[joi](https://hapi.dev/module/joi/) schema for the choices required for the
+[unit-testing scaffolder](#scaffoldunittesting)
+
+#### `questionNames`
+
+Constants defining the question names for the prompts implemented in this
+package
 
 ## Contributing
 
