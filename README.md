@@ -6,6 +6,7 @@ toolset
 <!--status-badges start -->
 
 [![Node CI Workflow Status][github-actions-ci-badge]][github-actions-ci-link]
+[![Codecov][coverage-badge]][coverage-link]
 
 <!--status-badges end -->
 
@@ -181,3 +182,7 @@ $ npm test
 [runkit-link]: https://npm.runkit.com/@form8ion/javascript
 
 [runkit-badge]: https://badge.runkitcdn.com/@form8ion/javascript.svg
+
+[coverage-link]: https://codecov.io/github/form8ion/javascript
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/javascript.svg
