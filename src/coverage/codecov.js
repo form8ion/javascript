@@ -5,7 +5,7 @@ export function scaffold({vcs, visibility}) {
 
   return {
     devDependencies: ['codecov'],
-    scripts: {'coverage:report': 'nyc report --reporter=text-lcov > coverage.lcov && codecov'},
+    scripts: {'coverage:report': 'c8 report --reporter=text-lcov > coverage.lcov && codecov'},
     ...['github', 'gitlab', 'bitbucket'].includes(vcs?.host) && {
       badges: {
         status: {

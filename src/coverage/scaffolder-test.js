@@ -2,7 +2,7 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import * as codecovScaffolder from './codecov';
-import * as nycScaffolder from './nyc';
+import * as c8Scaffolder from './c8';
 import scaffold from './scaffolder';
 
 suite('coverage scaffolder', () => {
@@ -11,7 +11,7 @@ suite('coverage scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(nycScaffolder, 'default');
+    sandbox.stub(c8Scaffolder, 'default');
     sandbox.stub(codecovScaffolder, 'scaffold');
   });
 
@@ -21,13 +21,13 @@ suite('coverage scaffolder', () => {
     const vcs = any.simpleObject();
     const visibility = any.word();
     const projectRoot = any.string();
-    const nycResults = any.simpleObject();
+    const c8Results = any.simpleObject();
     const codecovResults = any.simpleObject();
-    nycScaffolder.default.withArgs({projectRoot}).resolves(nycResults);
+    c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     codecovScaffolder.scaffold.withArgs({vcs, visibility}).returns(codecovResults);
 
     const results = await scaffold({vcs, visibility, projectRoot});
 
-    assert.deepEqual(results, {...nycResults, ...codecovResults});
+    assert.deepEqual(results, {...c8Results, ...codecovResults});
   });
 });

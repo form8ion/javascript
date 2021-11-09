@@ -12,7 +12,7 @@ suite('codecov', () => {
     const {badges, devDependencies, scripts} = scaffold({vcs, visibility: 'Public'});
 
     assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'nyc report --reporter=text-lcov > coverage.lcov && codecov');
+    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
     assert.deepEqual(
       badges,
       {
@@ -32,7 +32,7 @@ suite('codecov', () => {
 
     assert.isUndefined(badges);
     assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'nyc report --reporter=text-lcov > coverage.lcov && codecov');
+    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
   });
 
   test('that the badge is not defined if vcs details are not defined', () => {
@@ -40,7 +40,7 @@ suite('codecov', () => {
 
     assert.isUndefined(badges);
     assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'nyc report --reporter=text-lcov > coverage.lcov && codecov');
+    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
   });
 
   test('that details are not defined if the project is private', () => {

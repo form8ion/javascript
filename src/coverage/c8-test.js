@@ -2,9 +2,9 @@ import {promises as fsPromises} from 'fs';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import scaffoldNyc from './nyc';
+import scaffoldNyc from './c8';
 
-suite('nyc scaffolder', () => {
+suite('c8 scaffolder', () => {
   let sandbox;
   const projectRoot = any.string();
   const vcsOwner = any.word();
@@ -18,20 +18,19 @@ suite('nyc scaffolder', () => {
 
   teardown(() => sandbox.restore());
 
-  test('that nyc is scaffolded', async () => {
+  test('that c8 is scaffolded', async () => {
     assert.deepEqual(
       await scaffoldNyc({projectRoot, vcs: {owner: vcsOwner, name: vcsName, host: 'github'}, visibility: 'Public'}),
       {
-        devDependencies: ['cross-env', 'nyc', '@istanbuljs/nyc-config-babel'],
-        vcsIgnore: {files: [], directories: ['/coverage/', '/.nyc_output/']},
+        devDependencies: ['cross-env', 'c8'],
+        vcsIgnore: {files: [], directories: ['/coverage/']},
         eslint: {ignore: {directories: ['/coverage/']}}
       }
     );
     assert.calledWith(
       fsPromises.writeFile,
-      `${projectRoot}/.nycrc`,
+      `${projectRoot}/.c8rc.json`,
       JSON.stringify({
-        extends: '@istanbuljs/nyc-config-babel',
         reporter: ['lcov', 'text-summary', 'html'],
         exclude: ['src/**/*-test.js', 'test/', 'thirdparty-wrappers/', 'vendor/']
       })
