@@ -1,7 +1,7 @@
+import * as codecovScaffolder from '@form8ion/codecov';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import * as codecovScaffolder from './codecov';
 import * as c8Scaffolder from './c8';
 import scaffold from './scaffolder';
 
