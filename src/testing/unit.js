@@ -13,7 +13,7 @@ export default async function ({projectRoot, frameworks, decisions, visibility, 
   ]);
 
   return deepmerge.all([
-    {scripts: {'test:unit': 'cross-env NODE_ENV=test nyc run-s test:unit:base'}},
+    {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}},
     framework,
     coverage
   ]);
