@@ -24,7 +24,7 @@ suite('coverage scaffolder', () => {
     const c8Results = any.simpleObject();
     const codecovResults = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
-    codecovScaffolder.scaffold.withArgs({vcs, visibility}).returns(codecovResults);
+    codecovScaffolder.scaffold.withArgs({vcs, visibility}).resolves(codecovResults);
 
     const results = await scaffold({vcs, visibility, projectRoot});
 
