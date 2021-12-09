@@ -23,6 +23,9 @@ Language scaffolder for JavaScript projects
   * [`configs` __object__ (_optional_)](#configs-object-optional)
     * [`eslint`: __object__ (_optional_)](#eslint-object-optional)
     * [`commitlint` __object__ (_optional_)](#commitlint-object-optional)
+    * [`babelPreset` __object__ (_optional_)](#babelpreset-object-optional)
+    * [`typescript`: __object__ (_optional_)](#typescript-object-optional)
+    * [`remark`: __string__ (_optional_)](#remark-string-optional)
   * [`overrides` __object__ (_optional_)](#overrides-object-optional)
 
 ## Arguments
@@ -111,21 +114,9 @@ to be passed to the [unit-testing scaffolder](./scaffold-unit-testing.md)
 
 #### `eslint`: __object__ (_optional_)
 
-details about the [shareable config](https://eslint.org/docs/developer-guide/shareable-configs)
-to be used for the project
-
-* `packageName` __string__ (_required_)
-  name of the `npm` package
-* `prefix` __string__ (_required_)
-  name to be used when referring to the config within the `.eslintrc` files
-
-:warning: while i'm not confident that it is the recommended convention, it
-is assumed the defined config has a `rules/` directory exposed from the
-package with rulesets defined for
-
-* `es6.js`
-* `tests/base.js`
-* `tests/mocha.js`
+* `scope` __string__ (_required_)
+  [scope](https://docs.npmjs.com/misc/scope) to be used for [shareable configs](https://eslint.org/docs/developer-guide/shareable-configs)
+  added as dependencies by the scaffolder
 
 #### `commitlint` __object__ (_optional_)
 
@@ -138,7 +129,7 @@ to be used for the project
   name to be used when referring to the config within the `.commitlintrc.js`
   file
 
-\####`babelPreset` __object__ (_optional_)
+#### `babelPreset` __object__ (_optional_)
 
 details about the [preset](https://babeljs.io/docs/plugins/#creating-a-preset)
 to be used for the project
@@ -148,7 +139,20 @@ to be used for the project
 * `name` __string__ (_required_)
   shorthand name to be used when referring to the config
 
+#### `typescript`: __object__ (_optional_)
+
+* `scope` __string__ (_required_)
+  [scope](https://docs.npmjs.com/misc/scope) to be used for shareable configs
+  added as dependencies by the scaffolder
+
+#### `remark`: __string__ (_optional_)
+
+name of the package to use as a preset for configuring [remark](https://remark.js.org/)
+in the scaffolded project
+
 ### `overrides` __object__ (_optional_)
+
+__DEPRECATED__ use [decisions](#decisions-object-optional) instead
 
 * `npmAccount` __string__ (_optional_)
   the account the package should be published under. used to suggest a
