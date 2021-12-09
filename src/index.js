@@ -1,4 +1,6 @@
-export {default as scaffold} from './scaffold';
+import {questionNames as languageScaffolderPromptsQuestionNames} from '@travi/language-scaffolder-prompts';
+import {questionNames as jsScaffolderQuestionNames} from './prompts/question-names';
+
 export {default as scaffoldUnitTesting} from './testing/unit';
-export {questionNames} from './prompts/question-names';
-export {unitTestFrameworksSchema} from './testing/options-schemas';
+export * from './scaffolder';
+export const questionNames = {...languageScaffolderPromptsQuestionNames, ...jsScaffolderQuestionNames};
