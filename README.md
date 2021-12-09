@@ -17,14 +17,7 @@ toolset
   * [Example](#example)
     * [Import](#import)
     * [Execute](#execute)
-  * [API](#api)
-    * [`scaffoldUnitTesting`](#scaffoldunittesting)
-      * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
-      * [`frameworks` __object__ (_required_)](#frameworks-object-required)
-      * [`decisions` __object__ (_optional_)](#decisions-object-optional)
-      * [`visibility` __string__ (_required_)](#visibility-string-required)
-      * [`vcs` __object__ (_required_)](#vcs-object-required)
-    * [`questionNames`](#questionnames)
+  * [Documentation](#documentation)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -52,7 +45,7 @@ $ npm install @form8ion/javascript --save
 
 ```javascript
 const {dialects, projectTypes} = require('@form8ion/javascript-core');
-const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = require('@form8ion/javascript');
+const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = require('./lib/index.cjs');
 ```
 
 #### Execute
@@ -103,48 +96,10 @@ const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = requi
 })();
 ```
 
-### API
+### Documentation
 
-#### `scaffoldUnitTesting`
-
-Scaffolder for enabling unit-testing in a project with the ability to choose a
-desired framework from provided options.
-
-Takes a single options object as an argument, containing:
-
-##### `projectRoot` __string__ (_required_)
-
-path to the root of the project
-
-##### `frameworks` __object__ (_required_)
-
-A [`choices` object](https://github.com/form8ion/javascript-core#choices-object-required)
-for defining [unit-testing framework options](https://github.com/form8ion/awesome#unit-testing-frameworks)
-
-##### `decisions` __object__ (_optional_)
-
-Answers for prompt questions so that the prompt is skipped at execution time
-
-* keys: __string__ Name of the prompt question
-* values: Hard-coded answer for the prompt question
-
-##### `visibility` __string__ (_required_)
-
-visibility of the project (`Public` or `Private`)
-
-##### `vcs` __object__ (_required_)
-
-* `host` __string__ (_required_)
-  VCS hosting service
-* `owner` __string__ (_required_)
-  account name on the host service for the repository
-* `name` __string__ (_required_)
-  repository name
-
-#### `questionNames`
-
-Constants defining the question names for the prompts implemented in this
-package
+* [API](./docs/api)
+* [Constants](./docs/constants)
 
 ## Contributing
 
