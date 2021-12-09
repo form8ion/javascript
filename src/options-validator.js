@@ -1,4 +1,4 @@
-import * as joi from '@hapi/joi';
+import * as joi from 'joi';
 import hoek from '@hapi/hoek';
 import {unitTestFrameworksSchema} from './testing/options-schemas';
 
