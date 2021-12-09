@@ -51,13 +51,45 @@ $ npm install @form8ion/javascript --save
 #### Import
 
 ```javascript
-import {scaffoldUnitTesting, questionNames} from '@form8ion/javascript';
+const {dialects, projectTypes} = require('@form8ion/javascript-core');
+const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = require('@form8ion/javascript');
 ```
 
 #### Execute
 
 ```javascript
 (async () => {
+  const accountName = 'form8ion';
+
+  await scaffoldJavaScript({
+    projectRoot: process.cwd(),
+    projectName: 'project-name',
+    visibility: 'Public',
+    license: 'MIT',
+    configs: {
+      eslint: {scope: `@${accountName}`},
+      remark: `@${accountName}/remark-lint-preset`,
+      babelPreset: {name: `@${accountName}`, packageName: `@${accountName}/babel-preset`},
+      commitlint: {name: `@${accountName}`, packageName: `@${accountName}/commitlint-config`}
+    },
+    overrides: {npmAccount: accountName},
+    ciServices: {},
+    unitTestFrameworks: {},
+    decisions: {
+      [questionNames.DIALECT]: dialects.BABEL,
+      [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
+      [questionNames.PACKAGE_MANAGER]: 'npm',
+      [questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+      [questionNames.SHOULD_BE_SCOPED]: true,
+      [questionNames.SCOPE]: accountName,
+      [questionNames.AUTHOR_NAME]: 'Your Name',
+      [questionNames.AUTHOR_EMAIL]: 'you@domain.tld',
+      [questionNames.AUTHOR_URL]: 'https://your.website.tld',
+      [questionNames.UNIT_TESTS]: true,
+      [questionNames.INTEGRATION_TESTS]: true
+    }
+  });
+
   await scaffoldUnitTesting({
     projectRoot: process.cwd(),
     frameworks: {
