@@ -4,10 +4,10 @@ import mustache from 'mustache';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
-import camelcase from '../../../thirdparty-wrappers/camelcase';
-import mkdir from '../../../thirdparty-wrappers/make-dir';
-import touch from '../../../thirdparty-wrappers/touch';
-import determinePathToTemplateFile from '../../template-path';
+import camelcase from '../../../../thirdparty-wrappers/camelcase';
+import mkdir from '../../../../thirdparty-wrappers/make-dir';
+import touch from '../../../../thirdparty-wrappers/touch';
+import determinePathToTemplateFile from '../../../template-path';
 
 const defaultBuildDirectory = 'lib';
 

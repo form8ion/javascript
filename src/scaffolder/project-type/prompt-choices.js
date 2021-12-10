@@ -1,5 +1,5 @@
 import {dialects, projectTypes} from '@form8ion/javascript-core';
-import {questionNames} from '../prompts/question-names';
+import {questionNames} from '../../prompts/question-names';
 
 export default function ({[questionNames.DIALECT]: dialect}) {
   const projectTypeValues = Object.values(projectTypes);

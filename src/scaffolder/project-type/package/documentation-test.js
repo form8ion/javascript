@@ -2,7 +2,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
-import * as documentationCommandBuilder from '../../documentation/generation-command';
+import * as documentationCommandBuilder from '../../../documentation/generation-command';
 import scaffoldDocumentation from './documentation';
 
 suite('package documentation', () => {

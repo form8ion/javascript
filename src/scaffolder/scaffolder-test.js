@@ -9,15 +9,15 @@ import sinon from 'sinon';
 
 import * as prompts from '../prompts/questions';
 import * as optionsValidator from '../options-validator';
-import * as dialects from '../dialects/scaffolder';
+import * as dialects from './dialects/scaffolder';
 import * as verification from './verification/verifier';
 import * as npmConfig from '../config/npm';
 import * as documentation from '../documentation/scaffolder';
 import * as nodeVersionScaffolder from '../node-version/scaffolder';
 import * as badgeDetailsBuilder from '../badges';
 import * as vcsIgnoresBuilder from '../vcs-ignore';
-import * as packageScaffolder from '../package/scaffolder';
-import * as projectTypeScaffolder from '../project-type/scaffolder';
+import * as packageScaffolder from './package/scaffolder';
+import * as projectTypeScaffolder from './project-type/scaffolder';
 import * as packageNameBuilder from '../package-name';
 import * as documentationCommandBuilder from '../documentation/generation-command';
 import scaffold from './scaffolder';

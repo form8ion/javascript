@@ -5,7 +5,7 @@ import {questionNames as commonQuestionNames, questions as commonQuestions} from
 import {warn} from '@travi/cli-messages';
 import execa from '../../thirdparty-wrappers/execa';
 import npmConfFactory from '../../thirdparty-wrappers/npm-conf';
-import buildDialectChoices from '../dialects/prompt-choices';
+import buildDialectChoices from '../scaffolder/dialects/prompt-choices';
 import {
   lintingPromptShouldBePresented,
   projectIsApplication,

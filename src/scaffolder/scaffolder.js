@@ -6,15 +6,15 @@ import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention'
 
 import {validate} from '../options-validator';
 import {prompt} from '../prompts/questions';
-import scaffoldDialect from '../dialects';
+import scaffoldDialect from './dialects';
 import scaffoldNpmConfig from '../config/npm';
 import scaffoldDocumentation from '../documentation';
 import scaffoldNodeVersion from '../node-version';
 import buildBadgesDetails from '../badges';
 import buildVcsIgnoreLists from '../vcs-ignore';
-import scaffoldPackage from '../package';
+import scaffoldPackage from './package';
 import buildPackageName from '../package-name';
-import scaffoldProjectType from '../project-type';
+import scaffoldProjectType from './project-type';
 import buildDocumentationCommand from '../documentation/generation-command';
 import {scaffoldVerification} from './verification';
 

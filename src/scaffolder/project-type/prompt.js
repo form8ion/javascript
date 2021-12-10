@@ -1,6 +1,6 @@
 import {Separator} from 'inquirer';
 import {prompt} from '@form8ion/overridable-prompts';
-import {questionNames} from '../prompts/question-names';
+import {questionNames} from '../../prompts/question-names';
 
 export default async function ({types, projectType, decisions}) {
   if (!Object.keys(types).length) return 'Other';
