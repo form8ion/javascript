@@ -4,21 +4,21 @@ import {scaffoldChoice} from '@form8ion/javascript-core';
 import {lift} from '@form8ion/lift-javascript';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
-import {validate} from './options-validator';
-import {prompt} from './prompts/questions';
-import scaffoldDialect from './dialects';
-import scaffoldNpmConfig from './config/npm';
-import scaffoldDocumentation from './documentation';
-import scaffoldNodeVersion from './node-version';
-import buildBadgesDetails from './badges';
-import buildVcsIgnoreLists from './vcs-ignore';
-import scaffoldPackage from './package';
-import buildPackageName from './package-name';
-import scaffoldProjectType from './project-type';
-import buildDocumentationCommand from './documentation/generation-command';
+import {validate} from '../options-validator';
+import {prompt} from '../prompts/questions';
+import scaffoldDialect from '../dialects';
+import scaffoldNpmConfig from '../config/npm';
+import scaffoldDocumentation from '../documentation';
+import scaffoldNodeVersion from '../node-version';
+import buildBadgesDetails from '../badges';
+import buildVcsIgnoreLists from '../vcs-ignore';
+import scaffoldPackage from '../package';
+import buildPackageName from '../package-name';
+import scaffoldProjectType from '../project-type';
+import buildDocumentationCommand from '../documentation/generation-command';
 import {scaffoldVerification} from './verification';
 
-export async function scaffold(options) {
+export default async function (options) {
   info('Initializing JavaScript project');
 
   const {

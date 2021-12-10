@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import scaffoldUnitTesting from '../../testing/unit';
+import scaffoldUnitTesting from '../../../testing/unit';
 
 export default async function ({
   projectRoot,
