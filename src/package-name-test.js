@@ -2,7 +2,7 @@ import {EOL} from 'os';
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
-import * as packageNameValidator from '../third-party-wrappers/validate-npm-package-name';
+import * as packageNameValidator from '../thirdparty-wrappers/validate-npm-package-name';
 import packageName from './package-name';
 
 suite('package name', () => {

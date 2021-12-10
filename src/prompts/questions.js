@@ -3,8 +3,8 @@ import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
 import {warn} from '@travi/cli-messages';
-import execa from '../../third-party-wrappers/execa';
-import npmConfFactory from '../../third-party-wrappers/npm-conf';
+import execa from '../../thirdparty-wrappers/execa';
+import npmConfFactory from '../../thirdparty-wrappers/npm-conf';
 import buildDialectChoices from '../dialects/prompt-choices';
 import {
   lintingPromptShouldBePresented,

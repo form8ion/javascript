@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
-import * as execa from '../../third-party-wrappers/execa';
+import * as execa from '../../thirdparty-wrappers/execa';
 import {determineLatestVersionOf, install} from './tasks';
 
 suite('node-version tasks', () => {

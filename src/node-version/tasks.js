@@ -1,5 +1,5 @@
 import {info} from '@travi/cli-messages';
-import execa from '../../third-party-wrappers/execa';
+import execa from '../../thirdparty-wrappers/execa';
 
 export async function determineLatestVersionOf(nodeVersionCategory) {
   info('Determining version of node', {level: 'secondary'});

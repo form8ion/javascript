@@ -7,9 +7,9 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 
-import * as touch from '../../../third-party-wrappers/touch';
-import * as mkdir from '../../../third-party-wrappers/make-dir';
-import * as camelcase from '../../../third-party-wrappers/camelcase';
+import * as touch from '../../../thirdparty-wrappers/touch';
+import * as mkdir from '../../../thirdparty-wrappers/make-dir';
+import * as camelcase from '../../../thirdparty-wrappers/camelcase';
 import * as templatePath from '../../template-path';
 import buildDetails from './build-details';
 
