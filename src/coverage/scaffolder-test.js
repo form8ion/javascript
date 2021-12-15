@@ -23,10 +23,11 @@ suite('coverage scaffolder', () => {
     const projectRoot = any.string();
     const c8Results = any.simpleObject();
     const codecovResults = any.simpleObject();
+    const pathWithinParent = any.string();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
-    codecovScaffolder.scaffold.withArgs({vcs, visibility}).resolves(codecovResults);
+    codecovScaffolder.scaffold.withArgs({vcs, visibility, pathWithinParent}).resolves(codecovResults);
 
-    const results = await scaffold({vcs, visibility, projectRoot});
+    const results = await scaffold({vcs, visibility, projectRoot, pathWithinParent});
 
     assert.deepEqual(results, {...c8Results, ...codecovResults});
   });

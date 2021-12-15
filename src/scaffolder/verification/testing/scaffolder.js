@@ -8,10 +8,19 @@ export default async function ({
   vcs,
   unitTestFrameworks,
   decisions,
-  dialect
+  dialect,
+  pathWithinParent
 }) {
   const unitResults = unit
-    ? await scaffoldUnitTesting({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect})
+    ? await scaffoldUnitTesting({
+      projectRoot,
+      visibility,
+      vcs,
+      frameworks: unitTestFrameworks,
+      decisions,
+      dialect,
+      pathWithinParent
+    })
     : {};
 
   return deepmerge(

@@ -18,7 +18,8 @@ export async function scaffoldVerification({
   unitTestFrameworks,
   decisions,
   buildDirectory,
-  eslintConfigs
+  eslintConfigs,
+  pathWithinParent
 }) {
   const [testingResults, huskyResults] = await Promise.all([
     scaffoldTesting({
@@ -28,7 +29,8 @@ export async function scaffoldVerification({
       vcs,
       unitTestFrameworks,
       decisions,
-      dialect
+      dialect,
+      pathWithinParent
     }),
     scaffoldHusky({projectRoot, packageManager})
   ]);

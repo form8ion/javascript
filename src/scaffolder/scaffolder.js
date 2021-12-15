@@ -86,6 +86,7 @@ export default async function (options) {
     tests,
     unitTestFrameworks,
     decisions,
+    pathWithinParent,
     buildDirectory: projectTypeResults.buildDirectory,
     eslintConfigs: projectTypeResults.eslintConfigs
   });

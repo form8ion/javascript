@@ -38,6 +38,7 @@ suite('verification', () => {
     const huskyResults = any.simpleObject();
     const testingEslintResults = any.simpleObject();
     const testingResultsEslintConfigs = any.simpleObject();
+    const pathWithinParent = any.string();
     const testingResults = {
       ...any.simpleObject(),
       eslint: testingEslintResults,
@@ -64,7 +65,7 @@ suite('verification', () => {
       })
       .resolves(lintingResults);
     testingScaffolder.default
-      .withArgs({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect})
+      .withArgs({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
       .resolves(testingResults);
     huskyScaffolder.scaffold.withArgs({projectRoot, packageManager}).resolves(huskyResults);
     deepmerge.all
@@ -87,7 +88,8 @@ suite('verification', () => {
         registries,
         configureLinting,
         buildDirectory,
-        eslintConfigs
+        eslintConfigs,
+        pathWithinParent
       }),
       mergedResults
     );

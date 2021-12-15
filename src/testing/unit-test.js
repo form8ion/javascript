@@ -21,6 +21,7 @@ suite('unit testing scaffolder', () => {
   const frameworks = any.simpleObject();
   const decisions = any.simpleObject();
   const chosenFramework = any.word();
+  const pathWithinParent = any.string();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -46,14 +47,14 @@ suite('unit testing scaffolder', () => {
   test('that the chosen framework is scaffolded', async () => {
     const visibility = any.word();
     coverageScaffolder.default
-      .withArgs({projectRoot, vcs, visibility})
+      .withArgs({projectRoot, vcs, visibility, pathWithinParent})
       .resolves({
         devDependencies: nycDevDependencies,
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs}
       });
 
     assert.deepEqual(
-      await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility}),
+      await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility, pathWithinParent}),
       {
         devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
@@ -71,7 +72,7 @@ suite('unit testing scaffolder', () => {
     const visibility = 'Public';
     const nycStatusBadges = any.simpleObject();
     coverageScaffolder.default
-      .withArgs({projectRoot, vcs, visibility})
+      .withArgs({projectRoot, vcs, visibility, pathWithinParent})
       .resolves({
         devDependencies: nycDevDependencies,
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs},
@@ -79,7 +80,7 @@ suite('unit testing scaffolder', () => {
       });
 
     assert.deepEqual(
-      await scaffoldUnitTesting({projectRoot, frameworks, decisions, visibility, vcs}),
+      await scaffoldUnitTesting({projectRoot, frameworks, decisions, visibility, vcs, pathWithinParent}),
       {
         devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {

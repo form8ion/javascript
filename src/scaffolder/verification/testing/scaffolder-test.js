@@ -19,6 +19,7 @@ suite('testing scaffolder', () => {
   const vcs = any.simpleObject();
   const unitTestFrameworks = any.simpleObject();
   const decisions = any.simpleObject();
+  const pathWithinParent = any.string();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -26,7 +27,7 @@ suite('testing scaffolder', () => {
     sandbox.stub(unitTestingScaffolder, 'default');
 
     unitTestingScaffolder.default
-      .withArgs({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect})
+      .withArgs({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect, pathWithinParent})
       .resolves({
         devDependencies: unitTestingDevDependencies,
         scripts: unitTestScripts,
@@ -47,7 +48,8 @@ suite('testing scaffolder', () => {
         vcs,
         unitTestFrameworks,
         decisions,
-        dialect
+        dialect,
+        pathWithinParent
       }),
       {
         devDependencies: ['@travi/any', ...unitTestingDevDependencies],
@@ -62,14 +64,14 @@ suite('testing scaffolder', () => {
 
   test('that unit testing is not scaffolded if the project will not be unit tested', async () => {
     assert.deepEqual(
-      await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: true}}),
+      await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: true}, pathWithinParent}),
       {devDependencies: ['@travi/any'], eslint: [], eslintConfigs: []}
     );
   });
 
   test('that testing is not scaffolded if the project will not be tested', async () => {
     assert.deepEqual(
-      await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: false}}),
+      await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: false}, pathWithinParent}),
       {devDependencies: [], eslint: [], eslintConfigs: []}
     );
   });

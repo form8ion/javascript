@@ -203,7 +203,8 @@ suite('javascript project scaffolder', () => {
         unitTestFrameworks,
         decisions,
         buildDirectory: projectTypeBuildDirectory,
-        eslintConfigs: projectTypeEslintConfigs
+        eslintConfigs: projectTypeEslintConfigs,
+        pathWithinParent
       })
       .resolves(verificationResults);
     dialects.default

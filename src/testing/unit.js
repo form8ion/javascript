@@ -4,12 +4,12 @@ import scaffoldCoverage from '../coverage/scaffolder';
 import {unitTestFrameworksSchema} from './options-schemas';
 import chooseFramework from './prompt';
 
-export default async function ({projectRoot, frameworks, decisions, visibility, vcs}) {
+export default async function ({projectRoot, frameworks, decisions, visibility, vcs, pathWithinParent}) {
   const validatedFrameworks = validateOptions(unitTestFrameworksSchema, frameworks);
   const [framework, coverage] = await Promise.all([
     chooseFramework({frameworks: validatedFrameworks, decisions})
       .then(chosenFramework => scaffoldFrameworkChoice(validatedFrameworks, chosenFramework, {projectRoot})),
-    scaffoldCoverage({projectRoot, vcs, visibility})
+    scaffoldCoverage({projectRoot, vcs, visibility, pathWithinParent})
   ]);
 
   return deepmerge.all([

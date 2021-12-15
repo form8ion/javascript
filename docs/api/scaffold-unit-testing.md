@@ -44,3 +44,7 @@ visibility of the project (`Public` or `Private`)
   account name on the host service for the repository
 * `name` __string__ (_required_)
   repository name
+
+### `pathWithinParent` __string__ (_optional_)
+
+path within a parent project when working on a sub-project
