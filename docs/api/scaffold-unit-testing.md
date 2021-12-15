@@ -11,6 +11,7 @@ desired framework from provided options.
   * [`decisions` __object__ (_optional_)](#decisions-object-optional)
   * [`visibility` __string__ (_required_)](#visibility-string-required)
   * [`vcs` __object__ (_required_)](#vcs-object-required)
+  * [`pathWithinParent` __string__ (_optional_)](#pathwithinparent-string-optional)
 
 ## Arguments
 
