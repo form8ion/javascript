@@ -5,9 +5,10 @@ import stubbedFs from 'mock-fs';
 import td from 'testdouble';
 import 'validate-npm-package-name';
 
-// remark-usage-ignore-next 9
+// remark-usage-ignore-next 10
 stubbedFs({
   node_modules: stubbedFs.load(resolve(...[__dirname, 'node_modules'])),
+  '.nvmrc': 'v1.2.3',
   lib: stubbedFs.load(resolve(...[__dirname, 'lib'])),
   templates: stubbedFs.load(resolve(...[__dirname, 'templates']))
 });
