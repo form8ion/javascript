@@ -1,12 +1,12 @@
 import deepmerge from 'deepmerge';
 import * as jsCore from '@form8ion/javascript-core';
-import * as jsLifter from '@form8ion/lift-javascript';
 import * as commitConvention from '@form8ion/commit-convention';
 
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
+import * as lift from '../lift';
 import * as prompts from '../prompts/questions';
 import * as optionsValidator from '../options-validator';
 import * as dialects from './dialects/scaffolder';
@@ -136,7 +136,7 @@ suite('javascript project scaffolder', () => {
     sandbox.stub(prompts, 'prompt');
     sandbox.stub(optionsValidator, 'validate');
     sandbox.stub(jsCore, 'scaffoldChoice');
-    sandbox.stub(jsLifter, 'lift');
+    sandbox.stub(lift, 'default');
     sandbox.stub(dialects, 'default');
     sandbox.stub(verification, 'scaffoldVerification');
     sandbox.stub(npmConfig, 'default');
@@ -244,7 +244,7 @@ suite('javascript project scaffolder', () => {
         pathWithinParent,
         registries
       });
-    jsLifter.lift
+    lift.default
       .withArgs({
         results: deepmerge.all([{devDependencies: ['npm-run-all'], packageManager}, ...contributors]),
         projectRoot,

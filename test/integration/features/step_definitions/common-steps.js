@@ -1,12 +1,14 @@
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
 import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
+
 import {After, Before, Given, setWorldConstructor, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
 import td from 'testdouble';
 import clearModule from 'clear-module';
 import {assert} from 'chai';
+
 import {World} from '../support/world';
 import {
   assertThatNpmConfigDetailsAreConfiguredCorrectlyFor,
@@ -29,7 +31,7 @@ const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 
 setWorldConstructor(World);
 
-let scaffold, questionNames;
+let scaffold, lift, questionNames;
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
@@ -51,7 +53,8 @@ Before(async function () {
 
   this.execa = td.replace('execa');
 
-  ({scaffold, questionNames} = require('@form8ion/javascript'));  // eslint-disable-line import/no-unresolved
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  ({scaffold, lift, questionNames} = require('@form8ion/javascript'));
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -91,7 +94,8 @@ Before(async function () {
 After(function () {
   stubbedFs.restore();
   td.reset();
-  clearModule('@form8ion/lift-javascript');
+  clearModule('@form8ion/husky');
+  clearModule('@form8ion/eslint');
   clearModule('@form8ion/javascript-core');
   clearModule('@form8ion/javascript');
   clearModule('execa');
@@ -174,6 +178,29 @@ When(/^the project is scaffolded$/, async function () {
   } catch (e) {
     this.resultError = e;
   }
+});
+
+When('the scaffolder results are processed', async function () {
+  await fs.writeFile(
+    `${process.cwd()}/package.json`,
+    JSON.stringify({
+      name: this.projectName,
+      scripts: this.existingScripts,
+      keywords: this.existingKeywords,
+      ...this.enginesNode && {engines: {node: this.enginesNode}}
+    })
+  );
+
+  this.results = await lift({
+    projectRoot: process.cwd(),
+    results: {
+      scripts: this.scriptsResults,
+      tags: this.tagsResults,
+      packageManager: this.packageManager,
+      eslintConfigs: this.additionalShareableConfigs
+    },
+    ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
+  });
 });
 
 Then('the expected files for a(n) {string} are generated', async function (projectType) {

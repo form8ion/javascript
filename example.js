@@ -5,9 +5,10 @@ import stubbedFs from 'mock-fs';
 import td from 'testdouble';
 import 'validate-npm-package-name';
 
-// remark-usage-ignore-next 9
+// remark-usage-ignore-next 10
 stubbedFs({
   node_modules: stubbedFs.load(resolve(...[__dirname, 'node_modules'])),
+  '.nvmrc': 'v1.2.3',
   lib: stubbedFs.load(resolve(...[__dirname, 'lib'])),
   templates: stubbedFs.load(resolve(...[__dirname, 'templates']))
 });
@@ -17,14 +18,21 @@ td.when(execa('. ~/.nvm/nvm.sh && nvm ls-remote --lts', {shell: true}))
 td.when(execa('. ~/.nvm/nvm.sh && nvm install', {shell: true})).thenReturn({stdout: {pipe: () => undefined}});
 
 const {dialects, projectTypes} = require('@form8ion/javascript-core');
-const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = require('./lib/index.cjs');
+const {
+  scaffold: scaffoldJavaScript,
+  lift: liftJavascript,
+  test: thisIsAJavaScriptProject,
+  scaffoldUnitTesting,
+  questionNames
+} = require('./lib/index.cjs');
 
 // #### Execute
 (async () => {
   const accountName = 'form8ion';
+  const projectRoot = process.cwd();
 
   await scaffoldJavaScript({
-    projectRoot: process.cwd(),
+    projectRoot,
     projectName: 'project-name',
     visibility: 'Public',
     license: 'MIT',
@@ -51,6 +59,20 @@ const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = requi
       [questionNames.INTEGRATION_TESTS]: true
     }
   });
+
+  if (await thisIsAJavaScriptProject({projectRoot})) {
+    await liftJavascript({
+      projectRoot,
+      configs: {eslint: {scope: '@foo'}},
+      results: {
+        dependencies: [],
+        devDependencies: [],
+        scripts: {},
+        eslintConfigs: [],
+        packageManager: 'npm'
+      }
+    });
+  }
 
   await scaffoldUnitTesting({
     projectRoot: process.cwd(),

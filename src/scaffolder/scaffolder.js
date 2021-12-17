@@ -1,9 +1,9 @@
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {scaffoldChoice} from '@form8ion/javascript-core';
-import {lift} from '@form8ion/lift-javascript';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
+import lift from '../lift';
 import {validate} from '../options-validator';
 import {prompt} from '../prompts/questions';
 import scaffoldDialect from './dialects';

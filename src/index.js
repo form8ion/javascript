@@ -3,4 +3,6 @@ import {questionNames as jsScaffolderQuestionNames} from './prompts/question-nam
 
 export {default as scaffoldUnitTesting} from './testing/unit';
 export {default as scaffold} from './scaffolder';
+export {default as lift} from './lift';
+export {default as test} from './test';
 export const questionNames = {...languageScaffolderPromptsQuestionNames, ...jsScaffolderQuestionNames};
