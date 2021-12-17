@@ -1,10 +1,11 @@
 import {promises as fs} from 'fs';
-import {fileExists} from '@form8ion/core';
 import makeDir from 'make-dir';
+import {fileExists} from '@form8ion/core';
+
 import {Given, Then} from '@cucumber/cucumber';
-import any from '@travi/any';
-import td from 'testdouble';
 import {assert} from 'chai';
+import td from 'testdouble';
+import any from '@travi/any';
 
 export async function assertHookContainsScript(hook, script) {
   const hookContents = await fs.readFile(`${process.cwd()}/.husky/${hook}`, 'utf-8');
@@ -46,19 +47,11 @@ Given('husky config is in v5 format', async function () {
   await makeDir(`${process.cwd()}/.husky`);
 });
 
-Then('the next-steps include a warning about the husky config', async function () {
-  assert.deepInclude(
-    this.results.nextSteps,
-    {summary: 'Husky configuration is outdated for the installed Husky version'}
-  );
-});
+Then('husky is configured for a {string} project', async function (packageManager) {
+  td.verify(this.execa(td.matchers.contains(/(npm install|yarn add).*husky/)), {ignoreExtraArgs: true});
 
-Then('the next-steps do not include a warning about the husky config', async function () {
-  const {nextSteps} = this.results;
-
-  if (nextSteps) {
-    assert.notDeepInclude(nextSteps, {summary: 'Husky configuration is outdated for the installed Husky version'});
-  }
+  await assertHookContainsScript('pre-commit', `${packageManager} test`);
+  await assertHookContainsScript('commit-msg', 'npx --no-install commitlint --edit $1');
 });
 
 Then('husky is configured for {string}', async function (packageManager) {
@@ -76,6 +69,21 @@ Then('husky is configured for {string}', async function (packageManager) {
     'husky install'
   );
   await assertHookContainsScript('pre-commit', `${packageManager} test`);
+});
+
+Then('the next-steps include a warning about the husky config', async function () {
+  assert.deepInclude(
+    this.results.nextSteps,
+    {summary: 'Husky configuration is outdated for the installed Husky version'}
+  );
+});
+
+Then('the next-steps do not include a warning about the husky config', async function () {
+  const {nextSteps} = this.results;
+
+  if (nextSteps) {
+    assert.notDeepInclude(nextSteps, {summary: 'Husky configuration is outdated for the installed Husky version'});
+  }
 });
 
 Then('the v4 config is removed', async function () {

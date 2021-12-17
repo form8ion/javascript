@@ -1,0 +1,6 @@
+_extends: .github
+repository:
+  name: javascript
+  description: JavaScript language plugin for the @form8ion toolset
+  homepage: https://npm.im/@form8ion/javascript
+  private: false
