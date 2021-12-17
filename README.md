@@ -45,7 +45,13 @@ $ npm install @form8ion/javascript --save
 
 ```javascript
 const {dialects, projectTypes} = require('@form8ion/javascript-core');
-const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = require('./lib/index.cjs');
+const {
+  scaffold: scaffoldJavaScript,
+  lift: liftJavascript,
+  test: thisIsAJavaScriptProject,
+  scaffoldUnitTesting,
+  questionNames
+} = require('@form8ion/javascript');
 ```
 
 #### Execute
@@ -53,9 +59,10 @@ const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = requi
 ```javascript
 (async () => {
   const accountName = 'form8ion';
+  const projectRoot = process.cwd();
 
   await scaffoldJavaScript({
-    projectRoot: process.cwd(),
+    projectRoot,
     projectName: 'project-name',
     visibility: 'Public',
     license: 'MIT',
@@ -82,6 +89,20 @@ const {scaffold: scaffoldJavaScript, scaffoldUnitTesting, questionNames} = requi
       [questionNames.INTEGRATION_TESTS]: true
     }
   });
+
+  if (await thisIsAJavaScriptProject({projectRoot})) {
+    await liftJavascript({
+      projectRoot,
+      configs: {eslint: {scope: '@foo'}},
+      results: {
+        dependencies: [],
+        devDependencies: [],
+        scripts: {},
+        eslintConfigs: [],
+        packageManager: 'npm'
+      }
+    });
+  }
 
   await scaffoldUnitTesting({
     projectRoot: process.cwd(),
