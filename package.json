@@ -95,7 +95,7 @@
     "@form8ion/commit-convention": "^1.0.0",
     "@form8ion/core": "^1.4.2",
     "@form8ion/eslint": "^2.0.1",
-    "@form8ion/husky": "^2.2.0",
+    "@form8ion/husky": "^2.2.1",
     "@form8ion/javascript-core": "^4.0.0",
     "@form8ion/overridable-prompts": "^1.1.1",
     "@form8ion/rollup": "^1.1.0",
