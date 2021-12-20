@@ -1,8 +1,8 @@
-import {lift as liftHusky, test as liftPredicate} from '@form8ion/husky';
+import {lift as liftHusky, test as testForHuskyPresence} from '@form8ion/husky';
 
 export function enhanceHuskyEnhancer(packageManager) {
   return {
-    test: liftPredicate,
+    test: testForHuskyPresence,
     lift: ({projectRoot, results}) => liftHusky({projectRoot, results, packageManager})
   };
 }
