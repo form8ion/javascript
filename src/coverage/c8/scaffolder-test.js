@@ -2,7 +2,7 @@ import {promises as fsPromises} from 'fs';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import scaffoldNyc from './c8';
+import scaffoldC8 from './scaffolder';
 
 suite('c8 scaffolder', () => {
   let sandbox;
@@ -20,7 +20,7 @@ suite('c8 scaffolder', () => {
 
   test('that c8 is scaffolded', async () => {
     assert.deepEqual(
-      await scaffoldNyc({projectRoot, vcs: {owner: vcsOwner, name: vcsName, host: 'github'}, visibility: 'Public'}),
+      await scaffoldC8({projectRoot, vcs: {owner: vcsOwner, name: vcsName, host: 'github'}, visibility: 'Public'}),
       {
         devDependencies: ['cross-env', 'c8'],
         vcsIgnore: {files: [], directories: ['/coverage/']},

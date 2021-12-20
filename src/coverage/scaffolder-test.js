@@ -2,7 +2,7 @@ import * as codecovScaffolder from '@form8ion/codecov';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import * as c8Scaffolder from './c8';
+import * as c8Scaffolder from './c8/scaffolder';
 import scaffold from './scaffolder';
 
 suite('coverage scaffolder', () => {
