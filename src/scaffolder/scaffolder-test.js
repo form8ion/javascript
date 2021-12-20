@@ -6,7 +6,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import * as lift from '../lift';
+import * as lift from '../lift/lift';
 import * as prompts from '../prompts/questions';
 import * as optionsValidator from '../options-validator';
 import * as dialects from './dialects/scaffolder';

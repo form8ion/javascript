@@ -4,9 +4,9 @@ import {lift as liftEslint} from '@form8ion/eslint';
 
 import applyEnhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
+import {enhanceHuskyEnhancer} from './enhancers/enhanced-enhancers';
 import liftPackage from './package';
 import resolvePackageManager from './package-manager';
-import {enhanceHuskyEnhancer} from './enhancers/enhanced-enhancers';
 
 export default async function ({projectRoot, results}) {
   info('Lifting JavaScript-specific details');
