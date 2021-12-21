@@ -13,6 +13,7 @@ suite('nyc remover', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'unlink');
+    sandbox.stub(fs, 'rm');
   });
 
   teardown(() => sandbox.restore());
@@ -23,5 +24,6 @@ suite('nyc remover', () => {
     await removeNyc({projectRoot});
 
     assert.calledWith(fs.unlink, `${projectRoot}/.nycrc`);
+    assert.calledWith(fs.rm, `${projectRoot}/.nyc_output`, {recursive: true, force: true});
   });
 });
