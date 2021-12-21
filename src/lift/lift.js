@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {lift as liftEslint} from '@form8ion/eslint';
 
+import * as coveragePlugin from '../coverage';
 import applyEnhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
 import {enhanceHuskyEnhancer} from './enhancers/enhanced-enhancers';
@@ -18,7 +19,7 @@ export default async function ({projectRoot, results}) {
   const eslintResults = await liftEslint({projectRoot, configs: eslintConfigs});
   const enhancerResults = await applyEnhancers({
     results,
-    enhancers: [enhanceHuskyEnhancer(packageManager), enginesEnhancer],
+    enhancers: [enhanceHuskyEnhancer(packageManager), enginesEnhancer, coveragePlugin],
     projectRoot
   });
 

@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
+import * as coveragePlugin from '../coverage';
 import * as enhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
 import * as enhancedEnhancers from './enhancers/enhanced-enhancers';
@@ -54,7 +55,7 @@ suite('lift', () => {
     eslint.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
     enhancedEnhancers.enhanceHuskyEnhancer.withArgs(packageManager).returns(enhancedHuskyEnhancer);
     enhancers.default
-      .withArgs({results, enhancers: [enhancedHuskyEnhancer, enginesEnhancer], projectRoot})
+      .withArgs({results, enhancers: [enhancedHuskyEnhancer, enginesEnhancer, coveragePlugin], projectRoot})
       .resolves(enhancerResults);
 
     const liftResults = await lift({projectRoot, results, configs: {eslint: {scope}}});

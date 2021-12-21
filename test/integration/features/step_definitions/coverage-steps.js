@@ -5,14 +5,18 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-Given('existing {string} config is present', async function (coverageTool) {
-  await fs.writeFile(`${process.cwd()}/.${coverageTool}rc`, JSON.stringify(any.simpleObject()));
+Given('existing nyc config is present', async function () {
+  await fs.writeFile(`${process.cwd()}/.nycrc`, JSON.stringify(any.simpleObject()));
 });
 
-Then('{string} is not configured for code coverage', async function (coverageTool) {
-  assert.isFalse(await fileExists(`${process.cwd()}/.${coverageTool}rc`));
+Given('existing c8 config is present', async function () {
+  await fs.writeFile(`${process.cwd()}/.c8rc.json`, JSON.stringify(any.simpleObject()));
 });
 
-Then('{string} is configured for code coverage', async function (coverageTool) {
-  assert.isTrue(await fileExists(`${process.cwd()}/.${coverageTool}rc`));
+Then('nyc is not configured for code coverage', async function () {
+  assert.isFalse(await fileExists(`${process.cwd()}/.nycrc`));
+});
+
+Then('c8 is configured for code coverage', async function () {
+  assert.isTrue(await fileExists(`${process.cwd()}/.c8rc.json`));
 });
