@@ -1,3 +1,5 @@
+import deepmerge from 'deepmerge';
+
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
@@ -16,6 +18,7 @@ suite('lift coverage', () => {
     sandbox.stub(c8Scaffolder, 'default');
     sandbox.stub(nycTester, 'default');
     sandbox.stub(nycRemover, 'default');
+    sandbox.stub(deepmerge, 'all');
   });
 
   teardown(() => sandbox.restore());
@@ -24,10 +27,14 @@ suite('lift coverage', () => {
     const projectRoot = any.string();
     const packageManager = any.word();
     const c8Results = any.simpleObject();
+    const mergedResults = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(true);
+    deepmerge.all
+      .withArgs([c8Results, {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}}])
+      .returns(mergedResults);
 
-    assert.equal(await lift({projectRoot, packageManager}), c8Results);
+    assert.equal(await lift({projectRoot, packageManager}), mergedResults);
 
     assert.calledWith(nycRemover.default, {projectRoot, packageManager});
   });

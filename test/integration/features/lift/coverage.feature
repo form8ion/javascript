@@ -7,6 +7,7 @@ Feature: Coverage
     When the scaffolder results are processed
     Then nyc is not configured for code coverage
     And c8 is configured for code coverage
+    And the unit-test script is updated to use c8
 
   Scenario: Project already configured to use `c8`
     Given existing c8 config is present

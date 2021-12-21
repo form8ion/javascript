@@ -27,3 +27,9 @@ Then('nyc is not configured for code coverage', async function () {
 Then('c8 is configured for code coverage', async function () {
   assert.isTrue(await fileExists(`${process.cwd()}/.c8rc.json`));
 });
+
+Then('the unit-test script is updated to use c8', async function () {
+  const {scripts} = this.results;
+
+  assert.equal(scripts['test:unit'], 'cross-env NODE_ENV=test c8 run-s test:unit:base');
+});

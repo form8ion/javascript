@@ -1,3 +1,5 @@
+import deepmerge from 'deepmerge';
+
 import {scaffold as scaffoldC8} from './c8';
 import {test as nycIsConfigured, remove as removeNyc} from './nyc';
 
@@ -8,7 +10,7 @@ export async function lift({projectRoot, packageManager}) {
       removeNyc({projectRoot, packageManager})
     ]);
 
-    return c8Results;
+    return deepmerge.all([c8Results, {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}}]);
   }
 
   return {};
