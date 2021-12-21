@@ -29,7 +29,14 @@ Then('c8 is configured for code coverage', async function () {
 });
 
 Then('the unit-test script is updated to use c8', async function () {
-  const {scripts} = this.results;
+  const {scripts, nextSteps} = this.results;
 
   assert.equal(scripts['test:unit'], 'cross-env NODE_ENV=test c8 run-s test:unit:base');
+  assert.includeDeepMembers(
+    nextSteps,
+    [{
+      summary: 'Remove use of `@istanbuljs/nyc-config-babel` from your babel config, if present,'
+        + ' after the migration away from `nyc`'
+    }]
+  );
 });

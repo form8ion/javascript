@@ -10,7 +10,16 @@ export async function lift({projectRoot, packageManager}) {
       removeNyc({projectRoot, packageManager})
     ]);
 
-    return deepmerge.all([c8Results, {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}}]);
+    return deepmerge.all([
+      c8Results,
+      {
+        scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},
+        nextSteps: [{
+          summary: 'Remove use of `@istanbuljs/nyc-config-babel` from your babel config, if present,'
+            + ' after the migration away from `nyc`'
+        }]
+      }
+    ]);
   }
 
   return {};

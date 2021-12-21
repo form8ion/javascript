@@ -31,7 +31,16 @@ suite('lift coverage', () => {
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(true);
     deepmerge.all
-      .withArgs([c8Results, {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}}])
+      .withArgs([
+        c8Results,
+        {
+          scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},
+          nextSteps: [{
+            summary: 'Remove use of `@istanbuljs/nyc-config-babel` from your babel config, if present,'
+              + ' after the migration away from `nyc`'
+          }]
+        }
+      ])
       .returns(mergedResults);
 
     assert.equal(await lift({projectRoot, packageManager}), mergedResults);
