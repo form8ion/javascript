@@ -6,6 +6,8 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 
+import {assertDependenciesWereRemoved} from './dependencies-steps';
+
 Given('existing nyc config is present', async function () {
   await fs.writeFile(`${process.cwd()}/.nycrc`, JSON.stringify(any.simpleObject()));
   const nycOutputDirectory = await makeDir(`${process.cwd()}/.nyc_output`);
@@ -19,6 +21,7 @@ Given('existing c8 config is present', async function () {
 Then('nyc is not configured for code coverage', async function () {
   assert.isFalse(await fileExists(`${process.cwd()}/.nycrc`));
   assert.isFalse(await directoryExists(`${process.cwd()}/.nyc_output`));
+  assertDependenciesWereRemoved(this.execa, this.packageManager, ['nyc', '@istanbuljs/nyc-config-babel']);
 });
 
 Then('c8 is configured for code coverage', async function () {

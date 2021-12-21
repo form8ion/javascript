@@ -5,7 +5,6 @@ import applyEnhancers from './apply';
 
 suite('enhancers', () => {
   const results = any.simpleObject();
-  const projectRoot = any.string();
 
   test('that an enhancer that matches the project is executed', async () => {
     const lift = sinon.stub();
@@ -15,22 +14,23 @@ suite('enhancers', () => {
     const liftNextSteps = any.listOf(any.simpleObject);
     const liftResults = {nextSteps: liftNextSteps};
     const anotherLiftResults = any.simpleObject();
-    test.withArgs({projectRoot}).resolves(true);
-    lift.withArgs({results, projectRoot}).resolves(liftResults);
-    anotherLift.withArgs({results: {...results, ...liftResults}, projectRoot}).resolves(anotherLiftResults);
+    const options = any.simpleObject();
+    test.withArgs(options).resolves(true);
+    lift.withArgs({results, ...options}).resolves(liftResults);
+    anotherLift.withArgs({results: {...results, ...liftResults}, ...options}).resolves(anotherLiftResults);
 
     const enhancerResults = await applyEnhancers({
       results,
-      projectRoot,
       enhancers: {
         [any.word()]: {test, lift},
         [any.word()]: {test: () => Promise.resolve(false), lift: otherLift},
         [any.word()]: {test, lift: anotherLift}
-      }
+      },
+      options
     });
 
     assert.deepEqual(enhancerResults, {...results, ...liftResults, ...anotherLiftResults});
-    assert.calledWith(lift, {results, projectRoot});
+    assert.calledWith(lift, {results, ...options});
     assert.notCalled(otherLift);
   });
 
@@ -40,7 +40,6 @@ suite('enhancers', () => {
     try {
       await applyEnhancers({
         results,
-        projectRoot,
         enhancers: {
           [any.word()]: {
             test: () => Promise.resolve(true),

@@ -22,13 +22,14 @@ suite('lift coverage', () => {
 
   test('that `nyc` is replaced by `c8` if nyc config exists', async () => {
     const projectRoot = any.string();
+    const packageManager = any.word();
     const c8Results = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(true);
 
-    assert.equal(await lift({projectRoot}), c8Results);
+    assert.equal(await lift({projectRoot, packageManager}), c8Results);
 
-    assert.calledWith(nycRemover.default, {projectRoot});
+    assert.calledWith(nycRemover.default, {projectRoot, packageManager});
   });
 
   test('that `nyc` is not replaced by `c8` if nyc config does not exist', async () => {

@@ -16,6 +16,10 @@ export function assertDevDependencyIsInstalled(execa, dependencyName) {
   );
 }
 
+export function assertDependenciesWereRemoved(execa, packageManager, dependencyNames) {
+  td.verify(execa(packageManager, ['remove', ...dependencyNames]));
+}
+
 Then('ls-engines is added as a dependency', async function () {
   assertDevDependencyIsInstalled(this.execa, 'ls-engines');
 });
