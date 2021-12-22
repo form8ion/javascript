@@ -1,13 +1,14 @@
-import * as eslint from '@form8ion/eslint';
+import * as eslintPlugin from '@form8ion/eslint';
+import * as huskyPlugin from '@form8ion/husky';
 import deepmerge from 'deepmerge';
 
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
+import * as coveragePlugin from '../coverage';
 import * as enhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
-import * as enhancedEnhancers from './enhancers/enhanced-enhancers';
 import * as packageLifter from './package';
 import * as packageManagerResolver from './package-manager';
 import lift from './lift';
@@ -36,10 +37,9 @@ suite('lift', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(packageLifter, 'default');
-    sandbox.stub(eslint, 'lift');
+    sandbox.stub(eslintPlugin, 'lift');
     sandbox.stub(packageManagerResolver, 'default');
     sandbox.stub(enhancers, 'default');
-    sandbox.stub(enhancedEnhancers, 'enhanceHuskyEnhancer');
 
     packageManagerResolver.default.withArgs({projectRoot, packageManager: manager}).resolves(packageManager);
   });
@@ -48,13 +48,15 @@ suite('lift', () => {
 
   test('that results specific to js projects are lifted', async () => {
     const scope = any.word();
-    const enhancedHuskyEnhancer = () => undefined;
     const eslintLiftResults = {...any.simpleObject(), devDependencies: any.listOf(any.word)};
     const enhancerResults = any.simpleObject();
-    eslint.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
-    enhancedEnhancers.enhanceHuskyEnhancer.withArgs(packageManager).returns(enhancedHuskyEnhancer);
+    eslintPlugin.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
     enhancers.default
-      .withArgs({results, enhancers: [enhancedHuskyEnhancer, enginesEnhancer], projectRoot})
+      .withArgs({
+        results,
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin],
+        options: {projectRoot, packageManager}
+      })
       .resolves(enhancerResults);
 
     const liftResults = await lift({projectRoot, results, configs: {eslint: {scope}}});
