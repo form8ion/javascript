@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+import * as codecovPlugin from '@form8ion/codecov';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
@@ -19,6 +20,7 @@ suite('lift coverage', () => {
     sandbox.stub(nycTester, 'default');
     sandbox.stub(nycRemover, 'default');
     sandbox.stub(deepmerge, 'all');
+    sandbox.stub(codecovPlugin, 'lift');
   });
 
   teardown(() => sandbox.restore());
@@ -27,12 +29,15 @@ suite('lift coverage', () => {
     const projectRoot = any.string();
     const packageManager = any.word();
     const c8Results = any.simpleObject();
+    const codecovResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(true);
+    codecovPlugin.lift.withArgs({projectRoot, packageManager}).resolves(codecovResults);
     deepmerge.all
       .withArgs([
         c8Results,
+        codecovResults,
         {
           scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},
           nextSteps: [{
