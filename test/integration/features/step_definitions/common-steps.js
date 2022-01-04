@@ -31,7 +31,7 @@ const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 
 setWorldConstructor(World);
 
-let scaffold, lift, questionNames;
+let scaffold, lift, test, questionNames;
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
@@ -54,7 +54,7 @@ Before(async function () {
   this.execa = td.replace('execa');
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  ({scaffold, lift, questionNames} = require('@form8ion/javascript'));
+  ({scaffold, lift, test, questionNames} = require('@form8ion/javascript'));
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -181,8 +181,10 @@ When(/^the project is scaffolded$/, async function () {
 });
 
 When('the scaffolder results are processed', async function () {
+  const projectRoot = process.cwd();
+
   await fs.writeFile(
-    `${process.cwd()}/package.json`,
+    `${projectRoot}/package.json`,
     JSON.stringify({
       name: this.projectName,
       scripts: this.existingScripts,
@@ -191,16 +193,18 @@ When('the scaffolder results are processed', async function () {
     })
   );
 
-  this.results = await lift({
-    projectRoot: process.cwd(),
-    results: {
-      scripts: this.scriptsResults,
-      tags: this.tagsResults,
-      packageManager: this.packageManager,
-      eslintConfigs: this.additionalShareableConfigs
-    },
-    ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
-  });
+  if (await test({projectRoot})) {
+    this.results = await lift({
+      projectRoot,
+      results: {
+        scripts: this.scriptsResults,
+        tags: this.tagsResults,
+        packageManager: this.packageManager,
+        eslintConfigs: this.additionalShareableConfigs
+      },
+      ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
+    });
+  }
 });
 
 Then('the expected files for a(n) {string} are generated', async function (projectType) {
