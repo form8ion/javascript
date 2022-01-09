@@ -13,6 +13,15 @@ Takes a single options object as an argument, containing:
 
 path to the root of the project
 
+### `vcs` __object__ (_required_)
+
+* `host` __string__ (_required_)
+  VCS hosting service
+* `owner` __string__ (_required_)
+  account name on the host service for the repository
+* `name` __string__ (_required_)
+  repository name
+
 ### `results` __object__ (_required_)
 
 results from sub-scaffolder
