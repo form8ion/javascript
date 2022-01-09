@@ -136,7 +136,8 @@ export default async function (options) {
   const liftResults = await lift({
     results: deepmerge({devDependencies: ['npm-run-all'], packageManager}, mergedContributions),
     projectRoot,
-    configs
+    configs,
+    vcs
   });
 
   return {

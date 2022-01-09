@@ -50,16 +50,17 @@ suite('lift', () => {
     const scope = any.word();
     const eslintLiftResults = {...any.simpleObject(), devDependencies: any.listOf(any.word)};
     const enhancerResults = any.simpleObject();
+    const vcsDetails = any.simpleObject();
     eslintPlugin.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
     enhancers.default
       .withArgs({
         results,
         enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin],
-        options: {projectRoot, packageManager}
+        options: {projectRoot, packageManager, vcs: vcsDetails}
       })
       .resolves(enhancerResults);
 
-    const liftResults = await lift({projectRoot, results, configs: {eslint: {scope}}});
+    const liftResults = await lift({projectRoot, results, vcs: vcsDetails, configs: {eslint: {scope}}});
 
     assert.deepEqual(liftResults, enhancerResults);
     assert.calledWith(

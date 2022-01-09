@@ -248,7 +248,8 @@ suite('javascript project scaffolder', () => {
       .withArgs({
         results: deepmerge.all([{devDependencies: ['npm-run-all'], packageManager}, ...contributors]),
         projectRoot,
-        configs
+        configs,
+        vcs: vcsDetails
       })
       .resolves(liftResults);
   });

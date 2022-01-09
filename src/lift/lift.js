@@ -9,7 +9,7 @@ import * as enginesEnhancer from './enhancers/engines';
 import liftPackage from './package';
 import resolvePackageManager from './package-manager';
 
-export default async function ({projectRoot, results}) {
+export default async function ({projectRoot, vcs, results}) {
   info('Lifting JavaScript-specific details');
 
   const {scripts, tags, eslintConfigs, dependencies, devDependencies, packageManager: manager} = results;
@@ -20,7 +20,7 @@ export default async function ({projectRoot, results}) {
   const enhancerResults = await applyEnhancers({
     results,
     enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin],
-    options: {packageManager, projectRoot}
+    options: {packageManager, projectRoot, vcs}
   });
 
   await liftPackage(
