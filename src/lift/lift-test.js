@@ -1,5 +1,6 @@
 import * as eslintPlugin from '@form8ion/eslint';
 import * as huskyPlugin from '@form8ion/husky';
+import * as commitConventionPlugin from '@form8ion/commit-convention';
 import deepmerge from 'deepmerge';
 
 import sinon from 'sinon';
@@ -55,7 +56,7 @@ suite('lift', () => {
     enhancers.default
       .withArgs({
         results,
-        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin],
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
         options: {projectRoot, packageManager, vcs: vcsDetails}
       })
       .resolves(enhancerResults);
