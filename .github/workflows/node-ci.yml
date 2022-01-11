@@ -3,7 +3,6 @@ name: Node.js CI
   push:
     branches:
       - master
-      - alpha
       - beta
       - renovate/**
   pull_request:
@@ -15,6 +14,18 @@ env:
   NPM_CONFIG_COLOR: always
 jobs:
   verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - run: npm clean-install
+      - run: npm test
+      - uses: codecov/codecov-action@v2
+  verify-matrix:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,21 +40,21 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - uses: bahmutov/npm-install@v1
+          cache: npm
+      - run: npm clean-install
       - run: npm test
-      - uses: codecov/codecov-action@v2
-  release:
-    needs: verify
+  trigger-release:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - uses: octokit/request-action@v2.x
         with:
-          node-version: lts/*
-      - uses: bahmutov/npm-install@v1
-      - name: semantic-release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          route: >-
+            POST
+            /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: form8ion
+          repo: javascript
+          ref: ${{ github.ref }}
+          workflow_id: release.yml
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
