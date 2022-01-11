@@ -56,5 +56,5 @@ jobs:
           repo: javascript
           ref: ${{ github.ref }}
           workflow_id: release.yml
-          env:
-            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
