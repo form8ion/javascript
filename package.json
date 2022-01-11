@@ -49,7 +49,6 @@
     "watch": "run-s 'build:js -- --watch'",
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
-    "coverage:report": "c8 report --reporter=text-lcov > coverage.lcov && codecov",
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'"
   },
   "devDependencies": {
@@ -69,7 +68,6 @@
     "chai": "4.3.4",
     "chai-as-promised": "7.1.1",
     "clear-module": "4.1.2",
-    "codecov": "3.8.2",
     "cross-env": "7.0.3",
     "cz-conventional-changelog": "3.3.0",
     "gherkin-lint": "4.2.2",
