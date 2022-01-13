@@ -1,11 +1,11 @@
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
+import {applyEnhancers} from '@form8ion/core';
 import {lift as liftEslint} from '@form8ion/eslint';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
 
 import * as coveragePlugin from '../coverage';
-import applyEnhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
 import liftPackage from './package';
 import resolvePackageManager from './package-manager';

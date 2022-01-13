@@ -1,3 +1,4 @@
+import * as core from '@form8ion/core';
 import * as eslintPlugin from '@form8ion/eslint';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
@@ -8,7 +9,6 @@ import any from '@travi/any';
 import {assert} from 'chai';
 
 import * as coveragePlugin from '../coverage';
-import * as enhancers from './enhancers/apply';
 import * as enginesEnhancer from './enhancers/engines';
 import * as packageLifter from './package';
 import * as packageManagerResolver from './package-manager';
@@ -40,7 +40,7 @@ suite('lift', () => {
     sandbox.stub(packageLifter, 'default');
     sandbox.stub(eslintPlugin, 'lift');
     sandbox.stub(packageManagerResolver, 'default');
-    sandbox.stub(enhancers, 'default');
+    sandbox.stub(core, 'applyEnhancers');
 
     packageManagerResolver.default.withArgs({projectRoot, packageManager: manager}).resolves(packageManager);
   });
@@ -53,7 +53,7 @@ suite('lift', () => {
     const enhancerResults = any.simpleObject();
     const vcsDetails = any.simpleObject();
     eslintPlugin.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
-    enhancers.default
+    core.applyEnhancers
       .withArgs({
         results,
         enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
