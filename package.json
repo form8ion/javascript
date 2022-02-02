@@ -52,7 +52,7 @@
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'"
   },
   "devDependencies": {
-    "@babel/register": "7.16.9",
+    "@babel/register": "7.17.0",
     "@cucumber/cucumber": "7.3.2",
     "@form8ion/babel-preset": "1.6.78",
     "@form8ion/commitlint-config": "1.0.28",
