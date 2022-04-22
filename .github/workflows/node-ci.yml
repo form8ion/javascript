@@ -20,7 +20,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: .nvmrc
           cache: npm
       - run: npm clean-install
       - run: npm test
@@ -30,9 +30,8 @@ jobs:
     strategy:
       matrix:
         node:
-          - '12.20'
-          - 12
-          - 14
+          - 14.15.0
+          - 16.0.0
           - 16
     steps:
       - uses: actions/checkout@v3
