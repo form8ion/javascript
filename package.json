@@ -89,7 +89,7 @@
     "testdouble": "3.16.5"
   },
   "dependencies": {
-    "@form8ion/codecov": "^2.0.1",
+    "@form8ion/codecov": "^3.0.0",
     "@form8ion/commit-convention": "^1.7.0",
     "@form8ion/core": "^1.5.0",
     "@form8ion/eslint": "^2.0.1",
