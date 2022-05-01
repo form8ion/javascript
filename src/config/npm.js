@@ -11,7 +11,6 @@ export default async function ({projectRoot, projectType, registries}) {
     `${projectRoot}/.npmrc`,
     stringify({
       'update-notifier': false,
-      'engine-strict': true,
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
       ...registries
         && Object.fromEntries(Object.entries(registries).map(([scope, url]) => ([`@${scope}:registry`, url])))

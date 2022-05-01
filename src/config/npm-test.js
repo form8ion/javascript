@@ -23,7 +23,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nengine-strict=true\nsave-exact=true\n'
+      'update-notifier=false\nsave-exact=true\n'
     );
   });
 
@@ -33,7 +33,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nengine-strict=true\nsave-exact=true\n'
+      'update-notifier=false\nsave-exact=true\n'
     );
   });
 
@@ -43,7 +43,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nengine-strict=true\n'
+      'update-notifier=false\n'
     );
   });
 
@@ -55,7 +55,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      `update-notifier=false\nengine-strict=true\n${
+      `update-notifier=false\n${
         Object.entries(registries)
           .map(([scope, url]) => `@${scope}:registry=${url}`)
           .join('\n')
