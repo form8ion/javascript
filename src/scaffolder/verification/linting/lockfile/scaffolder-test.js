@@ -1,41 +1,30 @@
 import {promises as fs} from 'fs';
 import {packageManagers} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
+
+import * as allowedHostsBuilder from './allowed-hosts-builder';
 import scaffoldLockfileLint from './scaffolder';
 
 suite('lockfile linting', () => {
   let sandbox;
   const projectRoot = any.string();
+  const registries = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'writeFile');
+    sandbox.stub(allowedHostsBuilder, 'default');
   });
 
   teardown(() => sandbox.restore());
 
   test('that it is configured properly for npm', async () => {
-    const {devDependencies, scripts} = await scaffoldLockfileLint({projectRoot, packageManager: packageManagers.NPM});
-
-    assert.calledWith(
-      fs.writeFile,
-      `${projectRoot}/.lockfile-lintrc.json`,
-      JSON.stringify({
-        path: 'package-lock.json',
-        type: packageManagers.NPM,
-        'validate-https': true,
-        'allowed-hosts': [packageManagers.NPM]
-      })
-    );
-    assert.deepEqual(devDependencies, ['lockfile-lint']);
-    assert.equal(scripts['lint:lockfile'], 'lockfile-lint');
-  });
-
-  test('that additional registries are defined when provided', async () => {
-    const registries = any.simpleObject();
+    const allowedHosts = any.listOf(any.url);
+    allowedHostsBuilder.default.withArgs({packageManager: packageManagers.NPM, registries}).returns(allowedHosts);
 
     const {devDependencies, scripts} = await scaffoldLockfileLint({
       projectRoot,
@@ -50,7 +39,7 @@ suite('lockfile linting', () => {
         path: 'package-lock.json',
         type: packageManagers.NPM,
         'validate-https': true,
-        'allowed-hosts': [packageManagers.NPM, ...Object.values(registries)]
+        'allowed-hosts': allowedHosts
       })
     );
     assert.deepEqual(devDependencies, ['lockfile-lint']);
@@ -58,7 +47,14 @@ suite('lockfile linting', () => {
   });
 
   test('that it is configured properly for yarn', async () => {
-    const {devDependencies, scripts} = await scaffoldLockfileLint({projectRoot, packageManager: packageManagers.YARN});
+    const allowedHosts = any.listOf(any.url);
+    allowedHostsBuilder.default.withArgs({packageManager: packageManagers.YARN, registries}).returns(allowedHosts);
+
+    const {devDependencies, scripts} = await scaffoldLockfileLint({
+      projectRoot,
+      packageManager: packageManagers.YARN,
+      registries
+    });
 
     assert.calledWith(
       fs.writeFile,
@@ -67,7 +63,7 @@ suite('lockfile linting', () => {
         path: 'yarn.lock',
         type: packageManagers.YARN,
         'validate-https': true,
-        'allowed-hosts': [packageManagers.YARN]
+        'allowed-hosts': allowedHosts
       })
     );
     assert.deepEqual(devDependencies, ['lockfile-lint']);

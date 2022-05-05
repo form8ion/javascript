@@ -1,6 +1,8 @@
 import {promises as fs} from 'fs';
 import {packageManagers} from '@form8ion/javascript-core';
 
+import buildAllowedHostsList from './allowed-hosts-builder';
+
 function determineLockfilePathFor(packageManager) {
   if (packageManagers.NPM === packageManager) return 'package-lock.json';
   if (packageManagers.YARN === packageManager) return 'yarn.lock';
@@ -18,7 +20,7 @@ export default async function ({projectRoot, packageManager, registries}) {
       path: determineLockfilePathFor(packageManager),
       type: packageManager,
       'validate-https': true,
-      'allowed-hosts': [packageManager, ...registries ? Object.values(registries) : []]
+      'allowed-hosts': buildAllowedHostsList({packageManager, registries})
     })
   );
 
