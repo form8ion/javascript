@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import scaffoldEslint from './eslint';
 import scaffoldRemark from './remark';
 import scaffoldBanSensitiveFiles from './ban-sensitive-files';
-import scaffoldLockfileLint from './lockfile';
+import {scaffold as scaffoldLockfileLint} from './lockfile';
 
 export default async function ({
   projectRoot,

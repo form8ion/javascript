@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import * as scaffoldEslint from './eslint';
 import * as scaffoldRemark from './remark';
 import * as scaffoldBanSensitiveFiles from './ban-sensitive-files';
-import * as scaffoldLockfileLint from './lockfile';
+import * as scaffoldLockfileLint from './lockfile/scaffolder';
 import scaffold from './index';
 
 suite('linting scaffolder', () => {

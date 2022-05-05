@@ -3,7 +3,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
-import scaffoldLockfileLint from './lockfile';
+import scaffoldLockfileLint from './scaffolder';
 
 suite('lockfile linting', () => {
   let sandbox;
