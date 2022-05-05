@@ -6,14 +6,23 @@ function projectWillNotBeConsumed(projectType) {
   return projectTypes.APPLICATION === projectType || projectTypes.CLI === projectType;
 }
 
-export default async function ({projectRoot, projectType, registries}) {
+export default async function ({
+  projectRoot,
+  projectType,
+  registries
+}) {
   await fs.writeFile(
     `${projectRoot}/.npmrc`,
     stringify({
       'update-notifier': false,
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
       ...registries
-        && Object.fromEntries(Object.entries(registries).map(([scope, url]) => ([`@${scope}:registry`, url])))
+      && Object.fromEntries(Object.entries(registries)
+        .map(([scope, url]) => {
+          if ('registry' === scope) return ['registry', url];
+
+          return [`@${scope}:registry`, url];
+        }))
     })
   );
 

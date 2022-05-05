@@ -11,3 +11,15 @@ Feature: Registries
     When the project is scaffolded
     Then no error is thrown
     And the registry configuration is defined
+
+  Scenario: registry override
+    Given the project will be an "any"
+    And the project will use the "babel" dialect
+    And a babel preset is provided
+    And the npm cli is logged in
+    And the project will not be tested
+    And nvm is properly configured
+    And an override is defined for the official registry
+    When the project is scaffolded
+    Then no error is thrown
+    And the registry configuration is defined

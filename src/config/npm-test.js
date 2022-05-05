@@ -47,7 +47,19 @@ suite('npm config scaffolder', () => {
     );
   });
 
-  test('that scoped registries are added to the contig when provided', async () => {
+  test('that a registry override is defined the config when provided', async () => {
+    const registries = {registry: any.url()};
+
+    await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
+
+    assert.calledWith(
+      fsPromises.writeFile,
+      `${projectRoot}/.npmrc`,
+      `update-notifier=false\nregistry=${registries.registry}\n`
+    );
+  });
+
+  test('that scoped registries are added to the config when provided', async () => {
     const registries = any.objectWithKeys(any.listOf(any.word), {factory: any.word});
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});

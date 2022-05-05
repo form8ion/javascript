@@ -76,7 +76,9 @@ visibility of the project (`Public` or `Private`)
 
 ### `registries` __object__ (_optional_)
 
-* keys: __string__ Scope of packages related to this registry (without the `@`)
+* keys: __string__ Scope of packages related to this registry (without the `@`).
+  `registry` is considered a special scope, and providing a definition for `registry`
+  will override the default registry.
 * values: __string__ URL for the registry
 
 ### `ciServices` __object__ (_optional_)

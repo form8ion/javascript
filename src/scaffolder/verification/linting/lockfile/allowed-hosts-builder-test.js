@@ -18,4 +18,13 @@ suite('allowed-hosts builder', () => {
       [packageManager, ...Object.values(registries)]
     );
   });
+
+  test('that the package-manager is not listed if the provided registries override the official registry', async () => {
+    const registry = any.url();
+
+    assert.deepEqual(
+      buildAllowedHostsList({packageManager, registries: {registry}}),
+      [registry]
+    );
+  });
 });
