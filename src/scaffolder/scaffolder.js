@@ -71,7 +71,8 @@ export default async function (options) {
     tests,
     vcs,
     decisions,
-    dialect
+    dialect,
+    publishRegistry: registries.publish
   });
   const verificationResults = await scaffoldVerification({
     projectRoot,

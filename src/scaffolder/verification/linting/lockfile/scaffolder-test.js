@@ -8,6 +8,8 @@ import any from '@travi/any';
 import * as allowedHostsBuilder from './allowed-hosts-builder';
 import scaffoldLockfileLint from './scaffolder';
 
+const lockfileLintSupportedPackageManagers = [packageManagers.NPM, packageManagers.YARN];
+
 suite('lockfile linting', () => {
   let sandbox;
   const projectRoot = any.string();
@@ -80,8 +82,8 @@ suite('lockfile linting', () => {
     } catch (e) {
       assert.equal(
         e.message,
-        `The ${packageManager} package manager is currently not supported. `
-        + `Only ${Object.values(packageManagers).join(' and ')} are currently supported.`
+        `The ${packageManager} package manager is currently not supported by lockfile-lint. `
+        + `Only ${lockfileLintSupportedPackageManagers.join(' and ')} are currently supported.`
       );
     }
   });

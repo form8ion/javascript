@@ -31,7 +31,8 @@ suite('javascript project scaffolder', () => {
   const projectName = any.string();
   const packageName = any.string();
   const pathWithinParent = any.string();
-  const registries = any.simpleObject();
+  const publishRegistry = any.url();
+  const registries = {...any.simpleObject(), publish: publishRegistry};
   const homepage = any.url();
   const decisions = any.simpleObject();
   const unitTestFrameworks = any.simpleObject();
@@ -166,7 +167,8 @@ suite('javascript project scaffolder', () => {
         tests,
         vcs: vcsDetails,
         decisions,
-        dialect: chosenDialect
+        dialect: chosenDialect,
+        publishRegistry
       })
       .resolves(projectTypeResults);
     packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves({...any.simpleObject(), homepage});

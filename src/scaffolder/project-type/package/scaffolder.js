@@ -16,7 +16,8 @@ export default async function ({
   packageTypes,
   tests,
   decisions,
-  dialect
+  dialect,
+  publishRegistry
 }) {
   info('Scaffolding Package Details');
 
@@ -65,7 +66,10 @@ export default async function ({
     {
       packageProperties: {
         files: ['example.js'],
-        publishConfig: {access: 'Public' === visibility ? 'public' : 'restricted'},
+        publishConfig: {
+          access: 'Public' === visibility ? 'public' : 'restricted',
+          ...publishRegistry && {registry: publishRegistry}
+        },
         ...'Public' === visibility && {runkitExampleFilename: './example.js'}
       },
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),

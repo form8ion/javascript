@@ -12,6 +12,10 @@ Given('an override is defined for the official registry', async function () {
   this.registries = {registry: any.url()};
 });
 
+Given('an alternative registry is defined for publishing', async function () {
+  this.registries = {publish: any.url()};
+});
+
 Then('the registry configuration is defined', async function () {
   const [npmConfigIni, lockfileLintJson] = await Promise.all([
     fs.readFile(`${process.cwd()}/.npmrc`, 'utf-8'),
@@ -26,9 +30,18 @@ Then('the registry configuration is defined', async function () {
       assert.include(lockfileLintConfig['allowed-hosts'], url);
       assert.notInclude(lockfileLintConfig['allowed-hosts'], 'npm');
       assert.notInclude(lockfileLintConfig['allowed-hosts'], 'yarn');
+    } else if ('publish' === scope) {
+      assert.notInclude(lockfileLintConfig['allowed-hosts'], url);
+      assert.isUndefined(npmConfig['@publish:registry']);
     } else {
       assert.equal(npmConfig[`@${scope}:registry`], url);
       assert.include(lockfileLintConfig['allowed-hosts'], url);
     }
   });
+});
+
+Then('the publish registry is defined', async function () {
+  const {publishConfig} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+
+  assert.equal(publishConfig.registry, this.registries.publish);
 });

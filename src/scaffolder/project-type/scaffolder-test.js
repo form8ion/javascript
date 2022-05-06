@@ -19,6 +19,7 @@ suite('project-type scaffolder', () => {
   const tests = any.simpleObject();
   const decisions = any.simpleObject();
   const vcs = any.simpleObject();
+  const publishRegistry = any.url();
   const dialect = any.word();
 
   setup(() => {
@@ -48,7 +49,8 @@ suite('project-type scaffolder', () => {
         tests,
         vcs,
         decisions,
-        dialect
+        dialect,
+        publishRegistry
       })
       .resolves(results);
 
@@ -65,7 +67,8 @@ suite('project-type scaffolder', () => {
         tests,
         vcs,
         decisions,
-        dialect
+        dialect,
+        publishRegistry
       }),
       results
     );
@@ -103,10 +106,20 @@ suite('project-type scaffolder', () => {
   });
 
   test('that the cli-type scaffolder is applied when the project-type is `CLI`', async () => {
-    cliTypeScaffolder.default.withArgs({packageName, visibility, projectRoot, dialect}).resolves(results);
+    cliTypeScaffolder.default
+      .withArgs({packageName, visibility, projectRoot, dialect, publishRegistry})
+      .resolves(results);
 
     assert.deepEqual(
-      await projectTypeScaffolder({projectType: projectTypes.CLI, packageName, visibility, vcs, projectRoot, dialect}),
+      await projectTypeScaffolder({
+        projectType: projectTypes.CLI,
+        packageName,
+        visibility,
+        vcs,
+        projectRoot,
+        dialect,
+        publishRegistry
+      }),
       results
     );
   });

@@ -16,8 +16,8 @@ export default async function ({
     stringify({
       'update-notifier': false,
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
-      ...registries
-      && Object.fromEntries(Object.entries(registries)
+      ...Object.fromEntries(Object.entries(registries)
+        .filter(([scope]) => 'publish' !== scope)
         .map(([scope, url]) => {
           if ('registry' === scope) return ['registry', url];
 

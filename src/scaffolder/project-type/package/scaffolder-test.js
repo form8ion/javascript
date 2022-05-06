@@ -218,4 +218,23 @@ suite('package project-type', () => {
       }
     );
   });
+
+  test('that the registry to publish to is defined when provided', async () => {
+    const publishRegistry = any.url();
+
+    const {packageProperties} = await scaffoldPackage({
+      projectRoot,
+      packageName,
+      projectName,
+      packageManager,
+      visibility,
+      scope,
+      decisions,
+      packageTypes,
+      tests,
+      publishRegistry
+    });
+
+    assert.equal(packageProperties.publishConfig.registry, publishRegistry);
+  });
 });

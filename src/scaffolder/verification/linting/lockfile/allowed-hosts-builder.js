@@ -1,6 +1,6 @@
 export default function ({packageManager, registries}) {
   return [
     ...(!registries || (registries && !registries.registry)) ? [packageManager] : [],
-    ...registries ? Object.values(registries) : []
+    ...Object.values(Object.fromEntries(Object.entries(registries).filter(([scope]) => 'publish' !== scope)))
   ];
 }

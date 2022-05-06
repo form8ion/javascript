@@ -65,4 +65,18 @@ suite('cli project-type', () => {
 
     assert.equal(results.packageProperties.publishConfig.access, 'public');
   });
+
+  test('that the registry to publish to is defined when provided', async () => {
+    const publishRegistry = any.url();
+
+    const {packageProperties} = await scaffoldCli({
+      projectRoot,
+      configs,
+      packageName,
+      visibility: 'Public',
+      publishRegistry
+    });
+
+    assert.equal(packageProperties.publishConfig.registry, publishRegistry);
+  });
 });

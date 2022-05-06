@@ -18,7 +18,7 @@ suite('npm config scaffolder', () => {
   teardown(() => sandbox.restore());
 
   test('that applications save exact versions of dependencies', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION, registries: {}});
 
     assert.calledWith(
       fsPromises.writeFile,
@@ -28,7 +28,7 @@ suite('npm config scaffolder', () => {
   });
 
   test('that cli-applications save exact versions of dependencies', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI, registries: {}});
 
     assert.calledWith(
       fsPromises.writeFile,
@@ -38,7 +38,7 @@ suite('npm config scaffolder', () => {
   });
 
   test('that packages are allowed to use semver ranges', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE, registries: {}});
 
     assert.calledWith(
       fsPromises.writeFile,
@@ -49,6 +49,18 @@ suite('npm config scaffolder', () => {
 
   test('that a registry override is defined the config when provided', async () => {
     const registries = {registry: any.url()};
+
+    await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
+
+    assert.calledWith(
+      fsPromises.writeFile,
+      `${projectRoot}/.npmrc`,
+      `update-notifier=false\nregistry=${registries.registry}\n`
+    );
+  });
+
+  test('that a publish registry is not defined the config when provided', async () => {
+    const registries = {registry: any.url(), publish: any.url()};
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
@@ -76,7 +88,7 @@ suite('npm config scaffolder', () => {
   });
 
   test('that the script to enforce peer-dependency compatibility is defined', async () => {
-    const results = await scaffoldNpmConfig({projectRoot, projectType: any.word()});
+    const results = await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries: {}});
 
     assert.equal(results.scripts['lint:peer'], 'npm ls >/dev/null');
   });

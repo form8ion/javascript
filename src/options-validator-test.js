@@ -806,7 +806,7 @@ suite('options validator', () => {
   });
 
   test(
-    'that `configs`, `overrides`, `hosts`, `ciServices`, `applicationTypes`, and `packageTypes`'
+    'that `configs`, `overrides`, `hosts`, `ciServices`, `applicationTypes`, `registries`, and `packageTypes`'
     + ' default to empty objects',
     () => {
       const options = {
@@ -823,7 +823,16 @@ suite('options validator', () => {
 
       assert.deepEqual(
         validated,
-        {...options, configs: {}, overrides: {}, ciServices: {}, hosts: {}, applicationTypes: {}, packageTypes: {}}
+        {
+          ...options,
+          configs: {},
+          overrides: {},
+          ciServices: {},
+          hosts: {},
+          applicationTypes: {},
+          packageTypes: {},
+          registries: {}
+        }
       );
     }
   );

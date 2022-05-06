@@ -6,7 +6,7 @@ import defineBadges from './package/badges';
 
 const defaultBuildDirectory = 'bin';
 
-export default async function ({packageName, visibility, projectRoot, dialect}) {
+export default async function ({packageName, visibility, projectRoot, dialect, publishRegistry}) {
   const rollupResults = await scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI});
 
   return deepmerge(
@@ -27,7 +27,10 @@ export default async function ({packageName, visibility, projectRoot, dialect}) 
         version: '0.0.0-semantically-released',
         bin: {},
         files: [`${defaultBuildDirectory}/`],
-        publishConfig: {access: 'Public' === visibility ? 'public' : 'restricted'}
+        publishConfig: {
+          access: 'Public' === visibility ? 'public' : 'restricted',
+          ...publishRegistry && {registry: publishRegistry}
+        }
       },
       eslintConfigs: [],
       nextSteps: []

@@ -18,7 +18,8 @@ export default async function ({
   tests,
   vcs,
   decisions,
-  dialect
+  dialect,
+  publishRegistry
 }) {
   switch (projectType) {
     case projectTypes.PACKAGE:
@@ -33,7 +34,8 @@ export default async function ({
         tests,
         vcs,
         decisions,
-        dialect
+        dialect,
+        publishRegistry
       });
     case projectTypes.APPLICATION:
       return scaffoldApplicationType({
@@ -46,7 +48,7 @@ export default async function ({
         decisions
       });
     case projectTypes.CLI:
-      return scaffoldCliType({packageName, visibility, projectRoot, dialect});
+      return scaffoldCliType({packageName, visibility, projectRoot, dialect, publishRegistry});
     case projectTypes.MONOREPO:
       return scaffoldMonorepoType({monorepoTypes, projectRoot, packageManager, decisions});
     case 'Other':

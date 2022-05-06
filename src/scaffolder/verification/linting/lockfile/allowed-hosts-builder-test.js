@@ -7,7 +7,7 @@ suite('allowed-hosts builder', () => {
   const packageManager = any.word();
 
   test('that the package-manager is listed in the allowed list', async () => {
-    assert.deepEqual(buildAllowedHostsList({packageManager}), [packageManager]);
+    assert.deepEqual(buildAllowedHostsList({packageManager, registries: {}}), [packageManager]);
   });
 
   test('that additional registries are allowed when provided', async () => {
@@ -25,6 +25,15 @@ suite('allowed-hosts builder', () => {
     assert.deepEqual(
       buildAllowedHostsList({packageManager, registries: {registry}}),
       [registry]
+    );
+  });
+
+  test('that the publish registry is not listed as an allowed installation registry', async () => {
+    const pubishRegistry = any.url();
+
+    assert.deepEqual(
+      buildAllowedHostsList({packageManager, registries: {publish: pubishRegistry}}),
+      [packageManager]
     );
   });
 });

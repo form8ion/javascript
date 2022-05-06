@@ -3,17 +3,29 @@ import {packageManagers} from '@form8ion/javascript-core';
 
 import buildAllowedHostsList from './allowed-hosts-builder';
 
-function determineLockfilePathFor(packageManager) {
-  if (packageManagers.NPM === packageManager) return 'package-lock.json';
-  if (packageManagers.YARN === packageManager) return 'yarn.lock';
+const lockfileLintSupportedPackageManagers = [packageManagers.NPM, packageManagers.YARN];
 
-  throw new Error(
-    `The ${packageManager} package manager is currently not supported. `
-    + `Only ${Object.values(packageManagers).join(' and ')} are currently supported.`
-  );
+function determineLockfilePathFor(packageManager) {
+  const lockfilePaths = {
+    [packageManagers.NPM]: 'package-lock.json',
+    [packageManagers.YARN]: 'yarn.lock'
+  };
+
+  return lockfilePaths[packageManager];
+}
+
+function lockfileLintSupports(packageManager) {
+  return lockfileLintSupportedPackageManagers.includes(packageManager);
 }
 
 export default async function ({projectRoot, packageManager, registries}) {
+  if (!lockfileLintSupports(packageManager)) {
+    throw new Error(
+      `The ${packageManager} package manager is currently not supported by lockfile-lint. `
+      + `Only ${lockfileLintSupportedPackageManagers.join(' and ')} are currently supported.`
+    );
+  }
+
   await fs.writeFile(
     `${projectRoot}/.lockfile-lintrc.json`,
     JSON.stringify({
