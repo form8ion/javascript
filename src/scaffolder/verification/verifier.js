@@ -45,6 +45,7 @@ export async function scaffoldVerification({
     vcs,
     configureLinting,
     buildDirectory,
+    pathWithinParent,
     eslint: deepmerge.all([testingResults.eslint, {configs: testingResults.eslintConfigs}, {configs: eslintConfigs}])
   });
 

@@ -61,6 +61,7 @@ suite('verification', () => {
         registries,
         configureLinting,
         buildDirectory,
+        pathWithinParent,
         eslint: mergedEslintResults
       })
       .resolves(lintingResults);

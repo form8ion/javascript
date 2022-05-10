@@ -14,6 +14,7 @@ export default async function ({
   vcs,
   configureLinting,
   buildDirectory,
+  pathWithinParent,
   eslint
 }) {
   return deepmerge.all(await Promise.all([
@@ -33,6 +34,6 @@ export default async function ({
       vcs,
       config: configs.remark || '@form8ion/remark-lint-preset'
     }),
-    vcs ? scaffoldBanSensitiveFiles() : {}
+    vcs ? scaffoldBanSensitiveFiles({pathWithinParent}) : {}
   ]));
 }

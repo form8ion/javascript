@@ -19,6 +19,7 @@ Then('project-level tools are not installed for a sub-project', async function (
   assert.isFalse(await directoryExists(`${process.cwd()}/.husky`));
   assert.isFalse(await fileExists(`${process.cwd()}/.czrc`));
   assert.isFalse(await fileExists(`${process.cwd()}/.commitlintrc.js`));
+  assert.isUndefined(JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8')).scripts['lint:sensitive']);
 });
 
 Then('the monorepo scripts are included', async function () {

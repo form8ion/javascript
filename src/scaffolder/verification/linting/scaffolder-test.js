@@ -11,6 +11,7 @@ suite('linting scaffolder', () => {
   let sandbox;
   const eslintDevDependencies = any.listOf(any.string);
   const eslintFilesIgnoredFromVcs = any.listOf(any.string);
+  const pathWithinParent = any.string();
   const banSensitiveFilesDevDependencies = any.listOf(any.string);
   const banSensitiveFilesScripts = any.simpleObject();
   const lockfileDevDependencies = any.listOf(any.string);
@@ -54,6 +55,7 @@ suite('linting scaffolder', () => {
         scripts: eslintScripts
       });
     scaffoldBanSensitiveFiles.default
+      .withArgs({pathWithinParent})
       .resolves({devDependencies: banSensitiveFilesDevDependencies, scripts: banSensitiveFilesScripts});
     scaffoldLockfileLint.default
       .withArgs({projectRoot, packageManager, registries})
@@ -73,6 +75,7 @@ suite('linting scaffolder', () => {
       eslint: {configs: eslintConfigs},
       configureLinting,
       packageManager,
+      pathWithinParent,
       registries
     });
 
@@ -106,6 +109,7 @@ suite('linting scaffolder', () => {
       vcs,
       configureLinting,
       packageManager,
+      pathWithinParent,
       registries
     });
 
@@ -129,6 +133,7 @@ suite('linting scaffolder', () => {
       vcs,
       configureLinting: false,
       packageManager,
+      pathWithinParent,
       registries
     });
 
@@ -154,6 +159,7 @@ suite('linting scaffolder', () => {
       eslint: {configs: eslintConfigs},
       configureLinting,
       packageManager,
+      pathWithinParent,
       registries
     });
 
