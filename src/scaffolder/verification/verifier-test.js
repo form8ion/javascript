@@ -67,7 +67,7 @@ suite('verification', () => {
     testingScaffolder.default
       .withArgs({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
       .resolves(testingResults);
-    huskyScaffolder.scaffold.withArgs({projectRoot, packageManager}).resolves(huskyResults);
+    huskyScaffolder.scaffold.withArgs({projectRoot, packageManager, pathWithinParent}).resolves(huskyResults);
     deepmerge.all
       .withArgs([testingEslintResults, {configs: testingResultsEslintConfigs}, {configs: eslintConfigs}])
       .returns(mergedEslintResults);

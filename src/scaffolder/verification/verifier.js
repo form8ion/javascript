@@ -32,7 +32,7 @@ export async function scaffoldVerification({
       dialect,
       pathWithinParent
     }),
-    scaffoldHusky({projectRoot, packageManager})
+    scaffoldHusky({projectRoot, packageManager, pathWithinParent})
   ]);
 
   const lintingResults = await scaffoldLinting({
