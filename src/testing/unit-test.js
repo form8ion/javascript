@@ -21,6 +21,7 @@ suite('unit testing scaffolder', () => {
   const frameworks = any.simpleObject();
   const decisions = any.simpleObject();
   const chosenFramework = any.word();
+  const dialect = any.word();
   const pathWithinParent = any.string();
 
   setup(() => {
@@ -34,7 +35,7 @@ suite('unit testing scaffolder', () => {
     const validatedFrameworks = any.simpleObject();
     jsCore.validateOptions.withArgs(unitTestFrameworksSchema, frameworks).returns(validatedFrameworks);
     prompt.default.withArgs({frameworks: validatedFrameworks, decisions}).resolves(chosenFramework);
-    jsCore.scaffoldChoice.withArgs(validatedFrameworks, chosenFramework, {projectRoot}).resolves({
+    jsCore.scaffoldChoice.withArgs(validatedFrameworks, chosenFramework, {projectRoot, dialect}).resolves({
       devDependencies: unitTestDevDependencies,
       scripts: unitTestScripts,
       eslintConfigs: unitTestEslintConfigs,
@@ -54,7 +55,7 @@ suite('unit testing scaffolder', () => {
       });
 
     assert.deepEqual(
-      await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility, pathWithinParent}),
+      await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility, pathWithinParent, dialect}),
       {
         devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
@@ -80,7 +81,7 @@ suite('unit testing scaffolder', () => {
       });
 
     assert.deepEqual(
-      await scaffoldUnitTesting({projectRoot, frameworks, decisions, visibility, vcs, pathWithinParent}),
+      await scaffoldUnitTesting({projectRoot, frameworks, decisions, visibility, vcs, pathWithinParent, dialect}),
       {
         devDependencies: [...unitTestDevDependencies, ...nycDevDependencies],
         scripts: {
