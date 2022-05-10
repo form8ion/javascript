@@ -1,5 +1,5 @@
 import {promises as fs} from 'fs';
-import {fileExists} from '@form8ion/core';
+import {directoryExists, fileExists} from '@form8ion/core';
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -16,6 +16,7 @@ Given('the chosen monorepo plugin defines scripts', async function () {
 Then('project-level tools are not installed for a sub-project', async function () {
   assert.isFalse(await fileExists(`${process.cwd()}/.nvmrc`));
   assert.isFalse(await fileExists(`${process.cwd()}/.huskyrc.json`));
+  assert.isFalse(await directoryExists(`${process.cwd()}/.husky`));
   assert.isFalse(await fileExists(`${process.cwd()}/.czrc`));
   assert.isFalse(await fileExists(`${process.cwd()}/.commitlintrc.js`));
 });
