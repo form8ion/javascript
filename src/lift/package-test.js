@@ -155,6 +155,22 @@ suite('package.json lifter', () => {
       );
       assert.calledWith(jsCore.installDependencies, [], jsCore.PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     });
+
+    test('that a failure to install dependencies does not result in a failure to lift the package file', async () => {
+      jsCore.installDependencies
+        .withArgs(dependencies, jsCore.PROD_DEPENDENCY_TYPE, projectRoot, packageManager)
+        .throws(new Error());
+
+      await liftPackage({dependencies, projectRoot, packageManager});
+    });
+
+    test('that a failure to install dev-dependencies doesnt result in a failure to lift the package file', async () => {
+      jsCore.installDependencies
+        .withArgs(devDependencies, jsCore.DEV_DEPENDENCY_TYPE, projectRoot, packageManager)
+        .throws(new Error());
+
+      await liftPackage({devDependencies, projectRoot, packageManager});
+    });
   });
 
   test('that no updates are applied if no new scripts or tags are provided', async () => {
