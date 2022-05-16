@@ -9,8 +9,8 @@ suite('project-type options validation', () => {
   suite('package bundlers', () => {
     const key = any.word();
 
-    test('that the options are required', () => {
-      assert.throws(() => validateOptions(packageBundlersSchema), '"value" is required');
+    test('that providing bundler plugins is optional', () => {
+      validateOptions(packageBundlersSchema);
     });
 
     test('that a provided bundler must define a scaffolder', () => {
