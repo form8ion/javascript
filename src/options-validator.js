@@ -1,6 +1,7 @@
 import * as joi from 'joi';
 import hoek from '@hapi/hoek';
 import {unitTestFrameworksSchema} from './testing/options-schemas';
+import {packageBundlersSchema} from './scaffolder/project-type/options-schemas';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -69,9 +70,12 @@ export function validate(options) {
       }))
     })
     .keys({
+      unitTestFrameworks: unitTestFrameworksSchema,
+      packageBundlers: packageBundlersSchema
+    })
+    .keys({
       decisions: joi.object()
     })
-    .keys({unitTestFrameworks: unitTestFrameworksSchema})
     .keys({registries: joi.object().pattern(joi.string(), joi.string().uri()).default({})});
   const {error, value} = schema.validate(options);
 
