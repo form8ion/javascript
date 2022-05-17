@@ -36,6 +36,7 @@ suite('project-type scaffolder', () => {
   test('that the package-type scaffolder is applied when the project-type is `Package`', async () => {
     const scope = any.word();
     const packageTypes = any.simpleObject();
+    const packageBundlers = any.simpleObject();
 
     packageTypeScaffolder.default
       .withArgs({
@@ -46,6 +47,7 @@ suite('project-type scaffolder', () => {
         visibility,
         scope,
         packageTypes,
+        packageBundlers,
         tests,
         vcs,
         decisions,
@@ -64,6 +66,7 @@ suite('project-type scaffolder', () => {
         visibility,
         scope,
         packageTypes,
+        packageBundlers,
         tests,
         vcs,
         decisions,
