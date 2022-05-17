@@ -76,4 +76,3 @@ Feature: Dialects
     When the project is scaffolded
     Then no error is thrown
     And the "typescript" dialect is configured
-    And the package is bundled with rollup

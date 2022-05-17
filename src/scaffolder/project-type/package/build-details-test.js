@@ -1,7 +1,6 @@
 import {promises as fsPromises, promises as fs} from 'fs';
 import mustache from 'mustache';
-import {dialects, projectTypes} from '@form8ion/javascript-core';
-import * as rollupScaffolder from '@form8ion/rollup';
+import * as jsCore from '@form8ion/javascript-core';
 
 import {assert} from 'chai';
 import sinon from 'sinon';
@@ -20,7 +19,7 @@ suite('package build details', () => {
   const projectName = any.word();
   const pathToExample = `${projectRoot}/example.js`;
   const pathToCreatedSrcDirectory = any.string();
-  const rollupResults = any.simpleObject();
+  const bundlerResults = any.simpleObject();
   const exampleContent = any.string();
   const pathToExampleTemplate = any.string();
   const exampleTemplateContent = any.string();
@@ -36,7 +35,7 @@ suite('package build details', () => {
     sandbox.stub(touch, 'default');
     sandbox.stub(mkdir, 'default');
     sandbox.stub(templatePath, 'default');
-    sandbox.stub(rollupScaffolder, 'scaffold');
+    sandbox.stub(jsCore, 'scaffoldChoice');
     sandbox.stub(mustache, 'render');
     sandbox.stub(camelcase, 'default');
     sandbox.stub(bundlerPrompt, 'default');
@@ -51,24 +50,25 @@ suite('package build details', () => {
   teardown(() => sandbox.restore());
 
   test('that common-js project is defined correctly', async () => {
-    assert.deepEqual(await buildDetails({dialect: dialects.COMMON_JS, projectRoot, projectName}), {});
+    assert.deepEqual(await buildDetails({dialect: jsCore.dialects.COMMON_JS, projectRoot, projectName}), {});
     assert.calledWith(fsPromises.writeFile, pathToExample, `const ${camelizedProjectName} = require('.');\n`);
     assert.calledWith(touch.default, `${projectRoot}/index.js`);
   });
 
   test('that a modern-js project is defined correctly', async () => {
-    const dialect = dialects.BABEL;
-    rollupScaffolder.scaffold
-      .withArgs({projectRoot, dialect, projectType: projectTypes.PACKAGE})
-      .resolves(rollupResults);
+    const dialect = jsCore.dialects.BABEL;
+    const chosenBundler = any.word();
+    bundlerPrompt.default.withArgs({bundlers: packageBundlers, decisions}).resolves(chosenBundler);
+    jsCore.scaffoldChoice
+      .withArgs(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: jsCore.projectTypes.PACKAGE})
+      .resolves(bundlerResults);
 
     const results = await buildDetails({dialect, projectRoot, projectName, packageBundlers, decisions});
 
-    assert.calledWith(bundlerPrompt.default, {bundlers: packageBundlers, decisions});
     assert.deepEqual(
       results,
       {
-        ...rollupResults,
+        ...bundlerResults,
         devDependencies: ['rimraf'],
         scripts: {
           clean: 'rimraf ./lib',
@@ -89,7 +89,7 @@ suite('package build details', () => {
     const packageName = any.word();
 
     const {badges} = await buildDetails({
-      dialect: dialects.BABEL,
+      dialect: jsCore.dialects.BABEL,
       projectRoot,
       projectName,
       packageName,

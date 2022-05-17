@@ -1,8 +1,7 @@
 import {promises as fs} from 'fs';
 import deepmerge from 'deepmerge';
 import mustache from 'mustache';
-import {dialects, projectTypes} from '@form8ion/javascript-core';
-import {scaffold as scaffoldRollup} from '@form8ion/rollup';
+import {dialects, projectTypes, scaffoldChoice as scaffoldChosenBundler} from '@form8ion/javascript-core';
 
 import camelcase from '../../../../thirdparty-wrappers/camelcase';
 import mkdir from '../../../../thirdparty-wrappers/make-dir';
@@ -42,11 +41,11 @@ export default async function ({
 }) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName});
 
-  await chooseBundler({bundlers: packageBundlers, decisions});
+  const chosenBundler = await chooseBundler({bundlers: packageBundlers, decisions});
 
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
   const [bundlerResults] = await Promise.all([
-    scaffoldRollup({projectRoot, dialect, projectType: projectTypes.PACKAGE}),
+    scaffoldChosenBundler(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: projectTypes.PACKAGE}),
     await createExample(projectRoot, projectName),
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
