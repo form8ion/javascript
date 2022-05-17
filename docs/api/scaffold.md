@@ -108,6 +108,11 @@ for defining [package-type plugin options](https://github.com/form8ion/awesome#p
 A [`choices` object](https://github.com/form8ion/javascript-core#choices-object-required)
 for defining monorepo-type plugin options
 
+### `packageBundlers` __object__ (_optional_)
+
+A [`choices` object](https://github.com/form8ion/javascript-core#choices-object-required)
+for defining package bundler options
+
 ### `unitTestFrameworks` __object__ (_required_)
 
 A [`choices` object](https://github.com/form8ion/javascript-core#choices-object-required)
