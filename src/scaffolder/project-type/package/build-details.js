@@ -34,14 +34,14 @@ export default async function ({projectRoot, projectName, visibility, packageNam
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName});
 
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
-  const [rollupResults] = await Promise.all([
+  const [bundlerResults] = await Promise.all([
     scaffoldRollup({projectRoot, dialect, projectType: projectTypes.PACKAGE}),
     await createExample(projectRoot, projectName),
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
 
   return deepmerge(
-    rollupResults,
+    bundlerResults,
     {
       devDependencies: ['rimraf'],
       scripts: {
