@@ -21,20 +21,20 @@ suite('bundler prompt', () => {
     const chosenType = any.word();
     const decisions = any.simpleObject();
     const answers = {...any.simpleObject(), [questionNames.PACKAGE_BUNDLER]: chosenType};
-    const frameworks = any.simpleObject();
+    const bundlers = any.simpleObject();
     prompts.prompt
       .withArgs([{
         name: questionNames.PACKAGE_BUNDLER,
         type: 'list',
         message: 'Which bundler should be used?',
-        choices: [...Object.keys(frameworks), new inquirer.Separator(), 'Other']
+        choices: [...Object.keys(bundlers), new inquirer.Separator(), 'Other']
       }], decisions)
       .resolves(answers);
 
-    assert.equal(await prompt({frameworks, decisions}), chosenType);
+    assert.equal(await prompt({bundlers, decisions}), chosenType);
   });
 
   test('that the prompt is skipped and `Other` is returned when no options ar provided ', async () => {
-    assert.equal(await prompt({frameworks: {}}), 'Other');
+    assert.equal(await prompt({bundlers: {}}), 'Other');
   });
 });

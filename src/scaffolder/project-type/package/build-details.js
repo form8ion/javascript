@@ -7,6 +7,7 @@ import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 import camelcase from '../../../../thirdparty-wrappers/camelcase';
 import mkdir from '../../../../thirdparty-wrappers/make-dir';
 import touch from '../../../../thirdparty-wrappers/touch';
+import chooseBundler from './prompt';
 import determinePathToTemplateFile from '../../../template-path';
 
 const defaultBuildDirectory = 'lib';
@@ -30,8 +31,18 @@ async function buildDetailsForCommonJsProject({projectRoot, projectName}) {
   return {};
 }
 
-export default async function ({projectRoot, projectName, visibility, packageName, dialect}) {
+export default async function ({
+  projectRoot,
+  projectName,
+  visibility,
+  packageName,
+  packageBundlers,
+  dialect,
+  decisions
+}) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName});
+
+  await chooseBundler({bundlers: packageBundlers, decisions});
 
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
   const [bundlerResults] = await Promise.all([

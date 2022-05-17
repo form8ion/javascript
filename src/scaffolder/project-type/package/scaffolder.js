@@ -28,7 +28,8 @@ export default async function ({
     packageBundlers,
     visibility,
     packageName,
-    dialect
+    dialect,
+    decisions
   });
   const details = {
     ...dialects.BABEL === dialect && {

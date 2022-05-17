@@ -11,6 +11,7 @@ import * as touch from '../../../../thirdparty-wrappers/touch';
 import * as mkdir from '../../../../thirdparty-wrappers/make-dir';
 import * as camelcase from '../../../../thirdparty-wrappers/camelcase';
 import * as templatePath from '../../../template-path';
+import * as bundlerPrompt from './prompt';
 import buildDetails from './build-details';
 
 suite('package build details', () => {
@@ -24,6 +25,8 @@ suite('package build details', () => {
   const pathToExampleTemplate = any.string();
   const exampleTemplateContent = any.string();
   const camelizedProjectName = any.word();
+  const packageBundlers = any.simpleObject();
+  const decisions = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -36,6 +39,7 @@ suite('package build details', () => {
     sandbox.stub(rollupScaffolder, 'scaffold');
     sandbox.stub(mustache, 'render');
     sandbox.stub(camelcase, 'default');
+    sandbox.stub(bundlerPrompt, 'default');
 
     mkdir.default.withArgs(`${projectRoot}/src`).resolves(pathToCreatedSrcDirectory);
     templatePath.default.withArgs('example.mustache').returns(pathToExampleTemplate);
@@ -58,8 +62,9 @@ suite('package build details', () => {
       .withArgs({projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .resolves(rollupResults);
 
-    const results = await buildDetails({dialect, projectRoot, projectName});
+    const results = await buildDetails({dialect, projectRoot, projectName, packageBundlers, decisions});
 
+    assert.calledWith(bundlerPrompt.default, {bundlers: packageBundlers, decisions});
     assert.deepEqual(
       results,
       {

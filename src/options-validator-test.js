@@ -831,6 +831,7 @@ suite('options validator', () => {
           hosts: {},
           applicationTypes: {},
           packageTypes: {},
+          packageBundlers: {},
           registries: {}
         }
       );

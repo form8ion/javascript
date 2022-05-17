@@ -64,7 +64,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.BABEL;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -106,7 +106,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.ESM;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -147,7 +147,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.TYPESCRIPT;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -189,7 +189,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.COMMON_JS;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
