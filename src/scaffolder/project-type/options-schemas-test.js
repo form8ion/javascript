@@ -34,5 +34,9 @@ suite('project-type options validation', () => {
     test('that a provided bundler scaffolder is valid if an options object is provided', () => {
       validateOptions(packageBundlersSchema, {[key]: {scaffolder: options => options}});
     });
+
+    test('that an empty object is provided by default', async () => {
+      assert.deepEqual(validateOptions(packageBundlersSchema, undefined), {});
+    });
   });
 });

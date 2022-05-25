@@ -1,12 +1,12 @@
 import {promises as fs} from 'fs';
 import deepmerge from 'deepmerge';
 import mustache from 'mustache';
-import {dialects, projectTypes} from '@form8ion/javascript-core';
-import {scaffold as scaffoldRollup} from '@form8ion/rollup';
+import {dialects, projectTypes, scaffoldChoice as scaffoldChosenBundler} from '@form8ion/javascript-core';
 
 import camelcase from '../../../../thirdparty-wrappers/camelcase';
 import mkdir from '../../../../thirdparty-wrappers/make-dir';
 import touch from '../../../../thirdparty-wrappers/touch';
+import chooseBundler from './prompt';
 import determinePathToTemplateFile from '../../../template-path';
 
 const defaultBuildDirectory = 'lib';
@@ -30,18 +30,28 @@ async function buildDetailsForCommonJsProject({projectRoot, projectName}) {
   return {};
 }
 
-export default async function ({projectRoot, projectName, visibility, packageName, dialect}) {
+export default async function ({
+  projectRoot,
+  projectName,
+  visibility,
+  packageName,
+  packageBundlers,
+  dialect,
+  decisions
+}) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName});
 
+  const chosenBundler = await chooseBundler({bundlers: packageBundlers, decisions});
+
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
-  const [rollupResults] = await Promise.all([
-    scaffoldRollup({projectRoot, dialect, projectType: projectTypes.PACKAGE}),
+  const [bundlerResults] = await Promise.all([
+    scaffoldChosenBundler(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: projectTypes.PACKAGE}),
     await createExample(projectRoot, projectName),
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
 
   return deepmerge(
-    rollupResults,
+    bundlerResults,
     {
       devDependencies: ['rimraf'],
       scripts: {

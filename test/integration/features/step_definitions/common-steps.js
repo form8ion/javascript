@@ -64,17 +64,6 @@ Before(async function () {
           templates: {
             'example.mustache': await fs.readFile(resolve(...pathToProjectRoot, 'templates', 'example.mustache'))
           }
-        },
-        rollup: {
-          templates: {
-            'rollup.config.js': await fs.readFile(resolve(
-              ...pathToNodeModules,
-              '@form8ion',
-              'rollup',
-              'templates',
-              'rollup.config.js'
-            ))
-          }
         }
       },
       node_modules: stubbedNodeModules
@@ -86,7 +75,6 @@ Before(async function () {
   this.visibility = any.fromList(['Public', 'Private']);
   this.eslintScope = `@${any.word()}`;
   this.barUnitTestFrameworkEslintConfigs = any.listOf(any.word);
-  // this.fooApplicationEslintConfigs = any.listOf(() => ({name: any.word(), files: any.word()}));
   this.fooApplicationEslintConfigs = [(() => ({name: any.word(), files: any.word()}))()];
   this.fooMonorepoScripts = any.simpleObject();
 });

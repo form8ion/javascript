@@ -14,6 +14,7 @@ export default async function ({
   visibility,
   scope,
   packageTypes,
+  packageBundlers,
   tests,
   decisions,
   dialect,
@@ -21,7 +22,15 @@ export default async function ({
 }) {
   info('Scaffolding Package Details');
 
-  const detailsForBuild = await buildDetails({projectRoot, projectName, visibility, packageName, dialect});
+  const detailsForBuild = await buildDetails({
+    projectRoot,
+    projectName,
+    packageBundlers,
+    visibility,
+    packageName,
+    dialect,
+    decisions
+  });
   const details = {
     ...dialects.BABEL === dialect && {
       packageProperties: {

@@ -12,6 +12,7 @@ suite('package project-type', () => {
   let sandbox;
   const projectRoot = any.string();
   const packageTypes = any.simpleObject();
+  const packageBundlers = any.simpleObject();
   const projectName = any.word();
   const packageName = any.word();
   const packageManager = any.word();
@@ -63,7 +64,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.BABEL;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -75,6 +76,7 @@ suite('package project-type', () => {
         visibility,
         scope,
         packageTypes,
+        packageBundlers,
         tests,
         decisions,
         dialect
@@ -104,7 +106,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.ESM;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -117,6 +119,7 @@ suite('package project-type', () => {
         scope,
         packageManager,
         packageTypes,
+        packageBundlers,
         decisions,
         tests
       }),
@@ -144,7 +147,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.TYPESCRIPT;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -156,6 +159,7 @@ suite('package project-type', () => {
         visibility,
         scope,
         packageTypes,
+        packageBundlers,
         tests,
         decisions,
         dialect
@@ -185,7 +189,7 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.COMMON_JS;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, visibility, packageName, dialect})
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -198,6 +202,7 @@ suite('package project-type', () => {
         scope,
         decisions,
         packageTypes,
+        packageBundlers,
         tests,
         dialect
       }),
