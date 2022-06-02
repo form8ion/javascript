@@ -135,7 +135,8 @@ suite('package project-type', () => {
         vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
         badges,
         packageProperties: {
-          main: 'lib/index.es.js',
+          main: './lib/index.es.js',
+          exports: './lib/index.es.js',
           files: ['example.js', 'lib/'],
           sideEffects: false,
           publishConfig: {access: 'restricted'}

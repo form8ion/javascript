@@ -47,7 +47,8 @@ export default async function ({
     },
     ...dialects.ESM === dialect && {
       packageProperties: {
-        main: 'lib/index.es.js',
+        main: './lib/index.es.js',
+        exports: './lib/index.es.js',
         sideEffects: false,
         files: ['lib/']
       },
