@@ -90,8 +90,12 @@ suite('package project-type', () => {
         badges,
         packageProperties: {
           sideEffects: false,
-          main: 'lib/index.cjs.js',
-          module: 'lib/index.es.js',
+          main: './lib/index.cjs.js',
+          module: './lib/index.es.js',
+          exports: {
+            require: './lib/index.cjs.js',
+            import: './lib/index.es.js'
+          },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
         },
@@ -173,8 +177,12 @@ suite('package project-type', () => {
         badges,
         packageProperties: {
           sideEffects: false,
-          main: 'lib/index.cjs.js',
-          module: 'lib/index.es.js',
+          main: './lib/index.cjs.js',
+          module: './lib/index.es.js',
+          exports: {
+            require: './lib/index.cjs.js',
+            import: './lib/index.es.js'
+          },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
         },

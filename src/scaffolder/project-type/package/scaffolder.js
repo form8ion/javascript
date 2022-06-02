@@ -34,8 +34,12 @@ export default async function ({
   const details = {
     ...dialects.BABEL === dialect && {
       packageProperties: {
-        main: 'lib/index.cjs.js',
-        module: 'lib/index.es.js',
+        main: './lib/index.cjs.js',
+        module: './lib/index.es.js',
+        exports: {
+          require: './lib/index.cjs.js',
+          import: './lib/index.es.js'
+        },
         sideEffects: false,
         files: ['lib/']
       },
@@ -51,8 +55,12 @@ export default async function ({
     },
     ...dialects.TYPESCRIPT === dialect && {
       packageProperties: {
-        main: 'lib/index.cjs.js',
-        module: 'lib/index.es.js',
+        main: './lib/index.cjs.js',
+        module: './lib/index.es.js',
+        exports: {
+          require: './lib/index.cjs.js',
+          import: './lib/index.es.js'
+        },
         sideEffects: false,
         files: ['lib/']
       },
