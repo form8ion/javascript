@@ -1,6 +1,6 @@
 import {dialects} from '@form8ion/javascript-core';
 
-import scaffoldBabel from './babel';
+import {scaffold as scaffoldBabel} from './babel';
 import scaffoldTypescript from './typescript';
 import scaffoldEsm from './esm';
 

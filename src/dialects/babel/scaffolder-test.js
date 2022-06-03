@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import scaffoldBabel from './babel';
+import scaffoldBabel from './scaffolder';
 
 suite('babel config', () => {
   let sandbox;
