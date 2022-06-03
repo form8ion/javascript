@@ -30,7 +30,7 @@ suite('nyc remover', () => {
     assert.calledWith(fs.rmdir, `${projectRoot}/.nyc_output`, {recursive: true, force: true});
     assert.calledWith(
       dependencyRemover.default,
-      {packageManager, dependencies: ['nyc', '@istanbuljs/nyc-config-babel']}
+      {packageManager, dependencies: ['nyc', '@istanbuljs/nyc-config-babel', 'babel-plugin-istanbul']}
     );
   });
 });
