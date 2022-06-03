@@ -216,7 +216,6 @@ suite('javascript project scaffolder', () => {
         projectRoot,
         projectType,
         configs,
-        tests,
         buildDirectory: projectTypeBuildDirectory,
         dialect: chosenDialect,
         testFilenamePattern
@@ -279,7 +278,6 @@ suite('javascript project scaffolder', () => {
           configs,
           projectRoot,
           projectType,
-          tests,
           buildDirectory: projectTypeBuildDirectory,
           dialect: chosenDialect,
           testFilenamePattern

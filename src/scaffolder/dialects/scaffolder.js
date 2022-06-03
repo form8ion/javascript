@@ -4,10 +4,10 @@ import scaffoldBabel from './babel';
 import scaffoldTypescript from './typescript';
 import scaffoldEsm from './esm';
 
-export default function ({dialect, projectType, projectRoot, configs, tests, buildDirectory, testFilenamePattern}) {
+export default function ({dialect, projectType, projectRoot, configs, buildDirectory, testFilenamePattern}) {
   switch (dialect) {
     case dialects.BABEL:
-      return scaffoldBabel({preset: configs.babelPreset, projectRoot, tests, buildDirectory});
+      return scaffoldBabel({preset: configs.babelPreset, projectRoot, buildDirectory});
     case dialects.TYPESCRIPT:
       return scaffoldTypescript({config: configs.typescript, projectType, projectRoot, testFilenamePattern});
     case dialects.ESM:

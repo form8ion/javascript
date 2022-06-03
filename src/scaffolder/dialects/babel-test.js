@@ -24,27 +24,6 @@ suite('babel config', () => {
 
     assert.deepEqual(
       await scaffoldBabel({preset: babelPreset, projectRoot, tests: {unit: true}, buildDirectory}),
-      {devDependencies: ['@babel/register', babelPresetPackageName, 'babel-plugin-istanbul'], eslint: {}}
-    );
-
-    assert.calledWith(
-      fs.writeFile,
-      `${projectRoot}/.babelrc`,
-      JSON.stringify({
-        presets: [babelPresetName],
-        ignore: [`./${buildDirectory}/`],
-        env: {test: {plugins: ['istanbul']}}
-      })
-    );
-  });
-
-  test('that the istanbul plugin dependency is not included if unit testing is not desired', async () => {
-    const babelPresetName = any.string();
-    const babelPresetPackageName = any.word();
-    const babelPreset = {name: babelPresetName, packageName: babelPresetPackageName};
-
-    assert.deepEqual(
-      await scaffoldBabel({preset: babelPreset, projectRoot, tests: {unit: false}, buildDirectory}),
       {devDependencies: ['@babel/register', babelPresetPackageName], eslint: {}}
     );
 

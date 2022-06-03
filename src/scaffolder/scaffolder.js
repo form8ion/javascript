@@ -101,7 +101,6 @@ export default async function (options) {
       configs,
       projectRoot,
       projectType,
-      tests,
       buildDirectory: projectTypeResults.buildDirectory,
       testFilenamePattern: verificationResults.testFilenamePattern
     })
