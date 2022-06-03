@@ -7,12 +7,12 @@ import any from '@travi/any';
 import {assertDevDependencyIsInstalled} from './common-steps';
 
 async function assertBabelIsNotConfigured() {
-  assert.isFalse(await fileExists(`${process.cwd()}/.babelrc`));
+  assert.isFalse(await fileExists(`${process.cwd()}/.babelrc.json`));
 }
 
 async function assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, execa) {
   const [babelRcContents, packageContents] = await Promise.all([
-    fs.readFile(`${process.cwd()}/.babelrc`, 'utf-8'),
+    fs.readFile(`${process.cwd()}/.babelrc.json`, 'utf-8'),
     fs.readFile(`${process.cwd()}/package.json`, 'utf-8')
   ]);
   const {presets, ignore} = JSON.parse(babelRcContents);
