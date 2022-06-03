@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import scaffoldEsmDialect from './esm';
+import scaffoldEsmDialect from './scaffolder';
 
 suite('ESM dialect', () => {
   test('that the `engines` definition limits to versions properly supporting EMS', async () => {

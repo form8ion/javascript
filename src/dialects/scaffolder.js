@@ -1,8 +1,8 @@
 import {dialects} from '@form8ion/javascript-core';
 
 import {scaffold as scaffoldBabel} from './babel';
-import scaffoldTypescript from './typescript';
-import scaffoldEsm from './esm';
+import {scaffold as scaffoldTypescript} from './typescript';
+import {scaffold as scaffoldEsm} from './esm';
 
 export default function ({dialect, projectType, projectRoot, configs, buildDirectory, testFilenamePattern}) {
   switch (dialect) {

@@ -3,8 +3,8 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 import * as babel from './babel/scaffolder';
-import * as typescript from './typescript';
-import * as esm from './esm';
+import * as typescript from './typescript/scaffolder';
+import * as esm from './esm/scaffolder';
 import scaffoldDialect from './scaffolder';
 
 suite('scaffold dialect', () => {

@@ -3,7 +3,7 @@ import {projectTypes} from '@form8ion/javascript-core';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
-import scaffoldTypescriptDialect from './typescript';
+import scaffoldTypescriptDialect from './scaffolder';
 
 suite('typescript dialect', () => {
   let sandbox;
