@@ -7,7 +7,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import * as execa from '../../thirdparty-wrappers/execa';
 import * as npmConf from '../../thirdparty-wrappers/npm-conf';
-import * as dialectChoices from '../scaffolder/dialects/prompt-choices';
+import * as dialectChoices from '../dialects/prompt-choices';
 import * as validators from './validators';
 import * as conditionals from './conditionals';
 import * as visibilityFilterForChoices from './filter-by-visibility';

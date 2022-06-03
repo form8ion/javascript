@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import * as lift from '../lift/lift';
 import * as prompts from '../prompts/questions';
 import * as optionsValidator from '../options-validator';
-import * as dialects from './dialects/scaffolder';
+import * as dialects from '../dialects/scaffolder';
 import * as verification from './verification/verifier';
 import * as npmConfig from '../config/npm';
 import * as documentation from '../documentation/scaffolder';

@@ -6,7 +6,7 @@ import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention'
 import lift from '../lift';
 import {validate} from '../options-validator';
 import {prompt} from '../prompts/questions';
-import scaffoldDialect from './dialects';
+import {scaffold as scaffoldDialect} from '../dialects';
 import scaffoldNpmConfig from '../config/npm';
 import scaffoldDocumentation from '../documentation';
 import scaffoldNodeVersion from '../node-version';
