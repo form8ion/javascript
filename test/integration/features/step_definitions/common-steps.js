@@ -51,7 +51,7 @@ export function assertDevDependencyIsInstalled(execa, dependencyName) {
 Before(async function () {
   require('validate-npm-package-name')(any.word()); // eslint-disable-line import/no-extraneous-dependencies
 
-  this.execa = td.replace('execa');
+  this.execa = td.replace('@form8ion/execa-wrapper');
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   ({scaffold, lift, test, questionNames} = require('@form8ion/javascript'));
