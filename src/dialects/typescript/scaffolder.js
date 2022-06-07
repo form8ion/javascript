@@ -26,7 +26,6 @@ export default async function ({config, projectType, projectRoot, testFilenamePa
     eslint: {configs: eslintConfigs},
     eslintConfigs,
     devDependencies: ['typescript', shareableTsConfigPackage],
-    packageProperties: {types: 'lib/index.d.ts'},
     vcsIgnore: {files: ['tsconfig.tsbuildinfo']}
   };
 }

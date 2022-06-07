@@ -40,7 +40,7 @@ async function assertTypescriptDialectDetailsAreCorrect(
     fs.readFile(`${process.cwd()}/tsconfig.json`, 'utf-8'),
     fs.readFile(`${process.cwd()}/package.json`, 'utf-8')
   ]);
-  const {type, types} = JSON.parse(packageContents);
+  const {type} = JSON.parse(packageContents);
 
   assert.equal(type, 'commonjs');
 
@@ -61,7 +61,6 @@ async function assertTypescriptDialectDetailsAreCorrect(
       ...unitTestAnswer && {exclude: [testFilenamePattern]}
     }
   );
-  assert.equal(types, 'lib/index.d.ts');
   assertDevDependencyIsInstalled(execa, 'typescript');
   assertDevDependencyIsInstalled(execa, `${typescriptConfig.scope}/tsconfig`);
   assertDevDependencyIsInstalled(execa, `${eslintScope}/eslint-config-typescript`);

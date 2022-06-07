@@ -87,12 +87,6 @@ suite('typescript dialect', () => {
     assert.deepEqual(devDependencies, ['typescript', `${scope}/tsconfig`]);
   });
 
-  test('that the types definitions file location is defined', async () => {
-    const {packageProperties} = await scaffoldTypescriptDialect({config: {}});
-
-    assert.deepEqual(packageProperties, {types: 'lib/index.d.ts'});
-  });
-
   test('that files to ignore from VCS are defined', async () => {
     const {vcsIgnore: {files}} = await scaffoldTypescriptDialect({config: {}});
 

@@ -180,7 +180,9 @@ suite('package project-type', () => {
           sideEffects: false,
           main: './lib/index.cjs.js',
           module: './lib/index.es.js',
+          types: './lib/index.d.ts',
           exports: {
+            types: './lib/index.d.ts',
             require: './lib/index.cjs.js',
             import: './lib/index.es.js'
           },

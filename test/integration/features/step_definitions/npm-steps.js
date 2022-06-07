@@ -34,6 +34,16 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
     assert.isUndefined(packageDetails.module);
     assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
     assert.isFalse(packageDetails.sideEffects);
+  } else if (dialects.TYPESCRIPT === dialect) {
+    assert.equal(packageDetails.types, './lib/index.d.ts');
+    assert.equal(packageDetails.main, './lib/index.cjs.js');
+    assert.equal(packageDetails.module, './lib/index.es.js');
+    assert.deepEqual(
+      packageDetails.exports,
+      {types: './lib/index.d.ts', require: './lib/index.cjs.js', import: './lib/index.es.js'}
+    );
+    assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
+    assert.isFalse(packageDetails.sideEffects);
   } else {
     assert.equal(packageDetails.main, './lib/index.cjs.js');
     assert.equal(packageDetails.module, './lib/index.es.js');
