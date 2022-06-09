@@ -1,7 +1,8 @@
 import {promises as fs} from 'fs';
-import {writeConfigFile, fileTypes} from '@form8ion/core';
-import {info, error} from '@travi/cli-messages';
+import {error, info} from '@travi/cli-messages';
 import {DEV_DEPENDENCY_TYPE, installDependencies, PROD_DEPENDENCY_TYPE} from '@form8ion/javascript-core';
+
+import {write} from './config-file';
 
 export default async function ({
   projectRoot,
@@ -18,10 +19,8 @@ export default async function ({
 
     const existingPackageJsonContents = JSON.parse(await fs.readFile(pathToPackageJson, 'utf8'));
 
-    await writeConfigFile({
-      format: fileTypes.JSON,
-      path: projectRoot,
-      name: 'package',
+    await write({
+      projectRoot,
       config: {
         ...existingPackageJsonContents,
         scripts: {...existingPackageJsonContents.scripts, ...scripts},

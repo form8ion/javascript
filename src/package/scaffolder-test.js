@@ -1,9 +1,8 @@
-import * as core from '@form8ion/core';
-
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
+import * as configFile from './config-file';
 import * as buildPackageDetails from './details';
 import {scaffold} from './index';
 
@@ -13,7 +12,7 @@ suite('package scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(core, 'writeConfigFile');
+    sandbox.stub(configFile, 'write');
     sandbox.stub(buildPackageDetails, 'default');
   });
 
@@ -65,9 +64,6 @@ suite('package scaffolder', () => {
       {homepage}
     );
 
-    assert.calledWith(
-      core.writeConfigFile,
-      {format: core.fileTypes.JSON, path: projectRoot, name: 'package', config: packageDetails}
-    );
+    assert.calledWith(configFile.write, {projectRoot, config: packageDetails});
   });
 });
