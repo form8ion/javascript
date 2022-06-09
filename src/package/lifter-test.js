@@ -3,7 +3,7 @@ import * as jsCore from '@form8ion/javascript-core';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
-import liftPackage from './package';
+import liftPackage from './lifter';
 
 suite('package.json lifter', () => {
   let sandbox;

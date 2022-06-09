@@ -10,7 +10,7 @@ import {assert} from 'chai';
 
 import * as coveragePlugin from '../coverage';
 import * as enginesEnhancer from './enhancers/engines';
-import * as packageLifter from './package';
+import * as packageLifter from '../package/lifter';
 import * as packageManagerResolver from './package-manager';
 import lift from './lift';
 

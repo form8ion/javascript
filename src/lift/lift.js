@@ -7,7 +7,7 @@ import * as commitConventionPlugin from '@form8ion/commit-convention';
 
 import * as coveragePlugin from '../coverage';
 import * as enginesEnhancer from './enhancers/engines';
-import liftPackage from './package';
+import {lift as liftPackage} from '../package';
 import resolvePackageManager from './package-manager';
 
 export default async function ({projectRoot, vcs, results}) {
