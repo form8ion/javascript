@@ -12,7 +12,7 @@ import scaffoldDocumentation from '../documentation';
 import scaffoldNodeVersion from '../node-version';
 import buildBadgesDetails from '../badges';
 import buildVcsIgnoreLists from '../vcs-ignore';
-import scaffoldPackage from './package';
+import {scaffold as scaffoldPackage} from '../package';
 import buildPackageName from '../package-name';
 import scaffoldProjectType from './project-type';
 import buildDocumentationCommand from '../documentation/generation-command';

@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 import * as buildPackageDetails from './details';
-import scaffold from './index';
+import {scaffold} from './index';
 
 suite('package scaffolder', () => {
   let sandbox;
