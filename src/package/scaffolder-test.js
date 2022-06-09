@@ -1,7 +1,9 @@
-import {promises as fsPromises} from 'fs';
+import * as core from '@form8ion/core';
+
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
+
 import * as buildPackageDetails from './details';
 import {scaffold} from './index';
 
@@ -11,7 +13,7 @@ suite('package scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(fsPromises, 'writeFile');
+    sandbox.stub(core, 'writeConfigFile');
     sandbox.stub(buildPackageDetails, 'default');
   });
 
@@ -63,6 +65,9 @@ suite('package scaffolder', () => {
       {homepage}
     );
 
-    assert.calledWith(fsPromises.writeFile, `${projectRoot}/package.json`, JSON.stringify(packageDetails));
+    assert.calledWith(
+      core.writeConfigFile,
+      {format: core.fileTypes.JSON, path: projectRoot, name: 'package', config: packageDetails}
+    );
   });
 });

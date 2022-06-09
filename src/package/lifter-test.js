@@ -1,8 +1,11 @@
 import {promises as fs} from 'fs';
+import * as core from '@form8ion/core';
 import * as jsCore from '@form8ion/javascript-core';
+
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
+
 import liftPackage from './lifter';
 
 suite('package.json lifter', () => {
@@ -15,8 +18,8 @@ suite('package.json lifter', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(jsCore, 'installDependencies');
+    sandbox.stub(core, 'writeConfigFile');
     sandbox.stub(fs, 'readFile');
-    sandbox.stub(fs, 'writeFile');
   });
 
   teardown(() => sandbox.restore());
@@ -32,9 +35,13 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, scripts});
 
       assert.calledWith(
-        fs.writeFile,
-        pathToPackageJson,
-        JSON.stringify({...packageJsonContents, scripts: {...originalScripts, ...scripts}}, null, 2)
+        core.writeConfigFile,
+        {
+          format: core.fileTypes.JSON,
+          path: projectRoot,
+          name: 'package',
+          config: {...packageJsonContents, scripts: {...originalScripts, ...scripts}}
+        }
       );
     });
   });
@@ -49,9 +56,13 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
-        fs.writeFile,
-        pathToPackageJson,
-        JSON.stringify({...packageJsonContents, scripts: {}, keywords: tags}, null, 2)
+        core.writeConfigFile,
+        {
+          format: core.fileTypes.JSON,
+          path: projectRoot,
+          name: 'package',
+          config: {...packageJsonContents, scripts: {}, keywords: tags}
+        }
       );
     });
 
@@ -65,9 +76,13 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
-        fs.writeFile,
-        pathToPackageJson,
-        JSON.stringify({...packageJsonContents, scripts: {}, keywords: [...existingKeywords, ...tags]}, null, 2)
+        core.writeConfigFile,
+        {
+          format: core.fileTypes.JSON,
+          path: projectRoot,
+          name: 'package',
+          config: {...packageJsonContents, scripts: {}, keywords: [...existingKeywords, ...tags]}
+        }
       );
     });
 
@@ -80,9 +95,13 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, scripts: {}});
 
       assert.calledWith(
-        fs.writeFile,
-        pathToPackageJson,
-        JSON.stringify({...packageJsonContents, scripts: {}, keywords: existingKeywords}, null, 2)
+        core.writeConfigFile,
+        {
+          format: core.fileTypes.JSON,
+          path: projectRoot,
+          name: 'package',
+          config: {...packageJsonContents, scripts: {}, keywords: existingKeywords}
+        }
       );
     });
   });
@@ -177,6 +196,6 @@ suite('package.json lifter', () => {
     await liftPackage({});
 
     assert.notCalled(fs.readFile);
-    assert.notCalled(fs.writeFile);
+    assert.notCalled(core.writeConfigFile);
   });
 });

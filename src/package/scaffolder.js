@@ -1,5 +1,5 @@
-import {promises as fs} from 'fs';
 import {info} from '@travi/cli-messages';
+import {fileTypes, writeConfigFile} from '@form8ion/core';
 import buildPackageDetails from './details';
 
 export default async function ({
@@ -30,7 +30,7 @@ export default async function ({
     pathWithinParent
   });
 
-  await fs.writeFile(`${projectRoot}/package.json`, JSON.stringify(packageData));
+  await writeConfigFile({format: fileTypes.JSON, path: projectRoot, name: 'package', config: packageData});
 
   return {homepage: packageData.homepage};
 }
