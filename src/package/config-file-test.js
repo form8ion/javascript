@@ -1,5 +1,3 @@
-import {promises as fs} from 'fs';
-import deepmerge from 'deepmerge';
 import * as core from '@form8ion/core';
 
 import sinon from 'sinon';
@@ -17,8 +15,7 @@ suite('package.json config', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(core, 'writeConfigFile');
-    sandbox.stub(fs, 'readFile');
-    sandbox.stub(deepmerge, 'all');
+    sandbox.stub(core, 'mergeIntoExistingConfigFile');
   });
 
   teardown(() => sandbox.restore());
@@ -30,16 +27,11 @@ suite('package.json config', () => {
   });
 
   test('that the provided config is merged into the existing file', async () => {
-    const existingConfig = any.simpleObject();
-    const mergedConfig = any.simpleObject();
-    fs.readFile.withArgs(`${projectRoot}/package.json`, 'utf-8').resolves(JSON.stringify(existingConfig));
-    deepmerge.all.withArgs([existingConfig, config]).returns(mergedConfig);
-
     await mergeIntoExisting({projectRoot, config});
 
     assert.calledWith(
-      core.writeConfigFile,
-      {format: core.fileTypes.JSON, name: 'package', path: projectRoot, config: mergedConfig}
+      core.mergeIntoExistingConfigFile,
+      {format: core.fileTypes.JSON, name: 'package', path: projectRoot, config}
     );
   });
 });
