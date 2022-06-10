@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
+import * as scriptsLifter from './scripts/lifter';
 import * as configFile from './config-file';
 import liftPackage from './lifter';
 
@@ -12,14 +13,16 @@ suite('package.json lifter', () => {
   let sandbox;
   const projectRoot = any.string();
   const pathToPackageJson = `${projectRoot}/package.json`;
-  const packageJsonContents = any.simpleObject();
+  const packageJsonContents = {...any.simpleObject(), scripts: any.simpleObject()};
+  const updatedScripts = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(jsCore, 'installDependencies');
-    sandbox.stub(configFile, 'write');
     sandbox.stub(fs, 'readFile');
+    sandbox.stub(configFile, 'write');
+    sandbox.stub(scriptsLifter, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -31,12 +34,13 @@ suite('package.json lifter', () => {
       fs.readFile
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: originalScripts}));
+      scriptsLifter.default.withArgs({existingScripts: originalScripts, scripts}).returns(updatedScripts);
 
       await liftPackage({projectRoot, scripts});
 
       assert.calledWith(
         configFile.write,
-        {projectRoot, config: {...packageJsonContents, scripts: {...originalScripts, ...scripts}}}
+        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts}}
       );
     });
   });
@@ -47,12 +51,15 @@ suite('package.json lifter', () => {
       fs.readFile
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify(packageJsonContents));
+      scriptsLifter.default
+        .withArgs({existingScripts: packageJsonContents.scripts, scripts: undefined})
+        .returns(updatedScripts);
 
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
         configFile.write,
-        {projectRoot, config: {...packageJsonContents, scripts: {}, keywords: tags}}
+        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: tags}}
       );
     });
 
@@ -62,12 +69,16 @@ suite('package.json lifter', () => {
       fs.readFile
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: {}, keywords: existingKeywords}));
+      scriptsLifter.default.withArgs({existingScripts: {}, scripts: undefined}).returns(updatedScripts);
 
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
         configFile.write,
-        {projectRoot, config: {...packageJsonContents, scripts: {}, keywords: [...existingKeywords, ...tags]}}
+        {
+          projectRoot,
+          config: {...packageJsonContents, scripts: updatedScripts, keywords: [...existingKeywords, ...tags]}
+        }
       );
     });
 
@@ -76,12 +87,13 @@ suite('package.json lifter', () => {
       fs.readFile
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: {}, keywords: existingKeywords}));
+      scriptsLifter.default.withArgs({existingScripts: {}, scripts: {}}).returns(updatedScripts);
 
       await liftPackage({projectRoot, scripts: {}});
 
       assert.calledWith(
         configFile.write,
-        {projectRoot, config: {...packageJsonContents, scripts: {}, keywords: existingKeywords}}
+        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: existingKeywords}}
       );
     });
   });
