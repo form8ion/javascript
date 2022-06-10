@@ -6,7 +6,6 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as scriptsLifter from './scripts/lifter';
-import * as configFile from './config-file';
 import liftPackage from './lifter';
 
 suite('package.json lifter', () => {
@@ -20,8 +19,8 @@ suite('package.json lifter', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(jsCore, 'installDependencies');
+    sandbox.stub(jsCore, 'writePackageJson');
     sandbox.stub(fs, 'readFile');
-    sandbox.stub(configFile, 'write');
     sandbox.stub(scriptsLifter, 'default');
   });
 
@@ -39,7 +38,7 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, scripts});
 
       assert.calledWith(
-        configFile.write,
+        jsCore.writePackageJson,
         {projectRoot, config: {...packageJsonContents, scripts: updatedScripts}}
       );
     });
@@ -58,7 +57,7 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
-        configFile.write,
+        jsCore.writePackageJson,
         {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: tags}}
       );
     });
@@ -74,7 +73,7 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, tags});
 
       assert.calledWith(
-        configFile.write,
+        jsCore.writePackageJson,
         {
           projectRoot,
           config: {...packageJsonContents, scripts: updatedScripts, keywords: [...existingKeywords, ...tags]}
@@ -92,7 +91,7 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, scripts: {}});
 
       assert.calledWith(
-        configFile.write,
+        jsCore.writePackageJson,
         {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: existingKeywords}}
       );
     });
@@ -188,6 +187,6 @@ suite('package.json lifter', () => {
     await liftPackage({});
 
     assert.notCalled(fs.readFile);
-    assert.notCalled(configFile.write);
+    assert.notCalled(jsCore.writePackageJson);
   });
 });

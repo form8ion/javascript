@@ -1,6 +1,6 @@
 import {info} from '@travi/cli-messages';
+import {writePackageJson} from '@form8ion/javascript-core';
 
-import {write} from './config-file';
 import buildPackageDetails from './details';
 
 export default async function ({
@@ -29,7 +29,7 @@ export default async function ({
     pathWithinParent
   });
 
-  await write({projectRoot, config: packageData});
+  await writePackageJson({projectRoot, config: packageData});
 
   return {homepage: packageData.homepage};
 }

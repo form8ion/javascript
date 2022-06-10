@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as configFile from './config-file';
+import * as jsCore from '@form8ion/javascript-core';
 import * as buildPackageDetails from './details';
 import {scaffold} from './index';
 
@@ -12,7 +12,7 @@ suite('package scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(configFile, 'write');
+    sandbox.stub(jsCore, 'writePackageJson');
     sandbox.stub(buildPackageDetails, 'default');
   });
 
@@ -61,6 +61,6 @@ suite('package scaffolder', () => {
       {homepage}
     );
 
-    assert.calledWith(configFile.write, {projectRoot, config: packageDetails});
+    assert.calledWith(jsCore.writePackageJson, {projectRoot, config: packageDetails});
   });
 });
