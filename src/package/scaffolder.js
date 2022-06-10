@@ -7,7 +7,6 @@ export default async function ({
   projectRoot,
   projectType,
   dialect,
-  scripts,
   packageName,
   license,
   vcs,
@@ -26,7 +25,6 @@ export default async function ({
     vcs,
     author,
     description,
-    scripts,
     packageProperties,
     pathWithinParent
   });

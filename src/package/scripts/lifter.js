@@ -1,3 +1,5 @@
+import updateTestScript from './test-script-updater';
+
 export default function ({existingScripts, scripts}) {
-  return {...existingScripts, ...scripts};
+  return updateTestScript({...existingScripts, ...scripts});
 }

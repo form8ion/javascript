@@ -1,22 +1,6 @@
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
-function projectWillBeTested(scripts) {
-  return Object.keys(scripts).find(scriptName => scriptName.startsWith('test:'));
-}
-
-function projectShouldBeBuiltForVerification(scripts) {
-  return 'run-s build' === scripts['pregenerate:md'];
-}
-
-function defineScripts(scripts) {
-  return {
-    test: `npm-run-all --print-label${
-      projectShouldBeBuiltForVerification(scripts) ? ' build' : ''
-    } --parallel lint:*${
-      projectWillBeTested(scripts) ? ' --parallel test:*' : ''
-    }`
-  };
-}
+import {scaffold as scaffoldScripts} from './scripts';
 
 function defineVcsHostDetails(vcs, packageType, packageName, pathWithinParent) {
   return vcs && 'github' === vcs.host && {
@@ -42,7 +26,6 @@ export default function ({
   vcs,
   author,
   description,
-  scripts,
   packageProperties,
   pathWithinParent
 }) {
@@ -54,6 +37,6 @@ export default function ({
     ...packageProperties,
     ...defineVcsHostDetails(vcs, projectType, packageName, pathWithinParent),
     author: `${author.name}${author.email ? ` <${author.email}>` : ''}${author.url ? ` (${author.url})` : ''}`,
-    scripts: defineScripts(scripts)
+    scripts: scaffoldScripts()
   };
 }

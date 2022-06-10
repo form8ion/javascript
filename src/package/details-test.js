@@ -171,41 +171,6 @@ suite('package details builder', () => {
     });
   });
 
-  suite('scripts', () => {
-    suite('verification', () => {
-      test('that the `test` script is defined', () => {
-        const packageDetails = buildPackageDetails({vcs: {}, author: {}, configs: {}, scripts: any.simpleObject()});
-
-        assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label --parallel lint:*');
-      });
-
-      test('that `test` script includes building a generate script for markdown is included', () => {
-        const packageDetails = buildPackageDetails({
-          vcs: {},
-          author: {},
-          configs: {},
-          scripts: {...any.simpleObject(), 'pregenerate:md': 'run-s build'}
-        });
-
-        assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label build --parallel lint:*');
-      });
-
-      test('that the `test` script includes running tests when the project will be tested', () => {
-        const packageDetails = buildPackageDetails({
-          vcs: {},
-          author: {},
-          configs: {},
-          scripts: any.objectWithKeys([
-            ...any.listOf(() => any.fromList([any.string(), `test:${any.word}`])),
-            `test:${any.word}`
-          ])
-        });
-
-        assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label --parallel lint:* --parallel test:*');
-      });
-    });
-  });
-
   suite('package properties', () => {
     test('that the provided properties are included in the generated details', () => {
       const packageProperties = any.simpleObject();

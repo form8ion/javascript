@@ -131,7 +131,6 @@ export default async function (options) {
     author,
     description,
     packageProperties: mergedContributions.packageProperties,
-    scripts: mergedContributions.scripts,
     pathWithinParent
   });
 

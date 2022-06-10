@@ -115,7 +115,6 @@ suite('javascript project scaffolder', () => {
       ...dialectPackageProperties,
       ...commitConventionResults.packageProperties
     },
-    scripts: mergedContributions.scripts,
     pathWithinParent
   };
   const commonPromptAnswers = {

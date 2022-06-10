@@ -29,7 +29,6 @@ suite('package scaffolder', () => {
     const vcs = any.simpleObject();
     const author = any.simpleObject();
     const description = any.sentence();
-    const scripts = any.simpleObject();
     const packageProperties = any.simpleObject();
     const pathWithinParent = any.string();
     buildPackageDetails.default
@@ -41,7 +40,6 @@ suite('package scaffolder', () => {
         vcs,
         author,
         description,
-        scripts,
         packageProperties,
         pathWithinParent
       })
@@ -52,7 +50,6 @@ suite('package scaffolder', () => {
         projectRoot,
         projectType,
         dialect,
-        scripts,
         packageName,
         license,
         vcs,
