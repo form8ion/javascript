@@ -4,7 +4,6 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import * as babel from './babel/scaffolder';
 import * as typescript from './typescript/scaffolder';
-import * as esm from './esm/scaffolder';
 import scaffoldDialect from './scaffolder';
 
 suite('scaffold dialect', () => {
@@ -16,7 +15,6 @@ suite('scaffold dialect', () => {
 
     sandbox.stub(babel, 'default');
     sandbox.stub(typescript, 'default');
-    sandbox.stub(esm, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -54,18 +52,8 @@ suite('scaffold dialect', () => {
     );
   });
 
-  test('that ESM is scaffolded when chosen', async () => {
-    const esmResults = any.simpleObject();
-    esm.default.resolves(esmResults);
-
-    assert.equal(
-      await scaffoldDialect({dialect: dialects.ESM}),
-      esmResults
-    );
-  });
-
   test('that neither babel nor typescript are scaffolded when not chosen', async () => {
-    assert.deepEqual(await scaffoldDialect({dialect: any.word()}), {eslint: {}});
+    assert.deepEqual(await scaffoldDialect({dialect: any.word()}), {});
     assert.notCalled(babel.default);
     assert.notCalled(typescript.default);
   });

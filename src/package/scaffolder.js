@@ -12,7 +12,6 @@ export default async function ({
   vcs,
   author,
   description,
-  packageProperties,
   pathWithinParent
 }) {
   info('Configuring package.json');
@@ -25,7 +24,6 @@ export default async function ({
     vcs,
     author,
     description,
-    packageProperties,
     pathWithinParent
   });
 

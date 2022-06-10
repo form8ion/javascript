@@ -110,11 +110,6 @@ suite('javascript project scaffolder', () => {
     vcs: vcsDetails,
     author: {name: authorName, email: authorEmail, url: authorUrl},
     description,
-    packageProperties: {
-      ...projectTypePackageProperties,
-      ...dialectPackageProperties,
-      ...commitConventionResults.packageProperties
-    },
     pathWithinParent
   };
   const commonPromptAnswers = {

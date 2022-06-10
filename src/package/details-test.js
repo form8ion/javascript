@@ -171,25 +171,6 @@ suite('package details builder', () => {
     });
   });
 
-  suite('package properties', () => {
-    test('that the provided properties are included in the generated details', () => {
-      const packageProperties = any.simpleObject();
-
-      const packageDetails = buildPackageDetails({
-        packageName,
-        visibility,
-        tests: {},
-        vcs: undefined,
-        author: {},
-        configs: {},
-        scripts: {},
-        packageProperties
-      });
-
-      assert.include(packageDetails, packageProperties);
-    });
-  });
-
   suite('module format', () => {
     test('that `commonjs` is used by default', () => {
       const {type} = buildPackageDetails({author: {}, scripts: {}});

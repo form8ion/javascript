@@ -1,7 +1,9 @@
 import * as jsCore from '@form8ion/javascript-core';
+
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
+
 import * as packageChooser from '../prompt';
 import * as documentationScaffolder from './documentation';
 import * as defineBadges from './badges';
@@ -50,6 +52,7 @@ suite('package project-type', () => {
     sandbox.stub(documentationScaffolder, 'default');
     sandbox.stub(packageChooser, 'default');
     sandbox.stub(jsCore, 'scaffoldChoice');
+    sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
 
     documentationScaffolder.default.withArgs({scope, packageName, visibility, packageManager}).returns(documentation);
     packageChooser.default.withArgs({types: packageTypes, projectType: 'package', decisions}).returns(chosenType);
@@ -88,7 +91,16 @@ suite('package project-type', () => {
         scripts: scaffoldedTypeScripts,
         vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
         badges,
-        packageProperties: {
+        documentation,
+        eslintConfigs,
+        nextSteps: commonNextSteps
+      }
+    );
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {
+        projectRoot,
+        config: {
           sideEffects: false,
           main: './lib/index.cjs.js',
           module: './lib/index.es.js',
@@ -98,10 +110,7 @@ suite('package project-type', () => {
           },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
-        },
-        documentation,
-        eslintConfigs,
-        nextSteps: commonNextSteps
+        }
       }
     );
   });
@@ -134,16 +143,22 @@ suite('package project-type', () => {
         scripts: scaffoldedTypeScripts,
         vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
         badges,
-        packageProperties: {
+        documentation,
+        eslintConfigs,
+        nextSteps: commonNextSteps
+      }
+    );
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {
+        projectRoot,
+        config: {
           main: './lib/index.es.js',
           exports: './lib/index.es.js',
           files: ['example.js', 'lib/'],
           sideEffects: false,
           publishConfig: {access: 'restricted'}
-        },
-        documentation,
-        eslintConfigs,
-        nextSteps: commonNextSteps
+        }
       }
     );
   });
@@ -176,7 +191,16 @@ suite('package project-type', () => {
         scripts: scaffoldedTypeScripts,
         vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
         badges,
-        packageProperties: {
+        documentation,
+        eslintConfigs,
+        nextSteps: commonNextSteps
+      }
+    );
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {
+        projectRoot,
+        config: {
           sideEffects: false,
           main: './lib/index.cjs.js',
           module: './lib/index.es.js',
@@ -188,10 +212,7 @@ suite('package project-type', () => {
           },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
-        },
-        documentation,
-        eslintConfigs,
-        nextSteps: commonNextSteps
+        }
       }
     );
   });
@@ -224,13 +245,20 @@ suite('package project-type', () => {
         scripts: scaffoldedTypeScripts,
         vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
         badges,
-        packageProperties: {
-          files: ['example.js', 'index.js'],
-          publishConfig: {access: 'restricted'}
-        },
         documentation,
         eslintConfigs,
         nextSteps: commonNextSteps
+      }
+    );
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {
+        projectRoot,
+        config: {
+          files: ['example.js', 'index.js'],
+          publishConfig: {access: 'restricted'},
+          sideEffects: false
+        }
       }
     );
   });
@@ -238,7 +266,7 @@ suite('package project-type', () => {
   test('that the registry to publish to is defined when provided', async () => {
     const publishRegistry = any.url();
 
-    const {packageProperties} = await scaffoldPackage({
+    await scaffoldPackage({
       projectRoot,
       packageName,
       projectName,
@@ -248,9 +276,29 @@ suite('package project-type', () => {
       decisions,
       packageTypes,
       tests,
-      publishRegistry
+      publishRegistry,
+      dialect: jsCore.dialects.BABEL
     });
 
-    assert.equal(packageProperties.publishConfig.registry, publishRegistry);
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {
+        projectRoot,
+        config: {
+          sideEffects: false,
+          main: './lib/index.cjs.js',
+          module: './lib/index.es.js',
+          exports: {
+            require: './lib/index.cjs.js',
+            import: './lib/index.es.js'
+          },
+          files: ['example.js', 'lib/'],
+          publishConfig: {
+            access: 'restricted',
+            registry: publishRegistry
+          }
+        }
+      }
+    );
   });
 });

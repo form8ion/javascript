@@ -2,6 +2,7 @@ import * as jsCore from '@form8ion/javascript-core';
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
+
 import * as applicationChooser from './prompt';
 import scaffoldApplication from './application';
 
@@ -15,6 +16,7 @@ suite('application project-type', () => {
 
     sandbox.stub(applicationChooser, 'default');
     sandbox.stub(jsCore, 'scaffoldChoice');
+    sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
   });
 
   teardown(() => sandbox.restore());
@@ -74,12 +76,12 @@ suite('application project-type', () => {
           directories: [`/${buildDirectory}/`, ...scaffoldedDirectoriesToIgnore]
         },
         buildDirectory,
-        packageProperties: {private: true},
         documentation,
         eslintConfigs,
         nextSteps: []
       }
     );
+    assert.calledWith(jsCore.mergeIntoExistingPackageJson, {projectRoot, config: {private: true}});
   });
 
   test('that missing details do not result in errors', async () => {
@@ -90,7 +92,6 @@ suite('application project-type', () => {
       {
         buildDirectory: 'lib',
         scripts: {clean: 'rimraf ./lib', start: 'node ./lib/index.js', prebuild: 'run-s clean'},
-        packageProperties: {private: true},
         dependencies: [],
         devDependencies: ['rimraf'],
         vcsIgnore: {files: ['.env'], directories: ['/lib/']},

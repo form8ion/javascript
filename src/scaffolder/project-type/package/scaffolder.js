@@ -1,6 +1,11 @@
 import deepmerge from 'deepmerge';
-import {dialects, scaffoldChoice as scaffoldChosenPackageType} from '@form8ion/javascript-core';
 import {info} from '@travi/cli-messages';
+import {
+  dialects,
+  mergeIntoExistingPackageJson,
+  scaffoldChoice as scaffoldChosenPackageType
+} from '@form8ion/javascript-core';
+
 import choosePackageType from '../prompt';
 import scaffoldPackageDocumentation from './documentation';
 import defineBadges from './badges';
@@ -22,58 +27,43 @@ export default async function ({
 }) {
   info('Scaffolding Package Details');
 
-  const detailsForBuild = await buildDetails({
-    projectRoot,
-    projectName,
-    packageBundlers,
-    visibility,
-    packageName,
-    dialect,
-    decisions
-  });
-  const details = {
-    ...dialects.BABEL === dialect && {
-      packageProperties: {
-        main: './lib/index.cjs.js',
-        module: './lib/index.es.js',
-        exports: {
-          require: './lib/index.cjs.js',
-          import: './lib/index.es.js'
+  const [detailsForBuild] = await Promise.all([
+    buildDetails({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions}),
+    mergeIntoExistingPackageJson({
+      projectRoot,
+      config: {
+        files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/']],
+        publishConfig: {
+          access: 'Public' === visibility ? 'public' : 'restricted',
+          ...publishRegistry && {registry: publishRegistry}
         },
         sideEffects: false,
-        files: ['lib/']
-      },
-      ...detailsForBuild
-    },
-    ...dialects.ESM === dialect && {
-      packageProperties: {
-        main: './lib/index.es.js',
-        exports: './lib/index.es.js',
-        sideEffects: false,
-        files: ['lib/']
-      },
-      ...detailsForBuild
-    },
-    ...dialects.TYPESCRIPT === dialect && {
-      packageProperties: {
-        main: './lib/index.cjs.js',
-        module: './lib/index.es.js',
-        types: './lib/index.d.ts',
-        exports: {
+        ...'Public' === visibility && {runkitExampleFilename: './example.js'},
+        ...dialects.BABEL === dialect && {
+          main: './lib/index.cjs.js',
+          module: './lib/index.es.js',
+          exports: {
+            require: './lib/index.cjs.js',
+            import: './lib/index.es.js'
+          }
+        },
+        ...dialects.ESM === dialect && {
+          main: './lib/index.es.js',
+          exports: './lib/index.es.js'
+        },
+        ...dialects.TYPESCRIPT === dialect && {
+          main: './lib/index.cjs.js',
+          module: './lib/index.es.js',
           types: './lib/index.d.ts',
-          require: './lib/index.cjs.js',
-          import: './lib/index.es.js'
-        },
-        sideEffects: false,
-        files: ['lib/']
-      },
-      ...detailsForBuild
-    },
-    ...dialects.COMMON_JS === dialect && {
-      packageProperties: {files: ['index.js']},
-      ...detailsForBuild
-    }
-  };
+          exports: {
+            types: './lib/index.d.ts',
+            require: './lib/index.cjs.js',
+            import: './lib/index.es.js'
+          }
+        }
+      }
+    })
+  ]);
 
   const chosenType = await choosePackageType({types: packageTypes, projectType: 'package', decisions});
   const results = await scaffoldChosenPackageType(
@@ -84,14 +74,7 @@ export default async function ({
 
   return deepmerge.all([
     {
-      packageProperties: {
-        files: ['example.js'],
-        publishConfig: {
-          access: 'Public' === visibility ? 'public' : 'restricted',
-          ...publishRegistry && {registry: publishRegistry}
-        },
-        ...'Public' === visibility && {runkitExampleFilename: './example.js'}
-      },
+      ...detailsForBuild,
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),
       eslintConfigs: [],
       nextSteps: [
@@ -101,7 +84,6 @@ export default async function ({
       scripts: {},
       badges: defineBadges(packageName, visibility)
     },
-    results,
-    details
+    results
   ]);
 }

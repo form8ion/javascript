@@ -27,7 +27,6 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
     assert.deepEqual(packageDetails.files, ['example.js', 'index.js']);
     assert.isUndefined(packageDetails.main);
     assert.isUndefined(packageDetails.module);
-    assert.isUndefined(packageDetails.sideEffects);
   } else if (dialects.ESM === dialect) {
     assert.equal(packageDetails.main, './lib/index.es.js');
     assert.equal(packageDetails.exports, './lib/index.es.js');

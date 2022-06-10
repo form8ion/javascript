@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import {scaffoldChoice as scaffoldChosenApplicationType} from '@form8ion/javascript-core';
+import {mergeIntoExistingPackageJson, scaffoldChoice as scaffoldChosenApplicationType} from '@form8ion/javascript-core';
 import {info} from '@travi/cli-messages';
 import chooseApplicationType from './prompt';
 
@@ -16,7 +16,11 @@ export default async function ({
 }) {
   info('Scaffolding Application Details');
 
-  const chosenType = await chooseApplicationType({types: applicationTypes, projectType: 'application', decisions});
+  const [chosenType] = await Promise.all([
+    chooseApplicationType({types: applicationTypes, projectType: 'application', decisions}),
+    mergeIntoExistingPackageJson({projectRoot, config: {private: true}})
+  ]);
+
   const results = await scaffoldChosenApplicationType(
     applicationTypes,
     chosenType,
@@ -36,7 +40,6 @@ export default async function ({
       devDependencies: ['rimraf'],
       vcsIgnore: {files: ['.env'], directories: [`/${buildDirectory}/`]},
       buildDirectory,
-      packageProperties: {private: true},
       eslintConfigs: [],
       nextSteps: []
     },

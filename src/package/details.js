@@ -26,7 +26,6 @@ export default function ({
   vcs,
   author,
   description,
-  packageProperties,
   pathWithinParent
 }) {
   return {
@@ -34,7 +33,6 @@ export default function ({
     description,
     license,
     type: dialects.ESM === dialect ? 'module' : 'commonjs',
-    ...packageProperties,
     ...defineVcsHostDetails(vcs, projectType, packageName, pathWithinParent),
     author: `${author.name}${author.email ? ` <${author.email}>` : ''}${author.url ? ` (${author.url})` : ''}`,
     scripts: scaffoldScripts()
