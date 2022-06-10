@@ -1,11 +1,14 @@
-import {promises as fsPromises} from 'fs';
 import deepmerge from 'deepmerge';
+import {fileTypes} from '@form8ion/core';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
+import {write} from '@form8ion/config-file';
 
 export default async function ({config, projectRoot, projectType, vcs, dialect}) {
-  await fsPromises.writeFile(
-    `${projectRoot}/.remarkrc.json`,
-    JSON.stringify({
+  await write({
+    format: fileTypes.JSON,
+    path: projectRoot,
+    name: 'remark',
+    config: {
       settings: {
         listItemIndent: 1,
         emphasis: '_',
@@ -19,8 +22,8 @@ export default async function ({config, projectRoot, projectType, vcs, dialect})
         ...projectTypes.PACKAGE === projectType ? [['remark-usage', {heading: 'example'}]] : [],
         ...!vcs ? [['validate-links', {repository: false}]] : []
       ]
-    })
-  );
+    }
+  });
 
   return deepmerge(
     {

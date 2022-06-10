@@ -1,8 +1,11 @@
-import {promises as fsPromises} from 'fs';
+import {fileTypes} from '@form8ion/core';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
+import * as configFile from '@form8ion/config-file';
+
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
+
 import scaffoldRemark from './remark';
 
 suite('remark config scaffolder', () => {
@@ -11,7 +14,7 @@ suite('remark config scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(fsPromises, 'writeFile');
+    sandbox.stub(configFile, 'write');
   });
 
   teardown(() => sandbox.restore());
@@ -28,21 +31,25 @@ suite('remark config scaffolder', () => {
       }
     );
     assert.calledWith(
-      fsPromises.writeFile,
-      `${projectRoot}/.remarkrc.json`,
-      JSON.stringify({
-        settings: {
-          listItemIndent: 1,
-          emphasis: '_',
-          strong: '_',
-          bullet: '*',
-          incrementListMarker: false
-        },
-        plugins: [
-          config,
-          ['remark-toc', {tight: true}]
-        ]
-      })
+      configFile.write,
+      {
+        format: fileTypes.JSON,
+        path: projectRoot,
+        name: 'remark',
+        config: {
+          settings: {
+            listItemIndent: 1,
+            emphasis: '_',
+            strong: '_',
+            bullet: '*',
+            incrementListMarker: false
+          },
+          plugins: [
+            config,
+            ['remark-toc', {tight: true}]
+          ]
+        }
+      }
     );
   });
 
@@ -64,22 +71,26 @@ suite('remark config scaffolder', () => {
       }
     );
     assert.calledWith(
-      fsPromises.writeFile,
-      `${projectRoot}/.remarkrc.json`,
-      JSON.stringify({
-        settings: {
-          listItemIndent: 1,
-          emphasis: '_',
-          strong: '_',
-          bullet: '*',
-          incrementListMarker: false
-        },
-        plugins: [
-          config,
-          ['remark-toc', {tight: true}],
-          ['remark-usage', {heading: 'example'}]
-        ]
-      })
+      configFile.write,
+      {
+        format: fileTypes.JSON,
+        path: projectRoot,
+        name: 'remark',
+        config: {
+          settings: {
+            listItemIndent: 1,
+            emphasis: '_',
+            strong: '_',
+            bullet: '*',
+            incrementListMarker: false
+          },
+          plugins: [
+            config,
+            ['remark-toc', {tight: true}],
+            ['remark-usage', {heading: 'example'}]
+          ]
+        }
+      }
     );
   });
 
@@ -128,22 +139,26 @@ suite('remark config scaffolder', () => {
 
     await scaffoldRemark({config, projectRoot, vcs: undefined});
     assert.calledWith(
-      fsPromises.writeFile,
-      `${projectRoot}/.remarkrc.json`,
-      JSON.stringify({
-        settings: {
-          listItemIndent: 1,
-          emphasis: '_',
-          strong: '_',
-          bullet: '*',
-          incrementListMarker: false
-        },
-        plugins: [
-          config,
-          ['remark-toc', {tight: true}],
-          ['validate-links', {repository: false}]
-        ]
-      })
+      configFile.write,
+      {
+        format: fileTypes.JSON,
+        path: projectRoot,
+        name: 'remark',
+        config: {
+          settings: {
+            listItemIndent: 1,
+            emphasis: '_',
+            strong: '_',
+            bullet: '*',
+            incrementListMarker: false
+          },
+          plugins: [
+            config,
+            ['remark-toc', {tight: true}],
+            ['validate-links', {repository: false}]
+          ]
+        }
+      }
     );
   });
 });
