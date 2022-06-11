@@ -24,7 +24,6 @@ import {
 } from './vcs-steps';
 import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps';
 
-const packagePreviewDirectory = '../__package_previews__/javascript';
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
@@ -58,15 +57,8 @@ Before(async function () {
 
   stubbedFs({
     node_modules: stubbedNodeModules,
-    [packagePreviewDirectory]: {
-      '@form8ion': {
-        javascript: {
-          templates: {
-            'example.mustache': await fs.readFile(resolve(...pathToProjectRoot, 'templates', 'example.mustache'))
-          }
-        }
-      },
-      node_modules: stubbedNodeModules
+    templates: {
+      'example.mustache': await fs.readFile(resolve(...pathToProjectRoot, 'templates', 'example.mustache'))
     }
   });
 
@@ -86,6 +78,8 @@ After(function () {
   clearModule('@form8ion/eslint');
   clearModule('@form8ion/javascript-core');
   clearModule('@form8ion/javascript');
+  clearModule('@form8ion/commit-convention');
+  clearModule('@form8ion/execa-wrapper');
   clearModule('execa');
 });
 
