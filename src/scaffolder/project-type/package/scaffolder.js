@@ -74,7 +74,6 @@ export default async function ({
 
   return deepmerge.all([
     {
-      ...detailsForBuild,
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),
       eslintConfigs: [],
       nextSteps: [
@@ -84,6 +83,7 @@ export default async function ({
       scripts: {},
       badges: defineBadges(packageName, visibility)
     },
+    detailsForBuild,
     results
   ]);
 }

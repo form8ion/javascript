@@ -265,6 +265,10 @@ suite('package project-type', () => {
 
   test('that the registry to publish to is defined when provided', async () => {
     const publishRegistry = any.url();
+    const dialect = jsCore.dialects.BABEL;
+    buildDetails.default
+      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .resolves(buildDetailsResults);
 
     await scaffoldPackage({
       projectRoot,
@@ -277,7 +281,8 @@ suite('package project-type', () => {
       packageTypes,
       tests,
       publishRegistry,
-      dialect: jsCore.dialects.BABEL
+      dialect,
+      packageBundlers
     });
 
     assert.calledWith(
