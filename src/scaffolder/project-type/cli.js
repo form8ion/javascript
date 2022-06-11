@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import {projectTypes} from '@form8ion/javascript-core';
+import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-core';
 import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
 import defineBadges from './package/badges';
@@ -7,7 +7,20 @@ import defineBadges from './package/badges';
 const defaultBuildDirectory = 'bin';
 
 export default async function ({packageName, visibility, projectRoot, dialect, publishRegistry}) {
-  const rollupResults = await scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI});
+  const [rollupResults] = await Promise.all([
+    scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI}),
+    mergeIntoExistingPackageJson({
+      projectRoot,
+      config: {
+        bin: {},
+        files: [`${defaultBuildDirectory}/`],
+        publishConfig: {
+          access: 'Public' === visibility ? 'public' : 'restricted',
+          ...publishRegistry && {registry: publishRegistry}
+        }
+      }
+    })
+  ]);
 
   return deepmerge(
     rollupResults,
@@ -23,15 +36,6 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
       badges: defineBadges(packageName, visibility),
-      packageProperties: {
-        version: '0.0.0-semantically-released',
-        bin: {},
-        files: [`${defaultBuildDirectory}/`],
-        publishConfig: {
-          access: 'Public' === visibility ? 'public' : 'restricted',
-          ...publishRegistry && {registry: publishRegistry}
-        }
-      },
       eslintConfigs: [],
       nextSteps: []
     }

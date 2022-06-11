@@ -58,6 +58,17 @@ export default async function (options) {
   info('Writing project files', {level: 'secondary'});
 
   const packageName = buildPackageName(projectName, scope);
+  const {homepage: projectHomepage} = await scaffoldPackage({
+    projectRoot,
+    projectType,
+    dialect,
+    packageName,
+    license,
+    vcs,
+    author,
+    description,
+    pathWithinParent
+  });
   const projectTypeResults = await scaffoldProjectType({
     projectType,
     projectRoot,
@@ -120,19 +131,6 @@ export default async function (options) {
     npmResults,
     dialectResults
   ]);
-
-  const {homepage: projectHomepage} = await scaffoldPackage({
-    projectRoot,
-    projectType,
-    dialect,
-    packageName,
-    license,
-    vcs,
-    author,
-    description,
-    packageProperties: mergedContributions.packageProperties,
-    pathWithinParent
-  });
 
   const liftResults = await lift({
     results: deepmerge({devDependencies: ['npm-run-all'], packageManager}, mergedContributions),

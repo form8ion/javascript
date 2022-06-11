@@ -1,5 +1,4 @@
-import {promises as fsPromises} from 'fs';
-import {projectTypes} from '@form8ion/javascript-core';
+import * as jsCore from '@form8ion/javascript-core';
 import * as rollupScaffolder from '@form8ion/rollup';
 
 import {assert} from 'chai';
@@ -19,9 +18,9 @@ suite('cli project-type', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(fsPromises, 'copyFile');
     sandbox.stub(rollupScaffolder, 'scaffold');
     sandbox.stub(defineBadges, 'default');
+    sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
   });
 
   teardown(() => sandbox.restore());
@@ -30,7 +29,9 @@ suite('cli project-type', () => {
     const visibility = 'Private';
     const rollupResults = any.simpleObject();
     const dialect = any.word();
-    rollupScaffolder.scaffold.withArgs({projectRoot, dialect, projectType: projectTypes.CLI}).resolves(rollupResults);
+    rollupScaffolder.scaffold
+      .withArgs({projectRoot, dialect, projectType: jsCore.projectTypes.CLI})
+      .resolves(rollupResults);
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
 
     assert.deepEqual(
@@ -48,28 +49,29 @@ suite('cli project-type', () => {
         vcsIgnore: {files: [], directories: ['/bin/']},
         buildDirectory: 'bin',
         badges,
-        packageProperties: {
-          version: '0.0.0-semantically-released',
-          bin: {},
-          files: ['bin/'],
-          publishConfig: {access: 'restricted'}
-        },
         eslintConfigs: [],
         nextSteps: []
       }
     );
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'restricted'}}}
+    );
   });
 
   test('that the package is published publically when the visibility is `Public`', async () => {
-    const results = await scaffoldCli({projectRoot, configs, packageName, visibility: 'Public'});
+    await scaffoldCli({projectRoot, configs, packageName, visibility: 'Public'});
 
-    assert.equal(results.packageProperties.publishConfig.access, 'public');
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'public'}}}
+    );
   });
 
   test('that the registry to publish to is defined when provided', async () => {
     const publishRegistry = any.url();
 
-    const {packageProperties} = await scaffoldCli({
+    await scaffoldCli({
       projectRoot,
       configs,
       packageName,
@@ -77,6 +79,9 @@ suite('cli project-type', () => {
       publishRegistry
     });
 
-    assert.equal(packageProperties.publishConfig.registry, publishRegistry);
+    assert.calledWith(
+      jsCore.mergeIntoExistingPackageJson,
+      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'public', registry: publishRegistry}}}
+    );
   });
 });

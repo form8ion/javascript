@@ -24,7 +24,7 @@ const {
   test: thisIsAJavaScriptProject,
   scaffoldUnitTesting,
   questionNames
-} = require('./lib/index.cjs');
+} = require('./lib/index.js');
 
 // #### Execute
 (async () => {
