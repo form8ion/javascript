@@ -1,1 +1,1 @@
-export * from './verifier';
+export {scaffoldVerification as scaffold} from './verifier';

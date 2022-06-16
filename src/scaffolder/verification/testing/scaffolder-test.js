@@ -65,14 +65,14 @@ suite('testing scaffolder', () => {
   test('that unit testing is not scaffolded if the project will not be unit tested', async () => {
     assert.deepEqual(
       await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: true}, pathWithinParent}),
-      {devDependencies: ['@travi/any'], eslint: [], eslintConfigs: []}
+      {devDependencies: ['@travi/any'], eslint: []}
     );
   });
 
   test('that testing is not scaffolded if the project will not be tested', async () => {
     assert.deepEqual(
       await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: false}, pathWithinParent}),
-      {devDependencies: [], eslint: [], eslintConfigs: []}
+      {devDependencies: [], eslint: []}
     );
   });
 });

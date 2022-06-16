@@ -6,22 +6,17 @@ import scaffoldLinting from './linting';
 
 export async function scaffoldVerification({
   projectRoot,
-  projectType,
   dialect,
   visibility,
   packageManager,
   vcs,
-  configs,
   registries,
-  configureLinting,
   tests,
   unitTestFrameworks,
   decisions,
-  buildDirectory,
-  eslintConfigs,
   pathWithinParent
 }) {
-  const [testingResults, huskyResults] = await Promise.all([
+  const [testingResults, lintingResults, huskyResults] = await Promise.all([
     scaffoldTesting({
       projectRoot,
       tests,
@@ -32,22 +27,9 @@ export async function scaffoldVerification({
       dialect,
       pathWithinParent
     }),
+    scaffoldLinting({projectRoot, packageManager, registries, vcs, pathWithinParent}),
     scaffoldHusky({projectRoot, packageManager, pathWithinParent})
   ]);
-
-  const lintingResults = await scaffoldLinting({
-    projectRoot,
-    projectType,
-    packageManager,
-    dialect,
-    configs,
-    registries,
-    vcs,
-    configureLinting,
-    buildDirectory,
-    pathWithinParent,
-    eslint: deepmerge.all([testingResults.eslint, {configs: testingResults.eslintConfigs}, {configs: eslintConfigs}])
-  });
 
   return deepmerge.all([testingResults, lintingResults, huskyResults]);
 }

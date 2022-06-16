@@ -16,7 +16,8 @@ import {scaffold as scaffoldPackage} from '../package';
 import buildPackageName from '../package-name';
 import scaffoldProjectType from './project-type';
 import buildDocumentationCommand from '../documentation/generation-command';
-import {scaffoldVerification} from './verification';
+import {scaffold as scaffoldVerification} from './verification';
+import {scaffold as scaffoldCodeStyle} from '../code-style';
 
 export default async function (options) {
   info('Initializing JavaScript project');
@@ -69,42 +70,39 @@ export default async function (options) {
     description,
     pathWithinParent
   });
-  const projectTypeResults = await scaffoldProjectType({
-    projectType,
-    projectRoot,
-    projectName,
-    packageName,
-    packageManager,
-    visibility,
-    applicationTypes,
-    packageTypes,
-    packageBundlers,
-    monorepoTypes,
-    scope,
-    tests,
-    vcs,
-    decisions,
-    dialect,
-    publishRegistry: registries.publish
-  });
-  const verificationResults = await scaffoldVerification({
-    projectRoot,
-    projectType,
-    dialect,
-    packageManager,
-    visibility,
-    vcs,
-    configs,
-    registries,
-    configureLinting,
-    tests,
-    unitTestFrameworks,
-    decisions,
-    pathWithinParent,
-    buildDirectory: projectTypeResults.buildDirectory,
-    eslintConfigs: projectTypeResults.eslintConfigs
-  });
-  const [nodeVersion, npmResults, dialectResults] = await Promise.all([
+  const [projectTypeResults, verificationResults] = await Promise.all([
+    scaffoldProjectType({
+      projectType,
+      projectRoot,
+      projectName,
+      packageName,
+      packageManager,
+      visibility,
+      applicationTypes,
+      packageTypes,
+      packageBundlers,
+      monorepoTypes,
+      scope,
+      tests,
+      vcs,
+      decisions,
+      dialect,
+      publishRegistry: registries.publish
+    }),
+    scaffoldVerification({
+      projectRoot,
+      dialect,
+      visibility,
+      packageManager,
+      vcs,
+      registries,
+      tests,
+      unitTestFrameworks,
+      decisions,
+      pathWithinParent
+    })
+  ]);
+  const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
     scaffoldNpmConfig({projectType, projectRoot, registries}),
     scaffoldDialect({
@@ -114,6 +112,16 @@ export default async function (options) {
       projectType,
       buildDirectory: projectTypeResults.buildDirectory,
       testFilenamePattern: verificationResults.testFilenamePattern
+    }),
+    scaffoldCodeStyle({
+      projectRoot,
+      projectType,
+      dialect,
+      configs,
+      vcs,
+      configureLinting,
+      buildDirectory: projectTypeResults.buildDirectory,
+      eslint: deepmerge.all([verificationResults.eslint, {configs: projectTypeResults.eslintConfigs}])
     })
   ]);
   const mergedContributions = deepmerge.all([
@@ -128,6 +136,7 @@ export default async function (options) {
     ])),
     projectTypeResults,
     verificationResults,
+    codeStyleResults,
     npmResults,
     dialectResults
   ]);

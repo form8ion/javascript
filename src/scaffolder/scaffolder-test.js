@@ -11,6 +11,7 @@ import * as prompts from '../prompts/questions';
 import * as optionsValidator from '../options-validator';
 import * as dialects from '../dialects/scaffolder';
 import * as verification from './verification/verifier';
+import * as codeStyle from '../code-style/scaffolder';
 import * as npmConfig from '../config/npm';
 import * as documentation from '../documentation/scaffolder';
 import * as nodeVersionScaffolder from '../node-version/scaffolder';
@@ -42,6 +43,7 @@ suite('javascript project scaffolder', () => {
   const testingNextSteps = any.listOf(any.simpleObject);
   const ciServiceNextSteps = any.listOf(any.simpleObject);
   const projectTypeEslintConfigs = any.listOf(any.string);
+  const verificationResultsEslintConfigs = any.listOf(any.string);
   const projectTypeNextSteps = any.listOf(any.simpleObject);
   const hostResults = any.simpleObject();
   const npmResults = any.simpleObject();
@@ -65,7 +67,13 @@ suite('javascript project scaffolder', () => {
   const configs = {babelPreset, ...any.simpleObject()};
   const nodeVersionCategory = any.word();
   const testFilenamePattern = any.string();
-  const verificationResults = {...any.simpleObject(), nextSteps: testingNextSteps, testFilenamePattern};
+  const verificationResults = {
+    ...any.simpleObject(),
+    nextSteps: testingNextSteps,
+    testFilenamePattern,
+    eslint: verificationResultsEslintConfigs
+  };
+  const codeStyleResults = any.simpleObject();
   const ciServiceResults = {...any.simpleObject(), nextSteps: ciServiceNextSteps};
   const commitConventionResults = {...any.simpleObject(), packageProperties: any.simpleObject()};
   const applicationTypes = any.simpleObject();
@@ -97,6 +105,7 @@ suite('javascript project scaffolder', () => {
     commitConventionResults,
     projectTypeResults,
     verificationResults,
+    codeStyleResults,
     npmResults,
     dialectResults
   ];
@@ -135,6 +144,7 @@ suite('javascript project scaffolder', () => {
     sandbox.stub(lift, 'default');
     sandbox.stub(dialects, 'default');
     sandbox.stub(verification, 'scaffoldVerification');
+    sandbox.stub(codeStyle, 'default');
     sandbox.stub(npmConfig, 'default');
     sandbox.stub(documentation, 'default');
     sandbox.stub(nodeVersionScaffolder, 'default');
@@ -189,22 +199,27 @@ suite('javascript project scaffolder', () => {
     verification.scaffoldVerification
       .withArgs({
         projectRoot,
-        projectType,
         dialect: chosenDialect,
         visibility,
         packageManager,
         vcs: vcsDetails,
-        configs,
         registries,
-        configureLinting,
         tests,
         unitTestFrameworks,
         decisions,
-        buildDirectory: projectTypeBuildDirectory,
-        eslintConfigs: projectTypeEslintConfigs,
         pathWithinParent
       })
       .resolves(verificationResults);
+    codeStyle.default.withArgs({
+      projectRoot,
+      projectType,
+      dialect: chosenDialect,
+      configs,
+      vcs: vcsDetails,
+      configureLinting,
+      buildDirectory: projectTypeBuildDirectory,
+      eslint: deepmerge.all([verificationResultsEslintConfigs, {configs: projectTypeEslintConfigs}])
+    }).resolves(codeStyleResults);
     dialects.default
       .withArgs({
         projectRoot,

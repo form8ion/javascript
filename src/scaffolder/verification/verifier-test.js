@@ -26,9 +26,7 @@ suite('verification', () => {
   test('that that linting and testing are scaffolded', async () => {
     const projectRoot = any.string();
     const visibility = any.string();
-    const projectType = any.string();
     const packageManager = any.string();
-    const buildDirectory = any.string();
     const dialect = any.word();
     const vcs = any.simpleObject();
     const tests = any.simpleObject();
@@ -44,34 +42,15 @@ suite('verification', () => {
       eslint: testingEslintResults,
       eslintConfigs: testingResultsEslintConfigs
     };
-    const configs = any.simpleObject();
     const registries = any.simpleObject();
-    const eslintConfigs = any.simpleObject();
-    const configureLinting = any.boolean();
-    const mergedEslintResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     lintingScaffolder.default
-      .withArgs({
-        projectRoot,
-        vcs,
-        dialect,
-        projectType,
-        packageManager,
-        configs,
-        registries,
-        configureLinting,
-        buildDirectory,
-        pathWithinParent,
-        eslint: mergedEslintResults
-      })
+      .withArgs({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .resolves(lintingResults);
     testingScaffolder.default
       .withArgs({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
       .resolves(testingResults);
     huskyScaffolder.scaffold.withArgs({projectRoot, packageManager, pathWithinParent}).resolves(huskyResults);
-    deepmerge.all
-      .withArgs([testingEslintResults, {configs: testingResultsEslintConfigs}, {configs: eslintConfigs}])
-      .returns(mergedEslintResults);
     deepmerge.all.withArgs([testingResults, lintingResults, huskyResults]).returns(mergedResults);
 
     assert.deepEqual(
@@ -83,13 +62,8 @@ suite('verification', () => {
         visibility,
         decisions,
         unitTestFrameworks,
-        projectType,
         packageManager,
-        configs,
         registries,
-        configureLinting,
-        buildDirectory,
-        eslintConfigs,
         pathWithinParent
       }),
       mergedResults

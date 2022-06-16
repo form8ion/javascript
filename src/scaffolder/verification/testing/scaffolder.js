@@ -23,8 +23,5 @@ export default async function ({
     })
     : {};
 
-  return deepmerge(
-    {devDependencies: [...(unit || integration) ? ['@travi/any'] : []], eslint: [], eslintConfigs: []},
-    unitResults
-  );
+  return deepmerge({devDependencies: [...(unit || integration) ? ['@travi/any'] : []], eslint: []}, unitResults);
 }
