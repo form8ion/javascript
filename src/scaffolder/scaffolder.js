@@ -121,7 +121,7 @@ export default async function (options) {
       vcs,
       configureLinting,
       buildDirectory: projectTypeResults.buildDirectory,
-      eslint: deepmerge.all([verificationResults.eslint, {configs: projectTypeResults.eslintConfigs}])
+      eslint: verificationResults.eslint
     })
   ]);
   const mergedContributions = deepmerge.all([

@@ -13,11 +13,11 @@ import resolvePackageManager from './package-manager';
 export default async function ({projectRoot, vcs, results}) {
   info('Lifting JavaScript-specific details');
 
-  const {scripts, tags, eslintConfigs, dependencies, devDependencies, packageManager: manager} = results;
+  const {scripts, tags, eslintConfigs, eslint, dependencies, devDependencies, packageManager: manager} = results;
 
   const packageManager = await resolvePackageManager({projectRoot, packageManager: manager});
 
-  const eslintResults = await liftEslint({projectRoot, configs: eslintConfigs});
+  const eslintResults = await liftEslint({projectRoot, configs: [...eslintConfigs || [], ...eslint?.configs || []]});
   const enhancerResults = await applyEnhancers({
     results,
     enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],

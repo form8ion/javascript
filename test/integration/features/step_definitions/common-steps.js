@@ -140,19 +140,8 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.DIALECT]: this.dialect
       },
       unitTestFrameworks: {
-        foo: {
-          scaffolder: ({foo}) => ({
-            testFilenamePattern: this.testFilenamePattern,
-            foo
-          })
-        },
-        bar: {
-          scaffolder: ({bar}) => ({
-            eslint: {configs: this.barUnitTestFrameworkEslintConfigs},
-            eslintConfigs: this.barUnitTestFrameworkEslintConfigs,
-            bar
-          })
-        }
+        foo: {scaffolder: ({foo}) => ({testFilenamePattern: this.testFilenamePattern, foo})},
+        bar: {scaffolder: ({bar}) => ({eslint: {configs: this.barUnitTestFrameworkEslintConfigs}, bar})}
       },
       pathWithinParent: this.pathWithinParent,
       ...this.registries && {registries: this.registries}

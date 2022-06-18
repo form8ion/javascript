@@ -20,15 +20,19 @@ suite('lift', () => {
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
   const eslintConfigs = any.listOf(any.word);
+  const modernEslintConfigs = any.listOf(any.word);
   const dependencies = any.listOf(any.word);
   const devDependencies = any.listOf(any.word);
   const packageManager = any.word();
   const manager = any.word();
+  const scope = any.word();
+  const eslintLiftResults = {...any.simpleObject(), devDependencies: any.listOf(any.word)};
+  const enhancerResults = any.simpleObject();
+  const vcsDetails = any.simpleObject();
   const results = {
     ...any.simpleObject(),
     scripts,
     tags,
-    eslintConfigs,
     dependencies,
     devDependencies,
     packageManager: manager
@@ -48,22 +52,116 @@ suite('lift', () => {
   teardown(() => sandbox.restore());
 
   test('that results specific to js projects are lifted', async () => {
-    const scope = any.word();
-    const eslintLiftResults = {...any.simpleObject(), devDependencies: any.listOf(any.word)};
-    const enhancerResults = any.simpleObject();
-    const vcsDetails = any.simpleObject();
-    eslintPlugin.lift.withArgs({configs: eslintConfigs, projectRoot}).resolves(eslintLiftResults);
+    const enhancedResults = {...results, eslintConfigs, eslint: {configs: modernEslintConfigs}};
+    eslintPlugin.lift
+      .withArgs({configs: [...eslintConfigs, ...modernEslintConfigs], projectRoot})
+      .resolves(eslintLiftResults);
     core.applyEnhancers
       .withArgs({
-        results,
+        results: enhancedResults,
         enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
         options: {projectRoot, packageManager, vcs: vcsDetails}
       })
       .resolves(enhancerResults);
 
-    const liftResults = await lift({projectRoot, results, vcs: vcsDetails, configs: {eslint: {scope}}});
+    const liftResults = await lift({
+      projectRoot,
+      vcs: vcsDetails,
+      configs: {eslint: {scope}},
+      results: enhancedResults
+    });
 
     assert.deepEqual(liftResults, enhancerResults);
+    assert.calledWith(
+      packageLifter.default,
+      deepmerge.all([
+        {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+        eslintLiftResults,
+        enhancerResults
+      ])
+    );
+  });
+
+  test('that not providing `eslintConfigs` does not throw an error`', async () => {
+    const enhancedResults = {...results, eslint: {configs: modernEslintConfigs}};
+    eslintPlugin.lift
+      .withArgs({configs: modernEslintConfigs, projectRoot})
+      .resolves(eslintLiftResults);
+    core.applyEnhancers
+      .withArgs({
+        results: enhancedResults,
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
+        options: {projectRoot, packageManager, vcs: vcsDetails}
+      })
+      .resolves(enhancerResults);
+
+    await lift({
+      projectRoot,
+      vcs: vcsDetails,
+      configs: {eslint: {scope}},
+      results: enhancedResults
+    });
+
+    assert.calledWith(
+      packageLifter.default,
+      deepmerge.all([
+        {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+        eslintLiftResults,
+        enhancerResults
+      ])
+    );
+  });
+
+  test('that not providing `eslint` does not throw an error`', async () => {
+    const enhancedResults = {...results, eslintConfigs};
+    eslintPlugin.lift
+      .withArgs({configs: eslintConfigs, projectRoot})
+      .resolves(eslintLiftResults);
+    core.applyEnhancers
+      .withArgs({
+        results: enhancedResults,
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
+        options: {projectRoot, packageManager, vcs: vcsDetails}
+      })
+      .resolves(enhancerResults);
+
+    await lift({
+      projectRoot,
+      vcs: vcsDetails,
+      configs: {eslint: {scope}},
+      results: enhancedResults
+    });
+
+    assert.calledWith(
+      packageLifter.default,
+      deepmerge.all([
+        {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+        eslintLiftResults,
+        enhancerResults
+      ])
+    );
+  });
+
+  test('that `eslint` not containing configs does not throw an error`', async () => {
+    const enhancedResults = {...results, eslintConfigs, eslint: {}};
+    eslintPlugin.lift
+      .withArgs({configs: eslintConfigs, projectRoot})
+      .resolves(eslintLiftResults);
+    core.applyEnhancers
+      .withArgs({
+        results: enhancedResults,
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
+        options: {projectRoot, packageManager, vcs: vcsDetails}
+      })
+      .resolves(enhancerResults);
+
+    await lift({
+      projectRoot,
+      vcs: vcsDetails,
+      configs: {eslint: {scope}},
+      results: enhancedResults
+    });
+
     assert.calledWith(
       packageLifter.default,
       deepmerge.all([
