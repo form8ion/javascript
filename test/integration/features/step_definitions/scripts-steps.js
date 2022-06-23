@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {Before, Given, Then} from '@cucumber/cucumber';
 
 Before(function () {
-  this.existingScripts = any.simpleObject();
+  this.existingScripts = {...any.simpleObject(), test: any.string()};
 });
 
 Given('no additional scripts are included in the results', async function () {
@@ -19,10 +19,23 @@ Given('additional scripts that duplicate existing scripts are included in the re
   this.scriptsResults = any.objectWithKeys(Object.keys(this.existingScripts));
 });
 
+Given('the project defines a pregenerate:md script', async function () {
+  this.existingScripts = {...this.existingScripts, 'pregenerate:md': 'run-s build'};
+});
+
+Given('the project defines lint scripts', async function () {
+  this.existingScripts = {...this.existingScripts, [`lint:${any.word()}`]: any.string()};
+});
+
+Given('the project defines test scripts', async function () {
+  this.existingScripts = {...this.existingScripts, [`test:${any.word()}`]: any.string()};
+});
+
 Then('the existing scripts still exist', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+  const scriptsWithoutTest = Object.entries(this.existingScripts).filter(([name]) => 'test' !== name);
 
-  Object.entries(this.existingScripts).forEach(([scriptName, script]) => assert.equal(scripts[scriptName], script));
+  scriptsWithoutTest.forEach(([scriptName, script]) => assert.equal(scripts[scriptName], script));
 });
 
 Then('no extra scripts were added', async function () {
@@ -33,12 +46,19 @@ Then('no extra scripts were added', async function () {
 
 Then('the additional scripts exist', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+  const scriptsWithoutTest = Object.entries(this.scriptsResults).filter(([name]) => 'test' !== name);
 
-  Object.entries(this.scriptsResults).forEach(([scriptName, script]) => assert.equal(scripts[scriptName], script));
+  scriptsWithoutTest.forEach(([scriptName, script]) => assert.equal(scripts[scriptName], script));
 });
 
 Then('the script is added for ensuring the node engines requirement is met', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
 
   assert.equal(scripts['lint:engines'], 'ls-engines');
+});
+
+Then('the updated test script includes build', async function () {
+  const {scripts: {test}} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+
+  assert.include(test, 'build');
 });
