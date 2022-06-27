@@ -1,6 +1,8 @@
-import {Separator} from 'inquirer';
+import inquirer from 'inquirer';
 import {prompt} from '@form8ion/overridable-prompts';
 import {questionNames} from '../../../prompts/question-names';
+
+const {Separator} = inquirer;
 
 export default async function ({bundlers, decisions}) {
   if (!Object.keys(bundlers).length) return 'Other';

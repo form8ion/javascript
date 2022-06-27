@@ -1,4 +1,4 @@
-import {Separator} from 'inquirer';
+import inquirer from 'inquirer';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
@@ -14,6 +14,8 @@ import {
 } from './conditionals';
 import {questionNames} from './question-names';
 import {scope as validateScope} from './validators';
+
+const {Separator} = inquirer;
 
 function authorQuestions({name, email, url}) {
   return [
