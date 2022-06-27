@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import * as prompts from '@form8ion/overridable-prompts';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -27,7 +26,7 @@ suite('bundler prompt', () => {
         name: questionNames.PACKAGE_BUNDLER,
         type: 'list',
         message: 'Which bundler should be used?',
-        choices: [...Object.keys(bundlers), new inquirer.Separator(), 'Other']
+        choices: [...Object.keys(bundlers), new prompts.Separator(), 'Other']
       }], decisions)
       .resolves(answers);
 

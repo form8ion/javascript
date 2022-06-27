@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import * as prompts from '@form8ion/overridable-prompts';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -28,7 +27,7 @@ suite('project-type prompts', () => {
         name: questionNames.PROJECT_TYPE_CHOICE,
         type: 'list',
         message: `What type of ${projectType} is this?`,
-        choices: [...Object.keys(types), new inquirer.Separator(), 'Other']
+        choices: [...Object.keys(types), new prompts.Separator(), 'Other']
       }], decisions)
       .resolves(answers);
 

@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import * as prompts from '@form8ion/overridable-prompts';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -27,7 +26,7 @@ suite('project-type prompts', () => {
         name: questionNames.UNIT_TEST_FRAMEWORK,
         type: 'list',
         message: 'Which type of unit testing framework should be used?',
-        choices: [...Object.keys(frameworks), new inquirer.Separator(), 'Other']
+        choices: [...Object.keys(frameworks), new prompts.Separator(), 'Other']
       }], decisions)
       .resolves(answers);
 

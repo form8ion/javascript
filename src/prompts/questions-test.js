@@ -1,4 +1,3 @@
-import inquirer, {Separator} from 'inquirer';
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import * as commonPrompts from '@travi/language-scaffolder-prompts';
@@ -117,7 +116,7 @@ suite('prompts', () => {
           name: questionNames.PROJECT_TYPE,
           message: 'What type of JavaScript project is this?',
           type: 'list',
-          choices: [...Object.values(projectTypes), new Separator(), 'Other'],
+          choices: [...Object.values(projectTypes), new prompts.Separator(), 'Other'],
           default: projectTypes.PACKAGE
         },
         {
@@ -161,7 +160,7 @@ suite('prompts', () => {
           type: 'list',
           message: 'Where will the application be hosted?',
           when: conditionals.projectIsApplication,
-          choices: [...Object.keys(hosts), new inquirer.Separator(), 'Other']
+          choices: [...Object.keys(hosts), new prompts.Separator(), 'Other']
         }
       ], decisions)
       .resolves({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
