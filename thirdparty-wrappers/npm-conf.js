@@ -1,3 +1,3 @@
-const npmConf = require('npm-conf');
+import npmConf from 'npm-conf';
 
 export default npmConf;
