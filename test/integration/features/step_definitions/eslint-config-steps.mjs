@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import {fileExists} from '@form8ion/core';
 
-import {assertDevDependencyIsInstalled} from './dependencies-steps';
+import {assertDevDependencyIsInstalled} from './dependencies-steps.mjs';
 
 const pathToYamlConfig = `${process.cwd()}/.eslintrc.yml`;
 const eslintConfigScope = `@${any.word()}`;
@@ -59,5 +59,5 @@ Then('dependencies are defined for the additional configs', async function () {
     return `${this.eslintConfigScope}/eslint-config-${config.name}`;
   });
 
-  assertDevDependencyIsInstalled(this.execa, additionalConfigPackageNames.join(' '));
+  assertDevDependencyIsInstalled(this.execa.default, additionalConfigPackageNames.join(' '));
 });

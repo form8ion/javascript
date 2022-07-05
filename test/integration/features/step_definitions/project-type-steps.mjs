@@ -1,11 +1,12 @@
 import {promises as fs} from 'fs';
 import {fileExists} from '@form8ion/core';
+import {projectTypes} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import any from '@travi/any';
 
 Given('the project will be a(n) {string}', async function (projectType) {
-  const {projectTypes} = require('@form8ion/javascript-core');
   const projectTypeChoices = [...Object.values(projectTypes), 'Other'];
 
   this.projectType = projectType;

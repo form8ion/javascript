@@ -1,4 +1,6 @@
 import {promises as fs} from 'fs';
+import {projectTypes} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -7,8 +9,6 @@ const repoOwner = any.word();
 const repoName = any.word();
 
 export function assertThatProperDirectoriesAreIgnoredFromVersionControl(scaffoldResult, projectType, buildDirectory) {
-  const {projectTypes} = require('@form8ion/javascript-core');
-
   assert.include(scaffoldResult.vcsIgnore.directories, '/node_modules/');
   if (buildDirectory) assert.include(scaffoldResult.vcsIgnore.directories, `/${buildDirectory}/`);
 
@@ -20,8 +20,6 @@ export function assertThatProperDirectoriesAreIgnoredFromVersionControl(scaffold
 }
 
 export function assertThatProperFilesAreIgnoredFromVersionControl(scaffoldResult, projectType) {
-  const {projectTypes} = require('@form8ion/javascript-core');
-
   if (projectTypes.APPLICATION === projectType) {
     assert.include(scaffoldResult.vcsIgnore.files, '.env');
   } else {

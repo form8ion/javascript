@@ -1,13 +1,14 @@
 import {existsSync, promises as fs} from 'fs';
-import {assert} from 'chai';
 import camelcase from 'camelcase';
+import {packageManagers, projectTypes} from '@form8ion/javascript-core';
+
+import {assert} from 'chai';
 
 export async function assertThatDocumentationIsDefinedAppropriately(
   projectType,
   projectName,
   shouldBeTranspiledAndLinted
 ) {
-  const {projectTypes} = require('@form8ion/javascript-core');
   const pathToExampleFile = `${process.cwd()}/example.js`;
   const packageDetails = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
@@ -42,8 +43,6 @@ export function assertThatDocumentationResultsAreReturnedCorrectly(
   results,
   packageManager
 ) {
-  const {packageManagers} = require('@form8ion/javascript-core');
-
   assert.equal(
     results.documentation.toc,
     `Run \`${

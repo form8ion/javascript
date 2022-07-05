@@ -1,10 +1,13 @@
 import {promises as fs} from 'fs';
-import {fileExists} from '@form8ion/core';
 import {load} from 'js-yaml';
+import {fileExists} from '@form8ion/core';
+import {dialects, projectTypes} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import any from '@travi/any';
-import {assertDevDependencyIsInstalled} from './common-steps';
+
+import {assertDevDependencyIsInstalled} from './common-steps.mjs';
 
 async function assertBabelIsNotConfigured() {
   assert.isFalse(await fileExists(`${process.cwd()}/.babelrc.json`));
@@ -35,7 +38,6 @@ async function assertTypescriptDialectDetailsAreCorrect(
   projectType,
   execa
 ) {
-  const {projectTypes} = require('@form8ion/javascript-core');
   const [tsConfigContents, packageContents] = await Promise.all([
     fs.readFile(`${process.cwd()}/tsconfig.json`, 'utf-8'),
     fs.readFile(`${process.cwd()}/package.json`, 'utf-8')
@@ -90,7 +92,6 @@ async function assertEsmDialectDetailsAreCorrect() {
 }
 
 Given('the project will use the {string} dialect', async function (dialect) {
-  const {dialects} = require('@form8ion/javascript-core');
   this.dialect = dialect;
 
   if (dialects.TYPESCRIPT === dialect) {
@@ -107,7 +108,6 @@ Given('no babel preset is provided', async function () {
 });
 
 Then('the {string} dialect is configured', async function (dialect) {
-  const {dialects} = require('@form8ion/javascript-core');
   const eslintConfig = load(await fs.readFile(`${process.cwd()}/.eslintrc.yml`, 'utf-8'));
 
   const {
@@ -121,7 +121,7 @@ Then('the {string} dialect is configured', async function (dialect) {
     projectType
   } = this;
 
-  if (dialects.BABEL === dialect) await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa);
+  if (dialects.BABEL === dialect) await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa.default);
 
   if (dialects.TYPESCRIPT === dialect) {
     await assertTypescriptDialectDetailsAreCorrect(
@@ -132,7 +132,7 @@ Then('the {string} dialect is configured', async function (dialect) {
       unitTestAnswer,
       testFilenamePattern,
       projectType,
-      this.execa
+      this.execa.default
     );
   }
 

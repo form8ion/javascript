@@ -1,13 +1,13 @@
 import {Then} from '@cucumber/cucumber';
-import td from 'testdouble';
+import * as td from 'testdouble';
+
+import {DEV_DEPENDENCY_TYPE} from '@form8ion/javascript-core';
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
 }
 
 export function assertDevDependencyIsInstalled(execa, dependencyName) {
-  const {DEV_DEPENDENCY_TYPE} = require('@form8ion/javascript-core');
-
   td.verify(
     execa(td.matchers.contains(
       new RegExp(`(npm install|yarn add).*${escapeSpecialCharacters(dependencyName)}.*${DEV_DEPENDENCY_TYPE}`)
@@ -21,5 +21,5 @@ export function assertDependenciesWereRemoved(execa, packageManager, dependencyN
 }
 
 Then('ls-engines is added as a dependency', async function () {
-  assertDevDependencyIsInstalled(this.execa, 'ls-engines');
+  assertDevDependencyIsInstalled(this.execa.default, 'ls-engines');
 });

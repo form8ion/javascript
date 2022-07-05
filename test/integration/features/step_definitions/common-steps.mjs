@@ -1,44 +1,41 @@
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
-import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
+import filedirname from 'filedirname';
+import {DEV_DEPENDENCY_TYPE, projectTypes} from '@form8ion/javascript-core';
 
-import {After, Before, Given, setWorldConstructor, Then, When} from '@cucumber/cucumber';
+import {After, Before, Given, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
-import td from 'testdouble';
-import clearModule from 'clear-module';
+import * as td from 'testdouble';
 import {assert} from 'chai';
 
-import {World} from '../support/world';
 import {
   assertThatNpmConfigDetailsAreConfiguredCorrectlyFor,
   assertThatPackageDetailsAreConfiguredCorrectlyFor
-} from './npm-steps';
+} from './npm-steps.mjs';
 import {
   assertThatDocumentationIsDefinedAppropriately,
   assertThatDocumentationResultsAreReturnedCorrectly
-} from './documentation-steps';
+} from './documentation-steps.mjs';
 import {
   assertThatProperDirectoriesAreIgnoredFromVersionControl,
   assertThatProperFilesAreIgnoredFromVersionControl
-} from './vcs-steps';
-import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps';
+} from './vcs-steps.mjs';
+import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.mjs';
 
+import validate_npm_package_name from 'validate-npm-package-name';
+
+let scaffold, lift, test, questionNames;
+const [, __dirname] = filedirname();
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
-
-setWorldConstructor(World);
-
-let scaffold, lift, test, questionNames;
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
 }
 
 export function assertDevDependencyIsInstalled(execa, dependencyName) {
-  const {DEV_DEPENDENCY_TYPE} = require('@form8ion/javascript-core');
-
   td.verify(
     execa(td.matchers.contains(
       new RegExp(`(npm install|yarn add).*${escapeSpecialCharacters(dependencyName)}.*${DEV_DEPENDENCY_TYPE}`)
@@ -48,12 +45,12 @@ export function assertDevDependencyIsInstalled(execa, dependencyName) {
 }
 
 Before(async function () {
-  require('validate-npm-package-name')(any.word()); // eslint-disable-line import/no-extraneous-dependencies
+  validate_npm_package_name(any.word());
 
-  this.execa = td.replace('@form8ion/execa-wrapper');
+  this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  ({scaffold, lift, test, questionNames} = require('@form8ion/javascript'));
+  ({scaffold, lift, test, questionNames} = await import('@form8ion/javascript'));
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -74,13 +71,6 @@ Before(async function () {
 After(function () {
   stubbedFs.restore();
   td.reset();
-  clearModule('@form8ion/husky');
-  clearModule('@form8ion/eslint');
-  clearModule('@form8ion/javascript-core');
-  clearModule('@form8ion/javascript');
-  clearModule('@form8ion/commit-convention');
-  clearModule('@form8ion/execa-wrapper');
-  clearModule('execa');
 });
 
 Given(/^the default answers are chosen$/, async function () {
@@ -125,10 +115,10 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.AUTHOR_NAME]: any.word(),
         [questionNames.AUTHOR_EMAIL]: any.email(),
         [questionNames.AUTHOR_URL]: any.url(),
-        [commonQuestionNames.UNIT_TESTS]: this.unitTestAnswer,
+        [questionNames.UNIT_TESTS]: this.unitTestAnswer,
         ...this.unitTestAnswer && {[questionNames.UNIT_TEST_FRAMEWORK]: this.unitTestFrameworkAnswer},
-        [commonQuestionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
-        ...null !== this.ciAnswer && {[commonQuestionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
+        [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
+        ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer || 'Other',
         [questionNames.HOST]: 'Other',
@@ -207,7 +197,6 @@ Then('no error is thrown', async function () {
 });
 
 Then('the expected results for a(n) {string} are returned to the project scaffolder', async function (projectType) {
-  const {projectTypes} = require('@form8ion/javascript-core');
   const type = 'any' !== projectType ? projectType : this.projectType;
 
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(type)) {

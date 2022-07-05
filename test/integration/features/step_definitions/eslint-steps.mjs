@@ -1,6 +1,8 @@
 import {promises as fs} from 'fs';
 import {EOL} from 'os';
 import {load} from 'js-yaml';
+import {projectTypes} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import {fileExists} from '@form8ion/core';
 import {Given, Then} from '@cucumber/cucumber';
@@ -12,7 +14,6 @@ export async function assertThatProperDirectoriesAreIgnoredFromEslint(
   buildDirectory
 ) {
   if (configureLinting) {
-    const {projectTypes} = require('@form8ion/javascript-core');
     const eslintIgnoreDetails = (await fs.readFile(`${process.cwd()}/.eslintignore`, 'utf-8')).toString().split(EOL);
 
     assert.include(eslintIgnoreDetails, `/${buildDirectory}/`);

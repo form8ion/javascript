@@ -1,12 +1,14 @@
-import {EOL} from 'os';
 import {promises as fs, promises} from 'fs';
+import {EOL} from 'os';
+import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 function isNonConsumable(projectType) {
-  const {projectTypes: {APPLICATION, CLI}} = require('@form8ion/javascript-core');
+  const {APPLICATION, CLI} = projectTypes;
 
   return APPLICATION === projectType || CLI === projectType;
 }
@@ -18,8 +20,6 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
   dialect,
   visibility
 ) {
-  const {dialects} = require('@form8ion/javascript-core');
-
   assert.equal(packageDetails.name, `@${npmAccount}/${projectName}`);
   assert.equal(packageDetails.version, '0.0.0-semantically-released');
 
@@ -88,7 +88,6 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
   projectName,
   npmAccount
 }) {
-  const {dialects, projectTypes} = require('@form8ion/javascript-core');
   const packageDetails = JSON.parse(await promises.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   if (tested && projectTypes.PACKAGE === projectType && dialects.COMMON_JS !== dialect) {
@@ -139,7 +138,6 @@ export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projec
 }
 
 Given(/^the npm cli is logged in$/, function () {
-  const {packageManagers} = require('@form8ion/javascript-core');
   this.packageManager = packageManagers.NPM;
   this.npmAccount = any.word();
 
@@ -148,13 +146,12 @@ Given(/^the npm cli is logged in$/, function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
-  td.when(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install'))).thenResolve({stdout: ''});
-  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa.default('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
+  td.when(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install'))).thenResolve({stdout: ''});
+  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Then('the npm cli is configured for use', async function () {
-  const {packageManagers} = require('@form8ion/javascript-core');
   const [lockfileLintConfig] = await Promise.all([
     fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8'),
     assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectType)
@@ -166,5 +163,5 @@ Then('the npm cli is configured for use', async function () {
   assert.include(allowedHosts, packageManagers.NPM);
   assert.equal(path, 'package-lock.json');
   assert.equal(this.scaffoldResult.verificationCommand, 'npm run generate:md && npm test');
-  td.verify(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')), {ignoreExtraArgs: true});
+  td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')), {ignoreExtraArgs: true});
 });

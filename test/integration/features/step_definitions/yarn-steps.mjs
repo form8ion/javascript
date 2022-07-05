@@ -1,12 +1,14 @@
 import {promises as fs} from 'fs';
+import {packageManagers} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
-import td from 'testdouble';
+import * as td from 'testdouble';
 import {assert} from 'chai';
-import {assertThatNpmConfigDetailsAreConfiguredCorrectlyFor} from './npm-steps';
+
+import {assertThatNpmConfigDetailsAreConfiguredCorrectlyFor} from './npm-steps.mjs';
 
 Given('the yarn cli is logged in', async function () {
-  const {packageManagers} = require('@form8ion/javascript-core');
   this.packageManager = packageManagers.YARN;
   this.npmAccount = any.word();
 
@@ -15,13 +17,12 @@ Given('the yarn cli is logged in', async function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add'))).thenResolve({stdout: ''});
-  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenResolve({stdout: JSON.stringify({})});
-  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add'))).thenResolve({stdout: ''});
+  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenResolve({stdout: JSON.stringify({})});
+  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Then('the yarn cli is configured for use', async function () {
-  const {packageManagers} = require('@form8ion/javascript-core');
   const [lockfileLintConfig] = await Promise.all([
     fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8'),
     assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectType)
@@ -33,5 +34,5 @@ Then('the yarn cli is configured for use', async function () {
   assert.include(allowedHosts, packageManagers.YARN);
   assert.equal(path, 'yarn.lock');
   assert.equal(this.scaffoldResult.verificationCommand, 'yarn generate:md && yarn test');
-  td.verify(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')), {ignoreExtraArgs: true});
+  td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')), {ignoreExtraArgs: true});
 });

@@ -6,7 +6,7 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import {assertDependenciesWereRemoved} from './dependencies-steps';
+import {assertDependenciesWereRemoved} from './dependencies-steps.mjs';
 
 Given('existing nyc config is present', async function () {
   await fs.writeFile(`${process.cwd()}/.nycrc`, JSON.stringify(any.simpleObject()));
@@ -22,7 +22,7 @@ Then('nyc is not configured for code coverage', async function () {
   assert.isFalse(await fileExists(`${process.cwd()}/.nycrc`));
   assert.isFalse(await directoryExists(`${process.cwd()}/.nyc_output`));
   assertDependenciesWereRemoved(
-    this.execa,
+    this.execa.default,
     this.packageManager,
     ['nyc', '@istanbuljs/nyc-config-babel', 'babel-plugin-istanbul']
   );
