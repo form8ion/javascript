@@ -14,13 +14,12 @@ export default async function ({
 }) {
   return deepmerge.all(await Promise.all([
     configs.eslint && configureLinting
-      ? scaffoldEslint({
+      && scaffoldEslint({
         projectRoot,
         config: configs.eslint,
         buildDirectory,
         additionalConfiguration: eslint
-      })
-      : {},
+      }),
     scaffoldRemark({
       projectRoot,
       projectType,
@@ -28,5 +27,5 @@ export default async function ({
       vcs,
       config: configs.remark || '@form8ion/remark-lint-preset'
     })
-  ]));
+  ].filter(Boolean)));
 }

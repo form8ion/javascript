@@ -1,3 +1,5 @@
+import deepmerge from 'deepmerge';
+
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
@@ -8,13 +10,10 @@ import {scaffold} from '.';
 
 suite('code-style scaffolder', () => {
   let sandbox;
-  const eslintDevDependencies = any.listOf(any.string);
-  const eslintFilesIgnoredFromVcs = any.listOf(any.string);
   const pathWithinParent = any.string();
   const projectRoot = any.string();
   const projectType = any.word();
   const configForEslint = any.simpleObject();
-  const eslintScripts = any.simpleObject();
   const vcs = any.simpleObject();
   const remarkDevDependencies = any.listOf(any.string);
   const remarkScripts = any.simpleObject();
@@ -23,16 +22,20 @@ suite('code-style scaffolder', () => {
   const eslintConfigs = any.listOf(any.word);
   const configureLinting = true;
   const dialect = any.word();
+  const remarkResults = any.simpleObject();
+  const eslintResults = any.simpleObject();
+  const mergedResults = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(scaffoldEslint, 'default');
     sandbox.stub(scaffoldRemark, 'default');
+    sandbox.stub(deepmerge, 'all');
 
     scaffoldRemark.default
       .withArgs({projectRoot, projectType, config: configForRemark, vcs, dialect})
-      .resolves({devDependencies: remarkDevDependencies, scripts: remarkScripts});
+      .resolves(remarkResults);
     scaffoldEslint.default
       .withArgs({
         projectRoot,
@@ -40,16 +43,14 @@ suite('code-style scaffolder', () => {
         buildDirectory,
         additionalConfiguration: {configs: eslintConfigs}
       })
-      .resolves({
-        devDependencies: eslintDevDependencies,
-        vcsIgnore: {files: eslintFilesIgnoredFromVcs},
-        scripts: eslintScripts
-      });
+      .resolves(eslintResults);
   });
 
   teardown(() => sandbox.restore());
 
   test('that linters are configured when config definitions are provided', async () => {
+    deepmerge.all.withArgs([eslintResults, remarkResults]).returns(mergedResults);
+
     const result = await scaffold({
       projectRoot,
       projectType,
@@ -62,12 +63,12 @@ suite('code-style scaffolder', () => {
       pathWithinParent
     });
 
-    assert.deepEqual(result.devDependencies, [...eslintDevDependencies, ...remarkDevDependencies]);
-    assert.deepEqual(result.vcsIgnore.files, eslintFilesIgnoredFromVcs);
-    assert.deepEqual(result.scripts, {...eslintScripts, ...remarkScripts});
+    assert.equal(result, mergedResults);
   });
 
   test('that eslint is not scaffolded when a config is not defined', async () => {
+    deepmerge.all.withArgs([remarkResults]).returns(mergedResults);
+
     const result = await scaffold({
       projectRoot,
       projectType,
@@ -78,11 +79,12 @@ suite('code-style scaffolder', () => {
       pathWithinParent
     });
 
-    assert.deepEqual(result.devDependencies, remarkDevDependencies);
-    assert.deepEqual(result.scripts, remarkScripts);
+    assert.equal(result, mergedResults);
   });
 
   test('that eslint is not scaffolded when `transpileLint` is false', async () => {
+    deepmerge.all.withArgs([remarkResults]).returns(mergedResults);
+
     scaffoldRemark.default
       .withArgs({projectRoot, projectType, config: configForRemark, vcs, configureLinting: false})
       .resolves({devDependencies: remarkDevDependencies, scripts: remarkScripts});
@@ -97,7 +99,6 @@ suite('code-style scaffolder', () => {
       pathWithinParent
     });
 
-    assert.deepEqual(result.devDependencies, remarkDevDependencies);
-    assert.deepEqual(result.scripts, remarkScripts);
+    assert.equal(result, mergedResults);
   });
 });
