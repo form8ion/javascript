@@ -1,3 +1,4 @@
+import * as prettierPlugin from '@form8ion/prettier';
 import deepmerge from 'deepmerge';
 
 import sinon from 'sinon';
@@ -14,6 +15,7 @@ suite('code-style scaffolder', () => {
   const projectRoot = any.string();
   const projectType = any.word();
   const configForEslint = any.simpleObject();
+  const configForPrettier = any.simpleObject();
   const vcs = any.simpleObject();
   const remarkDevDependencies = any.listOf(any.string);
   const remarkScripts = any.simpleObject();
@@ -24,6 +26,7 @@ suite('code-style scaffolder', () => {
   const dialect = any.word();
   const remarkResults = any.simpleObject();
   const eslintResults = any.simpleObject();
+  const prettierResults = any.simpleObject();
   const mergedResults = any.simpleObject();
 
   setup(() => {
@@ -31,6 +34,7 @@ suite('code-style scaffolder', () => {
 
     sandbox.stub(scaffoldEslint, 'default');
     sandbox.stub(scaffoldRemark, 'default');
+    sandbox.stub(prettierPlugin, 'scaffold');
     sandbox.stub(deepmerge, 'all');
 
     scaffoldRemark.default
@@ -44,18 +48,19 @@ suite('code-style scaffolder', () => {
         additionalConfiguration: {configs: eslintConfigs}
       })
       .resolves(eslintResults);
+    prettierPlugin.scaffold.withArgs({projectRoot, config: configForPrettier}).resolves(prettierResults);
   });
 
   teardown(() => sandbox.restore());
 
   test('that linters are configured when config definitions are provided', async () => {
-    deepmerge.all.withArgs([eslintResults, remarkResults]).returns(mergedResults);
+    deepmerge.all.withArgs([eslintResults, remarkResults, prettierResults]).returns(mergedResults);
 
     const result = await scaffold({
       projectRoot,
       projectType,
       dialect,
-      configs: {eslint: configForEslint, remark: configForRemark},
+      configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
       buildDirectory,
       eslint: {configs: eslintConfigs},
@@ -67,13 +72,13 @@ suite('code-style scaffolder', () => {
   });
 
   test('that eslint is not scaffolded when a config is not defined', async () => {
-    deepmerge.all.withArgs([remarkResults]).returns(mergedResults);
+    deepmerge.all.withArgs([remarkResults, prettierResults]).returns(mergedResults);
 
     const result = await scaffold({
       projectRoot,
       projectType,
       dialect,
-      configs: {remark: configForRemark},
+      configs: {remark: configForRemark, prettier: configForPrettier},
       vcs,
       configureLinting,
       pathWithinParent
@@ -83,7 +88,7 @@ suite('code-style scaffolder', () => {
   });
 
   test('that eslint is not scaffolded when `transpileLint` is false', async () => {
-    deepmerge.all.withArgs([remarkResults]).returns(mergedResults);
+    deepmerge.all.withArgs([remarkResults, prettierResults]).returns(mergedResults);
 
     scaffoldRemark.default
       .withArgs({projectRoot, projectType, config: configForRemark, vcs, configureLinting: false})
@@ -93,7 +98,7 @@ suite('code-style scaffolder', () => {
       projectRoot,
       projectType,
       dialect,
-      configs: {eslint: configForEslint, remark: configForRemark},
+      configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
       configureLinting: false,
       pathWithinParent
