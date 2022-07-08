@@ -40,25 +40,25 @@ export default async function ({
         sideEffects: false,
         ...'Public' === visibility && {runkitExampleFilename: './example.js'},
         ...dialects.BABEL === dialect && {
-          main: './lib/index.cjs.js',
-          module: './lib/index.es.js',
+          main: './lib/index.js',
+          module: './lib/index.mjs',
           exports: {
-            require: './lib/index.cjs.js',
-            import: './lib/index.es.js'
+            require: './lib/index.js',
+            import: './lib/index.mjs'
           }
         },
         ...dialects.ESM === dialect && {
-          main: './lib/index.es.js',
-          exports: './lib/index.es.js'
+          main: './lib/index.mjs',
+          exports: './lib/index.mjs'
         },
         ...dialects.TYPESCRIPT === dialect && {
-          main: './lib/index.cjs.js',
-          module: './lib/index.es.js',
+          main: './lib/index.js',
+          module: './lib/index.mjs',
           types: './lib/index.d.ts',
           exports: {
             types: './lib/index.d.ts',
-            require: './lib/index.cjs.js',
-            import: './lib/index.es.js'
+            require: './lib/index.js',
+            import: './lib/index.mjs'
           }
         }
       }
