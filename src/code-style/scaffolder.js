@@ -1,4 +1,6 @@
 import deepmerge from 'deepmerge';
+import {scaffold as scaffoldPrettier} from '@form8ion/prettier';
+
 import scaffoldEslint from './eslint';
 import scaffoldRemark from './remark';
 
@@ -26,6 +28,7 @@ export default async function ({
       dialect,
       vcs,
       config: configs.remark || '@form8ion/remark-lint-preset'
-    })
+    }),
+    scaffoldPrettier({projectRoot, config: configs.prettier})
   ].filter(Boolean)));
 }

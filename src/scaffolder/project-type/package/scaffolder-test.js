@@ -102,11 +102,11 @@ suite('package project-type', () => {
         projectRoot,
         config: {
           sideEffects: false,
-          main: './lib/index.cjs.js',
-          module: './lib/index.es.js',
+          main: './lib/index.js',
+          module: './lib/index.mjs',
           exports: {
-            require: './lib/index.cjs.js',
-            import: './lib/index.es.js'
+            require: './lib/index.js',
+            import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
@@ -153,8 +153,8 @@ suite('package project-type', () => {
       {
         projectRoot,
         config: {
-          main: './lib/index.es.js',
-          exports: './lib/index.es.js',
+          main: './lib/index.mjs',
+          exports: './lib/index.mjs',
           files: ['example.js', 'lib/'],
           sideEffects: false,
           publishConfig: {access: 'restricted'}
@@ -202,13 +202,13 @@ suite('package project-type', () => {
         projectRoot,
         config: {
           sideEffects: false,
-          main: './lib/index.cjs.js',
-          module: './lib/index.es.js',
+          main: './lib/index.js',
+          module: './lib/index.mjs',
           types: './lib/index.d.ts',
           exports: {
             types: './lib/index.d.ts',
-            require: './lib/index.cjs.js',
-            import: './lib/index.es.js'
+            require: './lib/index.js',
+            import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
           publishConfig: {access: 'restricted'}
@@ -291,11 +291,11 @@ suite('package project-type', () => {
         projectRoot,
         config: {
           sideEffects: false,
-          main: './lib/index.cjs.js',
-          module: './lib/index.es.js',
+          main: './lib/index.js',
+          module: './lib/index.mjs',
           exports: {
-            require: './lib/index.cjs.js',
-            import: './lib/index.es.js'
+            require: './lib/index.js',
+            import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
           publishConfig: {
