@@ -100,6 +100,8 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
 
   if (projectTypes.APPLICATION === projectType) {
     assertThatApplicationSpecificDetailsAreDefinedCorrectly(packageDetails, projectName);
+  } else if (projectTypes.MONOREPO === projectType) {
+    assert.isTrue(packageDetails.private);
   } else {
     assert.isUndefined(packageDetails.private);
   }

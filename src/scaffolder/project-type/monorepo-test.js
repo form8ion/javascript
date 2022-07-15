@@ -15,6 +15,7 @@ suite('monorepo project-type', () => {
 
     sandbox.stub(monorepoChooser, 'default');
     sandbox.stub(jsCore, 'scaffoldChoice');
+    sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
   });
 
   teardown(() => sandbox.restore());
@@ -35,7 +36,6 @@ suite('monorepo project-type', () => {
       await scaffoldMonorepo({monorepoTypes, decisions, projectRoot, packageManager}),
       {
         eslintConfigs: [],
-        packageProperties: {private: true},
         nextSteps: [{
           summary: 'Add packages to your new monorepo',
           description: 'Leverage [@form8ion/add-package-to-monorepo](https://npm.im/@form8ion/add-package-to-monorepo)'
@@ -44,5 +44,6 @@ suite('monorepo project-type', () => {
         ...typeScaffoldingResults
       }
     );
+    assert.calledWith(jsCore.mergeIntoExistingPackageJson, {projectRoot, config: {private: true}});
   });
 });

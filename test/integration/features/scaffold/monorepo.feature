@@ -25,4 +25,5 @@ Feature: Monorepo
     When the project is scaffolded
     Then no error is thrown
     And the monorepo scripts are included
+    And the expected files for a "Monorepo" are generated
     And the expected results for a "Monorepo" are returned to the project scaffolder
