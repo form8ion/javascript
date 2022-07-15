@@ -1,29 +1,17 @@
-import deepmerge from 'deepmerge';
-import {
-  mergeIntoExistingPackageJson,
-  projectTypes,
-  scaffoldChoice as scaffoldChosenApplicationType
-} from '@form8ion/javascript-core';
+import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 import {info} from '@travi/cli-messages';
-import chooseApplicationType from './prompt';
 
-export default async function ({monorepoTypes, projectRoot, packageManager, decisions}) {
+export default async function ({projectRoot}) {
   info('Scaffolding Monorepo Details');
-
-  const chosenType = await chooseApplicationType({types: monorepoTypes, projectType: projectTypes.MONOREPO, decisions});
-  const results = await scaffoldChosenApplicationType(monorepoTypes, chosenType, {projectRoot, packageManager});
 
   await mergeIntoExistingPackageJson({projectRoot, config: {private: true}});
 
-  return deepmerge(
-    {
-      eslintConfigs: [],
-      nextSteps: [{
-        summary: 'Add packages to your new monorepo',
-        description: 'Leverage [@form8ion/add-package-to-monorepo](https://npm.im/@form8ion/add-package-to-monorepo)'
-          + ' to scaffold new packages into your new monorepo'
-      }]
-    },
-    results
-  );
+  return {
+    eslintConfigs: [],
+    nextSteps: [{
+      summary: 'Add packages to your new monorepo',
+      description: 'Leverage [@form8ion/add-package-to-monorepo](https://npm.im/@form8ion/add-package-to-monorepo)'
+        + ' to scaffold new packages into your new monorepo'
+    }]
+  };
 }

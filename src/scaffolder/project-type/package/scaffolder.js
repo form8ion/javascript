@@ -1,12 +1,7 @@
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
-import {
-  dialects,
-  mergeIntoExistingPackageJson,
-  scaffoldChoice as scaffoldChosenPackageType
-} from '@form8ion/javascript-core';
+import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import choosePackageType from '../prompt';
 import scaffoldPackageDocumentation from './documentation';
 import defineBadges from './badges';
 import buildDetails from './build-details';
@@ -18,9 +13,7 @@ export default async function ({
   packageManager,
   visibility,
   scope,
-  packageTypes,
   packageBundlers,
-  tests,
   decisions,
   dialect,
   publishRegistry
@@ -65,13 +58,6 @@ export default async function ({
     })
   ]);
 
-  const chosenType = await choosePackageType({types: packageTypes, projectType: 'package', decisions});
-  const results = await scaffoldChosenPackageType(
-    packageTypes,
-    chosenType,
-    {projectRoot, projectName, packageName, tests, scope}
-  );
-
   return deepmerge.all([
     {
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),
@@ -83,7 +69,6 @@ export default async function ({
       scripts: {},
       badges: defineBadges(packageName, visibility)
     },
-    detailsForBuild,
-    results
+    detailsForBuild
   ]);
 }

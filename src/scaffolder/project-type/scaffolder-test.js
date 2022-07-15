@@ -16,7 +16,6 @@ suite('project-type scaffolder', () => {
   const packageName = any.word();
   const packageManager = any.word();
   const visibility = any.word();
-  const tests = any.simpleObject();
   const decisions = any.simpleObject();
   const vcs = any.simpleObject();
   const publishRegistry = any.url();
@@ -35,7 +34,6 @@ suite('project-type scaffolder', () => {
 
   test('that the package-type scaffolder is applied when the project-type is `Package`', async () => {
     const scope = any.word();
-    const packageTypes = any.simpleObject();
     const packageBundlers = any.simpleObject();
 
     packageTypeScaffolder.default
@@ -46,9 +44,7 @@ suite('project-type scaffolder', () => {
         packageManager,
         visibility,
         scope,
-        packageTypes,
         packageBundlers,
-        tests,
         vcs,
         decisions,
         dialect,
@@ -65,9 +61,7 @@ suite('project-type scaffolder', () => {
         packageManager,
         visibility,
         scope,
-        packageTypes,
         packageBundlers,
-        tests,
         vcs,
         decisions,
         dialect,
@@ -78,17 +72,8 @@ suite('project-type scaffolder', () => {
   });
 
   test('that the application-type scaffolder is applied when the project-type is `Application`', async () => {
-    const applicationTypes = any.simpleObject();
     applicationTypeScaffolder.default
-      .withArgs({
-        projectRoot,
-        projectName,
-        packageName,
-        packageManager,
-        applicationTypes,
-        tests,
-        decisions
-      })
+      .withArgs({projectRoot})
       .resolves(results);
 
     assert.deepEqual(
@@ -98,8 +83,6 @@ suite('project-type scaffolder', () => {
         projectName,
         packageName,
         packageManager,
-        applicationTypes,
-        tests,
         decisions,
         visibility,
         vcs
@@ -128,17 +111,10 @@ suite('project-type scaffolder', () => {
   });
 
   test('that the monorepo-type scaffolder is applied when the project-type is `Monorepo`', async () => {
-    const monorepoTypes = any.simpleObject();
-    monorepoTypeScaffolder.default.withArgs({monorepoTypes, projectRoot, packageManager, decisions}).resolves(results);
+    monorepoTypeScaffolder.default.withArgs({projectRoot}).resolves(results);
 
     assert.deepEqual(
-      await projectTypeScaffolder({
-        projectRoot,
-        projectType: projectTypes.MONOREPO,
-        packageManager,
-        monorepoTypes,
-        decisions
-      }),
+      await projectTypeScaffolder({projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions}),
       results
     );
   });

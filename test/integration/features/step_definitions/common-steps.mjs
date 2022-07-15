@@ -109,6 +109,15 @@ When(/^the project is scaffolded$/, async function () {
       monorepoTypes: {
         foo: {scaffolder: foo => ({foo, scripts: this.fooMonorepoScripts})}
       },
+      packageTypes: {
+        foo: {
+          scaffolder: async ({projectRoot}) => {
+            await fs.unlink(`${projectRoot}/tsconfig.json`);
+
+            return {};
+          }
+        }
+      },
       decisions: {
         [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
         [questionNames.PROJECT_TYPE]: this.projectType,
@@ -120,7 +129,7 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
         ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
-        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer || 'Other',
+        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer || this.packageTypeChoiceAnswer || 'Other',
         [questionNames.HOST]: 'Other',
         ...['Package', 'CLI'].includes(this.projectType) && {
           [questionNames.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,

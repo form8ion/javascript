@@ -1,6 +1,6 @@
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
-import {scaffoldChoice} from '@form8ion/javascript-core';
+import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import lift from '../lift';
@@ -15,6 +15,7 @@ import buildVcsIgnoreLists from '../vcs-ignore';
 import {scaffold as scaffoldPackage} from '../package';
 import buildPackageName from '../package-name';
 import scaffoldProjectType from './project-type';
+import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin';
 import buildDocumentationCommand from '../documentation/generation-command';
 import {scaffold as scaffoldVerification} from './verification';
 import {scaffold as scaffoldCodeStyle} from '../code-style';
@@ -132,7 +133,22 @@ export default async function (options) {
         {buildDirectory: `./${projectTypeResults.buildDirectory}`, projectRoot, projectName, nodeVersion}
       ),
       scaffoldChoice(ciServices, ci, {projectRoot, vcs, visibility, projectType, projectName, nodeVersion, tests}),
-      scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent})
+      scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent}),
+      scaffoldProjectTypePlugin({
+        projectRoot,
+        projectType,
+        projectName,
+        packageName,
+        packageManager,
+        scope,
+        tests,
+        decisions,
+        plugins: {
+          [projectTypes.PACKAGE]: packageTypes,
+          [projectTypes.APPLICATION]: applicationTypes,
+          [projectTypes.MONOREPO]: monorepoTypes
+        }
+      })
     ])),
     projectTypeResults,
     verificationResults,

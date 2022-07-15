@@ -74,6 +74,7 @@ Feature: Dialects
     And the project will not be tested
     And nvm is properly configured
     And a babel preset is provided
+    And the package-type plugin modifies the tsconfig
     When the project is scaffolded
     Then no error is thrown
     And the "typescript" dialect is configured

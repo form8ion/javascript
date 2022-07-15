@@ -36,33 +36,36 @@ async function assertTypescriptDialectDetailsAreCorrect(
   unitTestAnswer,
   testFilenamePattern,
   projectType,
+  packageTypeChoiceAnswer,
   execa
 ) {
-  const [tsConfigContents, packageContents] = await Promise.all([
-    fs.readFile(`${process.cwd()}/tsconfig.json`, 'utf-8'),
-    fs.readFile(`${process.cwd()}/package.json`, 'utf-8')
-  ]);
-  const {type} = JSON.parse(packageContents);
+  const {type} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   assert.equal(type, 'commonjs');
 
   assert.include(eslintConfig.extends, `${eslintScope}/typescript`);
-  assert.deepEqual(
-    JSON.parse(tsConfigContents),
-    {
-      $schema: 'https://json.schemastore.org/tsconfig',
-      extends: `${typescriptConfig.scope}/tsconfig`,
-      compilerOptions: {
-        rootDir: 'src',
-        ...projectTypes.PACKAGE === projectType && {
-          outDir: 'lib',
-          declaration: true
-        }
-      },
-      include: ['src/**/*.ts'],
-      ...unitTestAnswer && {exclude: [testFilenamePattern]}
-    }
-  );
+  if ('foo' !== packageTypeChoiceAnswer) {
+    const tsConfigContents = await fs.readFile(`${process.cwd()}/tsconfig.json`, 'utf-8');
+
+    assert.deepEqual(
+      JSON.parse(tsConfigContents),
+      {
+        $schema: 'https://json.schemastore.org/tsconfig',
+        extends: `${typescriptConfig.scope}/tsconfig`,
+        compilerOptions: {
+          rootDir: 'src',
+          ...projectTypes.PACKAGE === projectType && {
+            outDir: 'lib',
+            declaration: true
+          }
+        },
+        include: ['src/**/*.ts'],
+        ...unitTestAnswer && {exclude: [testFilenamePattern]}
+      }
+    );
+  } else {
+    assert.isFalse(await fileExists(`${process.cwd()}/tsconfig.json`));
+  }
   assertDevDependencyIsInstalled(execa, 'typescript');
   assertDevDependencyIsInstalled(execa, `${typescriptConfig.scope}/tsconfig`);
   assertDevDependencyIsInstalled(execa, `${eslintScope}/eslint-config-typescript`);
@@ -107,6 +110,10 @@ Given('no babel preset is provided', async function () {
   this.babelPreset = undefined;
 });
 
+Given('the package-type plugin modifies the tsconfig', async function () {
+  this.packageTypeChoiceAnswer = 'foo';
+});
+
 Then('the {string} dialect is configured', async function (dialect) {
   const eslintConfig = load(await fs.readFile(`${process.cwd()}/.eslintrc.yml`, 'utf-8'));
 
@@ -132,6 +139,7 @@ Then('the {string} dialect is configured', async function (dialect) {
       unitTestAnswer,
       testFilenamePattern,
       projectType,
+      this.packageTypeChoiceAnswer,
       this.execa.default
     );
   }

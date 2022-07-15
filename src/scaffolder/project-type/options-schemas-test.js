@@ -9,7 +9,7 @@ suite('project-type options validation', () => {
   suite('package bundlers', () => {
     const key = any.word();
 
-    test('that providing bundler plugins is optional', () => {
+    test('that providing bundler project-type-plugin is optional', () => {
       validateOptions(packageBundlersSchema);
     });
 

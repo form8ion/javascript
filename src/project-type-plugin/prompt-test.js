@@ -2,7 +2,7 @@ import * as prompts from '@form8ion/overridable-prompts';
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {questionNames} from '../../prompts/question-names';
+import {questionNames} from '../prompts/question-names';
 import prompt from './prompt';
 
 suite('project-type prompts', () => {

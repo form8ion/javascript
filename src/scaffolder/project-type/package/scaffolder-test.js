@@ -4,7 +4,6 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as packageChooser from '../prompt';
 import * as documentationScaffolder from './documentation';
 import * as defineBadges from './badges';
 import * as buildDetails from './build-details';
@@ -13,7 +12,6 @@ import scaffoldPackage from './scaffolder';
 suite('package project-type', () => {
   let sandbox;
   const projectRoot = any.string();
-  const packageTypes = any.simpleObject();
   const packageBundlers = any.simpleObject();
   const projectName = any.word();
   const packageName = any.word();
@@ -26,23 +24,8 @@ suite('package project-type', () => {
     {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
   ];
   const documentation = any.simpleObject();
-  const scaffoldedTypeDependencies = any.listOf(any.string);
-  const scaffoldedTypeDevDependencies = any.listOf(any.string);
-  const scaffoldedTypeScripts = any.simpleObject();
-  const scaffoldedFilesToIgnore = any.listOf(any.string);
-  const scaffoldedDirectoriesToIgnore = any.listOf(any.string);
-  const eslintConfigs = any.listOf(any.string);
-  const chosenType = any.word();
-  const tests = any.simpleObject();
   const decisions = any.simpleObject();
   const buildDetailsResults = any.simpleObject();
-  const typeScaffoldingResults = {
-    dependencies: scaffoldedTypeDependencies,
-    devDependencies: scaffoldedTypeDevDependencies,
-    scripts: scaffoldedTypeScripts,
-    vcsIgnore: {files: scaffoldedFilesToIgnore, directories: scaffoldedDirectoriesToIgnore},
-    eslintConfigs
-  };
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -50,15 +33,9 @@ suite('package project-type', () => {
     sandbox.stub(buildDetails, 'default');
     sandbox.stub(defineBadges, 'default');
     sandbox.stub(documentationScaffolder, 'default');
-    sandbox.stub(packageChooser, 'default');
-    sandbox.stub(jsCore, 'scaffoldChoice');
     sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
 
     documentationScaffolder.default.withArgs({scope, packageName, visibility, packageManager}).returns(documentation);
-    packageChooser.default.withArgs({types: packageTypes, projectType: 'package', decisions}).returns(chosenType);
-    jsCore.scaffoldChoice
-      .withArgs(packageTypes, chosenType, {projectRoot, projectName, packageName, tests, scope})
-      .returns(typeScaffoldingResults);
   });
 
   teardown(() => sandbox.restore());
@@ -78,21 +55,16 @@ suite('package project-type', () => {
         packageManager,
         visibility,
         scope,
-        packageTypes,
         packageBundlers,
-        tests,
         decisions,
         dialect
       }),
       {
         ...buildDetailsResults,
-        dependencies: scaffoldedTypeDependencies,
-        devDependencies: scaffoldedTypeDevDependencies,
-        scripts: scaffoldedTypeScripts,
-        vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
+        scripts: {},
         badges,
         documentation,
-        eslintConfigs,
+        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -131,20 +103,15 @@ suite('package project-type', () => {
         dialect,
         scope,
         packageManager,
-        packageTypes,
         packageBundlers,
-        decisions,
-        tests
+        decisions
       }),
       {
         ...buildDetailsResults,
-        dependencies: scaffoldedTypeDependencies,
-        devDependencies: scaffoldedTypeDevDependencies,
-        scripts: scaffoldedTypeScripts,
-        vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
+        scripts: {},
         badges,
         documentation,
-        eslintConfigs,
+        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -178,21 +145,16 @@ suite('package project-type', () => {
         packageManager,
         visibility,
         scope,
-        packageTypes,
         packageBundlers,
-        tests,
         decisions,
         dialect
       }),
       {
         ...buildDetailsResults,
-        dependencies: scaffoldedTypeDependencies,
-        devDependencies: scaffoldedTypeDevDependencies,
-        scripts: scaffoldedTypeScripts,
-        vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
+        scripts: {},
         badges,
         documentation,
-        eslintConfigs,
+        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -233,20 +195,15 @@ suite('package project-type', () => {
         visibility,
         scope,
         decisions,
-        packageTypes,
         packageBundlers,
-        tests,
         dialect
       }),
       {
         ...buildDetailsResults,
-        dependencies: scaffoldedTypeDependencies,
-        devDependencies: scaffoldedTypeDevDependencies,
-        scripts: scaffoldedTypeScripts,
-        vcsIgnore: {directories: scaffoldedDirectoriesToIgnore, files: scaffoldedFilesToIgnore},
+        scripts: {},
         badges,
         documentation,
-        eslintConfigs,
+        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -278,8 +235,6 @@ suite('package project-type', () => {
       visibility,
       scope,
       decisions,
-      packageTypes,
-      tests,
       publishRegistry,
       dialect,
       packageBundlers

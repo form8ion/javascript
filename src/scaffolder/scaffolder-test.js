@@ -19,6 +19,7 @@ import * as badgeDetailsBuilder from '../badges';
 import * as vcsIgnoresBuilder from '../vcs-ignore';
 import * as packageScaffolder from '../package/scaffolder';
 import * as projectTypeScaffolder from './project-type/scaffolder';
+import * as projectTypePluginScaffolder from '../project-type-plugin/scaffolder';
 import * as packageNameBuilder from '../package-name';
 import * as documentationCommandBuilder from '../documentation/generation-command';
 import scaffold from './scaffolder';
@@ -100,10 +101,12 @@ suite('javascript project scaffolder', () => {
     nextSteps: projectTypeNextSteps,
     tags: projectTypeTags
   };
+  const projectTypePluginResults = any.simpleObject();
   const contributors = [
     hostResults,
     ciServiceResults,
     commitConventionResults,
+    projectTypePluginResults,
     projectTypeResults,
     verificationResults,
     codeStyleResults,
@@ -155,6 +158,7 @@ suite('javascript project scaffolder', () => {
     sandbox.stub(packageScaffolder, 'default');
     sandbox.stub(packageNameBuilder, 'default');
     sandbox.stub(projectTypeScaffolder, 'default');
+    sandbox.stub(projectTypePluginScaffolder, 'default');
     sandbox.stub(documentationCommandBuilder, 'default');
 
     packageNameBuilder.default.withArgs(projectName, scope).returns(packageName);
@@ -178,6 +182,23 @@ suite('javascript project scaffolder', () => {
         publishRegistry
       })
       .resolves(projectTypeResults);
+    projectTypePluginScaffolder.default
+      .withArgs({
+        projectRoot,
+        projectType,
+        projectName,
+        packageName,
+        packageManager,
+        scope,
+        tests,
+        decisions,
+        plugins: {
+          [jsCore.projectTypes.PACKAGE]: packageTypes,
+          [jsCore.projectTypes.APPLICATION]: applicationTypes,
+          [jsCore.projectTypes.MONOREPO]: monorepoTypes
+        }
+      })
+      .resolves(projectTypePluginResults);
     packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves({...any.simpleObject(), homepage});
     prompts.prompt
       .withArgs(overrides, ciServices, hosts, visibility, vcsDetails, decisions, configs, pathWithinParent)

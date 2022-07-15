@@ -11,12 +11,8 @@ export default async function ({
   packageName,
   packageManager,
   visibility,
-  applicationTypes,
-  packageTypes,
   packageBundlers,
-  monorepoTypes,
   scope,
-  tests,
   vcs,
   decisions,
   dialect,
@@ -31,28 +27,18 @@ export default async function ({
         packageManager,
         visibility,
         scope,
-        packageTypes,
         packageBundlers,
-        tests,
         vcs,
         decisions,
         dialect,
         publishRegistry
       });
     case projectTypes.APPLICATION:
-      return scaffoldApplicationType({
-        projectRoot,
-        projectName,
-        packageName,
-        packageManager,
-        applicationTypes,
-        tests,
-        decisions
-      });
+      return scaffoldApplicationType({projectRoot});
     case projectTypes.CLI:
       return scaffoldCliType({packageName, visibility, projectRoot, dialect, publishRegistry});
     case projectTypes.MONOREPO:
-      return scaffoldMonorepoType({monorepoTypes, projectRoot, packageManager, decisions});
+      return scaffoldMonorepoType({projectRoot});
     case 'Other':
       return {
         eslintConfigs: []
