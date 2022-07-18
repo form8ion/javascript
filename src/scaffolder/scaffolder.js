@@ -103,7 +103,7 @@ export default async function (options) {
       pathWithinParent
     })
   ]);
-  const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
+  const [nodeVersion, npmResults, dialectResults, codeStyleResults, projectTypePluginResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
     scaffoldNpmConfig({projectType, projectRoot, registries}),
     scaffoldDialect({
@@ -123,6 +123,21 @@ export default async function (options) {
       configureLinting,
       buildDirectory: projectTypeResults.buildDirectory,
       eslint: verificationResults.eslint
+    }),
+    scaffoldProjectTypePlugin({
+      projectRoot,
+      projectType,
+      projectName,
+      packageName,
+      packageManager,
+      scope,
+      tests,
+      decisions,
+      plugins: {
+        [projectTypes.PACKAGE]: packageTypes,
+        [projectTypes.APPLICATION]: applicationTypes,
+        [projectTypes.MONOREPO]: monorepoTypes
+      }
     })
   ]);
   const mergedContributions = deepmerge.all([
@@ -133,23 +148,9 @@ export default async function (options) {
         {buildDirectory: `./${projectTypeResults.buildDirectory}`, projectRoot, projectName, nodeVersion}
       ),
       scaffoldChoice(ciServices, ci, {projectRoot, vcs, visibility, projectType, projectName, nodeVersion, tests}),
-      scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent}),
-      scaffoldProjectTypePlugin({
-        projectRoot,
-        projectType,
-        projectName,
-        packageName,
-        packageManager,
-        scope,
-        tests,
-        decisions,
-        plugins: {
-          [projectTypes.PACKAGE]: packageTypes,
-          [projectTypes.APPLICATION]: applicationTypes,
-          [projectTypes.MONOREPO]: monorepoTypes
-        }
-      })
+      scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent})
     ])),
+    projectTypePluginResults,
     projectTypeResults,
     verificationResults,
     codeStyleResults,
