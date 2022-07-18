@@ -9,6 +9,7 @@ export default async function ({
   packageName,
   packageManager,
   scope,
+  dialect,
   tests,
   decisions,
   plugins
@@ -22,6 +23,6 @@ export default async function ({
   return scaffoldChoice(
     pluginsForProjectType,
     chosenType,
-    {projectRoot, projectName, packageName, packageManager, scope, tests}
+    {projectRoot, projectName, packageName, packageManager, scope, tests, dialect}
   );
 }

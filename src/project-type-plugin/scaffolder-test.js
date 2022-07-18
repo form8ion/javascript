@@ -31,13 +31,14 @@ suite('chosen project-type plugin scaffolder', () => {
   test('that a plugin can be chosen and is then scaffolded', async () => {
     const typeScaffoldingResults = any.simpleObject();
     const pluginsForProjectType = any.simpleObject();
+    const dialect = any.word();
     const plugins = {...any.simpleObject(), [projectType]: pluginsForProjectType};
     packageChooser.default.withArgs({types: pluginsForProjectType, decisions, projectType}).returns(chosenType);
     jsCore.scaffoldChoice
       .withArgs(
         pluginsForProjectType,
         chosenType,
-        {projectRoot, packageManager, projectName, packageName, tests, scope}
+        {projectRoot, packageManager, projectName, packageName, tests, scope, dialect}
       )
       .resolves(typeScaffoldingResults);
 
@@ -50,6 +51,7 @@ suite('chosen project-type plugin scaffolder', () => {
         packageManager,
         tests,
         scope,
+        dialect,
         decisions,
         plugins
       }),

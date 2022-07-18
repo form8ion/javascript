@@ -190,6 +190,7 @@ suite('javascript project scaffolder', () => {
         packageName,
         packageManager,
         scope,
+        dialect: chosenDialect,
         tests,
         decisions,
         plugins: {

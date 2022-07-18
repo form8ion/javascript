@@ -131,6 +131,7 @@ export default async function (options) {
       packageName,
       packageManager,
       scope,
+      dialect,
       tests,
       decisions,
       plugins: {
