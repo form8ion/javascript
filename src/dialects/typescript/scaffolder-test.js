@@ -37,7 +37,7 @@ suite('typescript dialect', () => {
         extends: `${scope}/tsconfig`,
         compilerOptions: {rootDir: 'src'},
         include: ['src/**/*.ts']
-      })
+      }, null, 2)
     );
   });
 
@@ -58,7 +58,7 @@ suite('typescript dialect', () => {
           declaration: true
         },
         include: ['src/**/*.ts']
-      })
+      }, null, 2)
     );
   });
 
@@ -77,7 +77,7 @@ suite('typescript dialect', () => {
         compilerOptions: {rootDir: 'src'},
         include: ['src/**/*.ts'],
         exclude: [testFilenamePattern]
-      })
+      }, null, 2)
     );
   });
 
