@@ -1,10 +1,8 @@
-import {fileTypes} from '@form8ion/core';
-import * as configFile from '@form8ion/config-file';
-
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
+import * as configWriter from './config/write';
 import scaffoldBabel from './scaffolder';
 
 suite('babel config', () => {
@@ -15,7 +13,7 @@ suite('babel config', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(configFile, 'write');
+    sandbox.stub(configWriter, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -31,13 +29,8 @@ suite('babel config', () => {
     );
 
     assert.calledWith(
-      configFile.write,
-      {
-        path: projectRoot,
-        name: 'babel',
-        format: fileTypes.JSON,
-        config: {presets: [babelPresetName], ignore: [`./${buildDirectory}/`]}
-      }
+      configWriter.default,
+      {projectRoot, config: {presets: [babelPresetName], ignore: [`./${buildDirectory}/`]}}
     );
   });
 
@@ -47,7 +40,7 @@ suite('babel config', () => {
 
       throw new Error('test should have failed, but didnt');
     } catch (e) {
-      assert.notCalled(configFile.write);
+      assert.notCalled(configWriter.default);
       assert.equal(e.message, 'No babel preset provided. Cannot configure babel transpilation');
     }
   });
