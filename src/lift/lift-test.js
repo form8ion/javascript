@@ -10,6 +10,7 @@ import {assert} from 'chai';
 
 import * as coveragePlugin from '../coverage';
 import * as enginesEnhancer from './enhancers/engines';
+import * as dialects from '../dialects';
 import * as packageLifter from '../package/lifter';
 import * as packageManagerResolver from './package-manager';
 import lift from './lift';
@@ -25,16 +26,17 @@ suite('lift', () => {
   const devDependencies = any.listOf(any.word);
   const packageManager = any.word();
   const manager = any.word();
-  const scope = any.word();
   const eslintLiftResults = {...any.simpleObject(), devDependencies: any.listOf(any.word)};
   const enhancerResults = any.simpleObject();
   const vcsDetails = any.simpleObject();
+  const buildDirectory = any.string();
   const results = {
     ...any.simpleObject(),
     scripts,
     tags,
     dependencies,
     devDependencies,
+    buildDirectory,
     packageManager: manager
   };
 
@@ -59,17 +61,12 @@ suite('lift', () => {
     core.applyEnhancers
       .withArgs({
         results: enhancedResults,
-        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
-        options: {projectRoot, packageManager, vcs: vcsDetails}
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects],
+        options: {projectRoot, packageManager, vcs: vcsDetails, buildDirectory}
       })
       .resolves(enhancerResults);
 
-    const liftResults = await lift({
-      projectRoot,
-      vcs: vcsDetails,
-      configs: {eslint: {scope}},
-      results: enhancedResults
-    });
+    const liftResults = await lift({projectRoot, vcs: vcsDetails, results: enhancedResults});
 
     assert.deepEqual(liftResults, enhancerResults);
     assert.calledWith(
@@ -90,17 +87,12 @@ suite('lift', () => {
     core.applyEnhancers
       .withArgs({
         results: enhancedResults,
-        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
-        options: {projectRoot, packageManager, vcs: vcsDetails}
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects],
+        options: {projectRoot, packageManager, vcs: vcsDetails, buildDirectory}
       })
       .resolves(enhancerResults);
 
-    await lift({
-      projectRoot,
-      vcs: vcsDetails,
-      configs: {eslint: {scope}},
-      results: enhancedResults
-    });
+    await lift({projectRoot, vcs: vcsDetails, results: enhancedResults});
 
     assert.calledWith(
       packageLifter.default,
@@ -120,17 +112,12 @@ suite('lift', () => {
     core.applyEnhancers
       .withArgs({
         results: enhancedResults,
-        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
-        options: {projectRoot, packageManager, vcs: vcsDetails}
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects],
+        options: {projectRoot, packageManager, vcs: vcsDetails, buildDirectory}
       })
       .resolves(enhancerResults);
 
-    await lift({
-      projectRoot,
-      vcs: vcsDetails,
-      configs: {eslint: {scope}},
-      results: enhancedResults
-    });
+    await lift({projectRoot, vcs: vcsDetails, results: enhancedResults});
 
     assert.calledWith(
       packageLifter.default,
@@ -150,17 +137,12 @@ suite('lift', () => {
     core.applyEnhancers
       .withArgs({
         results: enhancedResults,
-        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin],
-        options: {projectRoot, packageManager, vcs: vcsDetails}
+        enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects],
+        options: {projectRoot, packageManager, vcs: vcsDetails, buildDirectory}
       })
       .resolves(enhancerResults);
 
-    await lift({
-      projectRoot,
-      vcs: vcsDetails,
-      configs: {eslint: {scope}},
-      results: enhancedResults
-    });
+    await lift({projectRoot, vcs: vcsDetails, results: enhancedResults});
 
     assert.calledWith(
       packageLifter.default,

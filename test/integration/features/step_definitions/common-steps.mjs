@@ -64,7 +64,6 @@ Before(async function () {
   this.visibility = any.fromList(['Public', 'Private']);
   this.eslintScope = `@${any.word()}`;
   this.barUnitTestFrameworkEslintConfigs = any.listOf(any.word);
-  this.fooApplicationEslintConfigs = [(() => ({name: any.word(), files: any.word()}))()];
   this.fooMonorepoScripts = any.simpleObject();
 });
 
@@ -104,7 +103,13 @@ When(/^the project is scaffolded$/, async function () {
       },
       ciServices: {[any.word()]: {scaffolder: foo => ({foo}), public: true}},
       applicationTypes: {
-        foo: {scaffolder: foo => ({foo, eslintConfigs: this.fooApplicationEslintConfigs})}
+        foo: {
+          scaffolder: foo => ({
+            foo,
+            eslintConfigs: this.fooApplicationEslintConfigs,
+            buildDirectory: this.fooApplicationBuildDirectory
+          })
+        }
       },
       monorepoTypes: {
         foo: {scaffolder: foo => ({foo, scripts: this.fooMonorepoScripts})}
@@ -129,7 +134,10 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
         ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
-        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer || this.packageTypeChoiceAnswer || 'Other',
+        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer ||
+          this.packageTypeChoiceAnswer ||
+          this.applicationTypeChoiceAnswer ||
+          'Other',
         [questionNames.HOST]: 'Other',
         ...['Package', 'CLI'].includes(this.projectType) && {
           [questionNames.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,

@@ -111,7 +111,6 @@ export default async function (options) {
       configs,
       projectRoot,
       projectType,
-      buildDirectory: projectTypeResults.buildDirectory,
       testFilenamePattern: verificationResults.testFilenamePattern
     }),
     scaffoldCodeStyle({
@@ -151,8 +150,8 @@ export default async function (options) {
       scaffoldChoice(ciServices, ci, {projectRoot, vcs, visibility, projectType, projectName, nodeVersion, tests}),
       scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent})
     ])),
-    projectTypePluginResults,
     projectTypeResults,
+    projectTypePluginResults,
     verificationResults,
     codeStyleResults,
     npmResults,

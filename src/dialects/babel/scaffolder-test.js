@@ -8,7 +8,6 @@ import scaffoldBabel from './scaffolder';
 suite('babel config', () => {
   let sandbox;
   const projectRoot = any.string();
-  const buildDirectory = any.word();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -24,13 +23,13 @@ suite('babel config', () => {
     const babelPreset = {name: babelPresetName, packageName: babelPresetPackageName};
 
     assert.deepEqual(
-      await scaffoldBabel({preset: babelPreset, projectRoot, tests: {unit: true}, buildDirectory}),
+      await scaffoldBabel({preset: babelPreset, projectRoot, tests: {unit: true}}),
       {devDependencies: ['@babel/register', babelPresetPackageName], eslint: {}}
     );
 
     assert.calledWith(
       configWriter.default,
-      {projectRoot, config: {presets: [babelPresetName], ignore: [`./${buildDirectory}/`]}}
+      {projectRoot, config: {presets: [babelPresetName]}}
     );
   });
 

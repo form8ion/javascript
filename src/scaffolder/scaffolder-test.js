@@ -106,8 +106,8 @@ suite('javascript project scaffolder', () => {
     hostResults,
     ciServiceResults,
     commitConventionResults,
-    projectTypePluginResults,
     projectTypeResults,
+    projectTypePluginResults,
     verificationResults,
     codeStyleResults,
     npmResults,
@@ -248,7 +248,6 @@ suite('javascript project scaffolder', () => {
         projectRoot,
         projectType,
         configs,
-        buildDirectory: projectTypeBuildDirectory,
         dialect: chosenDialect,
         testFilenamePattern
       })
@@ -306,14 +305,7 @@ suite('javascript project scaffolder', () => {
 
       assert.calledWith(
         dialects.default,
-        {
-          configs,
-          projectRoot,
-          projectType,
-          buildDirectory: projectTypeBuildDirectory,
-          dialect: chosenDialect,
-          testFilenamePattern
-        }
+        {configs, projectRoot, projectType, dialect: chosenDialect, testFilenamePattern}
       );
       assert.calledWith(npmConfig.default, {projectRoot, projectType, registries});
     });

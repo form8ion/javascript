@@ -31,6 +31,13 @@ Given('the project will be a(n) {string}', async function (projectType) {
   }
 });
 
+Given('an application-type plugin is chosen', async function () {
+  this.applicationTypeChoiceAnswer = 'foo';
+  this.fooApplicationEslintConfigs = [(() => ({name: any.word(), files: any.word()}))()];
+  this.fooApplicationBuildDirectory = any.word();
+  this.buildDirectory = this.fooApplicationBuildDirectory;
+});
+
 Then('the expected details are provided for a root-level project', async function () {
   const nvmRc = await fs.readFile(`${process.cwd()}/.nvmrc`);
 
