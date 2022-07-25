@@ -6,6 +6,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as scriptsLifter from './scripts/lifter';
+import * as dependenciesInstaller from '../dependencies/installer';
 import liftPackage from './lifter';
 
 suite('package.json lifter', () => {
@@ -18,7 +19,7 @@ suite('package.json lifter', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(jsCore, 'installDependencies');
+    sandbox.stub(dependenciesInstaller, 'default');
     sandbox.stub(jsCore, 'writePackageJson');
     sandbox.stub(fs, 'readFile');
     sandbox.stub(scriptsLifter, 'default');
@@ -106,14 +107,14 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, dependencies, devDependencies, packageManager});
 
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         dependencies,
         jsCore.PROD_DEPENDENCY_TYPE,
         projectRoot,
         packageManager
       );
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         devDependencies,
         jsCore.DEV_DEPENDENCY_TYPE,
         projectRoot,
@@ -125,14 +126,14 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, dependencies, devDependencies, packageManager});
 
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         dependencies,
         jsCore.PROD_DEPENDENCY_TYPE,
         projectRoot,
         packageManager
       );
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         devDependencies,
         jsCore.DEV_DEPENDENCY_TYPE,
         projectRoot,
@@ -144,30 +145,30 @@ suite('package.json lifter', () => {
       await liftPackage({projectRoot, dependencies, packageManager});
 
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         dependencies,
         jsCore.PROD_DEPENDENCY_TYPE,
         projectRoot,
         packageManager
       );
-      assert.calledWith(jsCore.installDependencies, [], jsCore.DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+      assert.calledWith(dependenciesInstaller.default, [], jsCore.DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
     });
 
     test('that only dev-dependencies are installed when no dependencies are provided', async () => {
       await liftPackage({projectRoot, devDependencies, packageManager});
 
       assert.calledWith(
-        jsCore.installDependencies,
+        dependenciesInstaller.default,
         devDependencies,
         jsCore.DEV_DEPENDENCY_TYPE,
         projectRoot,
         packageManager
       );
-      assert.calledWith(jsCore.installDependencies, [], jsCore.PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
+      assert.calledWith(dependenciesInstaller.default, [], jsCore.PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     });
 
     test('that a failure to install dependencies does not result in a failure to lift the package file', async () => {
-      jsCore.installDependencies
+      dependenciesInstaller.default
         .withArgs(dependencies, jsCore.PROD_DEPENDENCY_TYPE, projectRoot, packageManager)
         .throws(new Error());
 
@@ -175,7 +176,7 @@ suite('package.json lifter', () => {
     });
 
     test('that a failure to install dev-dependencies doesnt result in a failure to lift the package file', async () => {
-      jsCore.installDependencies
+      dependenciesInstaller.default
         .withArgs(devDependencies, jsCore.DEV_DEPENDENCY_TYPE, projectRoot, packageManager)
         .throws(new Error());
 

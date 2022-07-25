@@ -1,12 +1,8 @@
 import {promises as fs} from 'fs';
 import {error, info} from '@travi/cli-messages';
-import {
-  DEV_DEPENDENCY_TYPE,
-  PROD_DEPENDENCY_TYPE,
-  installDependencies,
-  writePackageJson
-} from '@form8ion/javascript-core';
+import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE, writePackageJson} from '@form8ion/javascript-core';
 
+import {install} from '../dependencies';
 import {lift as liftScripts} from './scripts';
 
 export default async function ({
@@ -39,8 +35,8 @@ export default async function ({
   info('Installing dependencies');
 
   try {
-    await installDependencies(dependencies || [], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
-    await installDependencies([...devDependencies || []], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    await install(dependencies || [], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
+    await install([...devDependencies || []], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
   } catch (e) {
     error('Failed to install dependencies');
   }
