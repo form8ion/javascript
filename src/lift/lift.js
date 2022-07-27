@@ -27,7 +27,11 @@ export default async function ({projectRoot, vcs, results}) {
 
   const packageManager = await resolvePackageManager({projectRoot, packageManager: manager});
 
-  const eslintResults = await liftEslint({projectRoot, configs: [...eslintConfigs || [], ...eslint?.configs || []]});
+  const eslintResults = await liftEslint({
+    projectRoot,
+    configs: [...eslintConfigs || [], ...eslint?.configs || []],
+    buildDirectory
+  });
   const enhancerResults = await applyEnhancers({
     results,
     enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects],

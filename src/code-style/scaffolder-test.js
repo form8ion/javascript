@@ -20,7 +20,6 @@ suite('code-style scaffolder', () => {
   const remarkDevDependencies = any.listOf(any.string);
   const remarkScripts = any.simpleObject();
   const configForRemark = any.simpleObject();
-  const buildDirectory = any.string();
   const eslintConfigs = any.listOf(any.word);
   const configureLinting = true;
   const dialect = any.word();
@@ -41,12 +40,7 @@ suite('code-style scaffolder', () => {
       .withArgs({projectRoot, projectType, config: configForRemark, vcs, dialect})
       .resolves(remarkResults);
     scaffoldEslint.default
-      .withArgs({
-        projectRoot,
-        config: configForEslint,
-        buildDirectory,
-        additionalConfiguration: {configs: eslintConfigs}
-      })
+      .withArgs({projectRoot, config: configForEslint, additionalConfiguration: {configs: eslintConfigs}})
       .resolves(eslintResults);
     prettierPlugin.scaffold.withArgs({projectRoot, config: configForPrettier}).resolves(prettierResults);
   });
@@ -62,7 +56,6 @@ suite('code-style scaffolder', () => {
       dialect,
       configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
-      buildDirectory,
       eslint: {configs: eslintConfigs},
       configureLinting,
       pathWithinParent

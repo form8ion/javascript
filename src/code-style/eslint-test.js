@@ -21,21 +21,15 @@ suite('eslint config scaffolder', () => {
     const packageName = any.word();
     const scope = any.string();
     const projectRoot = any.string();
-    const buildDirectory = any.string();
     const additionalIgnoredDirectories = any.listOf(any.word);
     const results = any.simpleObject();
     eslint.scaffold
-      .withArgs({
-        scope,
-        projectRoot,
-        ignore: {directories: [...additionalIgnoredDirectories, `/${buildDirectory}/`]}
-      })
+      .withArgs({scope, projectRoot, ignore: {directories: additionalIgnoredDirectories}})
       .resolves(results);
 
     assert.equal(
       await scaffoldEsLint({
         projectRoot,
-        buildDirectory,
         config: {packageName, scope},
         additionalConfiguration: {ignore: {directories: additionalIgnoredDirectories}}
       }),

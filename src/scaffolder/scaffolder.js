@@ -120,7 +120,6 @@ export default async function (options) {
       configs,
       vcs,
       configureLinting,
-      buildDirectory: projectTypeResults.buildDirectory,
       eslint: verificationResults.eslint
     }),
     scaffoldProjectTypePlugin({

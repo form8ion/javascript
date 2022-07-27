@@ -11,17 +11,12 @@ export default async function ({
   configs,
   vcs,
   configureLinting,
-  buildDirectory,
   eslint
 }) {
   return deepmerge.all(await Promise.all([
-    configs.eslint && configureLinting
-      && scaffoldEslint({
-        projectRoot,
-        config: configs.eslint,
-        buildDirectory,
-        additionalConfiguration: eslint
-      }),
+    configs.eslint
+      && configureLinting
+      && scaffoldEslint({projectRoot, config: configs.eslint, additionalConfiguration: eslint}),
     scaffoldRemark({
       projectRoot,
       projectType,

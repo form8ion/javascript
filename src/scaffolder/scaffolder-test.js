@@ -240,7 +240,6 @@ suite('javascript project scaffolder', () => {
       configs,
       vcs: vcsDetails,
       configureLinting,
-      buildDirectory: projectTypeBuildDirectory,
       eslint: verificationResultsEslintDetails
     }).resolves(codeStyleResults);
     dialects.default

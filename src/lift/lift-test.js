@@ -56,7 +56,7 @@ suite('lift', () => {
   test('that results specific to js projects are lifted', async () => {
     const enhancedResults = {...results, eslintConfigs, eslint: {configs: modernEslintConfigs}};
     eslintPlugin.lift
-      .withArgs({configs: [...eslintConfigs, ...modernEslintConfigs], projectRoot})
+      .withArgs({configs: [...eslintConfigs, ...modernEslintConfigs], projectRoot, buildDirectory})
       .resolves(eslintLiftResults);
     core.applyEnhancers
       .withArgs({
@@ -82,7 +82,7 @@ suite('lift', () => {
   test('that not providing `eslintConfigs` does not throw an error`', async () => {
     const enhancedResults = {...results, eslint: {configs: modernEslintConfigs}};
     eslintPlugin.lift
-      .withArgs({configs: modernEslintConfigs, projectRoot})
+      .withArgs({configs: modernEslintConfigs, projectRoot, buildDirectory})
       .resolves(eslintLiftResults);
     core.applyEnhancers
       .withArgs({
@@ -107,7 +107,7 @@ suite('lift', () => {
   test('that not providing `eslint` does not throw an error`', async () => {
     const enhancedResults = {...results, eslintConfigs};
     eslintPlugin.lift
-      .withArgs({configs: eslintConfigs, projectRoot})
+      .withArgs({configs: eslintConfigs, projectRoot, buildDirectory})
       .resolves(eslintLiftResults);
     core.applyEnhancers
       .withArgs({
@@ -132,7 +132,7 @@ suite('lift', () => {
   test('that `eslint` not containing configs does not throw an error`', async () => {
     const enhancedResults = {...results, eslintConfigs, eslint: {}};
     eslintPlugin.lift
-      .withArgs({configs: eslintConfigs, projectRoot})
+      .withArgs({configs: eslintConfigs, projectRoot, buildDirectory})
       .resolves(eslintLiftResults);
     core.applyEnhancers
       .withArgs({

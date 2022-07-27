@@ -18,7 +18,7 @@ export async function assertThatProperDirectoriesAreIgnoredFromEslint(
     const eslintIgnoreDetails = (await fs.readFile(`${process.cwd()}/.eslintignore`, 'utf-8')).toString().split(EOL);
 
     if (projectTypes.MONOREPO !== projectType) {
-      // assert.include(eslintIgnoreDetails, `/${buildDirectory}/`);
+      assert.include(eslintIgnoreDetails, `/${buildDirectory}/`);
     }
 
     if (projectTypes.CLI === projectType) {
