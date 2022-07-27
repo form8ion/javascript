@@ -3,7 +3,7 @@ import * as eslint from '@form8ion/eslint';
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
-import scaffoldEsLint from './eslint';
+import scaffoldEsLint from './scaffolder';
 
 suite('eslint config scaffolder', () => {
   let sandbox;

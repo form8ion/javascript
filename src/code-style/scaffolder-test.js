@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as scaffoldEslint from './eslint';
+import * as scaffoldEslint from './eslint/scaffolder';
 import * as scaffoldRemark from './remark';
 import {scaffold} from '.';
 
