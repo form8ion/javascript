@@ -33,7 +33,7 @@ suite('c8 scaffolder', () => {
       JSON.stringify({
         reporter: ['lcov', 'text-summary', 'html'],
         exclude: ['src/**/*-test.js', 'test/', 'thirdparty-wrappers/', 'vendor/']
-      })
+      }, null, 2)
     );
   });
 });
