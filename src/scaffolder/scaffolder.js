@@ -71,38 +71,36 @@ export default async function (options) {
     description,
     pathWithinParent
   });
-  const [projectTypeResults, verificationResults] = await Promise.all([
-    scaffoldProjectType({
-      projectType,
-      projectRoot,
-      projectName,
-      packageName,
-      packageManager,
-      visibility,
-      applicationTypes,
-      packageTypes,
-      packageBundlers,
-      monorepoTypes,
-      scope,
-      tests,
-      vcs,
-      decisions,
-      dialect,
-      publishRegistry: registries.publish
-    }),
-    scaffoldVerification({
-      projectRoot,
-      dialect,
-      visibility,
-      packageManager,
-      vcs,
-      registries,
-      tests,
-      unitTestFrameworks,
-      decisions,
-      pathWithinParent
-    })
-  ]);
+  const projectTypeResults = await scaffoldProjectType({
+    projectType,
+    projectRoot,
+    projectName,
+    packageName,
+    packageManager,
+    visibility,
+    applicationTypes,
+    packageTypes,
+    packageBundlers,
+    monorepoTypes,
+    scope,
+    tests,
+    vcs,
+    decisions,
+    dialect,
+    publishRegistry: registries.publish
+  });
+  const verificationResults = await scaffoldVerification({
+    projectRoot,
+    dialect,
+    visibility,
+    packageManager,
+    vcs,
+    registries,
+    tests,
+    unitTestFrameworks,
+    decisions,
+    pathWithinParent
+  });
   const [nodeVersion, npmResults, dialectResults, codeStyleResults, projectTypePluginResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
     scaffoldNpmConfig({projectType, projectRoot, registries}),
