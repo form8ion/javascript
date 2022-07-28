@@ -20,7 +20,7 @@ suite('babel lifter', () => {
     const projectRoot = any.string();
     const buildDirectory = any.string();
 
-    assert.deepEqual(await lift({buildDirectory, projectRoot}), {});
+    assert.deepEqual(await lift({results: {buildDirectory}, projectRoot}), {});
     assert.calledWith(ignoreAdder.default, {ignore: buildDirectory, projectRoot});
   });
 });

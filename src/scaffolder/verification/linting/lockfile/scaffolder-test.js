@@ -42,7 +42,7 @@ suite('lockfile linting', () => {
         type: packageManagers.NPM,
         'validate-https': true,
         'allowed-hosts': allowedHosts
-      })
+      }, null, 2)
     );
     assert.deepEqual(devDependencies, ['lockfile-lint']);
     assert.equal(scripts['lint:lockfile'], 'lockfile-lint');
@@ -66,7 +66,7 @@ suite('lockfile linting', () => {
         type: packageManagers.YARN,
         'validate-https': true,
         'allowed-hosts': allowedHosts
-      })
+      }, null, 2)
     );
     assert.deepEqual(devDependencies, ['lockfile-lint']);
     assert.equal(scripts['lint:lockfile'], 'lockfile-lint');

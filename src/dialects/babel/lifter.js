@@ -1,7 +1,7 @@
 import {addIgnore} from './config';
 
-export default async function ({buildDirectory, projectRoot}) {
-  await addIgnore({ignore: buildDirectory, projectRoot});
+export default async function ({results, projectRoot}) {
+  await addIgnore({ignore: results.buildDirectory, projectRoot});
 
   return {};
 }

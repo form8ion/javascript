@@ -1,5 +1,6 @@
-import {promises as fs} from 'fs';
+import {fileTypes} from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
+import {write} from '@form8ion/config-file';
 
 import buildAllowedHostsList from './allowed-hosts-builder';
 
@@ -26,15 +27,17 @@ export default async function ({projectRoot, packageManager, registries}) {
     );
   }
 
-  await fs.writeFile(
-    `${projectRoot}/.lockfile-lintrc.json`,
-    JSON.stringify({
+  await write({
+    name: 'lockfile-lint',
+    format: fileTypes.JSON,
+    path: projectRoot,
+    config: {
       path: determineLockfilePathFor(packageManager),
       type: packageManager,
       'validate-https': true,
       'allowed-hosts': buildAllowedHostsList({packageManager, registries})
-    })
-  );
+    }
+  });
 
   return {
     devDependencies: ['lockfile-lint'],
