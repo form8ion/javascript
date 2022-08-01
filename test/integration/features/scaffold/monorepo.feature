@@ -22,6 +22,7 @@ Feature: Monorepo
     And the npm cli is logged in
     And nvm is properly configured
     And the project will not be tested
+    And the project will not be transpiled or linted
     When the project is scaffolded
     Then no error is thrown
     And the monorepo scripts are included
