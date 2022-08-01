@@ -98,7 +98,7 @@ const {
         dependencies: [],
         devDependencies: [],
         scripts: {},
-        eslintConfigs: [],
+        eslint: {configs: [], ignore: {directories: []}},
         packageManager: 'npm'
       }
     });
