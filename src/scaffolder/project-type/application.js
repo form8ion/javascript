@@ -20,7 +20,6 @@ export default async function ({projectRoot}) {
     devDependencies: ['rimraf'],
     vcsIgnore: {files: ['.env'], directories: [`/${buildDirectory}/`]},
     buildDirectory,
-    eslintConfigs: [],
     nextSteps: []
   };
 }

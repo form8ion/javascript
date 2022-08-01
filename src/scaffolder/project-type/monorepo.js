@@ -7,7 +7,6 @@ export default async function ({projectRoot}) {
   await mergeIntoExistingPackageJson({projectRoot, config: {private: true}});
 
   return {
-    eslintConfigs: [],
     nextSteps: [{
       summary: 'Add packages to your new monorepo',
       description: 'Leverage [@form8ion/add-package-to-monorepo](https://npm.im/@form8ion/add-package-to-monorepo)'

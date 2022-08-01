@@ -35,13 +35,8 @@ suite('verification', () => {
     const lintingResults = any.simpleObject();
     const huskyResults = any.simpleObject();
     const testingEslintResults = any.simpleObject();
-    const testingResultsEslintConfigs = any.simpleObject();
     const pathWithinParent = any.string();
-    const testingResults = {
-      ...any.simpleObject(),
-      eslint: testingEslintResults,
-      eslintConfigs: testingResultsEslintConfigs
-    };
+    const testingResults = {...any.simpleObject(), eslint: testingEslintResults};
     const registries = any.simpleObject();
     const mergedResults = any.simpleObject();
     lintingScaffolder.default

@@ -49,7 +49,6 @@ suite('cli project-type', () => {
         vcsIgnore: {files: [], directories: ['/bin/']},
         buildDirectory: 'bin',
         badges,
-        eslintConfigs: [],
         nextSteps: []
       }
     );

@@ -20,7 +20,6 @@ suite('monorepo project-type', () => {
     assert.deepEqual(
       await scaffoldMonorepo({projectRoot}),
       {
-        eslintConfigs: [],
         nextSteps: [{
           summary: 'Add packages to your new monorepo',
           description: 'Leverage [@form8ion/add-package-to-monorepo](https://npm.im/@form8ion/add-package-to-monorepo)'

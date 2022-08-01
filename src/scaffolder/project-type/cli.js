@@ -36,7 +36,6 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
       badges: defineBadges(packageName, visibility),
-      eslintConfigs: [],
       nextSteps: []
     }
   );

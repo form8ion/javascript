@@ -61,7 +61,6 @@ export default async function ({
   return deepmerge.all([
     {
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),
-      eslintConfigs: [],
       nextSteps: [
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}

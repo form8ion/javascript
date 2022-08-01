@@ -2,7 +2,6 @@ import {fileTypes, writeConfigFile} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 
 export default async function ({config, projectType, projectRoot, testFilenamePattern}) {
-  const eslintConfigs = ['typescript'];
   const shareableTsConfigPackage = `${config.scope}/tsconfig`;
 
   await writeConfigFile({
@@ -25,8 +24,7 @@ export default async function ({config, projectType, projectRoot, testFilenamePa
   });
 
   return {
-    eslint: {configs: eslintConfigs},
-    eslintConfigs,
+    eslint: {configs: ['typescript']},
     devDependencies: ['typescript', shareableTsConfigPackage],
     vcsIgnore: {files: ['tsconfig.tsbuildinfo']}
   };

@@ -64,7 +64,6 @@ suite('package project-type', () => {
         scripts: {},
         badges,
         documentation,
-        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -111,7 +110,6 @@ suite('package project-type', () => {
         scripts: {},
         badges,
         documentation,
-        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -154,7 +152,6 @@ suite('package project-type', () => {
         scripts: {},
         badges,
         documentation,
-        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );
@@ -203,7 +200,6 @@ suite('package project-type', () => {
         scripts: {},
         badges,
         documentation,
-        eslintConfigs: [],
         nextSteps: commonNextSteps
       }
     );

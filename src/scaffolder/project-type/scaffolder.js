@@ -40,9 +40,7 @@ export default async function ({
     case projectTypes.MONOREPO:
       return scaffoldMonorepoType({projectRoot});
     case 'Other':
-      return {
-        eslintConfigs: []
-      };
+      return {};
     default:
       throw new Error(`The project-type of ${projectType} is invalid`);
   }

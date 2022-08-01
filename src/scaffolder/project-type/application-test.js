@@ -35,7 +35,6 @@ suite('application project-type', () => {
           directories: [`/${buildDirectory}/`]
         },
         buildDirectory,
-        eslintConfigs: [],
         nextSteps: []
       }
     );

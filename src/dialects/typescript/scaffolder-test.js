@@ -18,10 +18,9 @@ suite('typescript dialect', () => {
   teardown(() => sandbox.restore());
 
   test('that the eslint config is defined', async () => {
-    const {eslint: {configs}, eslintConfigs} = await scaffoldTypescriptDialect({config: {}});
+    const {eslint: {configs}} = await scaffoldTypescriptDialect({config: {}});
 
     assert.deepEqual(configs, ['typescript']);
-    assert.deepEqual(eslintConfigs, ['typescript']);
   });
 
   test('that the tsconfig extends the scoped package', async () => {

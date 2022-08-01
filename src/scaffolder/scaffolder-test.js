@@ -43,7 +43,6 @@ suite('javascript project scaffolder', () => {
   const commitConventionDevDependencies = any.listOf(any.string);
   const testingNextSteps = any.listOf(any.simpleObject);
   const ciServiceNextSteps = any.listOf(any.simpleObject);
-  const projectTypeEslintConfigs = any.listOf(any.string);
   const projectTypeNextSteps = any.listOf(any.simpleObject);
   const hostResults = any.simpleObject();
   const npmResults = any.simpleObject();
@@ -94,7 +93,6 @@ suite('javascript project scaffolder', () => {
     ...any.simpleObject(),
     buildDirectory: projectTypeBuildDirectory,
     packageProperties: projectTypePackageProperties,
-    eslintConfigs: projectTypeEslintConfigs,
     nextSteps: projectTypeNextSteps,
     tags: projectTypeTags
   };

@@ -12,7 +12,6 @@ suite('unit testing scaffolder', () => {
   const projectRoot = any.string();
   const unitTestDevDependencies = any.listOf(any.string);
   const unitTestScripts = any.simpleObject();
-  const unitTestEslintConfigs = any.listOf(any.string);
   const unitTestNextSteps = any.listOf(any.simpleObject);
   const nycDevDependencies = any.listOf(any.string);
   const nycFilesToIgnoreFromVcs = any.listOf(any.string);
@@ -38,7 +37,6 @@ suite('unit testing scaffolder', () => {
     jsCore.scaffoldChoice.withArgs(validatedFrameworks, chosenFramework, {projectRoot, dialect}).resolves({
       devDependencies: unitTestDevDependencies,
       scripts: unitTestScripts,
-      eslintConfigs: unitTestEslintConfigs,
       nextSteps: unitTestNextSteps
     });
   });
@@ -63,7 +61,6 @@ suite('unit testing scaffolder', () => {
           ...unitTestScripts
         },
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs},
-        eslintConfigs: unitTestEslintConfigs,
         nextSteps: unitTestNextSteps
       }
     );
@@ -90,7 +87,6 @@ suite('unit testing scaffolder', () => {
         },
         badges: {status: nycStatusBadges},
         vcsIgnore: {files: nycFilesToIgnoreFromVcs, directories: nycDirectoriesToIgnoreFromVcs},
-        eslintConfigs: unitTestEslintConfigs,
         nextSteps: unitTestNextSteps
       }
     );

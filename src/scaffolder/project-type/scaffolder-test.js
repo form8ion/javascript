@@ -122,7 +122,7 @@ suite('project-type scaffolder', () => {
   test('that no error is thrown when the project-type is `Other`', async () => {
     assert.deepEqual(
       await projectTypeScaffolder({projectType: 'Other'}),
-      {eslintConfigs: []}
+      {}
     );
   });
 
