@@ -5,6 +5,11 @@ necessary changes to an existing project
 
 ## Table of Contents
 
+* [Arguments](#arguments)
+  * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
+  * [`vcs` __object__ (_required_)](#vcs-object-required)
+  * [`results` __object__ (_required_)](#results-object-required)
+
 ## Arguments
 
 Takes a single options object as an argument, containing:

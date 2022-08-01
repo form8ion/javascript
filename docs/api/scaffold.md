@@ -19,6 +19,7 @@ Language scaffolder for JavaScript projects
   * [`applicationTypes` __object__ (_optional_)](#applicationtypes-object-optional)
   * [`packageTypes` __object__ (_optional_)](#packagetypes-object-optional)
   * [`monorepoTypes` __object__ (_optional_)](#monorepotypes-object-optional)
+  * [`packageBundlers` __object__ (_optional_)](#packagebundlers-object-optional)
   * [`unitTestFrameworks` __object__ (_required_)](#unittestframeworks-object-required)
   * [`configs` __object__ (_optional_)](#configs-object-optional)
     * [`eslint`: __object__ (_optional_)](#eslint-object-optional)
