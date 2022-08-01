@@ -44,6 +44,7 @@ Given('the chosen application plugin defines override ESLint configs', async fun
   this.integrationTestAnswer = true;
   this.projectTypeChoiceAnswer = 'foo';
   this.fooApplicationEslintConfigs = [(() => ({name: any.word(), files: any.word()}))()];
+  this.fooApplicationEslintIgnoredDirectories = any.listOf(any.word);
 });
 
 Then('the base ESLint config is extended', async function () {
@@ -66,10 +67,16 @@ Then('the additional ESLint configs are extended', async function () {
 });
 
 Then('the ESLint overrides are defined', async function () {
-  const config = load(await fs.readFile(`${process.cwd()}/.eslintrc.yml`));
+  const [configContents, ignoreFileContents] = await Promise.all([
+    fs.readFile(`${process.cwd()}/.eslintrc.yml`, 'utf-8'),
+    fs.readFile(`${process.cwd()}/.eslintignore`, 'utf-8')
+  ]);
+  const config = load(configContents);
+  const ignores = ignoreFileContents.split(EOL);
 
   assert.includeDeepMembers(
     config.overrides,
     this.fooApplicationEslintConfigs.map(cfg => ({files: cfg.files, extends: `${this.eslintScope}/${cfg.name}`}))
   );
+  assert.includeMembers(ignores, this.fooApplicationEslintIgnoredDirectories);
 });

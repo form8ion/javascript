@@ -1,11 +1,11 @@
 import * as prettierPlugin from '@form8ion/prettier';
+import * as eslintPlugin from '@form8ion/eslint';
 import deepmerge from 'deepmerge';
 
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as scaffoldEslint from './eslint/scaffolder';
 import * as scaffoldRemark from './remark';
 import {scaffold} from '.';
 
@@ -20,7 +20,6 @@ suite('code-style scaffolder', () => {
   const remarkDevDependencies = any.listOf(any.string);
   const remarkScripts = any.simpleObject();
   const configForRemark = any.simpleObject();
-  const eslintConfigs = any.listOf(any.word);
   const configureLinting = true;
   const dialect = any.word();
   const remarkResults = any.simpleObject();
@@ -31,7 +30,7 @@ suite('code-style scaffolder', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(scaffoldEslint, 'default');
+    sandbox.stub(eslintPlugin, 'scaffold');
     sandbox.stub(scaffoldRemark, 'default');
     sandbox.stub(prettierPlugin, 'scaffold');
     sandbox.stub(deepmerge, 'all');
@@ -39,9 +38,7 @@ suite('code-style scaffolder', () => {
     scaffoldRemark.default
       .withArgs({projectRoot, projectType, config: configForRemark, vcs, dialect})
       .resolves(remarkResults);
-    scaffoldEslint.default
-      .withArgs({projectRoot, config: configForEslint, additionalConfiguration: {configs: eslintConfigs}})
-      .resolves(eslintResults);
+    eslintPlugin.scaffold.withArgs({projectRoot, config: configForEslint}).resolves(eslintResults);
     prettierPlugin.scaffold.withArgs({projectRoot, config: configForPrettier}).resolves(prettierResults);
   });
 
@@ -56,7 +53,6 @@ suite('code-style scaffolder', () => {
       dialect,
       configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
-      eslint: {configs: eslintConfigs},
       configureLinting,
       pathWithinParent
     });

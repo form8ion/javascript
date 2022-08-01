@@ -44,8 +44,6 @@ suite('javascript project scaffolder', () => {
   const testingNextSteps = any.listOf(any.simpleObject);
   const ciServiceNextSteps = any.listOf(any.simpleObject);
   const projectTypeEslintConfigs = any.listOf(any.string);
-  const verificationResultsEslintConfigs = any.listOf(any.string);
-  const verificationResultsEslintDetails = {configs: verificationResultsEslintConfigs, ignore: any.simpleObject()};
   const projectTypeNextSteps = any.listOf(any.simpleObject);
   const hostResults = any.simpleObject();
   const npmResults = any.simpleObject();
@@ -72,8 +70,7 @@ suite('javascript project scaffolder', () => {
   const verificationResults = {
     ...any.simpleObject(),
     nextSteps: testingNextSteps,
-    testFilenamePattern,
-    eslint: verificationResultsEslintDetails
+    testFilenamePattern
   };
   const codeStyleResults = any.simpleObject();
   const ciServiceResults = {...any.simpleObject(), nextSteps: ciServiceNextSteps};
@@ -239,8 +236,7 @@ suite('javascript project scaffolder', () => {
       dialect: chosenDialect,
       configs,
       vcs: vcsDetails,
-      configureLinting,
-      eslint: verificationResultsEslintDetails
+      configureLinting
     }).resolves(codeStyleResults);
     dialects.default
       .withArgs({
