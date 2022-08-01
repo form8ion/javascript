@@ -106,7 +106,10 @@ When(/^the project is scaffolded$/, async function () {
         foo: {
           scaffolder: foo => ({
             foo,
-            eslintConfigs: this.fooApplicationEslintConfigs,
+            eslint: {
+              configs: this.fooApplicationEslintConfigs,
+              ignore: {directories: this.fooApplicationEslintIgnoredDirectories}
+            },
             buildDirectory: this.fooApplicationBuildDirectory
           })
         }
@@ -178,7 +181,7 @@ When('the scaffolder results are processed', async function () {
         scripts: this.scriptsResults,
         tags: this.tagsResults,
         packageManager: this.packageManager,
-        eslintConfigs: this.additionalShareableConfigs
+        eslint: {configs: this.additionalShareableConfigs}
       },
       ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
     });

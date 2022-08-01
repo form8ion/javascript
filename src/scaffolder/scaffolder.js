@@ -111,15 +111,7 @@ export default async function (options) {
       projectType,
       testFilenamePattern: verificationResults.testFilenamePattern
     }),
-    scaffoldCodeStyle({
-      projectRoot,
-      projectType,
-      dialect,
-      configs,
-      vcs,
-      configureLinting,
-      eslint: verificationResults.eslint
-    }),
+    scaffoldCodeStyle({projectRoot, projectType, dialect, configs, vcs, configureLinting}),
     scaffoldProjectTypePlugin({
       projectRoot,
       projectType,
