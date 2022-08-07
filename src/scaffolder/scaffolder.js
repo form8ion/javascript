@@ -101,7 +101,7 @@ export default async function (options) {
     decisions,
     pathWithinParent
   });
-  const [nodeVersion, npmResults, dialectResults, codeStyleResults, projectTypePluginResults] = await Promise.all([
+  const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
     scaffoldNpmConfig({projectType, projectRoot, registries}),
     scaffoldDialect({
@@ -111,24 +111,24 @@ export default async function (options) {
       projectType,
       testFilenamePattern: verificationResults.testFilenamePattern
     }),
-    scaffoldCodeStyle({projectRoot, projectType, dialect, configs, vcs, configureLinting}),
-    scaffoldProjectTypePlugin({
-      projectRoot,
-      projectType,
-      projectName,
-      packageName,
-      packageManager,
-      scope,
-      dialect,
-      tests,
-      decisions,
-      plugins: {
-        [projectTypes.PACKAGE]: packageTypes,
-        [projectTypes.APPLICATION]: applicationTypes,
-        [projectTypes.MONOREPO]: monorepoTypes
-      }
-    })
+    scaffoldCodeStyle({projectRoot, projectType, dialect, configs, vcs, configureLinting})
   ]);
+  const projectTypePluginResults = await scaffoldProjectTypePlugin({
+    projectRoot,
+    projectType,
+    projectName,
+    packageName,
+    packageManager,
+    scope,
+    dialect,
+    tests,
+    decisions,
+    plugins: {
+      [projectTypes.PACKAGE]: packageTypes,
+      [projectTypes.APPLICATION]: applicationTypes,
+      [projectTypes.MONOREPO]: monorepoTypes
+    }
+  });
   const mergedContributions = deepmerge.all([
     ...(await Promise.all([
       scaffoldChoice(
