@@ -22,7 +22,29 @@ suite('package.json property sorter', () => {
     sortObjectKeys.default
       .withArgs(
         packageContents,
-        ['name', 'keywords', 'engines', 'scripts', 'dependencies', 'devDependencies', 'peerDependencies']
+        [
+          'name',
+          'description',
+          'license',
+          'version',
+          'engines',
+          'author',
+          'repository',
+          'bugs',
+          'homepage',
+          'keywords',
+          'runkitExampleFilename',
+          'exports',
+          'main',
+          'module',
+          'files',
+          'publishConfig',
+          'sideEffects',
+          'scripts',
+          'dependencies',
+          'devDependencies',
+          'peerDependencies'
+        ]
       )
       .returns(sortedPackageContents);
 

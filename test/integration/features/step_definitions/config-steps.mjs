@@ -12,6 +12,6 @@ Then(/^Babel and ESLint are not scaffolded$/, async function () {
 Then('the package.json properties are sorted', async function () {
   assert.deepEqual(
     Object.keys(JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'))),
-    ['name', 'keywords', 'engines', 'scripts', 'dependencies', 'devDependencies', 'peerDependencies']
+    ['name', 'engines', 'keywords', 'scripts', 'dependencies', 'devDependencies', 'peerDependencies']
   );
 });
