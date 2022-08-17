@@ -6,6 +6,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as scriptsLifter from './scripts/lifter';
+import * as propertySorter from './property-sorter';
 import * as dependenciesInstaller from '../dependencies/installer';
 import liftPackage from './lifter';
 
@@ -15,6 +16,7 @@ suite('package.json lifter', () => {
   const pathToPackageJson = `${projectRoot}/package.json`;
   const packageJsonContents = {...any.simpleObject(), scripts: any.simpleObject()};
   const updatedScripts = any.simpleObject();
+  const sortedPackageContents = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -23,6 +25,7 @@ suite('package.json lifter', () => {
     sandbox.stub(jsCore, 'writePackageJson');
     sandbox.stub(fs, 'readFile');
     sandbox.stub(scriptsLifter, 'default');
+    sandbox.stub(propertySorter, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -35,13 +38,11 @@ suite('package.json lifter', () => {
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: originalScripts}));
       scriptsLifter.default.withArgs({existingScripts: originalScripts, scripts}).returns(updatedScripts);
+      propertySorter.default.withArgs({...packageJsonContents, scripts: updatedScripts}).returns(sortedPackageContents);
 
       await liftPackage({projectRoot, scripts});
 
-      assert.calledWith(
-        jsCore.writePackageJson,
-        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts}}
-      );
+      assert.calledWith(jsCore.writePackageJson, {projectRoot, config: sortedPackageContents});
     });
   });
 
@@ -54,13 +55,13 @@ suite('package.json lifter', () => {
       scriptsLifter.default
         .withArgs({existingScripts: packageJsonContents.scripts, scripts: undefined})
         .returns(updatedScripts);
+      propertySorter.default
+        .withArgs({...packageJsonContents, scripts: updatedScripts, keywords: tags})
+        .returns(sortedPackageContents);
 
       await liftPackage({projectRoot, tags});
 
-      assert.calledWith(
-        jsCore.writePackageJson,
-        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: tags}}
-      );
+      assert.calledWith(jsCore.writePackageJson, {projectRoot, config: sortedPackageContents});
     });
 
     test('that tags are added as keywords when some keywords already exist', async () => {
@@ -70,16 +71,13 @@ suite('package.json lifter', () => {
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: {}, keywords: existingKeywords}));
       scriptsLifter.default.withArgs({existingScripts: {}, scripts: undefined}).returns(updatedScripts);
+      propertySorter.default
+        .withArgs({...packageJsonContents, scripts: updatedScripts, keywords: [...existingKeywords, ...tags]})
+        .returns(sortedPackageContents);
 
       await liftPackage({projectRoot, tags});
 
-      assert.calledWith(
-        jsCore.writePackageJson,
-        {
-          projectRoot,
-          config: {...packageJsonContents, scripts: updatedScripts, keywords: [...existingKeywords, ...tags]}
-        }
-      );
+      assert.calledWith(jsCore.writePackageJson, {projectRoot, config: sortedPackageContents});
     });
 
     test('that keywords are not modified when some keywords already exist but none are provided', async () => {
@@ -88,13 +86,13 @@ suite('package.json lifter', () => {
         .withArgs(pathToPackageJson, 'utf8')
         .resolves(JSON.stringify({...packageJsonContents, scripts: {}, keywords: existingKeywords}));
       scriptsLifter.default.withArgs({existingScripts: {}, scripts: {}}).returns(updatedScripts);
+      propertySorter.default
+        .withArgs({...packageJsonContents, scripts: updatedScripts, keywords: existingKeywords})
+        .returns(sortedPackageContents);
 
       await liftPackage({projectRoot, scripts: {}});
 
-      assert.calledWith(
-        jsCore.writePackageJson,
-        {projectRoot, config: {...packageJsonContents, scripts: updatedScripts, keywords: existingKeywords}}
-      );
+      assert.calledWith(jsCore.writePackageJson, {projectRoot, config: sortedPackageContents});
     });
   });
 

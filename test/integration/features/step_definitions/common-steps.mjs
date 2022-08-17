@@ -167,10 +167,13 @@ When('the scaffolder results are processed', async function () {
   await fs.writeFile(
     `${projectRoot}/package.json`,
     JSON.stringify({
-      name: this.projectName,
+      ...this.enginesNode && {engines: {node: this.enginesNode}},
+      devDependencies: {},
       scripts: this.existingScripts,
+      peerDependencies: {},
       keywords: this.existingKeywords,
-      ...this.enginesNode && {engines: {node: this.enginesNode}}
+      dependencies: {},
+      name: this.projectName
     })
   );
 

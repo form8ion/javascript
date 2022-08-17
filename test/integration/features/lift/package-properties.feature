@@ -16,3 +16,11 @@ Feature: Package Properties
     When the scaffolder results are processed
     Then the existing keywords still exist
     And keywords from the results exist
+
+  Scenario: properties in random order
+    Given an "npm" lockfile exists
+    And a definition exists for engines.node
+    And there are existing keywords
+    And husky is not installed
+    When the scaffolder results are processed
+    Then the package.json properties are sorted
