@@ -109,7 +109,9 @@ When(/^the project is scaffolded$/, async function () {
             foo,
             eslint: {
               configs: this.fooApplicationEslintConfigs,
-              ignore: {directories: this.fooApplicationEslintIgnoredDirectories}
+              ...this.fooApplicationEslintIgnoredDirectories && {
+                ignore: {directories: this.fooApplicationEslintIgnoredDirectories}
+              }
             },
             buildDirectory: this.fooApplicationBuildDirectory
           })
@@ -125,6 +127,12 @@ When(/^the project is scaffolded$/, async function () {
 
             return {};
           }
+        },
+        'lint-peer': {
+          scaffolder: ({projectRoot}) => ({
+            scripts: {'lint:peer': this.alternateLintPeerScript},
+            projectRoot
+          })
         }
       },
       decisions: {

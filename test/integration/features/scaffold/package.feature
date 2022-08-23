@@ -64,6 +64,7 @@ Feature: Package Project Type
     And the npm cli is logged in
     And nvm is properly configured
     And the project will not be tested
+    And the package-type plugin modifies the lint-peer script
     And a babel preset is provided
     But the project will not be transpiled or linted
     When the project is scaffolded
@@ -72,6 +73,7 @@ Feature: Package Project Type
     And the expected details are provided for a root-level project
     And the expected files for a "Package" are generated
     And Babel and ESLint are not scaffolded
+    And the alternate lint-peer script is used
 
   Scenario: Common JS config package
     Given the project will be a "Package"

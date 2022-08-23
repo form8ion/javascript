@@ -142,11 +142,11 @@ export default async function (options) {
       scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent})
     ])),
     projectTypeResults,
-    projectTypePluginResults,
     verificationResults,
     codeStyleResults,
     npmResults,
-    dialectResults
+    dialectResults,
+    projectTypePluginResults
   ]);
 
   const liftResults = await lift({
