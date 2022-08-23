@@ -16,6 +16,7 @@ export default async function ({
   vcs,
   decisions,
   dialect,
+  provideExample,
   publishRegistry
 }) {
   switch (projectType) {
@@ -31,6 +32,7 @@ export default async function ({
         vcs,
         decisions,
         dialect,
+        provideExample,
         publishRegistry
       });
     case projectTypes.APPLICATION:

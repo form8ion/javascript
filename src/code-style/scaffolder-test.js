@@ -21,7 +21,6 @@ suite('code-style scaffolder', () => {
   const remarkScripts = any.simpleObject();
   const configForRemark = any.simpleObject();
   const configureLinting = true;
-  const dialect = any.word();
   const remarkResults = any.simpleObject();
   const eslintResults = any.simpleObject();
   const prettierResults = any.simpleObject();
@@ -36,7 +35,7 @@ suite('code-style scaffolder', () => {
     sandbox.stub(deepmerge, 'all');
 
     scaffoldRemark.default
-      .withArgs({projectRoot, projectType, config: configForRemark, vcs, dialect})
+      .withArgs({projectRoot, projectType, config: configForRemark, vcs})
       .resolves(remarkResults);
     eslintPlugin.scaffold.withArgs({projectRoot, config: configForEslint}).resolves(eslintResults);
     prettierPlugin.scaffold.withArgs({projectRoot, config: configForPrettier}).resolves(prettierResults);
@@ -50,7 +49,6 @@ suite('code-style scaffolder', () => {
     const result = await scaffold({
       projectRoot,
       projectType,
-      dialect,
       configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
       configureLinting,
@@ -66,7 +64,6 @@ suite('code-style scaffolder', () => {
     const result = await scaffold({
       projectRoot,
       projectType,
-      dialect,
       configs: {remark: configForRemark, prettier: configForPrettier},
       vcs,
       configureLinting,
@@ -86,7 +83,6 @@ suite('code-style scaffolder', () => {
     const result = await scaffold({
       projectRoot,
       projectType,
-      dialect,
       configs: {eslint: configForEslint, remark: configForRemark, prettier: configForPrettier},
       vcs,
       configureLinting: false,

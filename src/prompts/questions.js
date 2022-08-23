@@ -8,6 +8,7 @@ import buildDialectChoices from '../dialects/prompt-choices';
 import {
   lintingPromptShouldBePresented,
   projectIsApplication,
+  projectIsPackage,
   scopePromptShouldBePresentedFactory,
   shouldBeScopedPromptShouldBePresented
 } from './conditionals';
@@ -68,6 +69,7 @@ export async function prompt(
     [questionNames.AUTHOR_EMAIL]: authorEmail,
     [questionNames.AUTHOR_URL]: authorUrl,
     [questionNames.CONFIGURE_LINTING]: configureLinting,
+    [questionNames.PROVIDE_EXAMPLE]: provideExample,
     [questionNames.PACKAGE_MANAGER]: packageManager,
     [questionNames.DIALECT]: dialect
   } = await promptWithInquirer([
@@ -126,6 +128,12 @@ export async function prompt(
       when: lintingPromptShouldBePresented
     },
     {
+      name: questionNames.PROVIDE_EXAMPLE,
+      message: 'Should an example be provided in the README?',
+      type: 'confirm',
+      when: projectIsPackage
+    },
+    {
       name: questionNames.HOST,
       type: 'list',
       message: 'Where will the application be hosted?',
@@ -143,6 +151,7 @@ export async function prompt(
     nodeVersionCategory,
     author: {name: authorName, email: authorEmail, url: authorUrl},
     configureLinting: false !== configureLinting,
+    provideExample,
     packageManager,
     dialect
   };

@@ -7,7 +7,6 @@ import scaffoldRemark from './remark';
 export default async function ({
   projectRoot,
   projectType,
-  dialect,
   configs,
   vcs,
   configureLinting
@@ -19,7 +18,6 @@ export default async function ({
     scaffoldRemark({
       projectRoot,
       projectType,
-      dialect,
       vcs,
       config: configs.remark || '@form8ion/remark-lint-preset'
     }),

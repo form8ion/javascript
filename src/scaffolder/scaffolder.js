@@ -53,6 +53,7 @@ export default async function (options) {
     nodeVersionCategory,
     author,
     configureLinting,
+    provideExample,
     packageManager,
     dialect
   } = await prompt(overrides, ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
@@ -87,6 +88,7 @@ export default async function (options) {
     vcs,
     decisions,
     dialect,
+    provideExample,
     publishRegistry: registries.publish
   });
   const verificationResults = await scaffoldVerification({
@@ -111,7 +113,7 @@ export default async function (options) {
       projectType,
       testFilenamePattern: verificationResults.testFilenamePattern
     }),
-    scaffoldCodeStyle({projectRoot, projectType, dialect, configs, vcs, configureLinting})
+    scaffoldCodeStyle({projectRoot, projectType, configs, vcs, configureLinting})
   ]);
   const projectTypePluginResults = await scaffoldProjectTypePlugin({
     projectRoot,

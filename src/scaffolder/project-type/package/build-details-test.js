@@ -50,9 +50,27 @@ suite('package build details', () => {
   teardown(() => sandbox.restore());
 
   test('that common-js project is defined correctly', async () => {
-    assert.deepEqual(await buildDetails({dialect: jsCore.dialects.COMMON_JS, projectRoot, projectName}), {});
+    const results = await buildDetails({
+      dialect: jsCore.dialects.COMMON_JS,
+      projectRoot,
+      projectName,
+      provideExample: true
+    });
+
+    assert.deepEqual(results, {});
     assert.calledWith(fsPromises.writeFile, pathToExample, `const ${camelizedProjectName} = require('.');\n`);
     assert.calledWith(touch.default, `${projectRoot}/index.js`);
+  });
+
+  test('that the example file is not created for a common-js project if `provideExample` is false', async () => {
+    await buildDetails({
+      dialect: jsCore.dialects.COMMON_JS,
+      projectRoot,
+      projectName,
+      provideExample: false
+    });
+
+    assert.notCalled(fsPromises.writeFile);
   });
 
   test('that a modern-js project is defined correctly', async () => {
@@ -63,7 +81,52 @@ suite('package build details', () => {
       .withArgs(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: jsCore.projectTypes.PACKAGE})
       .resolves(bundlerResults);
 
-    const results = await buildDetails({dialect, projectRoot, projectName, packageBundlers, decisions});
+    const results = await buildDetails({
+      dialect,
+      projectRoot,
+      projectName,
+      packageBundlers,
+      decisions,
+      provideExample: true
+    });
+
+    assert.deepEqual(
+      results,
+      {
+        ...bundlerResults,
+        devDependencies: ['rimraf'],
+        scripts: {
+          clean: 'rimraf ./lib',
+          prebuild: 'run-s clean',
+          build: 'npm-run-all --print-label --parallel build:*',
+          prepack: 'run-s build',
+          'pregenerate:md': 'run-s build'
+        },
+        vcsIgnore: {directories: ['/lib/']},
+        buildDirectory: 'lib',
+        badges: {consumer: {}}
+      }
+    );
+    assert.calledWith(touch.default, `${pathToCreatedSrcDirectory}/index.js`);
+    assert.calledWith(fsPromises.writeFile, pathToExample, exampleContent);
+  });
+
+  test('that the example file is not created for a modern-js project when `provideExample` is false', async () => {
+    const dialect = jsCore.dialects.BABEL;
+    const chosenBundler = any.word();
+    bundlerPrompt.default.withArgs({bundlers: packageBundlers, decisions}).resolves(chosenBundler);
+    jsCore.scaffoldChoice
+      .withArgs(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: jsCore.projectTypes.PACKAGE})
+      .resolves(bundlerResults);
+
+    const results = await buildDetails({
+      dialect,
+      projectRoot,
+      projectName,
+      packageBundlers,
+      decisions,
+      provideExample: false
+    });
 
     assert.deepEqual(
       results,
@@ -81,8 +144,7 @@ suite('package build details', () => {
         badges: {consumer: {}}
       }
     );
-    assert.calledWith(touch.default, `${pathToCreatedSrcDirectory}/index.js`);
-    assert.calledWith(fsPromises.writeFile, pathToExample, exampleContent);
+    assert.notCalled(fsPromises.writeFile);
   });
 
   test('that the runkit badge is included for public projects', async () => {

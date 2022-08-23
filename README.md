@@ -86,7 +86,8 @@ const {
       [questionNames.AUTHOR_EMAIL]: 'you@domain.tld',
       [questionNames.AUTHOR_URL]: 'https://your.website.tld',
       [questionNames.UNIT_TESTS]: true,
-      [questionNames.INTEGRATION_TESTS]: true
+      [questionNames.INTEGRATION_TESTS]: true,
+      [questionNames.PROVIDE_EXAMPLE]: true
     }
   });
 

@@ -12,5 +12,6 @@ export const questionNames = {
   AUTHOR_URL: 'authorUrl',
   HOST: 'host',
   CONFIGURE_LINTING: 'configureLint',
+  PROVIDE_EXAMPLE: 'provideExample',
   DIALECT: 'dialect'
 };

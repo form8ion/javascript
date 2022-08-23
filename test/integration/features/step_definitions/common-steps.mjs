@@ -60,6 +60,7 @@ Before(async function () {
   });
 
   this.configureLinting = true;
+  this.provideExample = true,
   this.tested = true;
   this.visibility = any.fromList(['Public', 'Private']);
   this.eslintScope = `@${any.word()}`;
@@ -137,6 +138,7 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
         ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
+        [questionNames.PROVIDE_EXAMPLE]: this.provideExample,
         [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer ||
           this.packageTypeChoiceAnswer ||
           this.applicationTypeChoiceAnswer ||
@@ -203,13 +205,14 @@ Then('the expected files for a(n) {string} are generated', async function (proje
       projectType,
       visibility: this.visibility,
       dialect: this.dialect,
+      provideExample: this.provideExample,
       tested: this.tested,
       configureLinting: this.configureLinting,
       projectName: this.projectName,
       npmAccount: this.npmAccount
     }),
     assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projectType),
-    assertThatDocumentationIsDefinedAppropriately(projectType, this.projectName, this.configureLinting)
+    assertThatDocumentationIsDefinedAppropriately(projectType, this.projectName, this.dialect, this.provideExample)
   ]);
 });
 
@@ -226,7 +229,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
     assert.include(Object.keys(this.scaffoldResult.badges.contribution), 'semantic-release');
   }
 
-  if ('github' === this.vcs?.host && 'Public' === this.visibility) {
+  if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {
     assert.include(Object.keys(this.scaffoldResult.badges.status), 'coverage');
   }
 
@@ -238,6 +241,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
     this.projectName,
     this.visibility,
     this.scaffoldResult,
-    this.packageManager
+    this.packageManager,
+    this.provideExample
   );
 });

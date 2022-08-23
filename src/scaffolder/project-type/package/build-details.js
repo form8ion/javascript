@@ -21,10 +21,12 @@ async function createExample(projectRoot, projectName) {
   );
 }
 
-async function buildDetailsForCommonJsProject({projectRoot, projectName}) {
+async function buildDetailsForCommonJsProject({projectRoot, projectName, provideExample}) {
   await Promise.all([
     touch(`${projectRoot}/index.js`),
-    fs.writeFile(`${projectRoot}/example.js`, `const ${camelcase(projectName)} = require('.');\n`)
+    provideExample
+      ? fs.writeFile(`${projectRoot}/example.js`, `const ${camelcase(projectName)} = require('.');\n`)
+      : Promise.resolve()
   ]);
 
   return {};
@@ -37,16 +39,17 @@ export default async function ({
   packageName,
   packageBundlers,
   dialect,
+  provideExample,
   decisions
 }) {
-  if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName});
+  if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName, provideExample});
 
   const chosenBundler = await chooseBundler({bundlers: packageBundlers, decisions});
 
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
   const [bundlerResults] = await Promise.all([
     scaffoldChosenBundler(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: projectTypes.PACKAGE}),
-    await createExample(projectRoot, projectName),
+    provideExample ? await createExample(projectRoot, projectName) : Promise.resolve,
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
 
@@ -58,7 +61,8 @@ export default async function ({
         clean: `rimraf ./${defaultBuildDirectory}`,
         prebuild: 'run-s clean',
         build: 'npm-run-all --print-label --parallel build:*',
-        prepack: 'run-s build'
+        prepack: 'run-s build',
+        ...provideExample && {'pregenerate:md': 'run-s build'}
       },
       vcsIgnore: {directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,

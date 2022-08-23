@@ -21,7 +21,11 @@ suite('package documentation', () => {
   test('that npm install instructions are provided for packages when the package manager is npm', () => {
     documentationCommandBuilder.default.withArgs(packageManagers.NPM).returns(documentationGenerationCommand);
 
-    const documentation = scaffoldDocumentation({packageName, packageManager: packageManagers.NPM});
+    const documentation = scaffoldDocumentation({
+      packageName,
+      packageManager: packageManagers.NPM,
+      provideExample: true
+    });
 
     assert.equal(documentation.usage, `### Installation
 
@@ -34,10 +38,30 @@ $ npm install ${packageName}
 run \`${documentationGenerationCommand}\` to inject the usage example`);
   });
 
+  test('that the example section is not included when `provideExample` is `false`', () => {
+    documentationCommandBuilder.default.withArgs(packageManagers.NPM).returns(documentationGenerationCommand);
+
+    const documentation = scaffoldDocumentation({
+      packageName,
+      packageManager: packageManagers.NPM,
+      provideExample: false
+    });
+
+    assert.equal(documentation.usage, `### Installation
+
+\`\`\`sh
+$ npm install ${packageName}
+\`\`\``);
+  });
+
   test('that yarn add instructions are provided for packages when the package manager is yarn', () => {
     documentationCommandBuilder.default.withArgs(packageManagers.YARN).returns(documentationGenerationCommand);
 
-    const documentation = scaffoldDocumentation({packageName, packageManager: packageManagers.YARN});
+    const documentation = scaffoldDocumentation({
+      packageName,
+      packageManager: packageManagers.YARN,
+      provideExample: true
+    });
 
     assert.equal(documentation.usage, `### Installation
 
@@ -74,7 +98,8 @@ run \`${documentationGenerationCommand}\` to inject the usage example`);
       packageName,
       packageManager: packageManagers.NPM,
       visibility: 'Private',
-      scope
+      scope,
+      provideExample: true
     });
 
     assert.equal(documentation.usage, `### Installation

@@ -48,6 +48,7 @@ suite('javascript project scaffolder', () => {
   const npmResults = any.simpleObject();
   const chosenHost = any.word();
   const chosenDialect = any.word();
+  const provideExample = any.boolean();
   const projectType = any.word();
   const scope = any.word();
   const license = any.string();
@@ -129,6 +130,7 @@ suite('javascript project scaffolder', () => {
     ci: chosenCiService,
     chosenHost,
     configureLinting,
+    provideExample,
     packageManager,
     dialect: chosenDialect
   };
@@ -173,6 +175,7 @@ suite('javascript project scaffolder', () => {
         tests,
         vcs: vcsDetails,
         decisions,
+        provideExample,
         dialect: chosenDialect,
         publishRegistry
       })
@@ -228,14 +231,9 @@ suite('javascript project scaffolder', () => {
         pathWithinParent
       })
       .resolves(verificationResults);
-    codeStyle.default.withArgs({
-      projectRoot,
-      projectType,
-      dialect: chosenDialect,
-      configs,
-      vcs: vcsDetails,
-      configureLinting
-    }).resolves(codeStyleResults);
+    codeStyle.default
+      .withArgs({projectRoot, projectType, configs, vcs: vcsDetails, configureLinting})
+      .resolves(codeStyleResults);
     dialects.default
       .withArgs({
         projectRoot,

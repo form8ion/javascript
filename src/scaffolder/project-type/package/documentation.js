@@ -11,7 +11,7 @@ function getInstallationCommand(packageManager) {
   );
 }
 
-export default function ({scope, packageName, packageManager, visibility}) {
+export default function ({scope, packageName, packageManager, visibility, provideExample}) {
   return {
     usage: `### Installation
 ${'Private' === visibility ? `
@@ -21,10 +21,13 @@ access to private packages under \`@${scope}\`
 }
 \`\`\`sh
 $ ${getInstallationCommand(packageManager)} ${packageName}
-\`\`\`
+\`\`\`${provideExample
+    ? `
 
 ### Example
 
 run \`${buildGenerationCommand(packageManager)}\` to inject the usage example`
+    : ''
+}`
   };
 }

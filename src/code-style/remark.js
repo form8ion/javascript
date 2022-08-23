@@ -1,9 +1,9 @@
 import deepmerge from 'deepmerge';
 import {fileTypes} from '@form8ion/core';
-import {dialects, projectTypes} from '@form8ion/javascript-core';
+import {projectTypes} from '@form8ion/javascript-core';
 import {write} from '@form8ion/config-file';
 
-export default async function ({config, projectRoot, projectType, vcs, dialect}) {
+export default async function ({config, projectRoot, projectType, vcs}) {
   await write({
     format: fileTypes.JSON,
     path: projectRoot,
@@ -33,11 +33,6 @@ export default async function ({config, projectRoot, projectType, vcs, dialect})
         'generate:md': 'remark . --output'
       }
     },
-    {
-      ...projectTypes.PACKAGE === projectType && {
-        devDependencies: ['remark-usage'],
-        ...dialects.COMMON_JS !== dialect && {scripts: {'pregenerate:md': 'run-s build'}}
-      }
-    }
+    {...projectTypes.PACKAGE === projectType && {devDependencies: ['remark-usage']}}
   );
 }

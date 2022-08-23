@@ -20,6 +20,7 @@ suite('project-type scaffolder', () => {
   const vcs = any.simpleObject();
   const publishRegistry = any.url();
   const dialect = any.word();
+  const provideExample = any.boolean();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -48,6 +49,7 @@ suite('project-type scaffolder', () => {
         vcs,
         decisions,
         dialect,
+        provideExample,
         publishRegistry
       })
       .resolves(results);
@@ -65,6 +67,7 @@ suite('project-type scaffolder', () => {
         vcs,
         decisions,
         dialect,
+        provideExample,
         publishRegistry
       }),
       results

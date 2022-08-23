@@ -35,6 +35,7 @@ suite('prompts', () => {
   const packageManager = any.word();
   const projectType = any.word();
   const scope = any.word();
+  const provideExample = any.boolean();
   const answers = {
     [commonPrompts.questionNames.UNIT_TESTS]: unitTested,
     [commonPrompts.questionNames.INTEGRATION_TESTS]: integrationTested,
@@ -47,7 +48,8 @@ suite('prompts', () => {
     [questionNames.AUTHOR_EMAIL]: authorEmail,
     [questionNames.AUTHOR_URL]: authorUrl,
     [questionNames.PACKAGE_MANAGER]: packageManager,
-    [questionNames.DIALECT]: dialect
+    [questionNames.DIALECT]: dialect,
+    [questionNames.PROVIDE_EXAMPLE]: provideExample
   };
 
   setup(() => {
@@ -156,6 +158,12 @@ suite('prompts', () => {
           when: conditionals.lintingPromptShouldBePresented
         },
         {
+          name: questionNames.PROVIDE_EXAMPLE,
+          message: 'Should an example be provided in the README?',
+          type: 'confirm',
+          when: conditionals.projectIsPackage
+        },
+        {
           name: questionNames.HOST,
           type: 'list',
           message: 'Where will the application be hosted?',
@@ -177,12 +185,13 @@ suite('prompts', () => {
         author,
         packageManager,
         dialect,
-        configureLinting: true
+        configureLinting: true,
+        provideExample
       }
     );
   });
 
-  test('that the transpile/lint value is not overriden when set to `false`', async () => {
+  test('that the transpile/lint value is not overridden when set to `false`', async () => {
     const npmUser = any.word();
     const get = sinon.stub();
     npmConf.default.returns({get});
@@ -200,6 +209,7 @@ suite('prompts', () => {
         nodeVersionCategory,
         author,
         packageManager,
+        provideExample,
         dialect,
         configureLinting: false
       }
@@ -241,7 +251,7 @@ suite('prompts', () => {
     );
   });
 
-  test('that sub-projects are not asked about node version since the parent project already defines', async () => {
+  test('that sub-projects are not asked about node version since already defined by the parent project', async () => {
     execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions

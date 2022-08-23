@@ -18,6 +18,7 @@ suite('package project-type', () => {
   const packageManager = any.word();
   const visibility = 'Private';
   const scope = any.word();
+  const provideExample = any.boolean();
   const badges = {consumer: any.simpleObject(), contribution: any.simpleObject(), status: any.simpleObject()};
   const commonNextSteps = [
     {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
@@ -35,7 +36,9 @@ suite('package project-type', () => {
     sandbox.stub(documentationScaffolder, 'default');
     sandbox.stub(jsCore, 'mergeIntoExistingPackageJson');
 
-    documentationScaffolder.default.withArgs({scope, packageName, visibility, packageManager}).returns(documentation);
+    documentationScaffolder.default
+      .withArgs({scope, packageName, visibility, packageManager, provideExample})
+      .returns(documentation);
   });
 
   teardown(() => sandbox.restore());
@@ -44,7 +47,16 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.BABEL;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .withArgs({
+        projectRoot,
+        projectName,
+        packageBundlers,
+        visibility,
+        packageName,
+        dialect,
+        provideExample,
+        decisions
+      })
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -57,7 +69,8 @@ suite('package project-type', () => {
         scope,
         packageBundlers,
         decisions,
-        dialect
+        dialect,
+        provideExample
       }),
       {
         ...buildDetailsResults,
@@ -90,7 +103,16 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.ESM;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .withArgs({
+        projectRoot,
+        projectName,
+        packageBundlers,
+        visibility,
+        packageName,
+        dialect,
+        provideExample,
+        decisions
+      })
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -103,7 +125,8 @@ suite('package project-type', () => {
         scope,
         packageManager,
         packageBundlers,
-        decisions
+        decisions,
+        provideExample
       }),
       {
         ...buildDetailsResults,
@@ -132,7 +155,16 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.TYPESCRIPT;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .withArgs({
+        projectRoot,
+        projectName,
+        packageBundlers,
+        visibility,
+        packageName,
+        dialect,
+        provideExample,
+        decisions
+      })
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -145,7 +177,8 @@ suite('package project-type', () => {
         scope,
         packageBundlers,
         decisions,
-        dialect
+        dialect,
+        provideExample
       }),
       {
         ...buildDetailsResults,
@@ -180,7 +213,16 @@ suite('package project-type', () => {
     const dialect = jsCore.dialects.COMMON_JS;
     defineBadges.default.withArgs(packageName, visibility).returns(badges);
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .withArgs({
+        projectRoot,
+        projectName,
+        packageBundlers,
+        visibility,
+        packageName,
+        dialect,
+        provideExample,
+        decisions
+      })
       .resolves(buildDetailsResults);
 
     assert.deepEqual(
@@ -193,7 +235,8 @@ suite('package project-type', () => {
         scope,
         decisions,
         packageBundlers,
-        dialect
+        dialect,
+        provideExample
       }),
       {
         ...buildDetailsResults,
@@ -220,7 +263,16 @@ suite('package project-type', () => {
     const publishRegistry = any.url();
     const dialect = jsCore.dialects.BABEL;
     buildDetails.default
-      .withArgs({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions})
+      .withArgs({
+        projectRoot,
+        projectName,
+        packageBundlers,
+        visibility,
+        packageName,
+        dialect,
+        provideExample,
+        decisions
+      })
       .resolves(buildDetailsResults);
 
     await scaffoldPackage({
@@ -233,6 +285,7 @@ suite('package project-type', () => {
       decisions,
       publishRegistry,
       dialect,
+      provideExample,
       packageBundlers
     });
 

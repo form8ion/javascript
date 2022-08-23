@@ -1,36 +1,39 @@
-import {existsSync, promises as fs} from 'fs';
+import {promises as fs} from 'fs';
 import camelcase from 'camelcase';
-import {packageManagers, projectTypes} from '@form8ion/javascript-core';
+import {fileExists} from '@form8ion/core';
+import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
 
 import {assert} from 'chai';
+import {Given} from '@cucumber/cucumber';
 
 export async function assertThatDocumentationIsDefinedAppropriately(
   projectType,
   projectName,
-  shouldBeTranspiledAndLinted
+  dialect,
+  exampleShouldBeProvided
 ) {
   const pathToExampleFile = `${process.cwd()}/example.js`;
   const packageDetails = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
-  if (projectTypes.PACKAGE === projectType && shouldBeTranspiledAndLinted) {
+  if (projectTypes.PACKAGE === projectType && exampleShouldBeProvided && dialects.COMMON_JS === dialect) {
+    const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
+
+    assert.equal(exampleContents, `const ${camelcase(projectName)} = require('.');\n`);
+    assert.isTrue(await fileExists(`${process.cwd()}/index.js`));
+    assert.isDefined(packageDetails.scripts['generate:md']);
+    assert.isUndefined(packageDetails.scripts['pregenerate:md']);
+  } else if (projectTypes.PACKAGE === projectType && exampleShouldBeProvided) {
     const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
 
     assert.equal(exampleContents, `// remark-usage-ignore-next
 /* eslint-disable-next-line no-unused-vars */
 import ${camelcase(projectName)} from './lib/index.cjs';
 `);
-    assert.isTrue(existsSync(`${process.cwd()}/src/index.js`));
+    assert.isTrue(await fileExists(`${process.cwd()}/src/index.js`));
     assert.isDefined(packageDetails.scripts['generate:md']);
     assert.isDefined(packageDetails.scripts['pregenerate:md']);
-  } else if (projectTypes.PACKAGE === projectType && !shouldBeTranspiledAndLinted) {
-    const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
-
-    assert.equal(exampleContents, `const ${camelcase(projectName)} = require('.');\n`);
-    assert.isTrue(existsSync(`${process.cwd()}/index.js`));
-    assert.isDefined(packageDetails.scripts['generate:md']);
-    assert.isUndefined(packageDetails.scripts['pregenerate:md']);
   } else {
-    assert.isFalse(existsSync(pathToExampleFile));
+    assert.isFalse(await fileExists(pathToExampleFile), `${pathToExampleFile} should not exist`);
     assert.isUndefined(packageDetails.scripts['pregenerate:md']);
   }
 }
@@ -41,7 +44,8 @@ export function assertThatDocumentationResultsAreReturnedCorrectly(
   projectName,
   visibility,
   results,
-  packageManager
+  packageManager,
+  provideExample
 ) {
   assert.equal(
     results.documentation.toc,
@@ -74,7 +78,8 @@ $ ${
 }${
   packageManagers.YARN === packageManager ? 'yarn add' : ''
 } @${scope}/${projectName}
-\`\`\`
+\`\`\`${provideExample
+  ? `
 
 ### Example
 
@@ -83,6 +88,8 @@ run \`${
 }${
   packageManagers.YARN === packageManager ? 'yarn' : ''
 } generate:md\` to inject the usage example`
+  : ''
+}`
       );
     }
 
@@ -100,7 +107,8 @@ $ ${
 }${
   packageManagers.YARN === packageManager ? 'yarn add' : ''
 } @${scope}/${projectName}
-\`\`\`
+\`\`\`${provideExample
+  ? `
 
 ### Example
 
@@ -109,7 +117,13 @@ run \`${
 }${
   packageManagers.YARN === packageManager ? 'yarn' : ''
 } generate:md\` to inject the usage example`
+  : ''
+        }`
       );
     }
   }
 }
+
+Given('an example should not be provided', async function () {
+  this.provideExample = false;
+});

@@ -100,6 +100,9 @@ Given('the project will use the {string} dialect', async function (dialect) {
   if (dialects.TYPESCRIPT === dialect) {
     this.typescriptConfig = {scope: `@${any.word()}`};
   }
+  if (dialects.COMMON_JS === dialect) {
+    this.buildDirectory = null;
+  }
 });
 
 Given('a babel preset is provided', async function () {

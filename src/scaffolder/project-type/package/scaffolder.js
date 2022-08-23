@@ -16,12 +16,22 @@ export default async function ({
   packageBundlers,
   decisions,
   dialect,
+  provideExample,
   publishRegistry
 }) {
   info('Scaffolding Package Details');
 
   const [detailsForBuild] = await Promise.all([
-    buildDetails({projectRoot, projectName, packageBundlers, visibility, packageName, dialect, decisions}),
+    buildDetails({
+      projectRoot,
+      projectName,
+      packageBundlers,
+      visibility,
+      packageName,
+      dialect,
+      provideExample,
+      decisions
+    }),
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {
@@ -60,7 +70,7 @@ export default async function ({
 
   return deepmerge.all([
     {
-      documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager}),
+      documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager, provideExample}),
       nextSteps: [
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
