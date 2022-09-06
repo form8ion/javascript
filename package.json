@@ -6,26 +6,18 @@
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
   },
-  "files": [
-    "example.js",
-    "lib/",
-    "templates/"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
+  "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
+  "repository": "form8ion/javascript",
+  "bugs": "https://github.com/form8ion/javascript/issues",
+  "homepage": "https://npm.im/@form8ion/javascript",
   "runkitExampleFilename": "./example.js",
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
   "exports": {
     "require": "./lib/index.js",
     "import": "./lib/index.mjs"
   },
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
   "sideEffects": false,
-  "repository": "form8ion/javascript",
-  "bugs": "https://github.com/form8ion/javascript/issues",
-  "homepage": "https://npm.im/@form8ion/javascript",
-  "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "scripts": {
     "test": "npm-run-all --print-label build --parallel lint:* --parallel test:*",
     "lint:lockfile": "lockfile-lint",
@@ -54,6 +46,41 @@
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'"
+  },
+  "files": [
+    "example.js",
+    "lib/",
+    "templates/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@form8ion/codecov": "^3.0.0",
+    "@form8ion/commit-convention": "^3.1.0",
+    "@form8ion/config-file": "^1.0.1",
+    "@form8ion/core": "^2.0.0",
+    "@form8ion/eslint": "^4.0.0",
+    "@form8ion/execa-wrapper": "^1.0.0-alpha.1",
+    "@form8ion/husky": "^3.0.0",
+    "@form8ion/javascript-core": "^7.0.0",
+    "@form8ion/overridable-prompts": "^1.2.0",
+    "@form8ion/prettier": "^1.0.1",
+    "@form8ion/rollup": "^2.0.0",
+    "@hapi/hoek": "^10.0.0",
+    "@travi/cli-messages": "^1.0.5",
+    "@travi/language-scaffolder-prompts": "^1.3.0",
+    "camelcase": "^6.2.1",
+    "deepmerge": "^4.2.2",
+    "filedirname": "^2.7.0",
+    "ini": "^3.0.0",
+    "joi": "^17.5.0",
+    "make-dir": "^3.1.0",
+    "mustache": "^4.2.0",
+    "npm-conf": "^1.1.3",
+    "sort-object-keys": "^1.1.3",
+    "touch": "^3.1.0",
+    "validate-npm-package-name": "^4.0.0"
   },
   "devDependencies": {
     "@babel/register": "7.18.9",
@@ -88,32 +115,5 @@
     "rollup-plugin-auto-external": "2.0.0",
     "sinon": "14.0.0",
     "testdouble": "3.16.6"
-  },
-  "dependencies": {
-    "@form8ion/codecov": "^3.0.0",
-    "@form8ion/commit-convention": "^3.1.0",
-    "@form8ion/config-file": "^1.0.1",
-    "@form8ion/core": "^2.0.0",
-    "@form8ion/eslint": "^4.0.0",
-    "@form8ion/execa-wrapper": "^1.0.0-alpha.1",
-    "@form8ion/husky": "^3.0.0",
-    "@form8ion/javascript-core": "^7.0.0",
-    "@form8ion/overridable-prompts": "^1.2.0",
-    "@form8ion/prettier": "^1.0.1",
-    "@form8ion/rollup": "^2.0.0",
-    "@hapi/hoek": "^10.0.0",
-    "@travi/cli-messages": "^1.0.5",
-    "@travi/language-scaffolder-prompts": "^1.3.0",
-    "camelcase": "^6.2.1",
-    "deepmerge": "^4.2.2",
-    "filedirname": "^2.7.0",
-    "ini": "^3.0.0",
-    "joi": "^17.5.0",
-    "make-dir": "^3.1.0",
-    "mustache": "^4.2.0",
-    "npm-conf": "^1.1.3",
-    "sort-object-keys": "^1.1.3",
-    "touch": "^3.1.0",
-    "validate-npm-package-name": "^4.0.0"
   }
 }
