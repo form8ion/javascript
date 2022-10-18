@@ -1,4 +1,4 @@
-import * as jsCore from '@form8ion/javascript-core';
+import jsCore from '@form8ion/javascript-core';
 import * as rollupScaffolder from '@form8ion/rollup';
 
 import {assert} from 'chai';

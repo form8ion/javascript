@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import * as jsCore from '@form8ion/javascript-core';
+import jsCore from '@form8ion/javascript-core';
 import * as commitConvention from '@form8ion/commit-convention';
 
 import {assert} from 'chai';

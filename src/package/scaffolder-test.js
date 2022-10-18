@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as jsCore from '@form8ion/javascript-core';
+import jsCore from '@form8ion/javascript-core';
 import * as buildPackageDetails from './details';
 import {scaffold} from './index';
 
