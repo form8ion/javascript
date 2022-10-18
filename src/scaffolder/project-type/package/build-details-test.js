@@ -1,6 +1,6 @@
 import {promises as fsPromises, promises as fs} from 'fs';
 import mustache from 'mustache';
-import * as jsCore from '@form8ion/javascript-core';
+import jsCore from '@form8ion/javascript-core';
 
 import {assert} from 'chai';
 import sinon from 'sinon';

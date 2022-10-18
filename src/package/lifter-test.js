@@ -1,5 +1,5 @@
 import {promises as fs} from 'fs';
-import * as jsCore from '@form8ion/javascript-core';
+import jsCore from '@form8ion/javascript-core';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
