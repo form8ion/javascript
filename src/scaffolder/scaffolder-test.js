@@ -1,6 +1,6 @@
 import deepmerge from 'deepmerge';
 import jsCore from '@form8ion/javascript-core';
-import * as commitConvention from '@form8ion/commit-convention';
+import commitConvention from '@form8ion/commit-convention';
 
 import {assert} from 'chai';
 import any from '@travi/any';
