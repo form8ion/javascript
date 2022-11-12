@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@form8ion/codecov": "^4.0.0",
-    "@form8ion/commit-convention": "^5.1.0",
+    "@form8ion/commit-convention": "^5.1.1",
     "@form8ion/config-file": "^1.0.1",
     "@form8ion/core": "^2.0.0",
     "@form8ion/eslint": "^4.0.0",
