@@ -40,5 +40,6 @@ export default async function ({
     await install([...devDependencies || []], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
   } catch (e) {
     error('Failed to install dependencies');
+    error(e, {level: 'secondary'});
   }
 }
