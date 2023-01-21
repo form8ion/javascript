@@ -1,5 +1,5 @@
 import joi from 'joi';
-import hoek from '@hapi/hoek';
+import * as hoek from '@hapi/hoek';
 import {unitTestFrameworksSchema} from './testing/options-schemas';
 import {packageBundlersSchema} from './scaffolder/project-type/options-schemas';
 
