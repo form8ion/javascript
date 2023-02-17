@@ -29,6 +29,7 @@ Feature: Package Project Type
     And the expected details are provided for a root-level project
     And the expected files for a "Package" are generated
     And the expected results for a "Package" are returned to the project scaffolder
+    And provenance is enabled for publishing
 
   Scenario: Typescript Package
     Given the project will be a "Package"

@@ -1,6 +1,6 @@
-import {promises as fs, promises} from 'fs';
-import {EOL} from 'os';
-import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
+import {promises as fs} from 'fs';
+import {parse} from 'ini';
+import {dialects, packageManagers, projectTypes, projectTypeShouldBePublished} from '@form8ion/javascript-core';
 
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
@@ -89,7 +89,7 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
   projectName,
   npmAccount
 }) {
-  const packageDetails = JSON.parse(await promises.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+  const packageDetails = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   if (tested && projectTypes.PACKAGE === projectType && provideExample && dialects.COMMON_JS !== dialect) {
     assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label build --parallel lint:* --parallel test:*');
@@ -129,15 +129,21 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
 }
 
 export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projectType) {
-  const npmConfigDetails = (await promises.readFile(`${process.cwd()}/.npmrc`)).toString().split(EOL);
+  const {
+    'update-notifier': updateNotifier,
+    'save-exact': saveExact,
+    provenance
+  } = parse(await fs.readFile(`${process.cwd()}/.npmrc`, 'utf-8'));
 
-  assert.include(npmConfigDetails, 'update-notifier=false');
+  assert.isFalse(updateNotifier);
 
   if (isNonConsumable(projectType)) {
-    assert.include(npmConfigDetails, 'save-exact=true');
+    assert.isTrue(saveExact);
   } else {
-    assert.notInclude(npmConfigDetails, 'save-exact=true');
+    assert.isUndefined(saveExact);
   }
+
+  if (!projectTypeShouldBePublished(projectType)) assert.isUndefined(provenance);
 }
 
 Given(/^the npm cli is logged in$/, function () {

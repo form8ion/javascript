@@ -15,3 +15,4 @@ Feature: CLI Project Type
     And the expected files for a "CLI" are generated
     And the package is bundled with rollup
     And the expected results for a "CLI" are returned to the project scaffolder
+    And provenance is enabled for publishing

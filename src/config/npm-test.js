@@ -33,7 +33,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nsave-exact=true\n'
+      'update-notifier=false\nprovenance=true\nsave-exact=true\n'
     );
   });
 
@@ -43,7 +43,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\n'
+      'update-notifier=false\nprovenance=true\n'
     );
   });
 
