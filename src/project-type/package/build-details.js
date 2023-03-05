@@ -3,11 +3,11 @@ import deepmerge from 'deepmerge';
 import mustache from 'mustache';
 import {dialects, projectTypes, scaffoldChoice as scaffoldChosenBundler} from '@form8ion/javascript-core';
 
-import camelcase from '../../../../thirdparty-wrappers/camelcase';
-import mkdir from '../../../../thirdparty-wrappers/make-dir';
-import touch from '../../../../thirdparty-wrappers/touch';
+import camelcase from '../../../thirdparty-wrappers/camelcase';
+import mkdir from '../../../thirdparty-wrappers/make-dir';
+import touch from '../../../thirdparty-wrappers/touch';
 import chooseBundler from './prompt';
-import determinePathToTemplateFile from '../../../template-path';
+import determinePathToTemplateFile from '../../template-path';
 
 const defaultBuildDirectory = 'lib';
 

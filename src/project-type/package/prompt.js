@@ -1,5 +1,5 @@
 import {prompt, Separator} from '@form8ion/overridable-prompts';
-import {questionNames} from '../../../prompts/question-names';
+import {questionNames} from '../../prompts/question-names';
 
 export default async function ({bundlers, decisions}) {
   if (!Object.keys(bundlers).length) return 'Other';

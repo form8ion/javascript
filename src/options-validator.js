@@ -1,7 +1,7 @@
 import joi from 'joi';
 import * as hoek from '@hapi/hoek';
 import {unitTestFrameworksSchema} from './testing/options-schemas';
-import {packageBundlersSchema} from './scaffolder/project-type/options-schemas';
+import {packageBundlersSchema} from './project-type/options-schemas';
 
 export function validate(options) {
   const schema = joi.object().required()

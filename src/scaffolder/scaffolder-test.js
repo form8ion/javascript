@@ -18,7 +18,7 @@ import * as nodeVersionScaffolder from '../node-version/scaffolder';
 import * as badgeDetailsBuilder from '../badges';
 import * as vcsIgnoresBuilder from '../vcs-ignore';
 import * as packageScaffolder from '../package/scaffolder';
-import * as projectTypeScaffolder from './project-type/scaffolder';
+import * as projectTypeScaffolder from '../project-type/scaffolder';
 import * as projectTypePluginScaffolder from '../project-type-plugin/scaffolder';
 import * as packageNameBuilder from '../package-name';
 import * as documentationCommandBuilder from '../documentation/generation-command';

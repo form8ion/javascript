@@ -6,10 +6,10 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 
-import * as touch from '../../../../thirdparty-wrappers/touch';
-import * as mkdir from '../../../../thirdparty-wrappers/make-dir';
-import * as camelcase from '../../../../thirdparty-wrappers/camelcase';
-import * as templatePath from '../../../template-path';
+import * as touch from '../../../thirdparty-wrappers/touch';
+import * as mkdir from '../../../thirdparty-wrappers/make-dir';
+import * as camelcase from '../../../thirdparty-wrappers/camelcase';
+import * as templatePath from '../../template-path';
 import * as bundlerPrompt from './prompt';
 import buildDetails from './build-details';
 

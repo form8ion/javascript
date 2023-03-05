@@ -1,5 +1,5 @@
 import {packageManagers} from '@form8ion/javascript-core';
-import buildGenerationCommand from '../../../documentation/generation-command';
+import buildGenerationCommand from '../../documentation/generation-command';
 
 function getInstallationCommand(packageManager) {
   if (packageManagers.NPM === packageManager) return 'npm install';

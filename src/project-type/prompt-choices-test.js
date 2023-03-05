@@ -1,7 +1,7 @@
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 import {assert} from 'chai';
 import any from '@travi/any';
-import {questionNames} from '../../prompts/question-names';
+import {questionNames} from '../prompts/question-names';
 import buildProjectTypeChoices from './prompt-choices';
 
 suite('project-type prompt choices', () => {
