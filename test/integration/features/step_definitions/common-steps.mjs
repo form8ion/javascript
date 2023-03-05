@@ -237,6 +237,13 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
     assert.include(Object.keys(this.scaffoldResult.badges.contribution), 'semantic-release');
   }
 
+  if (projectTypes.PACKAGE === type) {
+    const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+
+    assert.equal(scripts['lint:publish'], 'publint');
+    assertDevDependencyIsInstalled(this.execa.default, 'publint')
+  }
+
   if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {
     assert.include(Object.keys(this.scaffoldResult.badges.status), 'coverage');
   }

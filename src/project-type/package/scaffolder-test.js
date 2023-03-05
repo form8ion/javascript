@@ -74,10 +74,11 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {},
+        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps
+        nextSteps: commonNextSteps,
+        devDependencies: ['publint']
       }
     );
     assert.calledWith(
@@ -130,10 +131,11 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {},
+        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps
+        nextSteps: commonNextSteps,
+        devDependencies: ['publint']
       }
     );
     assert.calledWith(
@@ -182,10 +184,11 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {},
+        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps
+        nextSteps: commonNextSteps,
+        devDependencies: ['publint']
       }
     );
     assert.calledWith(
@@ -240,10 +243,11 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {},
+        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps
+        nextSteps: commonNextSteps,
+        devDependencies: ['publint']
       }
     );
     assert.calledWith(

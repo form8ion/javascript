@@ -75,8 +75,9 @@ export default async function ({
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ],
-      scripts: {},
-      badges: defineBadges(packageName, visibility)
+      scripts: {'lint:publish': 'publint'},
+      badges: defineBadges(packageName, visibility),
+      devDependencies: ['publint']
     },
     detailsForBuild
   ]);
