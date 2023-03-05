@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 import {stringify} from 'ini';
-import {projectTypes, projectTypeShouldBePublished} from '@form8ion/javascript-core';
+import {projectTypes} from '@form8ion/javascript-core';
 
 function projectWillNotBeConsumed(projectType) {
   return projectTypes.APPLICATION === projectType || projectTypes.CLI === projectType;
@@ -15,7 +15,6 @@ export default async function ({
     `${projectRoot}/.npmrc`,
     stringify({
       'update-notifier': false,
-      ...projectTypeShouldBePublished(projectType) && {provenance: true},
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
       ...Object.fromEntries(Object.entries(registries)
         .filter(([scope]) => 'publish' !== scope)

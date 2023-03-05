@@ -38,6 +38,7 @@ export default async function ({
         files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/']],
         publishConfig: {
           access: 'Public' === visibility ? 'public' : 'restricted',
+          provenance: true,
           ...publishRegistry && {registry: publishRegistry}
         },
         sideEffects: false,

@@ -53,10 +53,10 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
 
   if ('Public' === visibility) {
     assert.equal(packageDetails.runkitExampleFilename, './example.js');
-    assert.deepEqual(packageDetails.publishConfig, {access: 'public'});
+    assert.equal(packageDetails.publishConfig.access, 'public');
   } else {
     assert.isUndefined(packageDetails.runkitExampleFilename);
-    assert.deepEqual(packageDetails.publishConfig, {access: 'restricted'});
+    assert.deepEqual(packageDetails.publishConfig.access, 'restricted');
   }
 }
 
@@ -74,10 +74,7 @@ function assertThatCliSpecificDetailsAreDefinedCorrectly(packageDetails, npmAcco
   assert.equal(packageDetails.version, '0.0.0-semantically-released');
   assert.deepEqual(packageDetails.bin, {});
   assert.deepEqual(packageDetails.files, ['bin/']);
-  assert.deepEqual(
-    packageDetails.publishConfig,
-    {access: 'Private' === visibility ? 'restricted' : 'public'}
-  );
+  assert.deepEqual(packageDetails.publishConfig.access, 'Private' === visibility ? 'restricted' : 'public');
 }
 
 export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({

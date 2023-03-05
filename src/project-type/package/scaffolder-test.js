@@ -94,7 +94,7 @@ suite('package project-type', () => {
             import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
-          publishConfig: {access: 'restricted'}
+          publishConfig: {access: 'restricted', provenance: true}
         }
       }
     );
@@ -147,7 +147,7 @@ suite('package project-type', () => {
           exports: './lib/index.mjs',
           files: ['example.js', 'lib/'],
           sideEffects: false,
-          publishConfig: {access: 'restricted'}
+          publishConfig: {access: 'restricted', provenance: true}
         }
       }
     );
@@ -206,7 +206,7 @@ suite('package project-type', () => {
             import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
-          publishConfig: {access: 'restricted'}
+          publishConfig: {access: 'restricted', provenance: true}
         }
       }
     );
@@ -256,7 +256,7 @@ suite('package project-type', () => {
         projectRoot,
         config: {
           files: ['example.js', 'index.js'],
-          publishConfig: {access: 'restricted'},
+          publishConfig: {access: 'restricted', provenance: true},
           sideEffects: false
         }
       }
@@ -308,7 +308,8 @@ suite('package project-type', () => {
           files: ['example.js', 'lib/'],
           publishConfig: {
             access: 'restricted',
-            registry: publishRegistry
+            registry: publishRegistry,
+            provenance: true
           }
         }
       }

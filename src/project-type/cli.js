@@ -16,6 +16,7 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
         files: [`${defaultBuildDirectory}/`],
         publishConfig: {
           access: 'Public' === visibility ? 'public' : 'restricted',
+          provenance: true,
           ...publishRegistry && {registry: publishRegistry}
         }
       }

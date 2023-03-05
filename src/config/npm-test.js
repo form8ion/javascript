@@ -1,8 +1,10 @@
-import {promises as fsPromises} from 'fs';
+import {promises as fsPromises} from 'node:fs';
 import {projectTypes} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
+
 import scaffoldNpmConfig from './npm';
 
 suite('npm config scaffolder', () => {
@@ -33,7 +35,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nprovenance=true\nsave-exact=true\n'
+      'update-notifier=false\nsave-exact=true\n'
     );
   });
 
@@ -43,7 +45,7 @@ suite('npm config scaffolder', () => {
     assert.calledWith(
       fsPromises.writeFile,
       `${projectRoot}/.npmrc`,
-      'update-notifier=false\nprovenance=true\n'
+      'update-notifier=false\n'
     );
   });
 
