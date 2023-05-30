@@ -1,6 +1,6 @@
-import {promises as fs} from 'fs';
-import {resolve} from 'path';
-import filedirname from 'filedirname';
+import {promises as fs} from 'node:fs';
+import {resolve, dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {DEV_DEPENDENCY_TYPE, projectTypes} from '@form8ion/javascript-core';
 
 import {After, Before, Given, Then, When} from '@cucumber/cucumber';
@@ -26,7 +26,7 @@ import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.mj
 import validate_npm_package_name from 'validate-npm-package-name';
 
 let scaffold, lift, test, questionNames;
-const [, __dirname] = filedirname();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
