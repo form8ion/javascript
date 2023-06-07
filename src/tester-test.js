@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import testApplicability from './test';
+import testApplicability from './tester';
 
 suite('applicability test', () => {
   let sandbox;
