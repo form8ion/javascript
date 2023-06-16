@@ -1,7 +1,7 @@
 import {promises as fs} from 'node:fs';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {DEV_DEPENDENCY_TYPE, projectTypes} from '@form8ion/javascript-core';
+import {DEV_DEPENDENCY_TYPE, projectTypes, writePackageJson} from '@form8ion/javascript-core';
 
 import {After, Before, Given, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
@@ -174,18 +174,19 @@ When(/^the project is scaffolded$/, async function () {
 When('the scaffolder results are processed', async function () {
   const projectRoot = process.cwd();
 
-  await fs.writeFile(
-    `${projectRoot}/package.json`,
-    JSON.stringify({
+  await writePackageJson({
+    projectRoot,
+    config: {
       ...this.enginesNode && {engines: {node: this.enginesNode}},
       devDependencies: {},
       scripts: this.existingScripts,
       peerDependencies: {},
       keywords: this.existingKeywords,
       dependencies: {},
-      name: this.projectName
-    })
-  );
+      name: this.projectName,
+      exports: this.packageExports
+    }
+  });
 
   if (await test({projectRoot})) {
     this.results = await lift({

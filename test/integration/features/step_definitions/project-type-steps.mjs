@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 import {fileExists} from '@form8ion/core';
-import {projectTypes} from '@form8ion/javascript-core';
+import {mergeIntoExistingPackageJson, projectTypes, writePackageJson} from '@form8ion/javascript-core';
 
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
@@ -38,9 +38,12 @@ Given('an application-type plugin is chosen', async function () {
   this.buildDirectory = this.fooApplicationBuildDirectory;
 });
 
-Given('the project is of type {string}', async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
+Given('the project is of type {string}', async function (projectType) {
+  const projectRoot = process.cwd();
+
+  if (projectTypes.PACKAGE === projectType) {
+    this.packageExports = any.word();
+  }
 });
 
 Then('the expected details are provided for a root-level project', async function () {
