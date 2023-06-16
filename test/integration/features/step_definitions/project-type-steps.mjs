@@ -38,6 +38,11 @@ Given('an application-type plugin is chosen', async function () {
   this.buildDirectory = this.fooApplicationBuildDirectory;
 });
 
+Given('the project is of type {string}', async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
 Then('the expected details are provided for a root-level project', async function () {
   const nvmRc = await fs.readFile(`${process.cwd()}/.nvmrc`);
 
