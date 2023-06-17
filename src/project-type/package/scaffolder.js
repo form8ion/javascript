@@ -3,7 +3,7 @@ import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
 import scaffoldPackageDocumentation from './documentation';
-import defineBadges from './badges';
+import defineBadges from '../publishable/badges';
 import buildDetails from './build-details';
 
 export default async function ({

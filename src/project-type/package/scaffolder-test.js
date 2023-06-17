@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as documentationScaffolder from './documentation';
-import * as defineBadges from './badges';
+import * as defineBadges from '../publishable/badges';
 import * as buildDetails from './build-details';
 import scaffoldPackage from './scaffolder';
 
