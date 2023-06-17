@@ -30,6 +30,7 @@ Feature: Package Project Type
     And the expected files for a "Package" are generated
     And the expected results for a "Package" are returned to the project scaffolder
     And provenance is enabled for publishing
+    And publint is configured
 
   Scenario: Typescript Package
     Given the project will be a "Package"
@@ -79,6 +80,7 @@ Feature: Package Project Type
   Scenario: Common JS config package
     Given the project will be a "Package"
     And the project will use the "common-js" dialect
+    And the project will have "Public" visibility
     And the project will be versioned on GitHub
     And the npm cli is logged in
     And nvm is properly configured
@@ -90,6 +92,8 @@ Feature: Package Project Type
     Then no error is thrown
     And the expected files for a "Package" are generated
     And the expected results for a "Package" are returned to the project scaffolder
+    And provenance is enabled for publishing
+    And publint is configured
 
   Scenario: Modern-JS package w/o an example
     Given the project will be a "Package"
