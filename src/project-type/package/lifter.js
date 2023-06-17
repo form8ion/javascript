@@ -1,10 +1,5 @@
-import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
+import liftPublishable from '../publishable/lifter';
 
-export default async function ({projectRoot}) {
-  await mergeIntoExistingPackageJson({projectRoot, config: {publishConfig: {provenance: true}}});
-
-  return {
-    devDependencies: ['publint'],
-    scripts: {'lint:publish': 'publint'}
-  };
+export default function ({projectRoot}) {
+  return liftPublishable({projectRoot});
 }

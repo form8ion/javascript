@@ -1,28 +1,22 @@
-import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
-
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
+import {when} from 'jest-when';
 
+import * as liftPublishable from '../publishable/lifter';
 import lift from './lifter';
 
-vi.mock('@form8ion/javascript-core');
+vi.mock('../publishable/lifter');
 
 describe('package project-type lifter', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should lift the details of the package project', async () => {
+  it('should leverage the publishable lifter', async () => {
     const projectRoot = any.string();
+    const publishableResults = any.simpleObject();
+    when(liftPublishable.default).calledWith({projectRoot}).mockResolvedValue(publishableResults);
 
-    expect(await lift({projectRoot})).toEqual({
-      scripts: {'lint:publish': 'publint'},
-      devDependencies: ['publint']
-    });
-
-    expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
-      projectRoot,
-      config: {publishConfig: {provenance: true}}
-    });
+    expect(await lift({projectRoot})).toEqual(publishableResults);
   });
 });
