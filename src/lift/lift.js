@@ -7,6 +7,7 @@ import * as commitConventionPlugin from '@form8ion/commit-convention';
 import * as coveragePlugin from '../coverage';
 import * as codeStylePlugin from '../code-style';
 import * as enginesEnhancer from './enhancers/engines';
+import * as projectTypes from '../project-type/package';
 import * as dialects from '../dialects';
 import {lift as liftPackage} from '../package';
 import resolvePackageManager from './package-manager';
@@ -26,7 +27,15 @@ export default async function ({projectRoot, vcs, results}) {
 
   const enhancerResults = await applyEnhancers({
     results,
-    enhancers: [huskyPlugin, enginesEnhancer, coveragePlugin, commitConventionPlugin, dialects, codeStylePlugin],
+    enhancers: [
+      huskyPlugin,
+      enginesEnhancer,
+      coveragePlugin,
+      commitConventionPlugin,
+      dialects,
+      codeStylePlugin,
+      projectTypes
+    ],
     options: {packageManager, projectRoot, vcs}
   });
 
