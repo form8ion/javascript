@@ -43,6 +43,10 @@ Given('the project is of type {string}', async function (projectType) {
     this.packageExports = any.word();
     this.publishConfig = {access: 'public'};
   }
+  if (projectTypes.CLI === projectType) {
+    this.packageBin = any.word();
+    this.publishConfig = {access: 'public'};
+  }
 });
 
 Given('the project is of type {string} but without exports defined', async function (projectType) {

@@ -185,7 +185,8 @@ When('the scaffolder results are processed', async function () {
       dependencies: {},
       name: this.projectName,
       exports: this.packageExports,
-      publishConfig: this.publishConfig
+      publishConfig: this.publishConfig,
+      bin: this.packageBin
     }
   });
 
