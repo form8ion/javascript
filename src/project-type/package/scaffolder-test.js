@@ -74,11 +74,9 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps,
-        devDependencies: ['publint']
+        nextSteps: commonNextSteps
       }
     );
     assert.calledWith(
@@ -94,7 +92,7 @@ suite('package project-type', () => {
             import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
-          publishConfig: {access: 'restricted', provenance: true}
+          publishConfig: {access: 'restricted'}
         }
       }
     );
@@ -131,11 +129,9 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps,
-        devDependencies: ['publint']
+        nextSteps: commonNextSteps
       }
     );
     assert.calledWith(
@@ -147,7 +143,7 @@ suite('package project-type', () => {
           exports: './lib/index.mjs',
           files: ['example.js', 'lib/'],
           sideEffects: false,
-          publishConfig: {access: 'restricted', provenance: true}
+          publishConfig: {access: 'restricted'}
         }
       }
     );
@@ -184,11 +180,9 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps,
-        devDependencies: ['publint']
+        nextSteps: commonNextSteps
       }
     );
     assert.calledWith(
@@ -206,7 +200,7 @@ suite('package project-type', () => {
             import: './lib/index.mjs'
           },
           files: ['example.js', 'lib/'],
-          publishConfig: {access: 'restricted', provenance: true}
+          publishConfig: {access: 'restricted'}
         }
       }
     );
@@ -243,11 +237,9 @@ suite('package project-type', () => {
       }),
       {
         ...buildDetailsResults,
-        scripts: {'lint:publish': 'publint'},
         badges,
         documentation,
-        nextSteps: commonNextSteps,
-        devDependencies: ['publint']
+        nextSteps: commonNextSteps
       }
     );
     assert.calledWith(
@@ -256,7 +248,7 @@ suite('package project-type', () => {
         projectRoot,
         config: {
           files: ['example.js', 'index.js'],
-          publishConfig: {access: 'restricted', provenance: true},
+          publishConfig: {access: 'restricted'},
           sideEffects: false
         }
       }
@@ -308,8 +300,7 @@ suite('package project-type', () => {
           files: ['example.js', 'lib/'],
           publishConfig: {
             access: 'restricted',
-            registry: publishRegistry,
-            provenance: true
+            registry: publishRegistry
           }
         }
       }

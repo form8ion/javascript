@@ -38,7 +38,6 @@ export default async function ({
         files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/']],
         publishConfig: {
           access: 'Public' === visibility ? 'public' : 'restricted',
-          provenance: true,
           ...publishRegistry && {registry: publishRegistry}
         },
         sideEffects: false,
@@ -76,9 +75,7 @@ export default async function ({
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ],
-      scripts: {'lint:publish': 'publint'},
-      badges: defineBadges(packageName, visibility),
-      devDependencies: ['publint']
+      badges: defineBadges(packageName, visibility)
     },
     detailsForBuild
   ]);
