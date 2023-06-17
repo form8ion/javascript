@@ -5,8 +5,8 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import * as defineBadges from './package/badges';
-import scaffoldCli from './cli';
+import * as defineBadges from '../package/badges';
+import scaffoldCli from './scaffolder';
 
 suite('cli project-type', () => {
   let sandbox;
