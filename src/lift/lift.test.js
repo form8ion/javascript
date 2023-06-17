@@ -1,11 +1,11 @@
+import deepmerge from 'deepmerge';
 import * as core from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
-import deepmerge from 'deepmerge';
 
-import sinon from 'sinon';
+import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {assert} from 'chai';
+import {when} from 'jest-when';
 
 import * as coveragePlugin from '../coverage';
 import * as codeStylePlugin from '../code-style';
@@ -16,8 +16,11 @@ import * as packageLifter from '../package/lifter';
 import * as packageManagerResolver from './package-manager';
 import lift from './lift';
 
-suite('lift', () => {
-  let sandbox;
+vi.mock('@form8ion/core');
+vi.mock('../package/lifter');
+vi.mock('./package-manager');
+
+describe('lift', () => {
   const projectRoot = any.string();
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
@@ -29,41 +32,34 @@ suite('lift', () => {
   const vcsDetails = any.simpleObject();
   const results = {...any.simpleObject(), scripts, tags, dependencies, devDependencies, packageManager: manager};
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
-
-    sandbox.stub(packageLifter, 'default');
-    sandbox.stub(packageManagerResolver, 'default');
-    sandbox.stub(core, 'applyEnhancers');
-
-    packageManagerResolver.default.withArgs({projectRoot, packageManager: manager}).resolves(packageManager);
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
-  teardown(() => sandbox.restore());
-
-  test('that results specific to js projects are lifted', async () => {
-    core.applyEnhancers
-      .withArgs({
-        results,
-        enhancers: [
-          huskyPlugin,
-          enginesEnhancer,
-          coveragePlugin,
-          commitConventionPlugin,
-          dialects,
-          codeStylePlugin,
-          projectTypes
-        ],
-        options: {projectRoot, packageManager, vcs: vcsDetails}
-      })
-      .resolves(enhancerResults);
+  it('should lift results that are specific to js projects', async () => {
+    when(packageManagerResolver.default)
+      .calledWith({projectRoot, packageManager: manager})
+      .mockResolvedValue(packageManager);
+    when(core.applyEnhancers).calledWith({
+      results,
+      enhancers: [
+        huskyPlugin,
+        enginesEnhancer,
+        coveragePlugin,
+        commitConventionPlugin,
+        dialects,
+        codeStylePlugin,
+        projectTypes
+      ],
+      options: {projectRoot, packageManager, vcs: vcsDetails}
+    }).mockResolvedValue(enhancerResults);
 
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results});
 
-    assert.deepEqual(liftResults, enhancerResults);
-    assert.calledWith(
-      packageLifter.default,
-      deepmerge.all([{projectRoot, scripts, tags, dependencies, devDependencies, packageManager}, enhancerResults])
-    );
+    expect(liftResults).toEqual(enhancerResults);
+    expect(packageLifter.default).toHaveBeenCalledWith(deepmerge.all([
+      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+      enhancerResults
+    ]));
   });
 });
