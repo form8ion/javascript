@@ -1,5 +1,5 @@
 import {projectTypes} from '@form8ion/javascript-core';
-import scaffoldPackageType from './package';
+import {scaffold as scaffoldPackageType} from './package';
 import scaffoldApplicationType from './application';
 import scaffoldMonorepoType from './monorepo';
 import scaffoldCliType from './cli';
