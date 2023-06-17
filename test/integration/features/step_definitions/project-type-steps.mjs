@@ -39,10 +39,14 @@ Given('an application-type plugin is chosen', async function () {
 });
 
 Given('the project is of type {string}', async function (projectType) {
-  const projectRoot = process.cwd();
-
   if (projectTypes.PACKAGE === projectType) {
     this.packageExports = any.word();
+    this.publishConfig = {access: 'public'};
+  }
+});
+
+Given('the project is of type {string} but without exports defined', async function (projectType) {
+  if (projectTypes.PACKAGE === projectType) {
     this.publishConfig = {access: 'public'};
   }
 });

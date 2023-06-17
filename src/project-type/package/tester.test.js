@@ -23,6 +23,14 @@ describe('package project-type tester', () => {
     expect(await test({projectRoot})).toBe(true);
   });
 
+  it('should return `true` if the project defines `publishConfig`', async () => {
+    when(fs.readFile)
+      .calledWith(`${projectRoot}/package.json`, 'utf-8')
+      .mockResolvedValue(JSON.stringify({...any.simpleObject(), publishConfig: any.simpleObject()}));
+
+    expect(await test({projectRoot})).toBe(true);
+  });
+
   it('should return `false` when there are no indicators that the project is a package type', async () => {
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
