@@ -15,7 +15,10 @@ describe('package project-type lifter', () => {
   it('should lift the details of the package project', async () => {
     const projectRoot = any.string();
 
-    expect(await lift({projectRoot})).toEqual({});
+    expect(await lift({projectRoot})).toEqual({
+      scripts: {'lint:publish': 'publint'},
+      devDependencies: ['publint']
+    });
 
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

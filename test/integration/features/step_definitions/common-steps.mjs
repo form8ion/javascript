@@ -184,7 +184,8 @@ When('the scaffolder results are processed', async function () {
       keywords: this.existingKeywords,
       dependencies: {},
       name: this.projectName,
-      exports: this.packageExports
+      exports: this.packageExports,
+      publishConfig: this.publishConfig
     }
   });
 

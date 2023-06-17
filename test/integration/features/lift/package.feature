@@ -14,4 +14,4 @@ Feature: Lift a package-type project
     And the project is of type "Package"
     And husky v5 is installed
     When the scaffolder results are processed
-    And provenance is enabled for publishing
+    Then provenance is enabled for publishing
