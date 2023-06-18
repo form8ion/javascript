@@ -54,7 +54,7 @@ suite('cli project-type', () => {
     );
     assert.calledWith(
       jsCore.mergeIntoExistingPackageJson,
-      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'restricted', provenance: true}}}
+      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'restricted'}}}
     );
   });
 
@@ -63,7 +63,7 @@ suite('cli project-type', () => {
 
     assert.calledWith(
       jsCore.mergeIntoExistingPackageJson,
-      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'public', provenance: true}}}
+      {projectRoot, config: {bin: {}, files: ['bin/'], publishConfig: {access: 'public'}}}
     );
   });
 
@@ -85,7 +85,7 @@ suite('cli project-type', () => {
         config: {
           bin: {},
           files: ['bin/'],
-          publishConfig: {access: 'public', registry: publishRegistry, provenance: true}
+          publishConfig: {access: 'public', registry: publishRegistry}
         }
       }
     );
