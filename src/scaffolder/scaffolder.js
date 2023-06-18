@@ -14,7 +14,7 @@ import buildBadgesDetails from '../badges';
 import buildVcsIgnoreLists from '../vcs-ignore';
 import {scaffold as scaffoldPackage} from '../package';
 import buildPackageName from '../package-name';
-import scaffoldProjectType from '../project-type';
+import {scaffold as scaffoldProjectType} from '../project-type';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin';
 import buildDocumentationCommand from '../documentation/generation-command';
 import {scaffold as scaffoldVerification} from './verification';
