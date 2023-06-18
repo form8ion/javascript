@@ -7,7 +7,7 @@ import * as commitConventionPlugin from '@form8ion/commit-convention';
 import * as coveragePlugin from '../coverage';
 import * as codeStylePlugin from '../code-style';
 import * as enginesEnhancer from './enhancers/engines';
-import * as projectTypes from '../project-type/package';
+import * as projectTypes from '../project-type';
 import * as dialects from '../dialects';
 import {lift as liftPackage} from '../package';
 import resolvePackageManager from './package-manager';
