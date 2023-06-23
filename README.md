@@ -7,7 +7,7 @@ toolset
 
 [![Node CI Workflow Status][github-actions-ci-badge]][github-actions-ci-link]
 [![Codecov][coverage-badge]][coverage-link]
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/form8ion/javascript/badge)](https://api.securityscorecards.dev/projects/github.com/form8ion/javascript)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/form8ion/javascript/badge)](https://securityscorecards.dev/viewer/?uri=github.com/form8ion/javascript)
 
 <!--status-badges end -->
 
