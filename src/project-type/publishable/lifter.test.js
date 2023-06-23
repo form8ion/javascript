@@ -16,7 +16,7 @@ describe('publishable project-type lifter', () => {
     const projectRoot = any.string();
 
     expect(await lift({projectRoot})).toEqual({
-      scripts: {'lint:publish': 'publint'},
+      scripts: {'lint:publish': 'publint --strict'},
       devDependencies: ['publint']
     });
 

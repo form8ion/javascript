@@ -243,7 +243,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
   if (projectTypes.PACKAGE === type) {
     const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
-    assert.equal(scripts['lint:publish'], 'publint');
+    assert.equal(scripts['lint:publish'], 'publint --strict');
     assertDevDependencyIsInstalled(this.execa.default, 'publint')
   }
 

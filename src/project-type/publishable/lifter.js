@@ -5,6 +5,6 @@ export default async function ({projectRoot}) {
 
   return {
     devDependencies: ['publint'],
-    scripts: {'lint:publish': 'publint'}
+    scripts: {'lint:publish': 'publint --strict'}
   };
 }
