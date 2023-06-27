@@ -60,6 +60,6 @@ Then('the expected details are provided for a root-level project', async functio
 
   assert.equal(nvmRc.toString(), `v${this.latestLtsMajorVersion}`);
   assert.isTrue(await fileExists(`${process.cwd()}/.czrc`));
-  assert.isTrue(await fileExists(`${process.cwd()}/.commitlintrc.js`));
+  assert.isTrue(await fileExists(`${process.cwd()}/.commitlintrc.json`));
   assert.containsAllKeys(this.scaffoldResult.badges.contribution, ['commit-convention', 'commitizen']);
 });

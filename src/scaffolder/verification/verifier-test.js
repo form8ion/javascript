@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import * as huskyScaffolder from '@form8ion/husky';
+import huskyScaffolder from '@form8ion/husky';
 
 import sinon from 'sinon';
 import any from '@travi/any';
