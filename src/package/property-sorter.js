@@ -1,4 +1,4 @@
-import sortProperties from '../../thirdparty-wrappers/sort-object-keys';
+import sortProperties from 'sort-object-keys';
 
 export default function (packageContents) {
   return sortProperties(
