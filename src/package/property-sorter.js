@@ -8,6 +8,7 @@ export default function (packageContents) {
       'description',
       'license',
       'version',
+      'private',
       'type',
       'engines',
       'author',

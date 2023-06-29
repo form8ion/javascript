@@ -27,6 +27,7 @@ suite('package.json property sorter', () => {
           'description',
           'license',
           'version',
+          'private',
           'type',
           'engines',
           'author',
