@@ -1,6 +1,6 @@
 import {promises as fsPromises, promises as fs} from 'fs';
 import mustache from 'mustache';
-import jsCore from '@form8ion/javascript-core';
+import jsCore, {projectTypes} from '@form8ion/javascript-core';
 
 import {assert} from 'chai';
 import sinon from 'sinon';
@@ -10,7 +10,7 @@ import * as touch from '../../../thirdparty-wrappers/touch';
 import * as mkdir from '../../../thirdparty-wrappers/make-dir';
 import * as camelcase from '../../../thirdparty-wrappers/camelcase';
 import * as templatePath from '../../template-path';
-import * as bundlerPrompt from '../publishable/bundler/prompt';
+import * as bundlerScaffolder from '../publishable/bundler/scaffolder';
 import buildDetails from './build-details';
 
 suite('package build details', () => {
@@ -35,10 +35,9 @@ suite('package build details', () => {
     sandbox.stub(touch, 'default');
     sandbox.stub(mkdir, 'default');
     sandbox.stub(templatePath, 'default');
-    sandbox.stub(jsCore, 'scaffoldChoice');
     sandbox.stub(mustache, 'render');
     sandbox.stub(camelcase, 'default');
-    sandbox.stub(bundlerPrompt, 'default');
+    sandbox.stub(bundlerScaffolder, 'default');
 
     mkdir.default.withArgs(`${projectRoot}/src`).resolves(pathToCreatedSrcDirectory);
     templatePath.default.withArgs('example.mustache').returns(pathToExampleTemplate);
@@ -75,10 +74,8 @@ suite('package build details', () => {
 
   test('that a modern-js project is defined correctly', async () => {
     const dialect = jsCore.dialects.BABEL;
-    const chosenBundler = any.word();
-    bundlerPrompt.default.withArgs({bundlers: packageBundlers, decisions}).resolves(chosenBundler);
-    jsCore.scaffoldChoice
-      .withArgs(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: jsCore.projectTypes.PACKAGE})
+    bundlerScaffolder.default
+      .withArgs({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .resolves(bundlerResults);
 
     const results = await buildDetails({
@@ -113,10 +110,8 @@ suite('package build details', () => {
 
   test('that the example file is not created for a modern-js project when `provideExample` is false', async () => {
     const dialect = jsCore.dialects.BABEL;
-    const chosenBundler = any.word();
-    bundlerPrompt.default.withArgs({bundlers: packageBundlers, decisions}).resolves(chosenBundler);
-    jsCore.scaffoldChoice
-      .withArgs(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: jsCore.projectTypes.PACKAGE})
+    bundlerScaffolder.default
+      .withArgs({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .resolves(bundlerResults);
 
     const results = await buildDetails({
