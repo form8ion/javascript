@@ -1,11 +1,11 @@
 import {promises as fs} from 'fs';
 import deepmerge from 'deepmerge';
 import mustache from 'mustache';
+import mkdir from 'make-dir';
+import touch from 'touch';
+import camelcase from 'camelcase';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
-import camelcase from '../../../thirdparty-wrappers/camelcase';
-import mkdir from '../../../thirdparty-wrappers/make-dir';
-import touch from '../../../thirdparty-wrappers/touch';
 import {scaffold as scaffoldBundler} from '../publishable/bundler';
 import determinePathToTemplateFile from '../../template-path';
 
