@@ -1,12 +1,12 @@
 import {promises as fs} from 'fs';
 import deepmerge from 'deepmerge';
 import mustache from 'mustache';
-import {dialects, projectTypes, scaffoldChoice as scaffoldChosenBundler} from '@form8ion/javascript-core';
+import {dialects, projectTypes} from '@form8ion/javascript-core';
 
 import camelcase from '../../../thirdparty-wrappers/camelcase';
 import mkdir from '../../../thirdparty-wrappers/make-dir';
 import touch from '../../../thirdparty-wrappers/touch';
-import chooseBundler from './prompt';
+import {scaffold as scaffoldBundler} from '../publishable/bundler';
 import determinePathToTemplateFile from '../../template-path';
 
 const defaultBuildDirectory = 'lib';
@@ -44,11 +44,9 @@ export default async function ({
 }) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName, provideExample});
 
-  const chosenBundler = await chooseBundler({bundlers: packageBundlers, decisions});
-
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
   const [bundlerResults] = await Promise.all([
-    scaffoldChosenBundler(packageBundlers, chosenBundler, {projectRoot, dialect, projectType: projectTypes.PACKAGE}),
+    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.PACKAGE}),
     provideExample ? await createExample(projectRoot, projectName) : Promise.resolve,
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
