@@ -1,4 +1,4 @@
-import * as core from '@form8ion/core';
+import core from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
 import any from '@travi/any';
 import {assert} from 'chai';

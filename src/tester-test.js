@@ -1,4 +1,4 @@
-import * as core from '@form8ion/core';
+import core from '@form8ion/core';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
