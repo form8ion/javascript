@@ -66,7 +66,7 @@
     "@form8ion/core": "^3.0.0",
     "@form8ion/eslint": "^4.0.0",
     "@form8ion/execa-wrapper": "^1.0.0-alpha.1",
-    "@form8ion/husky": "^4.1.0",
+    "@form8ion/husky": "^5.0.0",
     "@form8ion/javascript-core": "^9.0.0",
     "@form8ion/overridable-prompts": "^1.2.0",
     "@form8ion/prettier": "^1.0.1",
