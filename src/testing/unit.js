@@ -1,5 +1,7 @@
 import deepmerge from 'deepmerge';
-import {scaffoldChoice as scaffoldFrameworkChoice, validateOptions} from '@form8ion/javascript-core';
+import {validateOptions} from '@form8ion/core';
+import {scaffoldChoice as scaffoldFrameworkChoice} from '@form8ion/javascript-core';
+
 import {scaffold as scaffoldCoverage} from '../coverage';
 import {unitTestFrameworksSchema} from './options-schemas';
 import chooseFramework from './prompt';
