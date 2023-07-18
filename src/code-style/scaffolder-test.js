@@ -1,4 +1,4 @@
-import * as prettierPlugin from '@form8ion/prettier';
+import prettierPlugin from '@form8ion/prettier';
 import eslintPlugin from '@form8ion/eslint';
 import deepmerge from 'deepmerge';
 
