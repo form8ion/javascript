@@ -1,5 +1,5 @@
 import * as prettierPlugin from '@form8ion/prettier';
-import * as eslintPlugin from '@form8ion/eslint';
+import eslintPlugin from '@form8ion/eslint';
 import deepmerge from 'deepmerge';
 
 import sinon from 'sinon';
