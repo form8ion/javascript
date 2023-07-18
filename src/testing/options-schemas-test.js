@@ -1,4 +1,4 @@
-import {validateOptions} from '@form8ion/javascript-core';
+import {validateOptions} from '@form8ion/core';
 import {assert} from 'chai';
 import any from '@travi/any';
 import {unitTestFrameworksSchema} from './options-schemas';
