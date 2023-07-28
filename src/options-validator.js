@@ -1,5 +1,6 @@
 import joi from 'joi';
-import * as hoek from '@hapi/hoek';
+import {validateOptions} from '@form8ion/core';
+
 import {unitTestFrameworksSchema} from './testing/options-schemas';
 import {packageBundlersSchema} from './project-type/options-schemas';
 
@@ -78,9 +79,6 @@ export function validate(options) {
       decisions: joi.object()
     })
     .keys({registries: joi.object().pattern(joi.string(), joi.string().uri()).default({})});
-  const {error, value} = schema.validate(options);
 
-  hoek.assert(!error, error);
-
-  return value;
+  return validateOptions(schema, options);
 }
