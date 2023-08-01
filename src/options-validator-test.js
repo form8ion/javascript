@@ -911,6 +911,7 @@ suite('options validator', () => {
           ciServices: {},
           hosts: {},
           applicationTypes: {},
+          monorepoTypes: {},
           packageTypes: {},
           packageBundlers: {},
           registries: {}

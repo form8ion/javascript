@@ -3,7 +3,12 @@ import {validateOptions} from '@form8ion/core';
 import {describe, it, expect} from 'vitest';
 import any from '@travi/any';
 
-import {packageBundlersSchema, applicationTypesSchema, packageTypesSchema} from './options-schemas';
+import {
+  packageBundlersSchema,
+  applicationTypesSchema,
+  packageTypesSchema,
+  monorepoTypesSchema
+} from './options-schemas';
 
 describe('project-type options validation', () => {
   const key = any.word();
@@ -95,8 +100,38 @@ describe('project-type options validation', () => {
       validateOptions(packageTypesSchema, {[key]: {scaffolder: options => options}});
     });
 
-    it('should provide an empty object by default if application-types are not provided', () => {
+    it('should provide an empty object by default if package-types are not provided', () => {
       expect(validateOptions(packageTypesSchema, undefined)).toEqual({});
+    });
+  });
+
+  describe('monorepo types', () => {
+    it('should require a provided monorepo-type must define config', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: any.word()}))
+        .toThrowError(`"${key}" must be of type object`);
+    });
+
+    it('should require a provided monorepo-type to provide a `scaffolder`', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: {}}))
+        .toThrowError(`"${key}.scaffolder" is required`);
+    });
+
+    it('should require a scaffolder for a provided monorepo-type to be a function', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffolder: any.word()}}))
+        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    });
+
+    it('should require a scaffolder function for a provided monorepo-type to accept a single argument', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffolder: () => undefined}}))
+        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    });
+
+    it('should consider a provided monorepo-type scaffolder to be valid if an options object is provided', () => {
+      validateOptions(monorepoTypesSchema, {[key]: {scaffolder: options => options}});
+    });
+
+    it('should provide an empty object by default if monorepo-types are not provided', () => {
+      expect(validateOptions(monorepoTypesSchema, undefined)).toEqual({});
     });
   });
 });

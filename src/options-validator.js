@@ -2,7 +2,12 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {unitTestFrameworksSchema} from './testing/options-schemas';
-import {applicationTypesSchema, packageBundlersSchema, packageTypesSchema} from './project-type/options-schemas';
+import {
+  applicationTypesSchema,
+  monorepoTypesSchema,
+  packageBundlersSchema,
+  packageTypesSchema
+} from './project-type/options-schemas';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -63,9 +68,7 @@ export function validate(options) {
     .keys({
       applicationTypes: applicationTypesSchema,
       packageTypes: packageTypesSchema,
-      monorepoTypes: joi.object().pattern(/^/, joi.object({
-        scaffolder: joi.func().arity(1).required()
-      }))
+      monorepoTypes: monorepoTypesSchema
     })
     .keys({
       unitTestFrameworks: unitTestFrameworksSchema,
