@@ -10,7 +10,7 @@ import {scaffold as scaffoldDialect} from '../dialects';
 import scaffoldNpmConfig from '../config/npm';
 import scaffoldDocumentation from '../documentation';
 import scaffoldNodeVersion from '../node-version';
-import buildBadgesDetails from '../badges';
+import buildBadgesDetails from '../documentation/badges';
 import buildVcsIgnoreLists from '../vcs-ignore';
 import {scaffold as scaffoldPackage} from '../package';
 import buildPackageName from '../package-name';
