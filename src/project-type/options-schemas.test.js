@@ -3,7 +3,7 @@ import {validateOptions} from '@form8ion/core';
 import {describe, it, expect} from 'vitest';
 import any from '@travi/any';
 
-import {packageBundlersSchema, applicationTypesSchema} from './options-schemas';
+import {packageBundlersSchema, applicationTypesSchema, packageTypesSchema} from './options-schemas';
 
 describe('project-type options validation', () => {
   const key = any.word();
@@ -67,6 +67,36 @@ describe('project-type options validation', () => {
 
     it('should provide an empty object by default if application-types are not provided', () => {
       expect(validateOptions(applicationTypesSchema, undefined)).toEqual({});
+    });
+  });
+
+  describe('package types', () => {
+    it('should require a provided package-type must define config', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: any.word()}))
+        .toThrowError(`"${key}" must be of type object`);
+    });
+
+    it('should require a provided package-type to provide a `scaffolder`', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: {}}))
+        .toThrowError(`"${key}.scaffolder" is required`);
+    });
+
+    it('should require a scaffolder for a provided package-type to be a function', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffolder: any.word()}}))
+        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    });
+
+    it('should require a scaffolder function for a provided package-type to accept a single argument', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffolder: () => undefined}}))
+        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    });
+
+    it('should consider a provided package-type scaffolder to be valid if an options object is provided', () => {
+      validateOptions(packageTypesSchema, {[key]: {scaffolder: options => options}});
+    });
+
+    it('should provide an empty object by default if application-types are not provided', () => {
+      expect(validateOptions(packageTypesSchema, undefined)).toEqual({});
     });
   });
 });
