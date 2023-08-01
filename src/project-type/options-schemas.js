@@ -1,13 +1,12 @@
 import joi from 'joi';
 
-const pluginSchema = joi.object().pattern(/^/, joi.object({
-  scaffolder: joi.func().arity(1).required()
-})).default({});
+const pluginSchema = joi.object({scaffolder: joi.func().arity(1).required()});
+const pluginMapSchema = joi.object().pattern(/^/, pluginSchema);
 
-export const packageBundlersSchema = pluginSchema;
+export const packageBundlersSchema = pluginMapSchema.default({});
 
-export const applicationTypesSchema = pluginSchema;
+export const applicationTypesSchema = pluginMapSchema.default({});
 
-export const packageTypesSchema = pluginSchema;
+export const packageTypesSchema = pluginMapSchema.default({});
 
-export const monorepoTypesSchema = pluginSchema;
+export const monorepoTypesSchema = pluginMapSchema.default({});
