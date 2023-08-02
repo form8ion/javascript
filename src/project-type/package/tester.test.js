@@ -1,13 +1,9 @@
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
 import test from './tester';
 
 describe('package project-type tester', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should return `true` if the project defines `exports`', async () => {
     expect(await test({packageDetails: {...any.simpleObject(), exports: any.word()}})).toBe(true);
   });
