@@ -1,8 +1,11 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
+import core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
+
 import scaffoldTypescriptDialect from './scaffolder';
 
 suite('typescript dialect', () => {
@@ -13,6 +16,7 @@ suite('typescript dialect', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'writeFile');
+    sandbox.stub(core, 'writeConfigFile');
   });
 
   teardown(() => sandbox.restore());
@@ -29,14 +33,18 @@ suite('typescript dialect', () => {
     await scaffoldTypescriptDialect({config: {scope}, projectRoot});
 
     assert.calledWith(
-      fs.writeFile,
-      `${projectRoot}/tsconfig.json`,
-      JSON.stringify({
-        $schema: 'https://json.schemastore.org/tsconfig',
-        extends: `${scope}/tsconfig`,
-        compilerOptions: {rootDir: 'src'},
-        include: ['src/**/*.ts']
-      }, null, 2)
+      core.writeConfigFile,
+      {
+        path: projectRoot,
+        name: 'tsconfig',
+        format: core.fileTypes.JSON,
+        config: {
+          $schema: 'https://json.schemastore.org/tsconfig',
+          extends: `${scope}/tsconfig`,
+          compilerOptions: {rootDir: 'src'},
+          include: ['src/**/*.ts']
+        }
+      }
     );
   });
 
@@ -46,18 +54,22 @@ suite('typescript dialect', () => {
     await scaffoldTypescriptDialect({config: {scope}, projectType: projectTypes.PACKAGE, projectRoot});
 
     assert.calledWith(
-      fs.writeFile,
-      `${projectRoot}/tsconfig.json`,
-      JSON.stringify({
-        $schema: 'https://json.schemastore.org/tsconfig',
-        extends: `${scope}/tsconfig`,
-        compilerOptions: {
-          rootDir: 'src',
-          outDir: 'lib',
-          declaration: true
-        },
-        include: ['src/**/*.ts']
-      }, null, 2)
+      core.writeConfigFile,
+      {
+        path: projectRoot,
+        name: 'tsconfig',
+        format: core.fileTypes.JSON,
+        config: {
+          $schema: 'https://json.schemastore.org/tsconfig',
+          extends: `${scope}/tsconfig`,
+          compilerOptions: {
+            rootDir: 'src',
+            outDir: 'lib',
+            declaration: true
+          },
+          include: ['src/**/*.ts']
+        }
+      }
     );
   });
 
@@ -68,15 +80,19 @@ suite('typescript dialect', () => {
     await scaffoldTypescriptDialect({config: {scope}, projectRoot, testFilenamePattern});
 
     assert.calledWith(
-      fs.writeFile,
-      `${projectRoot}/tsconfig.json`,
-      JSON.stringify({
-        $schema: 'https://json.schemastore.org/tsconfig',
-        extends: `${scope}/tsconfig`,
-        compilerOptions: {rootDir: 'src'},
-        include: ['src/**/*.ts'],
-        exclude: [testFilenamePattern]
-      }, null, 2)
+      core.writeConfigFile,
+      {
+        path: projectRoot,
+        name: 'tsconfig',
+        format: core.fileTypes.JSON,
+        config: {
+          $schema: 'https://json.schemastore.org/tsconfig',
+          extends: `${scope}/tsconfig`,
+          compilerOptions: {rootDir: 'src'},
+          include: ['src/**/*.ts'],
+          exclude: [testFilenamePattern]
+        }
+      }
     );
   });
 
