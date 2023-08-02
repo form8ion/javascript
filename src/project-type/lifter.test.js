@@ -11,6 +11,7 @@ vi.mock('./cli');
 
 describe('lift project-type', () => {
   const projectRoot = any.string();
+  const packageDetails = any.simpleObject();
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -19,18 +20,18 @@ describe('lift project-type', () => {
   it('should lift a package project-type', async () => {
     const liftPackageResults = any.simpleObject();
     when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(true);
-    when(liftPackage).calledWith({projectRoot}).mockResolvedValue(liftPackageResults);
+    when(liftPackage).calledWith({projectRoot, packageDetails}).mockResolvedValue(liftPackageResults);
 
-    expect(await lift({projectRoot})).toEqual(liftPackageResults);
+    expect(await lift({projectRoot, packageDetails})).toEqual(liftPackageResults);
   });
 
   it('should lift a cli project-type', async () => {
     const liftCliResults = any.simpleObject();
     when(cliPredicate).calledWith({projectRoot}).mockResolvedValue(true);
     when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(false);
-    when(liftCli).calledWith({projectRoot}).mockResolvedValue(liftCliResults);
+    when(liftCli).calledWith({projectRoot, packageDetails}).mockResolvedValue(liftCliResults);
 
-    expect(await lift({projectRoot})).toEqual(liftCliResults);
+    expect(await lift({projectRoot, packageDetails})).toEqual(liftCliResults);
   });
 
   it('should return empty results if the available project-type lifters do not apply', async () => {
