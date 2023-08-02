@@ -14,9 +14,10 @@ describe('package project-type lifter', () => {
 
   it('should leverage the publishable lifter', async () => {
     const projectRoot = any.string();
+    const packageDetails = any.simpleObject();
     const publishableResults = any.simpleObject();
-    when(liftPublishable.default).calledWith({projectRoot}).mockResolvedValue(publishableResults);
+    when(liftPublishable.default).calledWith({projectRoot, packageDetails}).mockResolvedValue(publishableResults);
 
-    expect(await lift({projectRoot})).toEqual(publishableResults);
+    expect(await lift({projectRoot, packageDetails})).toEqual(publishableResults);
   });
 });
