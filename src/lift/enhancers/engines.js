@@ -6,9 +6,7 @@ export async function test({projectRoot}) {
   return !!engines?.node;
 }
 
-export async function lift({projectRoot}) {
-  const {name} = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf8'));
-
+export async function lift({packageDetails: {name}}) {
   return {
     devDependencies: ['ls-engines'],
     scripts: {'lint:engines': 'ls-engines'},

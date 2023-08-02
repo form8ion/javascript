@@ -1,3 +1,4 @@
+import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
 import * as core from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
@@ -16,6 +17,7 @@ import * as packageLifter from '../package/lifter';
 import * as packageManagerResolver from './package-manager';
 import lift from './lift';
 
+vi.mock('node:fs');
 vi.mock('@form8ion/core');
 vi.mock('../package/lifter');
 vi.mock('./package-manager');
@@ -37,9 +39,13 @@ describe('lift', () => {
   });
 
   it('should lift results that are specific to js projects', async () => {
+    const packageDetails = any.simpleObject();
     when(packageManagerResolver.default)
       .calledWith({projectRoot, packageManager: manager})
       .mockResolvedValue(packageManager);
+    when(fs.readFile)
+      .calledWith(`${projectRoot}/package.json`, 'utf8')
+      .mockResolvedValue(JSON.stringify(packageDetails));
     when(core.applyEnhancers).calledWith({
       results,
       enhancers: [
@@ -51,7 +57,7 @@ describe('lift', () => {
         codeStylePlugin,
         projectTypes
       ],
-      options: {projectRoot, packageManager, vcs: vcsDetails}
+      options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}
     }).mockResolvedValue(enhancerResults);
 
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results});

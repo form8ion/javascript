@@ -1,3 +1,4 @@
+import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {applyEnhancers} from '@form8ion/core';
@@ -23,7 +24,10 @@ export default async function ({projectRoot, vcs, results}) {
     packageManager: manager
   } = results;
 
-  const packageManager = await resolvePackageManager({projectRoot, packageManager: manager});
+  const [packageManager, packageContents] = await Promise.all([
+    resolvePackageManager({projectRoot, packageManager: manager}),
+    fs.readFile(`${projectRoot}/package.json`, 'utf8')
+  ]);
 
   const enhancerResults = await applyEnhancers({
     results,
@@ -36,7 +40,7 @@ export default async function ({projectRoot, vcs, results}) {
       codeStylePlugin,
       projectTypes
     ],
-    options: {packageManager, projectRoot, vcs}
+    options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents)}
   });
 
   await liftPackage(

@@ -39,17 +39,15 @@ describe('engines enhancer', () => {
 
   describe('lifter', () => {
     it('should return the details for linting and communicating engines restrictions', async () => {
-      const projectName = any.word();
-      when(fs.readFile)
-        .calledWith(`${projectRoot}/package.json`, 'utf8')
-        .mockResolvedValue(JSON.stringify({name: projectName}));
+      const packageName = any.word();
+      const packageDetails = {...any.simpleObject(), name: packageName};
 
-      const {scripts, badges, devDependencies} = await lift({projectRoot});
+      const {scripts, badges, devDependencies} = await lift({projectRoot, packageDetails});
 
       expect(scripts['lint:engines']).toEqual('ls-engines');
       expect(devDependencies).toEqual(['ls-engines']);
       expect(badges.consumer.node)
-        .toEqual({img: `https://img.shields.io/node/v/${projectName}?logo=node.js`, text: 'node'});
+        .toEqual({img: `https://img.shields.io/node/v/${packageName}?logo=node.js`, text: 'node'});
     });
   });
 });
