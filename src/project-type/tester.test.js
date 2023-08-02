@@ -11,16 +11,17 @@ vi.mock('./cli');
 
 describe('project-type tester', () => {
   const projectRoot = any.string();
+  const packageDetails = any.simpleObject();
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('should return `true` if the result of the package tester is `true`', async () => {
-    when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(true);
-    when(cliPredicate).calledWith({projectRoot}).mockResolvedValue(false);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(true);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
 
-    expect(await test({projectRoot})).toBe(true);
+    expect(await test({projectRoot, packageDetails})).toBe(true);
   });
 
   it('should return `true` if the result of the cli tester is `true`', async () => {

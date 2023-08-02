@@ -19,7 +19,7 @@ describe('lift project-type', () => {
 
   it('should lift a package project-type', async () => {
     const liftPackageResults = any.simpleObject();
-    when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(true);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(true);
     when(liftPackage).calledWith({projectRoot, packageDetails}).mockResolvedValue(liftPackageResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(liftPackageResults);
@@ -27,16 +27,16 @@ describe('lift project-type', () => {
 
   it('should lift a cli project-type', async () => {
     const liftCliResults = any.simpleObject();
-    when(cliPredicate).calledWith({projectRoot}).mockResolvedValue(true);
-    when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(false);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(true);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
     when(liftCli).calledWith({projectRoot, packageDetails}).mockResolvedValue(liftCliResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(liftCliResults);
   });
 
   it('should return empty results if the available project-type lifters do not apply', async () => {
-    when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(false);
-    when(cliPredicate).calledWith({projectRoot}).mockResolvedValue(false);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
 
     expect(await lift({projectRoot})).toEqual({});
   });
