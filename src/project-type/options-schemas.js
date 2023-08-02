@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 const pluginSchema = joi.object({scaffolder: joi.func().arity(1).required()});
-const pluginMapSchema = joi.object().pattern(/^/, pluginSchema);
+const pluginMapSchema = joi.object().pattern(joi.string(), pluginSchema);
 
 export const packageBundlersSchema = pluginMapSchema.default({});
 
