@@ -4,10 +4,10 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {scaffold as packageTypeScaffolder} from './package';
-import * as applicationTypeScaffolder from './application';
+import {scaffold as scaffoldPackageType} from './package';
+import {scaffold as scaffoldApplicationType} from './application';
 import * as monorepoTypeScaffolder from './monorepo';
-import {scaffold as cliTypeScaffolder} from './cli';
+import {scaffold as scaffoldCliType} from './cli';
 import projectTypeScaffolder from './scaffolder';
 
 vi.mock('./package/scaffolder');
@@ -35,7 +35,7 @@ describe('project-type scaffolder', () => {
   it('should apply the package-type scaffolder when the project-type is `Package`', async () => {
     const scope = any.word();
     const packageBundlers = any.simpleObject();
-    when(packageTypeScaffolder).calledWith({
+    when(scaffoldPackageType).calledWith({
       projectRoot,
       packageName,
       projectName,
@@ -68,7 +68,7 @@ describe('project-type scaffolder', () => {
   });
 
   it('should apply the application-type scaffolder when the project-type is `Application`', async () => {
-    when(applicationTypeScaffolder.default).calledWith({projectRoot}).mockResolvedValue(results);
+    when(scaffoldApplicationType).calledWith({projectRoot}).mockResolvedValue(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.APPLICATION,
@@ -83,7 +83,7 @@ describe('project-type scaffolder', () => {
   });
 
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
-    when(cliTypeScaffolder)
+    when(scaffoldCliType)
       .calledWith({packageName, visibility, projectRoot, dialect, publishRegistry})
       .mockResolvedValue(results);
 
