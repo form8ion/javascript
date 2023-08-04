@@ -11,6 +11,7 @@ Feature: Lift a package-type project
     Given an "npm" lockfile exists
     And the project is of type "Package"
     And husky v5 is installed
+    And the package is published publicly
     When the scaffolder results are processed
     Then provenance is enabled for publishing
 
@@ -25,5 +26,6 @@ Feature: Lift a package-type project
     Given an "npm" lockfile exists
     And the project is of type "Package" but without exports defined
     And husky v5 is installed
+    And the package is published publicly
     When the scaffolder results are processed
     Then provenance is enabled for publishing

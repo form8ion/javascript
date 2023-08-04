@@ -39,19 +39,21 @@ Given('an application-type plugin is chosen', async function () {
 });
 
 Given('the project is of type {string}', async function (projectType) {
-  if (projectTypes.PACKAGE === projectType) {
+  const resolvedProjectType = 'Publishable' === projectType ? any.fromList([projectTypes.PACKAGE, projectTypes.CLI]) : projectType;
+
+  if (projectTypes.PACKAGE === resolvedProjectType) {
     this.packageExports = any.word();
-    this.publishConfig = {access: 'public'};
+    this.publishConfig = {};
   }
-  if (projectTypes.CLI === projectType) {
+  if (projectTypes.CLI === resolvedProjectType) {
     this.packageBin = any.word();
-    this.publishConfig = {access: 'public'};
+    this.publishConfig = {};
   }
 });
 
 Given('the project is of type {string} but without exports defined', async function (projectType) {
   if (projectTypes.PACKAGE === projectType) {
-    this.publishConfig = {access: 'public'};
+    this.publishConfig = {};
   }
 });
 

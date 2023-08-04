@@ -1,10 +1,13 @@
+import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-export default async function ({projectRoot}) {
+import enhanceSlsa from './slsa';
+
+export default async function ({projectRoot, packageDetails}) {
   await mergeIntoExistingPackageJson({projectRoot, config: {publishConfig: {provenance: true}}});
 
-  return {
-    devDependencies: ['publint'],
-    scripts: {'lint:publish': 'publint --strict'}
-  };
+  return deepmerge(
+    enhanceSlsa({packageDetails}),
+    {devDependencies: ['publint'], scripts: {'lint:publish': 'publint --strict'}}
+  );
 }
