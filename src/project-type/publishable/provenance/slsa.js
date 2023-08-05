@@ -1,5 +1,5 @@
-export default function ({packageDetails: {publishConfig: {access, provenance}}}) {
-  if ('public' === access && provenance) {
+export default function ({provenance}) {
+  if (provenance) {
     return {
       badges: {
         status: {
