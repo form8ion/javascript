@@ -26,5 +26,5 @@ export async function lift({projectRoot, packageManager}) {
     ]);
   }
 
-  return {};
+  return codecovResults;
 }

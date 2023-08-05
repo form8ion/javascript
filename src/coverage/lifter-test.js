@@ -12,6 +12,10 @@ import {lift} from './lifter';
 
 suite('lift coverage', () => {
   let sandbox;
+  const projectRoot = any.string();
+  const c8Results = any.simpleObject();
+  const codecovResults = any.simpleObject();
+  const packageManager = any.word();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -26,10 +30,6 @@ suite('lift coverage', () => {
   teardown(() => sandbox.restore());
 
   test('that `nyc` is replaced by `c8` if nyc config exists', async () => {
-    const projectRoot = any.string();
-    const packageManager = any.word();
-    const c8Results = any.simpleObject();
-    const codecovResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(true);
@@ -54,12 +54,11 @@ suite('lift coverage', () => {
   });
 
   test('that `nyc` is not replaced by `c8` if nyc config does not exist', async () => {
-    const projectRoot = any.string();
-    const c8Results = any.simpleObject();
     c8Scaffolder.default.withArgs({projectRoot}).resolves(c8Results);
     nycTester.default.withArgs({projectRoot}).resolves(false);
+    codecovPlugin.lift.withArgs({projectRoot, packageManager}).resolves(codecovResults);
 
-    assert.deepEqual(await lift({projectRoot}), {});
+    assert.deepEqual(await lift({projectRoot, packageManager}), codecovResults);
 
     assert.notCalled(c8Scaffolder.default);
   });
