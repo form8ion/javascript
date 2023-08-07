@@ -60,7 +60,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@form8ion/codecov": "^4.0.0",
+    "@form8ion/codecov": "^5.0.0",
     "@form8ion/commit-convention": "^6.0.0",
     "@form8ion/config-file": "^1.0.1",
     "@form8ion/core": "^3.0.0",
