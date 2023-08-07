@@ -182,7 +182,7 @@ $ npm test
 
 [npm-badge]: https://img.shields.io/npm/v/@form8ion/javascript.svg?logo=npm
 
-[node-badge]: https://img.shields.io/node/v/@form8ion/javascript.svg?logo=node.js
+[node-badge]: https://img.shields.io/node/v/@form8ion/javascript?logo=node.js
 
 [runkit-link]: https://npm.runkit.com/@form8ion/javascript
 
