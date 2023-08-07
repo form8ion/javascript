@@ -8,6 +8,7 @@ toolset
 [![Node CI Workflow Status][github-actions-ci-badge]][github-actions-ci-link]
 [![Codecov][coverage-badge]][coverage-link]
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/form8ion/javascript/badge)](https://securityscorecards.dev/viewer/?uri=github.com/form8ion/javascript)
+![SLSA Level 2][slsa-badge]
 
 <!--status-badges end -->
 
@@ -190,3 +191,5 @@ $ npm test
 [coverage-link]: https://codecov.io/github/form8ion/javascript
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/javascript.svg?logo=codecov
+
+[slsa-badge]: https://slsa.dev/images/gh-badge-level2.svg
