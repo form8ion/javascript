@@ -4,8 +4,8 @@ import {lift as liftCodecov} from '@form8ion/codecov';
 import {scaffold as scaffoldC8} from './c8';
 import {test as nycIsConfigured, remove as removeNyc} from './nyc';
 
-export async function lift({projectRoot, packageManager}) {
-  const codecovResults = await liftCodecov({projectRoot, packageManager});
+export async function lift({projectRoot, packageManager, vcs}) {
+  const codecovResults = await liftCodecov({projectRoot, packageManager, vcs});
 
   if (await nycIsConfigured({projectRoot})) {
     const [c8Results] = await Promise.all([

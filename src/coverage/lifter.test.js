@@ -18,6 +18,7 @@ vi.mock('./c8/scaffolder');
 
 describe('coverage lifter', () => {
   const projectRoot = any.string();
+  const vcs = any.simpleObject();
   const c8Results = any.simpleObject();
   const codecovResults = any.simpleObject();
   const packageManager = any.word();
@@ -30,7 +31,7 @@ describe('coverage lifter', () => {
     const mergedResults = any.simpleObject();
     when(scaffoldC8).calledWith({projectRoot}).mockResolvedValue(c8Results);
     when(testForNyc).calledWith({projectRoot}).mockResolvedValue(true);
-    when(liftCodecov).calledWith({projectRoot, packageManager}).mockResolvedValue(codecovResults);
+    when(liftCodecov).calledWith({projectRoot, packageManager, vcs}).mockResolvedValue(codecovResults);
     when(deepmerge.all).calledWith([
       c8Results,
       codecovResults,
@@ -43,7 +44,7 @@ describe('coverage lifter', () => {
       }
     ]).mockReturnValue(mergedResults);
 
-    expect(await lift({projectRoot, packageManager})).toEqual(mergedResults);
+    expect(await lift({projectRoot, packageManager, vcs})).toEqual(mergedResults);
 
     expect(removeNyc).toHaveBeenCalledWith({projectRoot, packageManager});
   });

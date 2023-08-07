@@ -1,4 +1,4 @@
-import * as codecovScaffolder from '@form8ion/codecov';
+import codecovScaffolder from '@form8ion/codecov';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
