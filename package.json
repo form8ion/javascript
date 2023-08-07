@@ -27,7 +27,7 @@
     "lint:sensitive": "ban",
     "lint:peer": "npm ls >/dev/null",
     "lint:engines": "ls-engines",
-    "lint:publish": "publint",
+    "lint:publish": "publint --strict",
     "generate:md": "remark . --output",
     "pregenerate:md": "run-s build",
     "prepare": "husky install",
