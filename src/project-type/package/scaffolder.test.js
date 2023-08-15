@@ -80,6 +80,7 @@ describe('package project-type scaffolder', () => {
         main: './lib/index.js',
         module: './lib/index.mjs',
         exports: {
+          module: './lib/index.mjs',
           require: './lib/index.js',
           import: './lib/index.mjs'
         },
@@ -257,6 +258,7 @@ describe('package project-type scaffolder', () => {
         main: './lib/index.js',
         module: './lib/index.mjs',
         exports: {
+          module: './lib/index.mjs',
           require: './lib/index.js',
           import: './lib/index.mjs'
         },

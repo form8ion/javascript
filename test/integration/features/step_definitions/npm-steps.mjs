@@ -46,7 +46,7 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
   } else {
     assert.equal(packageDetails.main, './lib/index.js');
     assert.equal(packageDetails.module, './lib/index.mjs');
-    assert.deepEqual(packageDetails.exports, {require: './lib/index.js', import: './lib/index.mjs'});
+    assert.deepEqual(packageDetails.exports, {module: './lib/index.mjs', require: './lib/index.js', import: './lib/index.mjs'});
     assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
     assert.isFalse(packageDetails.sideEffects);
   }

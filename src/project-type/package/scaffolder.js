@@ -46,6 +46,7 @@ export default async function ({
           main: './lib/index.js',
           module: './lib/index.mjs',
           exports: {
+            module: './lib/index.mjs',
             require: './lib/index.js',
             import: './lib/index.mjs'
           }

@@ -12,6 +12,7 @@
   "homepage": "https://npm.im/@form8ion/javascript",
   "runkitExampleFilename": "./example.js",
   "exports": {
+    "module": "./lib/index.mjs",
     "require": "./lib/index.js",
     "import": "./lib/index.mjs"
   },
