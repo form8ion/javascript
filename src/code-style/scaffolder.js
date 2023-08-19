@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import {scaffold as scaffoldPrettier} from '@form8ion/prettier';
 import {scaffold as scaffoldEslint} from '@form8ion/eslint';
 
-import scaffoldRemark from './remark';
+import {scaffold as scaffoldRemark} from './remark';
 
 export default async function ({
   projectRoot,

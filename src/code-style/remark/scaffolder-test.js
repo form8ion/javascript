@@ -6,7 +6,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import scaffoldRemark from './remark';
+import scaffoldRemark from './scaffolder';
 
 suite('remark config scaffolder', () => {
   let sandbox;

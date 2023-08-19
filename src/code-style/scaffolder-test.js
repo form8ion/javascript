@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as scaffoldRemark from './remark';
+import * as scaffoldRemark from './remark/scaffolder';
 import {scaffold} from '.';
 
 suite('code-style scaffolder', () => {
