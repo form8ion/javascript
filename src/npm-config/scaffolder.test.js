@@ -1,85 +1,75 @@
-import {promises as fsPromises} from 'node:fs';
+import {promises as fs} from 'node:fs';
 import {projectTypes} from '@form8ion/javascript-core';
 
-import {assert} from 'chai';
+import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
-import sinon from 'sinon';
 
 import scaffoldNpmConfig from './scaffolder';
 
-suite('npm config scaffolder', () => {
-  let sandbox;
+vi.mock('node:fs');
+
+describe('npm config scaffolder', () => {
   const projectRoot = any.string();
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
-
-    sandbox.stub(fsPromises, 'writeFile');
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
-  teardown(() => sandbox.restore());
-
-  test('that applications save exact versions of dependencies', async () => {
+  it('should save exact versions of dependencies for applications', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION, registries: {}});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       'update-notifier=false\nsave-exact=true\n'
     );
   });
 
-  test('that cli-applications save exact versions of dependencies', async () => {
+  it('should save exact versions of dependencies for cli applications', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI, registries: {}});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       'update-notifier=false\nsave-exact=true\n'
     );
   });
 
-  test('that packages are allowed to use semver ranges', async () => {
+  it('should allow semver ranges for dependencies of packages', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE, registries: {}});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       'update-notifier=false\n'
     );
   });
 
-  test('that a registry override is defined the config when provided', async () => {
+  it('should define a registry override when provided', async () => {
     const registries = {registry: any.url()};
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       `update-notifier=false\nregistry=${registries.registry}\n`
     );
   });
 
-  test('that a publish registry is not defined the config when provided', async () => {
+  it('should not define a publish registry when provided', async () => {
     const registries = {registry: any.url(), publish: any.url()};
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       `update-notifier=false\nregistry=${registries.registry}\n`
     );
   });
 
-  test('that scoped registries are added to the config when provided', async () => {
+  it('should add scoped registries when provided', async () => {
     const registries = any.objectWithKeys(any.listOf(any.word), {factory: any.word});
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    assert.calledWith(
-      fsPromises.writeFile,
+    expect(fs.writeFile).toHaveBeenCalledWith(
       `${projectRoot}/.npmrc`,
       `update-notifier=false\n${
         Object.entries(registries)
@@ -89,9 +79,9 @@ suite('npm config scaffolder', () => {
     );
   });
 
-  test('that the script to enforce peer-dependency compatibility is defined', async () => {
+  it('should define the script to enforce peer-dependency compatibility', async () => {
     const results = await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries: {}});
 
-    assert.equal(results.scripts['lint:peer'], 'npm ls >/dev/null');
+    expect(results.scripts['lint:peer']).toEqual('npm ls >/dev/null');
   });
 });
