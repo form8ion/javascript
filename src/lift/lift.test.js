@@ -10,6 +10,7 @@ import {when} from 'jest-when';
 
 import * as coveragePlugin from '../coverage';
 import * as codeStylePlugin from '../code-style';
+import * as npmConfigPlugin from '../npm-config';
 import * as enginesEnhancer from './enhancers/engines';
 import * as projectTypes from '../project-type';
 import * as dialects from '../dialects';
@@ -55,6 +56,7 @@ describe('lift', () => {
         commitConventionPlugin,
         dialects,
         codeStylePlugin,
+        npmConfigPlugin,
         projectTypes
       ],
       options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}

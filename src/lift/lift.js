@@ -7,6 +7,7 @@ import * as commitConventionPlugin from '@form8ion/commit-convention';
 
 import * as coveragePlugin from '../coverage';
 import * as codeStylePlugin from '../code-style';
+import * as npmConfigPlugin from '../npm-config';
 import * as enginesEnhancer from './enhancers/engines';
 import * as projectTypes from '../project-type';
 import * as dialects from '../dialects';
@@ -38,6 +39,7 @@ export default async function ({projectRoot, vcs, results}) {
       commitConventionPlugin,
       dialects,
       codeStylePlugin,
+      npmConfigPlugin,
       projectTypes
     ],
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents)}
