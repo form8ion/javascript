@@ -7,7 +7,7 @@ import lift from '../lift';
 import {validate} from '../options-validator';
 import {prompt} from '../prompts/questions';
 import {scaffold as scaffoldDialect} from '../dialects';
-import scaffoldNpmConfig from '../config/npm';
+import {scaffold as scaffoldNpmConfig} from '../npm-config';
 import scaffoldDocumentation from '../documentation';
 import scaffoldNodeVersion from '../node-version';
 import buildBadgesDetails from '../documentation/badges';

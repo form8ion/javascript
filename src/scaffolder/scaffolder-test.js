@@ -12,7 +12,7 @@ import * as optionsValidator from '../options-validator';
 import * as dialects from '../dialects/scaffolder';
 import * as verification from './verification/verifier';
 import * as codeStyle from '../code-style/scaffolder';
-import * as npmConfig from '../config/npm';
+import * as npmConfig from '../npm-config/scaffolder';
 import * as documentation from '../documentation/scaffolder';
 import * as nodeVersionScaffolder from '../node-version/scaffolder';
 import * as badgeDetailsBuilder from '../documentation/badges';
@@ -282,8 +282,8 @@ suite('javascript project scaffolder', () => {
 
   teardown(() => sandbox.restore());
 
-  suite('config files', () => {
-    test('that config files are created', async () => {
+  suite('npm-config files', () => {
+    test('that npm-config files are created', async () => {
       jsCore.scaffoldChoice
         .withArgs(
           hosts,

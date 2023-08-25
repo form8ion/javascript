@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import scaffoldNpmConfig from './npm';
+import scaffoldNpmConfig from './scaffolder';
 
 suite('npm config scaffolder', () => {
   let sandbox;
