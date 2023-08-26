@@ -2,7 +2,7 @@ import jsCore from '@form8ion/javascript-core';
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import scaffoldMonorepo from './monorepo';
+import scaffoldMonorepo from './scaffolder';
 
 suite('monorepo project-type', () => {
   let sandbox;

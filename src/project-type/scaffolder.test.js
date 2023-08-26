@@ -6,7 +6,7 @@ import {when} from 'jest-when';
 
 import {scaffold as scaffoldPackageType} from './package';
 import {scaffold as scaffoldApplicationType} from './application';
-import * as monorepoTypeScaffolder from './monorepo';
+import {scaffold as scaffoldMonorepoType} from './monorepo';
 import {scaffold as scaffoldCliType} from './cli';
 import projectTypeScaffolder from './scaffolder';
 
@@ -99,7 +99,7 @@ describe('project-type scaffolder', () => {
   });
 
   it('should apply the monorepo-type scaffolder when the project-type is `Monorepo`', async () => {
-    when(monorepoTypeScaffolder.default).calledWith({projectRoot}).mockResolvedValue(results);
+    when(scaffoldMonorepoType).calledWith({projectRoot}).mockResolvedValue(results);
 
     expect(await projectTypeScaffolder({projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions}))
       .toEqual(results);
