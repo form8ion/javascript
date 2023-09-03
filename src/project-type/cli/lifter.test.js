@@ -2,7 +2,7 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as liftPublishable from '../publishable/lifter';
+import {lift as liftPublishable} from '../publishable';
 import lift from './lifter';
 
 vi.mock('../publishable/lifter');
@@ -16,7 +16,7 @@ describe('cli project-type lifter', () => {
     const projectRoot = any.string();
     const packageDetails = any.simpleObject();
     const publishableResults = any.simpleObject();
-    when(liftPublishable.default).calledWith({projectRoot, packageDetails}).mockResolvedValue(publishableResults);
+    when(liftPublishable).calledWith({projectRoot, packageDetails}).mockResolvedValue(publishableResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(publishableResults);
   });
