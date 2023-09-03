@@ -1,7 +1,7 @@
-export default function (packageName, visibility) {
+export default function (packageName, accessLevel) {
   return {
     consumer: {
-      ...'Public' === visibility && {
+      ...'public' === accessLevel && {
         npm: {
           img: `https://img.shields.io/npm/v/${packageName}?logo=npm`,
           text: 'npm',

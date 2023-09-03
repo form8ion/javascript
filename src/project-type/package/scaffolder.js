@@ -4,6 +4,7 @@ import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core'
 
 import scaffoldPackageDocumentation from './documentation';
 import defineBadges from '../publishable/badges';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
 import buildDetails from './build-details';
 
 export default async function ({
@@ -21,6 +22,7 @@ export default async function ({
 }) {
   info('Scaffolding Package Details');
 
+  const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
   const [detailsForBuild] = await Promise.all([
     buildDetails({
       projectRoot,
@@ -37,7 +39,7 @@ export default async function ({
       config: {
         files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/']],
         publishConfig: {
-          access: 'Public' === visibility ? 'public' : 'restricted',
+          access: packageAccessLevel,
           ...publishRegistry && {registry: publishRegistry}
         },
         sideEffects: false,
@@ -76,7 +78,7 @@ export default async function ({
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ],
-      badges: defineBadges(packageName, visibility)
+      badges: defineBadges(packageName, packageAccessLevel)
     },
     detailsForBuild
   ]);

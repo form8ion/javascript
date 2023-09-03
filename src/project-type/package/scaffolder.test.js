@@ -5,12 +5,14 @@ import any from '@travi/any';
 import {when} from 'jest-when';
 
 import * as defineBadges from '../publishable/badges';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
 import * as buildDetails from './build-details';
 import * as documentationScaffolder from './documentation';
 import scaffoldPackage from './scaffolder';
 
 vi.mock('@form8ion/javascript-core');
 vi.mock('../publishable/badges');
+vi.mock('../publishable/access-level');
 vi.mock('./build-details');
 vi.mock('./documentation');
 
@@ -20,7 +22,8 @@ describe('package project-type scaffolder', () => {
   const projectName = any.word();
   const packageName = any.word();
   const packageManager = any.word();
-  const visibility = 'Private';
+  const visibility = any.word();
+  const packageAccessLevel = any.word();
   const scope = any.word();
   const provideExample = any.boolean();
   const badges = {consumer: any.simpleObject(), contribution: any.simpleObject(), status: any.simpleObject()};
@@ -36,6 +39,9 @@ describe('package project-type scaffolder', () => {
     when(documentationScaffolder.default)
       .calledWith({scope, packageName, visibility, packageManager, provideExample})
       .mockReturnValue(documentation);
+    when(determinePackageAccessLevelFromProjectVisibility)
+      .calledWith({projectVisibility: visibility})
+      .mockReturnValue(packageAccessLevel);
   });
 
   afterEach(() => {
@@ -44,7 +50,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a modern-js package', async () => {
     const dialect = dialects.BABEL;
-    when(defineBadges.default).calledWith(packageName, visibility).mockReturnValue(badges);
+    when(defineBadges.default).calledWith(packageName, packageAccessLevel).mockReturnValue(badges);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -85,7 +91,7 @@ describe('package project-type scaffolder', () => {
           import: './lib/index.mjs'
         },
         files: ['example.js', 'lib/'],
-        publishConfig: {access: 'restricted'}
+        publishConfig: {access: packageAccessLevel}
       }
     });
   });
@@ -128,7 +134,7 @@ describe('package project-type scaffolder', () => {
         exports: './lib/index.mjs',
         files: ['example.js', 'lib/'],
         sideEffects: false,
-        publishConfig: {access: 'restricted'}
+        publishConfig: {access: packageAccessLevel}
       }
     });
   });
@@ -177,7 +183,7 @@ describe('package project-type scaffolder', () => {
           import: './lib/index.mjs'
         },
         files: ['example.js', 'lib/'],
-        publishConfig: {access: 'restricted'}
+        publishConfig: {access: packageAccessLevel}
       }
     });
   });
@@ -217,7 +223,7 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       config: {
         files: ['example.js', 'index.js'],
-        publishConfig: {access: 'restricted'},
+        publishConfig: {access: packageAccessLevel},
         sideEffects: false
       }
     });
@@ -264,7 +270,7 @@ describe('package project-type scaffolder', () => {
         },
         files: ['example.js', 'lib/'],
         publishConfig: {
-          access: 'restricted',
+          access: packageAccessLevel,
           registry: publishRegistry
         }
       }

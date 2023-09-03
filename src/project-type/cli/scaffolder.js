@@ -3,10 +3,12 @@ import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-c
 import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
 import defineBadges from '../publishable/badges';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
 
 const defaultBuildDirectory = 'bin';
 
 export default async function ({packageName, visibility, projectRoot, dialect, publishRegistry}) {
+  const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
   const [rollupResults] = await Promise.all([
     scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI}),
     mergeIntoExistingPackageJson({
@@ -15,7 +17,7 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
         bin: {},
         files: [`${defaultBuildDirectory}/`],
         publishConfig: {
-          access: 'Public' === visibility ? 'public' : 'restricted',
+          access: packageAccessLevel,
           ...publishRegistry && {registry: publishRegistry}
         }
       }
@@ -35,7 +37,7 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
       devDependencies: ['rimraf'],
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
-      badges: defineBadges(packageName, visibility),
+      badges: defineBadges(packageName, packageAccessLevel),
       nextSteps: []
     }
   );
