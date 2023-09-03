@@ -3,8 +3,8 @@ import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
 import scaffoldPackageDocumentation from './documentation';
-import defineBadges from '../publishable/badges';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
+import {scaffold as scaffoldPublishable} from '../publishable';
 import buildDetails from './build-details';
 
 export default async function ({
@@ -23,7 +23,7 @@ export default async function ({
   info('Scaffolding Package Details');
 
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
-  const [detailsForBuild] = await Promise.all([
+  const [detailsForBuild, publishableResults] = await Promise.all([
     buildDetails({
       projectRoot,
       projectName,
@@ -34,6 +34,7 @@ export default async function ({
       provideExample,
       decisions
     }),
+    scaffoldPublishable({packageName, packageAccessLevel}),
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {
@@ -72,13 +73,13 @@ export default async function ({
   ]);
 
   return deepmerge.all([
+    publishableResults,
     {
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager, provideExample}),
       nextSteps: [
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
-      ],
-      badges: defineBadges(packageName, packageAccessLevel)
+      ]
     },
     detailsForBuild
   ]);

@@ -21,11 +21,17 @@ describe('cli project-type scaffolder', () => {
   const configs = any.simpleObject();
   const visibility = any.word();
   const packageAccessLevel = any.word();
+  const rollupResults = any.simpleObject();
+  const dialect = any.word();
 
   beforeEach(() => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .mockReturnValue(packageAccessLevel);
+    when(defineBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badges);
+    when(rollupScaffolder.scaffold)
+      .calledWith({projectRoot, dialect, projectType: projectTypes.CLI})
+      .mockResolvedValue(rollupResults);
   });
 
   afterEach(() => {
@@ -33,13 +39,6 @@ describe('cli project-type scaffolder', () => {
   });
 
   it('should scaffold the cli project-type details', async () => {
-    const rollupResults = any.simpleObject();
-    const dialect = any.word();
-    when(rollupScaffolder.scaffold)
-      .calledWith({projectRoot, dialect, projectType: projectTypes.CLI})
-      .mockResolvedValue(rollupResults);
-    when(defineBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badges);
-
     expect(await scaffoldCli({projectRoot, configs, packageName, visibility, dialect})).toEqual({
       ...rollupResults,
       scripts: {
@@ -67,7 +66,7 @@ describe('cli project-type scaffolder', () => {
   it('should define the registry to publish to when provided', async () => {
     const publishRegistry = any.url();
 
-    await scaffoldCli({projectRoot, configs, packageName, visibility, publishRegistry});
+    await scaffoldCli({projectRoot, configs, packageName, visibility, publishRegistry, dialect});
 
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

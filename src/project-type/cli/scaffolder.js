@@ -2,15 +2,16 @@ import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-core';
 import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
-import defineBadges from '../publishable/badges';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
+import {scaffold as scaffoldPublishable} from '../publishable';
 
 const defaultBuildDirectory = 'bin';
 
 export default async function ({packageName, visibility, projectRoot, dialect, publishRegistry}) {
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
-  const [rollupResults] = await Promise.all([
+  const [rollupResults, publishableResults] = await Promise.all([
     scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI}),
+    scaffoldPublishable({packageName, packageAccessLevel}),
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {
@@ -24,7 +25,8 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
     })
   ]);
 
-  return deepmerge(
+  return deepmerge.all([
+    publishableResults,
     rollupResults,
     {
       scripts: {
@@ -37,8 +39,7 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
       devDependencies: ['rimraf'],
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
-      badges: defineBadges(packageName, packageAccessLevel),
       nextSteps: []
     }
-  );
+  ]);
 }
