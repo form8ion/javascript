@@ -5,19 +5,19 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import defineBadges from '../publishable/badges';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
+import {scaffold as scaffoldPublishable} from '../publishable';
 import scaffoldCli from './scaffolder';
 
 vi.mock('@form8ion/javascript-core');
 vi.mock('@form8ion/rollup');
-vi.mock('../publishable/badges');
 vi.mock('../publishable/access-level');
+vi.mock('../publishable');
 
 describe('cli project-type scaffolder', () => {
   const projectRoot = any.string();
   const packageName = any.word();
-  const badges = any.simpleObject();
+  const publishableResults = any.simpleObject();
   const configs = any.simpleObject();
   const visibility = any.word();
   const packageAccessLevel = any.word();
@@ -28,7 +28,7 @@ describe('cli project-type scaffolder', () => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .mockReturnValue(packageAccessLevel);
-    when(defineBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badges);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
     when(rollupScaffolder.scaffold)
       .calledWith({projectRoot, dialect, projectType: projectTypes.CLI})
       .mockResolvedValue(rollupResults);
@@ -40,6 +40,7 @@ describe('cli project-type scaffolder', () => {
 
   it('should scaffold the cli project-type details', async () => {
     expect(await scaffoldCli({projectRoot, configs, packageName, visibility, dialect})).toEqual({
+      ...publishableResults,
       ...rollupResults,
       scripts: {
         clean: 'rimraf ./bin',
@@ -54,7 +55,6 @@ describe('cli project-type scaffolder', () => {
         directories: ['/bin/']
       },
       buildDirectory: 'bin',
-      badges,
       nextSteps: []
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({

@@ -4,15 +4,15 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as defineBadges from '../publishable/badges';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
+import {scaffold as scaffoldPublishable} from '../publishable';
 import * as buildDetails from './build-details';
 import * as documentationScaffolder from './documentation';
 import scaffoldPackage from './scaffolder';
 
 vi.mock('@form8ion/javascript-core');
-vi.mock('../publishable/badges');
 vi.mock('../publishable/access-level');
+vi.mock('../publishable');
 vi.mock('./build-details');
 vi.mock('./documentation');
 
@@ -26,7 +26,7 @@ describe('package project-type scaffolder', () => {
   const packageAccessLevel = any.word();
   const scope = any.word();
   const provideExample = any.boolean();
-  const badges = {consumer: any.simpleObject(), contribution: any.simpleObject(), status: any.simpleObject()};
+  const publishableResults = any.simpleObject();
   const commonNextSteps = [
     {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
     {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
@@ -50,7 +50,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a modern-js package', async () => {
     const dialect = dialects.BABEL;
-    when(defineBadges.default).calledWith(packageName, packageAccessLevel).mockReturnValue(badges);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -74,8 +74,8 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample
     })).toEqual({
+      ...publishableResults,
       ...buildDetailsResults,
-      badges,
       documentation,
       nextSteps: commonNextSteps
     });
@@ -98,7 +98,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to an esm-only package', async () => {
     const dialect = dialects.ESM;
-    when(defineBadges.default).calledWith(packageName, visibility).mockReturnValue(badges);
+    when(scaffoldPublishable).calledWith({packageName, visibility}).mockReturnValue(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -122,8 +122,8 @@ describe('package project-type scaffolder', () => {
       decisions,
       provideExample
     })).toEqual({
+      ...publishableResults,
       ...buildDetailsResults,
-      badges,
       documentation,
       nextSteps: commonNextSteps
     });
@@ -141,7 +141,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a typescript package', async () => {
     const dialect = dialects.TYPESCRIPT;
-    when(defineBadges.default).calledWith(packageName, visibility).mockReturnValue(badges);
+    when(scaffoldPublishable).calledWith({packageName, visibility}).mockReturnValue(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -165,8 +165,8 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample
     })).toEqual({
+      ...publishableResults,
       ...buildDetailsResults,
-      badges,
       documentation,
       nextSteps: commonNextSteps
     });
@@ -190,7 +190,7 @@ describe('package project-type scaffolder', () => {
 
   it('should not include build details when the project will not be scaffolded', async () => {
     const dialect = dialects.COMMON_JS;
-    when(defineBadges.default).calledWith(packageName, visibility).mockReturnValue(badges);
+    when(scaffoldPublishable).calledWith({packageName, visibility}).mockReturnValue(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -214,8 +214,8 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample
     })).toEqual({
+      ...publishableResults,
       ...buildDetailsResults,
-      badges,
       documentation,
       nextSteps: commonNextSteps
     });
