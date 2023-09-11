@@ -6,13 +6,13 @@ import any from '@travi/any';
 import {when} from 'jest-when';
 
 import * as testingScaffolder from './testing/scaffolder';
-import * as lintingScaffolder from './linting/scaffolder';
+import {scaffold as scaffoldLinting} from '../../linting';
 import {scaffoldVerification} from './verifier';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/husky');
 vi.mock('./testing/scaffolder');
-vi.mock('./linting/scaffolder');
+vi.mock('../../linting');
 
 describe('verification', () => {
   afterEach(() => {
@@ -35,7 +35,7 @@ describe('verification', () => {
     const testingResults = {...any.simpleObject(), eslint: testingEslintResults};
     const registries = any.simpleObject();
     const mergedResults = any.simpleObject();
-    when(lintingScaffolder.default)
+    when(scaffoldLinting)
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .mockResolvedValue(lintingResults);
     when(testingScaffolder.default)

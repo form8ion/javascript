@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import {scaffold as scaffoldHusky} from '@form8ion/husky';
 
 import scaffoldTesting from './testing';
-import scaffoldLinting from './linting';
+import {scaffold as scaffoldLinting} from '../../linting';
 
 export async function scaffoldVerification({
   projectRoot,

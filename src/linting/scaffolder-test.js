@@ -2,8 +2,8 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 import * as scaffoldBanSensitiveFiles from './ban-sensitive-files';
-import * as scaffoldLockfileLint from '../../../lockfile-lint/scaffolder';
-import scaffold from './index';
+import * as scaffoldLockfileLint from '../lockfile-lint/scaffolder';
+import {scaffold} from './index';
 
 suite('linting scaffolder', () => {
   let sandbox;
