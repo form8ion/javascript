@@ -5,7 +5,7 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import liftNpmConfig from './lifter';
+import liftNpmConfig from './lifter.js';
 
 vi.mock('node:fs');
 

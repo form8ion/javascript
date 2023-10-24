@@ -1,4 +1,4 @@
-import {write} from './config';
+import {write} from './config/index.js';
 
 export default async function ({projectRoot, preset}) {
   if (!preset) {

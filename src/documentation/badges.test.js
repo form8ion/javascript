@@ -4,7 +4,7 @@ import {describe, it, expect, afterEach, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import badgeDetailsBuilder from './badges';
+import badgeDetailsBuilder from './badges.js';
 
 vi.mock('deepmerge');
 

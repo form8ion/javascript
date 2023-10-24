@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import test from './tester';
+import test from './tester.js';
 
 describe('package project-type tester', () => {
   it('should return `true` if the project defines `exports`', async () => {

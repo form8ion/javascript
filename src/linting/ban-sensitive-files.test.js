@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import scaffoldBanSensitiveFiles from './ban-sensitive-files';
+import scaffoldBanSensitiveFiles from './ban-sensitive-files.js';
 
 describe('lint for sensitive files', () => {
   it('should configure ban-sensitive-files', () => {

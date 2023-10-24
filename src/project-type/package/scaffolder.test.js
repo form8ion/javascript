@@ -4,17 +4,17 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
-import {scaffold as scaffoldPublishable} from '../publishable';
-import * as buildDetails from './build-details';
-import * as documentationScaffolder from './documentation';
-import scaffoldPackage from './scaffolder';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
+import {scaffold as scaffoldPublishable} from '../publishable/index.js';
+import * as buildDetails from './build-details.js';
+import * as documentationScaffolder from './documentation.js';
+import scaffoldPackage from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
-vi.mock('../publishable/access-level');
-vi.mock('../publishable');
-vi.mock('./build-details');
-vi.mock('./documentation');
+vi.mock('../publishable/access-level.js');
+vi.mock('../publishable/index.js');
+vi.mock('./build-details.js');
+vi.mock('./documentation.js');
 
 describe('package project-type scaffolder', () => {
   const projectRoot = any.string();

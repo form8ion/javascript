@@ -2,9 +2,9 @@ import {promises as fs} from 'fs';
 import {error, info} from '@travi/cli-messages';
 import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE, writePackageJson} from '@form8ion/javascript-core';
 
-import sortPackageProperties from './property-sorter';
-import {install} from '../dependencies';
-import {lift as liftScripts} from './scripts';
+import sortPackageProperties from './property-sorter.js';
+import {install} from '../dependencies/index.js';
+import {lift as liftScripts} from './scripts/index.js';
 
 export default async function ({
   projectRoot,

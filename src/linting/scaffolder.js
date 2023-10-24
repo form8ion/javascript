@@ -1,6 +1,7 @@
 import deepmerge from 'deepmerge';
-import scaffoldBanSensitiveFiles from './ban-sensitive-files';
-import {scaffold as scaffoldLockfileLint} from '../lockfile-lint';
+
+import scaffoldBanSensitiveFiles from './ban-sensitive-files.js';
+import {scaffold as scaffoldLockfileLint} from '../lockfile-lint/index.js';
 
 export default async function ({projectRoot, packageManager, registries, vcs, pathWithinParent}) {
   return deepmerge.all(await Promise.all([

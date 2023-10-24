@@ -2,9 +2,9 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {test as packagePredicate} from './package';
-import {test as cliPredicate} from './cli';
-import test from './tester';
+import {test as packagePredicate} from './package/index.js';
+import {test as cliPredicate} from './cli/index.js';
+import test from './tester.js';
 
 vi.mock('./package');
 vi.mock('./cli');

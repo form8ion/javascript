@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import nycIsConfigured from './tester';
+import nycIsConfigured from './tester.js';
 
 suite('nyc predicate', () => {
   let sandbox;

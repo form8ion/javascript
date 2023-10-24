@@ -1,14 +1,16 @@
 import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
 import {projectTypes} from '@form8ion/javascript-core';
+
 import any from '@travi/any';
 import {assert} from 'chai';
+
 import {
   projectIsApplication,
   shouldBeScopedPromptShouldBePresented,
   scopePromptShouldBePresentedFactory,
   lintingPromptShouldBePresented
-} from './conditionals';
-import {questionNames} from './question-names';
+} from './conditionals.js';
+import {questionNames} from './question-names.js';
 
 suite('javascript prompt conditionals', () => {
   suite('scope', () => {

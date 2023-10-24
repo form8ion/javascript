@@ -2,8 +2,8 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
-import * as execa from '../../thirdparty-wrappers/execa';
-import removeDependencies from './remover';
+import * as execa from '../../thirdparty-wrappers/execa.js';
+import removeDependencies from './remover.js';
 
 suite('dependency remover', () => {
   let sandbox;

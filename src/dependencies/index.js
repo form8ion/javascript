@@ -1,1 +1,1 @@
-export {default as install} from './installer';
+export {default as install} from './installer.js';

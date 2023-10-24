@@ -1,3 +1,3 @@
-export {default as scaffold} from './scaffolder';
-export {lift} from './lifter';
-export {default as test} from './tester';
+export {default as scaffold} from './scaffolder.js';
+export {lift} from './lifter.js';
+export {default as test} from './tester.js';

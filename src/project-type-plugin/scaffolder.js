@@ -1,6 +1,6 @@
 import {scaffoldChoice} from '@form8ion/javascript-core';
 
-import chooseProjectTypePlugin from './prompt';
+import chooseProjectTypePlugin from './prompt.js';
 
 export default async function ({
   projectRoot,

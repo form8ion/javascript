@@ -5,9 +5,9 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
-import {scaffold as scaffoldPublishable} from '../publishable';
-import scaffoldCli from './scaffolder';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
+import {scaffold as scaffoldPublishable} from '../publishable/index.js';
+import scaffoldCli from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
 vi.mock('@form8ion/rollup');

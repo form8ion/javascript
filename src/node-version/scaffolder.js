@@ -1,6 +1,7 @@
 import {promises as fsPromises} from 'fs';
 import {info} from '@travi/cli-messages';
-import {determineLatestVersionOf, install as installNodeVersion} from './tasks';
+
+import {determineLatestVersionOf, install as installNodeVersion} from './tasks.js';
 
 export default async function ({projectRoot, nodeVersionCategory}) {
   if (!nodeVersionCategory) return undefined;

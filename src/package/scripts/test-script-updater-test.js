@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import updateTestScript from './test-script-updater';
+import updateTestScript from './test-script-updater.js';
 
 suite('test script updater', () => {
   const scripts = {...any.simpleObject(), test: any.string(), [`lint:${any.word()}`]: any.string()};

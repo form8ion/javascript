@@ -1,17 +1,19 @@
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import * as commonPrompts from '@travi/language-scaffolder-prompts';
+
 import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
-import * as execa from '../../thirdparty-wrappers/execa';
-import * as npmConf from '../../thirdparty-wrappers/npm-conf';
-import * as dialectChoices from '../dialects/prompt-choices';
-import * as validators from './validators';
-import * as conditionals from './conditionals';
-import * as visibilityFilterForChoices from './filter-by-visibility';
-import {prompt} from './questions';
-import {questionNames} from './question-names';
+
+import * as execa from '../../thirdparty-wrappers/execa.js';
+import * as npmConf from '../../thirdparty-wrappers/npm-conf.js';
+import * as dialectChoices from '../dialects/prompt-choices.js';
+import * as validators from './validators.js';
+import * as conditionals from './conditionals.js';
+import * as visibilityFilterForChoices from './filter-by-visibility.js';
+import {prompt} from './questions.js';
+import {questionNames} from './question-names.js';
 
 suite('prompts', () => {
   let sandbox;

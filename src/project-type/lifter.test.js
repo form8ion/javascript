@@ -2,12 +2,12 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import {when} from 'jest-when';
 import any from '@travi/any';
 
-import {lift as liftPackage, test as packagePredicate} from './package';
-import {lift as liftCli, test as cliPredicate} from './cli';
-import lift from './lifter';
+import {lift as liftPackage, test as packagePredicate} from './package/index.js';
+import {lift as liftCli, test as cliPredicate} from './cli/index.js';
+import lift from './lifter.js';
 
-vi.mock('./package');
-vi.mock('./cli');
+vi.mock('./package/index.js');
+vi.mock('./cli/index.js');
 
 describe('lift project-type', () => {
   const projectRoot = any.string();

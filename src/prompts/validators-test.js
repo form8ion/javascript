@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {scope} from './validators';
+import {scope} from './validators.js';
 
 suite('question validators', () => {
   suite('scope', () => {

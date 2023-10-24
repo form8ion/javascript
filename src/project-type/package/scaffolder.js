@@ -2,10 +2,10 @@ import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import scaffoldPackageDocumentation from './documentation';
-import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
-import {scaffold as scaffoldPublishable} from '../publishable';
-import buildDetails from './build-details';
+import scaffoldPackageDocumentation from './documentation.js';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
+import {scaffold as scaffoldPublishable} from '../publishable/index.js';
+import buildDetails from './build-details.js';
 
 export default async function ({
   projectRoot,

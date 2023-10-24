@@ -8,15 +8,15 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as coveragePlugin from '../coverage';
-import * as codeStylePlugin from '../code-style';
-import * as npmConfigPlugin from '../npm-config';
-import * as enginesEnhancer from './enhancers/engines';
-import * as projectTypes from '../project-type';
-import * as dialects from '../dialects';
-import * as packageLifter from '../package/lifter';
-import * as packageManagerResolver from './package-manager';
-import lift from './lift';
+import * as coveragePlugin from '../coverage/index.js';
+import * as codeStylePlugin from '../code-style/index.js';
+import * as npmConfigPlugin from '../npm-config/index.js';
+import * as enginesEnhancer from './enhancers/engines.js';
+import * as projectTypes from '../project-type/index.js';
+import * as dialects from '../dialects/index.js';
+import * as packageLifter from '../package/lifter.js';
+import * as packageManagerResolver from './package-manager.js';
+import lift from './lift.js';
 
 vi.mock('node:fs');
 vi.mock('@form8ion/core');

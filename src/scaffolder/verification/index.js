@@ -1,1 +1,1 @@
-export {scaffoldVerification as scaffold} from './verifier';
+export {scaffoldVerification as scaffold} from './verifier.js';

@@ -8,7 +8,7 @@ import {
   applicationTypesSchema,
   packageTypesSchema,
   monorepoTypesSchema
-} from './options-schemas';
+} from './options-schemas.js';
 
 describe('project-type options validation', () => {
   const key = any.word();

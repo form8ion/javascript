@@ -4,7 +4,7 @@ import {projectTypes} from '@form8ion/javascript-core';
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 
-import scaffoldNpmConfig from './scaffolder';
+import scaffoldNpmConfig from './scaffolder.js';
 
 vi.mock('node:fs');
 

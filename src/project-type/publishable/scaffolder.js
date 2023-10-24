@@ -1,4 +1,4 @@
-import defineBadges from './badges';
+import defineBadges from './badges.js';
 
 export default async function ({packageName, packageAccessLevel}) {
   return {

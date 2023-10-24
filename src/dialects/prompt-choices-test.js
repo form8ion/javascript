@@ -1,7 +1,9 @@
 import {dialects} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import any from '@travi/any';
-import buildDialectChoices from './prompt-choices';
+
+import buildDialectChoices from './prompt-choices.js';
 
 suite('dialect prompt questions', () => {
   test('that the available dialects are listed', () => {

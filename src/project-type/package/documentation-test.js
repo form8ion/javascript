@@ -1,9 +1,11 @@
 import {packageManagers} from '@form8ion/javascript-core';
+
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
-import * as documentationCommandBuilder from '../../documentation/generation-command';
-import scaffoldDocumentation from './documentation';
+
+import * as documentationCommandBuilder from '../../documentation/generation-command.js';
+import scaffoldDocumentation from './documentation.js';
 
 suite('package documentation', () => {
   let sandbox;

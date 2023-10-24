@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import determinePackageAccessLevelFromProjectVisibility from './access-level';
+import determinePackageAccessLevelFromProjectVisibility from './access-level.js';
 
 describe('package access level', () => {
   it('should return `public` when project visibility is `Public`', () => {

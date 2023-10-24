@@ -4,11 +4,11 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import enhanceSlsa from './slsa';
-import lift from './lifter';
+import enhanceSlsa from './slsa.js';
+import lift from './lifter.js';
 
 vi.mock('@form8ion/javascript-core');
-vi.mock('./slsa');
+vi.mock('./slsa.js');
 
 describe('provenance lifter', () => {
   const projectRoot = any.string();

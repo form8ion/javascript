@@ -1,6 +1,6 @@
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
-import {scaffold as scaffoldScripts} from './scripts';
+import {scaffold as scaffoldScripts} from './scripts/index.js';
 
 function defineVcsHostDetails(vcs, packageType, packageName, pathWithinParent) {
   return vcs && 'github' === vcs.host && {

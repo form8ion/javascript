@@ -9,9 +9,9 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import templatePath from '../../template-path';
-import {scaffold as scaffoldBundler} from '../publishable/bundler';
-import buildDetails from './build-details';
+import templatePath from '../../template-path.js';
+import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
+import buildDetails from './build-details.js';
 
 vi.mock('fs');
 vi.mock('make-dir');

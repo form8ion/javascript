@@ -1,8 +1,9 @@
 import {projectTypes} from '@form8ion/javascript-core';
-import {scaffold as scaffoldPackageType} from './package';
-import {scaffold as scaffoldApplicationType} from './application';
-import {scaffold as scaffoldMonorepoType} from './monorepo';
-import {scaffold as scaffoldCliType} from './cli';
+
+import {scaffold as scaffoldPackageType} from './package/index.js';
+import {scaffold as scaffoldApplicationType} from './application/index.js';
+import {scaffold as scaffoldMonorepoType} from './monorepo/index.js';
+import {scaffold as scaffoldCliType} from './cli/index.js';
 
 export default async function ({
   projectType,

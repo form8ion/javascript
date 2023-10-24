@@ -6,16 +6,16 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import scaffoldCoverage from '../coverage/scaffolder';
-import prompt from './prompt';
-import scaffoldUnitTesting from './unit';
-import {unitTestFrameworksSchema} from './options-schemas';
+import scaffoldCoverage from '../coverage/scaffolder.js';
+import prompt from './prompt.js';
+import scaffoldUnitTesting from './unit.js';
+import {unitTestFrameworksSchema} from './options-schemas.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/core');
 vi.mock('@form8ion/javascript-core');
-vi.mock('../coverage/scaffolder');
-vi.mock('./prompt');
+vi.mock('../coverage/scaffolder.js');
+vi.mock('./prompt.js');
 
 describe('unit testing scaffolder', () => {
   const projectRoot = any.string();

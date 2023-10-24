@@ -2,8 +2,8 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
 
-import * as testScriptUpdater from './test-script-updater';
-import liftScripts from './lifter';
+import * as testScriptUpdater from './test-script-updater.js';
+import liftScripts from './lifter.js';
 
 suite('package.json lifter', () => {
   let sandbox;

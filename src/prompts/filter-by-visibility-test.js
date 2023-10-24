@@ -1,6 +1,7 @@
 import any from '@travi/any';
 import {assert} from 'chai';
-import filterChoices from './filter-by-visibility';
+
+import filterChoices from './filter-by-visibility.js';
 
 suite('choices visibility filter', () => {
   const publicChoices = any.objectWithKeys(

@@ -1,7 +1,9 @@
 import {packageManagers} from '@form8ion/javascript-core';
+
 import {assert} from 'chai';
 import any from '@travi/any';
-import buildCommand from './generation-command';
+
+import buildCommand from './generation-command.js';
 
 suite('documentation generation command', () => {
   test('that the npm variation of the command is returned', () => {

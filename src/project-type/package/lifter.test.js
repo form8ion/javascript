@@ -2,8 +2,8 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {lift as liftPublishable} from '../publishable';
-import lift from './lifter';
+import {lift as liftPublishable} from '../publishable/index.js';
+import lift from './lifter.js';
 
 vi.mock('../publishable/lifter');
 

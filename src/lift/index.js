@@ -1,1 +1,1 @@
-export {default} from './lift';
+export {default} from './lift.js';
