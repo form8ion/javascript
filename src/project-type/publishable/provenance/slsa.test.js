@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import determineSlsaLevel from './slsa';
+import determineSlsaLevel from './slsa.js';
 
 describe('SLSA badge', () => {
   it('should return the SLSA Level 2 badge for public publishable projects that publish with provenance', () => {

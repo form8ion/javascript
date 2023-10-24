@@ -4,7 +4,7 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import liftCodeStyle from './lifter';
+import liftCodeStyle from './lifter.js';
 
 vi.mock('@form8ion/eslint');
 

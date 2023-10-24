@@ -3,7 +3,7 @@ import {validateOptions} from '@form8ion/core';
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import {unitTestFrameworksSchema} from './options-schemas';
+import {unitTestFrameworksSchema} from './options-schemas.js';
 
 describe('unit testing options validation', () => {
   const key = any.word();

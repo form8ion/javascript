@@ -5,7 +5,7 @@ import {describe, it, expect, vi, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import derive from './package-manager';
+import derive from './package-manager.js';
 
 vi.mock('@form8ion/core');
 

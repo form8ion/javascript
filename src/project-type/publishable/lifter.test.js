@@ -4,9 +4,9 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import defineBadges from './badges';
-import {lift as liftProvenance} from './provenance';
-import lift from './lifter';
+import defineBadges from './badges.js';
+import {lift as liftProvenance} from './provenance/index.js';
+import lift from './lifter.js';
 
 vi.mock('deepmerge');
 vi.mock('./provenance');

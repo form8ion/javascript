@@ -1,7 +1,8 @@
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 import any from '@travi/any';
 import {assert} from 'chai';
-import buildPackageDetails from './details';
+
+import buildPackageDetails from './details.js';
 
 suite('package details builder', () => {
   const packageName = any.string();

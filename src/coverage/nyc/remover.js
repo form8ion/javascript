@@ -1,5 +1,6 @@
 import {promises as fs} from 'fs';
-import removeDependencies from '../../dependencies/remover';
+
+import removeDependencies from '../../dependencies/remover.js';
 
 export default async function ({projectRoot, packageManager}) {
   await Promise.all([

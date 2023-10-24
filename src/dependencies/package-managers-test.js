@@ -2,7 +2,7 @@ import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE, packageManagers} from '@form8
 
 import {assert} from 'chai';
 
-import {details, getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers';
+import {details, getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
 
 suite('package managers', () => {
   suite('details', () => {

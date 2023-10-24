@@ -6,8 +6,8 @@ import {afterEach, vi, expect, it, describe} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import buildAllowedHosts from './allowed-hosts-builder';
-import scaffoldLockfileLint from './scaffolder';
+import buildAllowedHosts from './allowed-hosts-builder.js';
+import scaffoldLockfileLint from './scaffolder.js';
 
 vi.mock('@form8ion/config-file');
 vi.mock('./allowed-hosts-builder');

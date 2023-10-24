@@ -4,8 +4,8 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import scaffoldC8 from './c8/scaffolder';
-import scaffold from './scaffolder';
+import scaffoldC8 from './c8/scaffolder.js';
+import scaffold from './scaffolder.js';
 
 vi.mock('@form8ion/codecov');
 vi.mock('./c8/scaffolder');

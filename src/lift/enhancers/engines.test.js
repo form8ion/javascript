@@ -4,7 +4,7 @@ import {describe, it, expect, vi, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {lift, test as predicate} from './engines';
+import {lift, test as predicate} from './engines.js';
 
 vi.mock('node:fs');
 

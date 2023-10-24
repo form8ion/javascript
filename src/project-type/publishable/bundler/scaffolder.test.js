@@ -4,8 +4,8 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import {when} from 'jest-when';
 import any from '@travi/any';
 
-import chooseBundler from './prompt';
-import scaffoldBundler from './scaffolder';
+import chooseBundler from './prompt.js';
+import scaffoldBundler from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
 vi.mock('./prompt');

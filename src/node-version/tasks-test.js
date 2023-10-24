@@ -1,8 +1,9 @@
 import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
-import * as execa from '../../thirdparty-wrappers/execa';
-import {determineLatestVersionOf, install} from './tasks';
+
+import * as execa from '../../thirdparty-wrappers/execa.js';
+import {determineLatestVersionOf, install} from './tasks.js';
 
 suite('node-version tasks', () => {
   let sandbox;

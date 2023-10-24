@@ -1,9 +1,10 @@
+import sortObjectKeys from 'sort-object-keys';
+
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import sortObjectKeys from 'sort-object-keys';
-import sortProperties from './property-sorter';
+import sortProperties from './property-sorter.js';
 
 vi.mock('sort-object-keys');
 

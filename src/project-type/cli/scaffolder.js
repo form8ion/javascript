@@ -2,8 +2,8 @@ import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-core';
 import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
-import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level';
-import {scaffold as scaffoldPublishable} from '../publishable';
+import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
+import {scaffold as scaffoldPublishable} from '../publishable/index.js';
 
 const defaultBuildDirectory = 'bin';
 

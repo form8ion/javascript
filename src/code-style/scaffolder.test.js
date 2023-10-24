@@ -6,8 +6,8 @@ import {describe, vi, it, expect, afterEach, beforeEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {scaffold as scaffoldRemark} from './remark';
-import {scaffold} from '.';
+import {scaffold as scaffoldRemark} from './remark/index.js';
+import {scaffold} from './index.js';
 
 vi.mock('@form8ion/prettier');
 vi.mock('@form8ion/eslint');

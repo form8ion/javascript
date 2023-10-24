@@ -3,22 +3,22 @@ import {info} from '@travi/cli-messages';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
-import lift from '../lift';
-import {validate} from '../options-validator';
-import {prompt} from '../prompts/questions';
-import {scaffold as scaffoldDialect} from '../dialects';
-import {scaffold as scaffoldNpmConfig} from '../npm-config';
-import scaffoldDocumentation from '../documentation';
-import scaffoldNodeVersion from '../node-version';
-import buildBadgesDetails from '../documentation/badges';
-import buildVcsIgnoreLists from '../vcs-ignore';
-import {scaffold as scaffoldPackage} from '../package';
-import buildPackageName from '../package-name';
-import {scaffold as scaffoldProjectType} from '../project-type';
-import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin';
-import buildDocumentationCommand from '../documentation/generation-command';
-import {scaffold as scaffoldVerification} from './verification';
-import {scaffold as scaffoldCodeStyle} from '../code-style';
+import lift from '../lift/index.js';
+import {validate} from '../options-validator.js';
+import {prompt} from '../prompts/questions.js';
+import {scaffold as scaffoldDialect} from '../dialects/index.js';
+import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
+import scaffoldDocumentation from '../documentation/index.js';
+import scaffoldNodeVersion from '../node-version/index.js';
+import buildBadgesDetails from '../documentation/badges.js';
+import buildVcsIgnoreLists from '../vcs-ignore.js';
+import {scaffold as scaffoldPackage} from '../package/index.js';
+import buildPackageName from '../package-name.js';
+import {scaffold as scaffoldProjectType} from '../project-type/index.js';
+import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
+import buildDocumentationCommand from '../documentation/generation-command.js';
+import {scaffold as scaffoldVerification} from './verification/index.js';
+import {scaffold as scaffoldCodeStyle} from '../code-style/index.js';
 
 export default async function (options) {
   info('Initializing JavaScript project');

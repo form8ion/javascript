@@ -5,9 +5,9 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as testingScaffolder from './testing/scaffolder';
-import {scaffold as scaffoldLinting} from '../../linting';
-import {scaffoldVerification} from './verifier';
+import * as testingScaffolder from './testing/scaffolder.js';
+import {scaffold as scaffoldLinting} from '../../linting/index.js';
+import {scaffoldVerification} from './verifier.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/husky');

@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as packageChooser from './prompt';
-import scaffold from './scaffolder';
+import * as packageChooser from './prompt.js';
+import scaffold from './scaffolder.js';
 
 suite('chosen project-type plugin scaffolder', () => {
   let sandbox;

@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import write from './write';
+import write from './write.js';
 
 suite('write babel config', () => {
   let sandbox;

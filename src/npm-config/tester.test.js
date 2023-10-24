@@ -4,7 +4,7 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import testForNpmConfig from './tester';
+import testForNpmConfig from './tester.js';
 
 vi.mock('@form8ion/core');
 

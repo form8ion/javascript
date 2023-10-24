@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import any from '@travi/any';
-import buildVcsIgnoreLists from './vcs-ignore';
+import buildVcsIgnoreLists from './vcs-ignore.js';
 
 suite('vcs-ignore lists builder', () => {
   const vcsIgnore = {files: any.listOf(any.word), directories: any.listOf(any.word)};

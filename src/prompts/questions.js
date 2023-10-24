@@ -2,18 +2,19 @@ import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import {prompt as promptWithInquirer, Separator} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
 import {warn} from '@travi/cli-messages';
-import execa from '../../thirdparty-wrappers/execa';
-import npmConfFactory from '../../thirdparty-wrappers/npm-conf';
-import buildDialectChoices from '../dialects/prompt-choices';
+
+import execa from '../../thirdparty-wrappers/execa.js';
+import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
+import buildDialectChoices from '../dialects/prompt-choices.js';
 import {
   lintingPromptShouldBePresented,
   projectIsApplication,
   projectIsPackage,
   scopePromptShouldBePresentedFactory,
   shouldBeScopedPromptShouldBePresented
-} from './conditionals';
-import {questionNames} from './question-names';
-import {scope as validateScope} from './validators';
+} from './conditionals.js';
+import {questionNames} from './question-names.js';
+import {scope as validateScope} from './validators.js';
 
 function authorQuestions({name, email, url}) {
   return [

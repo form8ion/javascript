@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 
-import writeConfig from './write';
+import writeConfig from './write.js';
 
 export default async function ({projectRoot, ignore}) {
   if (ignore) {

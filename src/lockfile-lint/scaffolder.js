@@ -2,7 +2,7 @@ import {fileTypes} from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
 import {write} from '@form8ion/config-file';
 
-import buildAllowedHostsList from './allowed-hosts-builder';
+import buildAllowedHostsList from './allowed-hosts-builder.js';
 
 const lockfileLintSupportedPackageManagers = [packageManagers.NPM, packageManagers.YARN];
 

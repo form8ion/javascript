@@ -1,7 +1,7 @@
 import {expect, it, describe} from 'vitest';
 import any from '@travi/any';
 
-import buildAllowedHostsList from './allowed-hosts-builder';
+import buildAllowedHostsList from './allowed-hosts-builder.js';
 
 describe('allowed-hosts builder', () => {
   const packageManager = any.word();

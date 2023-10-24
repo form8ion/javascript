@@ -1,13 +1,13 @@
 import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
-import {unitTestFrameworksSchema} from './testing/options-schemas';
+import {unitTestFrameworksSchema} from './testing/options-schemas.js';
 import {
   applicationTypesSchema,
   monorepoTypesSchema,
   packageBundlersSchema,
   packageTypesSchema
-} from './project-type/options-schemas';
+} from './project-type/options-schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()

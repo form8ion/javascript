@@ -4,7 +4,7 @@ import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import c8IsConfigured from './tester';
+import c8IsConfigured from './tester.js';
 
 vi.mock('@form8ion/core');
 

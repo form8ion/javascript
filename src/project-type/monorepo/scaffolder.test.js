@@ -3,7 +3,7 @@ import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 
-import scaffoldMonorepo from './scaffolder';
+import scaffoldMonorepo from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
 

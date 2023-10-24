@@ -4,8 +4,8 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as buildPackageDetails from './details';
-import {scaffold} from './index';
+import * as buildPackageDetails from './details.js';
+import {scaffold} from './index.js';
 
 vi.mock('@form8ion/javascript-core');
 vi.mock('./details');

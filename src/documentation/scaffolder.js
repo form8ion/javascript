@@ -1,4 +1,4 @@
-import buildGenerationCommand from './generation-command';
+import buildGenerationCommand from './generation-command.js';
 
 export default function ({projectTypeResults, packageManager}) {
   return {

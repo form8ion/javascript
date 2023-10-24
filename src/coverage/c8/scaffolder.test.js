@@ -4,7 +4,7 @@ import {write} from '@form8ion/config-file';
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 
-import scaffoldC8 from './scaffolder';
+import scaffoldC8 from './scaffolder.js';
 
 vi.mock('@form8ion/config-file');
 

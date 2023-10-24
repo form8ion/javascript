@@ -2,9 +2,9 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
 
-import * as c8Predicate from './c8/tester';
-import * as nycPredicate from './nyc/tester';
-import coverageIsConfigured from './tester';
+import * as c8Predicate from './c8/tester.js';
+import * as nycPredicate from './nyc/tester.js';
+import coverageIsConfigured from './tester.js';
 
 suite('coverage predicate', () => {
   const projectRoot = any.string();

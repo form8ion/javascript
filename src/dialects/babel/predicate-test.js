@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 
-import babelExists from './predicate';
+import babelExists from './predicate.js';
 
 suite('babel predicate', () => {
   let sandbox;

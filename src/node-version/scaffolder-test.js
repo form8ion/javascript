@@ -1,9 +1,11 @@
 import {promises as fsPromises} from 'fs';
+
 import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
-import * as nodeVersionTasks from './tasks';
-import scaffoldNodeVersion from './index';
+
+import * as nodeVersionTasks from './tasks.js';
+import scaffoldNodeVersion from './index.js';
 
 suite('node-version scaffolder', () => {
   const projectRoot = any.string();

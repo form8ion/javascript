@@ -2,9 +2,9 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import scaffoldBanSensitiveFiles from './ban-sensitive-files';
-import {scaffold as scaffoldLockfileLint} from '../lockfile-lint';
-import {scaffold} from './index';
+import scaffoldBanSensitiveFiles from './ban-sensitive-files.js';
+import {scaffold as scaffoldLockfileLint} from '../lockfile-lint/index.js';
+import {scaffold} from './index.js';
 
 vi.mock('./ban-sensitive-files');
 vi.mock('../lockfile-lint');

@@ -2,8 +2,8 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as unitTestingScaffolder from '../../../testing/unit';
-import scaffoldTesting from './scaffolder';
+import * as unitTestingScaffolder from '../../../testing/unit.js';
+import scaffoldTesting from './scaffolder.js';
 
 suite('testing scaffolder', () => {
   let sandbox;

@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as dependencyRemover from '../../dependencies/remover';
-import removeNyc from './remover';
+import * as dependencyRemover from '../../dependencies/remover.js';
+import removeNyc from './remover.js';
 
 suite('nyc remover', () => {
   let sandbox;

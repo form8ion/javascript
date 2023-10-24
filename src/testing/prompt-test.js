@@ -1,9 +1,11 @@
 import * as prompts from '@form8ion/overridable-prompts';
+
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {questionNames} from '../prompts/question-names';
-import prompt from './prompt';
+
+import {questionNames} from '../prompts/question-names.js';
+import prompt from './prompt.js';
 
 suite('project-type prompts', () => {
   let sandbox;

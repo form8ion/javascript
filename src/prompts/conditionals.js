@@ -1,6 +1,7 @@
 import {projectTypes} from '@form8ion/javascript-core';
 import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
-import {questionNames} from './question-names';
+
+import {questionNames} from './question-names.js';
 
 function projectIsCLI(answers) {
   return projectTypes.CLI === answers[questionNames.PROJECT_TYPE];

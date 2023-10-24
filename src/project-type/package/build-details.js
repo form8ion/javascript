@@ -6,8 +6,8 @@ import touch from 'touch';
 import camelcase from 'camelcase';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
-import {scaffold as scaffoldBundler} from '../publishable/bundler';
-import determinePathToTemplateFile from '../../template-path';
+import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
+import determinePathToTemplateFile from '../../template-path.js';
 
 const defaultBuildDirectory = 'lib';
 

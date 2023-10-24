@@ -1,8 +1,8 @@
 import {info, warn} from '@travi/cli-messages';
 import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
 
-import execa from '../../thirdparty-wrappers/execa';
-import {getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers';
+import execa from '../../thirdparty-wrappers/execa.js';
+import {getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
 
 export default async function (dependencies, dependenciesType, projectRoot, packageManager = packageManagers.NPM) {
   if (dependencies.length) {

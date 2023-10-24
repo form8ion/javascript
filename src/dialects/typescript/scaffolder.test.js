@@ -4,7 +4,7 @@ import {projectTypes} from '@form8ion/javascript-core';
 import {describe, vi, afterEach, it, expect} from 'vitest';
 import any from '@travi/any';
 
-import scaffoldTypescriptDialect from './scaffolder';
+import scaffoldTypescriptDialect from './scaffolder.js';
 
 vi.mock('@form8ion/core');
 

@@ -4,9 +4,9 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 
-import * as execa from '../../thirdparty-wrappers/execa';
-import * as packageManagers from './package-managers';
-import install from './installer';
+import * as execa from '../../thirdparty-wrappers/execa.js';
+import * as packageManagers from './package-managers.js';
+import install from './installer.js';
 
 suite('install', () => {
   let sandbox;

@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest';
 import any from '@travi/any';
 
-import defineBadges from './badges';
+import defineBadges from './badges.js';
 
 describe('badges for publishable project types', async () => {
   const packageName = any.word();

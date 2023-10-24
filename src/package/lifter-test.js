@@ -5,10 +5,10 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as scriptsLifter from './scripts/lifter';
-import * as propertySorter from './property-sorter';
-import * as dependenciesInstaller from '../dependencies/installer';
-import liftPackage from './lifter';
+import * as scriptsLifter from './scripts/lifter.js';
+import * as propertySorter from './property-sorter.js';
+import * as dependenciesInstaller from '../dependencies/installer.js';
+import liftPackage from './lifter.js';
 
 suite('package.json lifter', () => {
   let sandbox;

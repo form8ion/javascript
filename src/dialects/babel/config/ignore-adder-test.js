@@ -4,8 +4,8 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
-import * as configWriter from './write';
-import addIgnore from './ignore-adder';
+import * as configWriter from './write.js';
+import addIgnore from './ignore-adder.js';
 
 suite('babel ignore adder', () => {
   let sandbox;

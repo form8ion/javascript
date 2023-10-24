@@ -1,7 +1,7 @@
 import {dialects} from '@form8ion/javascript-core';
 
-import {scaffold as scaffoldBabel} from './babel';
-import {scaffold as scaffoldTypescript} from './typescript';
+import {scaffold as scaffoldBabel} from './babel/index.js';
+import {scaffold as scaffoldTypescript} from './typescript/index.js';
 
 export default function ({dialect, projectType, projectRoot, configs, testFilenamePattern}) {
   switch (dialect) {

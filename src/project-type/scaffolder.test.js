@@ -4,16 +4,16 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {scaffold as scaffoldPackageType} from './package';
-import {scaffold as scaffoldApplicationType} from './application';
-import {scaffold as scaffoldMonorepoType} from './monorepo';
-import {scaffold as scaffoldCliType} from './cli';
-import projectTypeScaffolder from './scaffolder';
+import {scaffold as scaffoldPackageType} from './package/index.js';
+import {scaffold as scaffoldApplicationType} from './application/index.js';
+import {scaffold as scaffoldMonorepoType} from './monorepo/index.js';
+import {scaffold as scaffoldCliType} from './cli/index.js';
+import projectTypeScaffolder from './scaffolder.js';
 
-vi.mock('./package/scaffolder');
-vi.mock('./application');
-vi.mock('./cli');
-vi.mock('./monorepo');
+vi.mock('./package/scaffolder.js');
+vi.mock('./application/index.js');
+vi.mock('./cli/index.js');
+vi.mock('./monorepo/index.js');
 
 describe('project-type scaffolder', () => {
   const results = any.simpleObject();

@@ -2,8 +2,8 @@ import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import scaffoldBadges from './badges';
-import scaffoldPublishable from './scaffolder';
+import scaffoldBadges from './badges.js';
+import scaffoldPublishable from './scaffolder.js';
 
 vi.mock('./badges');
 

@@ -5,10 +5,10 @@ import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import testForNyc from './nyc/tester';
-import removeNyc from './nyc/remover';
-import scaffoldC8 from './c8/scaffolder';
-import {lift} from './lifter';
+import testForNyc from './nyc/tester.js';
+import removeNyc from './nyc/remover.js';
+import scaffoldC8 from './c8/scaffolder.js';
+import {lift} from './lifter.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/codecov');

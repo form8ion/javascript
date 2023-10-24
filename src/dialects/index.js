@@ -1,2 +1,2 @@
-export {default as scaffold} from './scaffolder';
-export {test, lift} from './babel';
+export {default as scaffold} from './scaffolder.js';
+export {test, lift} from './babel/index.js';

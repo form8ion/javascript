@@ -2,8 +2,8 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import * as ignoreAdder from './config/ignore-adder';
-import lift from './lifter';
+import * as ignoreAdder from './config/ignore-adder.js';
+import lift from './lifter.js';
 
 suite('babel lifter', () => {
   let sandbox;
