@@ -10,7 +10,7 @@ export default async function ({config, projectRoot, projectType, vcs}) {
     name: 'remark',
     config: {
       settings: {
-        listItemIndent: 1,
+        listItemIndent: 'one',
         emphasis: '_',
         strong: '_',
         bullet: '*',

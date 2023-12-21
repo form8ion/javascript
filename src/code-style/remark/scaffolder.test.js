@@ -32,7 +32,7 @@ describe('remark scaffolder', () => {
       name: 'remark',
       config: {
         settings: {
-          listItemIndent: 1,
+          listItemIndent: 'one',
           emphasis: '_',
           strong: '_',
           bullet: '*',
