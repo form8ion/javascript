@@ -272,7 +272,7 @@ suite('javascript project scaffolder', () => {
       });
     lift.default
       .withArgs({
-        results: deepmerge.all([{devDependencies: ['npm-run-all'], packageManager}, ...contributors]),
+        results: deepmerge.all([{devDependencies: ['npm-run-all2'], packageManager}, ...contributors]),
         projectRoot,
         configs,
         vcs: vcsDetails
