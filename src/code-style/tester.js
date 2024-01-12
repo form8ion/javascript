@@ -1,5 +1,9 @@
 import {test as testForEslint} from '@form8ion/eslint';
 
-export default function (options) {
-  return testForEslint(options);
+import {test as testForRemark} from './remark/index.js';
+
+export default async function (options) {
+  const [eslintIsUsed, remarkIsUsed] = await Promise.all([testForEslint(options), testForRemark(options)]);
+
+  return eslintIsUsed || remarkIsUsed;
 }
