@@ -1,5 +1,6 @@
-import {lift as liftEslint} from '@form8ion/eslint';
+import {applyEnhancers} from '@form8ion/core';
+import * as eslintPlugin from '@form8ion/eslint';
 
 export default function (options) {
-  return liftEslint(options);
+  return applyEnhancers({options, results: {}, enhancers: [eslintPlugin]});
 }
