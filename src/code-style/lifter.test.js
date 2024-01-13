@@ -18,7 +18,7 @@ describe('code-style lifter', () => {
   it('should lift the code-style tools', async () => {
     const options = any.simpleObject();
     const results = any.simpleObject();
-    when(applyEnhancers).calledWith({options, results: {}, enhancers: [eslintPlugin]}).mockResolvedValue(results);
+    when(applyEnhancers).calledWith({options, enhancers: [eslintPlugin]}).mockResolvedValue(results);
 
     expect(await liftCodeStyle(options)).toEqual(results);
   });
