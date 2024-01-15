@@ -18,6 +18,10 @@ Given('the project will be a(n) {string}', async function (projectType) {
     throw new Error(`invalid project type: ${this.projectType}`);
   }
 
+  if ([projectTypes.CLI, projectTypes.PACKAGE].includes(this.projectType)) {
+    this.packageBundler = 'foo';
+  }
+
   if (projectTypes.CLI === this.projectType) {
     this.buildDirectory = 'bin';
   } else if (projectTypes.MONOREPO === this.projectType) {

@@ -135,6 +135,9 @@ When(/^the project is scaffolded$/, async function () {
           })
         }
       },
+      packageBundlers: {
+        foo: {scaffolder: async ({projectRoot}) => ({projectRoot, scripts: {['build:js']: 'build script'}})}
+      },
       decisions: {
         [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
         [questionNames.PROJECT_TYPE]: this.projectType,
@@ -157,7 +160,8 @@ When(/^the project is scaffolded$/, async function () {
           ...shouldBeScopedAnswer && {[questionNames.SCOPE]: this.npmAccount}
         },
         ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
-        [questionNames.DIALECT]: this.dialect
+        [questionNames.DIALECT]: this.dialect,
+        [questionNames.PACKAGE_BUNDLER]: this.packageBundler
       },
       unitTestFrameworks: {
         foo: {scaffolder: ({foo}) => ({testFilenamePattern: this.testFilenamePattern, foo})},

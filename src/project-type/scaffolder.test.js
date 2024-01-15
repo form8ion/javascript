@@ -27,6 +27,7 @@ describe('project-type scaffolder', () => {
   const publishRegistry = any.url();
   const dialect = any.word();
   const provideExample = any.boolean();
+  const packageBundlers = any.simpleObject();
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -34,7 +35,6 @@ describe('project-type scaffolder', () => {
 
   it('should apply the package-type scaffolder when the project-type is `Package`', async () => {
     const scope = any.word();
-    const packageBundlers = any.simpleObject();
     when(scaffoldPackageType).calledWith({
       projectRoot,
       packageName,
@@ -84,7 +84,7 @@ describe('project-type scaffolder', () => {
 
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
     when(scaffoldCliType)
-      .calledWith({packageName, visibility, projectRoot, dialect, publishRegistry})
+      .calledWith({packageName, visibility, projectRoot, dialect, publishRegistry, decisions, packageBundlers})
       .mockResolvedValue(results);
 
     expect(await projectTypeScaffolder({
@@ -94,7 +94,9 @@ describe('project-type scaffolder', () => {
       vcs,
       projectRoot,
       dialect,
-      publishRegistry
+      publishRegistry,
+      decisions,
+      packageBundlers
     })).toEqual(results);
   });
 
