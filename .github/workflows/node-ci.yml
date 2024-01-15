@@ -36,6 +36,9 @@ jobs:
           - 18.17.0
           - 20.6.1
           - 21
+        include:
+          - node: 18.17.0
+            options: --loader=testdouble
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Setup node
@@ -44,7 +47,7 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
       - run: npm clean-install
-      - run: npm test
+      - run: NODE_OPTIONS="${{ matrix.options }}" npm test
   release:
     needs:
       - verify
