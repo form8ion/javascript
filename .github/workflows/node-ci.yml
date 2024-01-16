@@ -47,7 +47,7 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
       - run: npm clean-install
-      - run: NODE_OPTIONS="${{ matrix.options }}" npm test
+      - run: OPTIONS="${{ matrix.options }}" npm test
   release:
     needs:
       - verify
