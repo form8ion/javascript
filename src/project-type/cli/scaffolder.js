@@ -1,16 +1,24 @@
 import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-core';
-import {scaffold as scaffoldRollup} from '@form8ion/rollup';
 
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
+import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 
 const defaultBuildDirectory = 'bin';
 
-export default async function ({packageName, visibility, projectRoot, dialect, publishRegistry}) {
+export default async function ({
+  packageName,
+  visibility,
+  projectRoot,
+  dialect,
+  publishRegistry,
+  decisions,
+  packageBundlers
+}) {
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
-  const [rollupResults, publishableResults] = await Promise.all([
-    scaffoldRollup({projectRoot, dialect, projectType: projectTypes.CLI}),
+  const [bundlerResults, publishableResults] = await Promise.all([
+    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.CLI}),
     scaffoldPublishable({packageName, packageAccessLevel}),
     mergeIntoExistingPackageJson({
       projectRoot,
@@ -27,7 +35,7 @@ export default async function ({packageName, visibility, projectRoot, dialect, p
 
   return deepmerge.all([
     publishableResults,
-    rollupResults,
+    bundlerResults,
     {
       scripts: {
         clean: `rimraf ./${defaultBuildDirectory}`,

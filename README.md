@@ -172,7 +172,7 @@ $ npm test
 
 [github-actions-ci-link]: https://github.com/form8ion/javascript/actions?query=workflow%3A%22Node.js+CI%22+branch%3Amaster
 
-[github-actions-ci-badge]: https://github.com/form8ion/javascript/workflows/Node.js%20CI/badge.svg
+[github-actions-ci-badge]: https://img.shields.io/github/actions/workflow/status/form8ion/javascript/node-ci.yml.svg?branch=master&logo=github
 
 [license-link]: LICENSE
 
@@ -180,7 +180,7 @@ $ npm test
 
 [npm-link]: https://www.npmjs.com/package/@form8ion/javascript
 
-[npm-badge]: https://img.shields.io/npm/v/@form8ion/javascript.svg?logo=npm
+[npm-badge]: https://img.shields.io/npm/v/@form8ion/javascript?logo=npm
 
 [node-badge]: https://img.shields.io/node/v/@form8ion/javascript?logo=node.js
 
@@ -190,6 +190,6 @@ $ npm test
 
 [coverage-link]: https://codecov.io/github/form8ion/javascript
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/javascript.svg?logo=codecov
+[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/javascript?logo=codecov
 
 [slsa-badge]: https://slsa.dev/images/gh-badge-level2.svg

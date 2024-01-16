@@ -39,7 +39,15 @@ export default async function ({
     case projectTypes.APPLICATION:
       return scaffoldApplicationType({projectRoot});
     case projectTypes.CLI:
-      return scaffoldCliType({packageName, visibility, projectRoot, dialect, publishRegistry});
+      return scaffoldCliType({
+        packageName,
+        visibility,
+        projectRoot,
+        dialect,
+        publishRegistry,
+        decisions,
+        packageBundlers
+      });
     case projectTypes.MONOREPO:
       return scaffoldMonorepoType({projectRoot});
     case 'Other':

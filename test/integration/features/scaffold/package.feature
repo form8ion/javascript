@@ -13,6 +13,7 @@ Feature: Package Project Type
     Then no repository details will be defined
     And the expected details are provided for a root-level project
     And the expected files for a "Package" are generated
+    And the package is bundled
     And the expected results for a "Package" are returned to the project scaffolder
 
   Scenario: Minimal Options w/ Version Control
