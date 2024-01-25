@@ -12,12 +12,7 @@ import any from '@travi/any';
 export async function assertHookContainsScript(hook, script) {
   const hookContents = await fs.readFile(`${process.cwd()}/.husky/${hook}`, 'utf-8');
 
-  assert.include(
-    hookContents,
-    `#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"`
-  );
-  assert.include(hookContents, script);
+  assert.equal(hookContents, script);
 }
 
 Given('husky v5 is installed', async function () {
@@ -66,7 +61,7 @@ Then('husky is configured for {string}', async function (packageManager) {
   td.verify(this.execa.default(td.matchers.contains(/(npm install|yarn add).*husky@latest/)), {ignoreExtraArgs: true});
   assert.equal(
     JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8')).scripts.prepare,
-    'husky install'
+    'husky'
   );
   await assertHookContainsScript('pre-commit', `${packageManager} test`);
 });
