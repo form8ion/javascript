@@ -23,7 +23,7 @@ describe('bundler prompt', () => {
       name: questionNames.PACKAGE_BUNDLER,
       type: 'list',
       message: 'Which bundler should be used?',
-      choices: [...Object.keys(bundlers), new prompts.Separator(), 'Other']
+      choices: [...Object.keys(bundlers), 'Other']
     }], decisions).mockResolvedValue(answers);
 
     expect(await prompt({bundlers, decisions})).toEqual(chosenType);
