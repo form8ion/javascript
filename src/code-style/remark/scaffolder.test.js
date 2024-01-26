@@ -44,59 +44,59 @@ describe('remark scaffolder', () => {
         ]
       }
     });
+  });
 
-    it('should configure the remark-usage plugin for package projects', async () => {
-      expect(await scaffoldRemark({config, projectRoot, projectType: projectTypes.PACKAGE, vcs: any.simpleObject()}))
-        .toEqual({
-          devDependencies: [config, 'remark-cli', 'remark-toc', 'remark-usage'],
-          scripts: {
-            'lint:md': 'remark . --frail',
-            'generate:md': 'remark . --output'
-          }
-        });
-      expect(writeConfigFile).toHaveBeenCalledWith({
-        format: fileTypes.JSON,
-        path: projectRoot,
-        name: 'remark',
-        config: {
-          settings: {
-            listItemIndent: 1,
-            emphasis: '_',
-            strong: '_',
-            bullet: '*',
-            incrementListMarker: false
-          },
-          plugins: [
-            config,
-            ['remark-toc', {tight: true}],
-            ['remark-usage', {heading: 'example'}]
-          ]
+  it('should configure the remark-usage plugin for package projects', async () => {
+    expect(await scaffoldRemark({config, projectRoot, projectType: projectTypes.PACKAGE, vcs: any.simpleObject()}))
+      .toEqual({
+        devDependencies: [config, 'remark-cli', 'remark-toc', 'remark-usage'],
+        scripts: {
+          'lint:md': 'remark . --frail',
+          'generate:md': 'remark . --output'
         }
       });
+    expect(writeConfigFile).toHaveBeenCalledWith({
+      format: fileTypes.JSON,
+      path: projectRoot,
+      name: 'remark',
+      config: {
+        settings: {
+          listItemIndent: 'one',
+          emphasis: '_',
+          strong: '_',
+          bullet: '*',
+          incrementListMarker: false
+        },
+        plugins: [
+          config,
+          ['remark-toc', {tight: true}],
+          ['remark-usage', {heading: 'example'}]
+        ]
+      }
     });
+  });
 
-    it('should configure validate-links when the project will not be versioned', async () => {
-      await scaffoldRemark({config, projectRoot, vcs: undefined});
+  it('should configure validate-links when the project will not be versioned', async () => {
+    await scaffoldRemark({config, projectRoot, vcs: undefined});
 
-      expect(writeConfigFile).toHaveBeenCalledWith({
-        format: fileTypes.JSON,
-        path: projectRoot,
-        name: 'remark',
-        config: {
-          settings: {
-            listItemIndent: 1,
-            emphasis: '_',
-            strong: '_',
-            bullet: '*',
-            incrementListMarker: false
-          },
-          plugins: [
-            config,
-            ['remark-toc', {tight: true}],
-            ['validate-links', {repository: false}]
-          ]
-        }
-      });
+    expect(writeConfigFile).toHaveBeenCalledWith({
+      format: fileTypes.JSON,
+      path: projectRoot,
+      name: 'remark',
+      config: {
+        settings: {
+          listItemIndent: 'one',
+          emphasis: '_',
+          strong: '_',
+          bullet: '*',
+          incrementListMarker: false
+        },
+        plugins: [
+          config,
+          ['remark-toc', {tight: true}],
+          ['validate-links', {repository: false}]
+        ]
+      }
     });
   });
 });

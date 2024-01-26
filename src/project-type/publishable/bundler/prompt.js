@@ -1,4 +1,4 @@
-import {prompt, Separator} from '@form8ion/overridable-prompts';
+import {prompt} from '@form8ion/overridable-prompts';
 
 import {questionNames} from '../../../prompts/question-names.js';
 
@@ -9,7 +9,7 @@ export default async function ({bundlers, decisions}) {
     name: questionNames.PACKAGE_BUNDLER,
     type: 'list',
     message: 'Which bundler should be used?',
-    choices: [...Object.keys(bundlers), new Separator(), 'Other']
+    choices: [...Object.keys(bundlers), 'Other']
   }], decisions);
 
   return answers[questionNames.PACKAGE_BUNDLER];
