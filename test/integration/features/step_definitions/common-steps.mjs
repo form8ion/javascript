@@ -1,6 +1,7 @@
 import {promises as fs} from 'node:fs';
-import {resolve, dirname} from 'node:path';
+import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import validate_npm_package_name from 'validate-npm-package-name';
 import {DEV_DEPENDENCY_TYPE, projectTypes, writePackageJson} from '@form8ion/javascript-core';
 
 import {After, Before, Given, Then, When} from '@cucumber/cucumber';
@@ -22,8 +23,7 @@ import {
   assertThatProperFilesAreIgnoredFromVersionControl
 } from './vcs-steps.mjs';
 import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.mjs';
-
-import validate_npm_package_name from 'validate-npm-package-name';
+import {assertHomepageDefinedProperlyForPackage} from './project-type-steps.mjs';
 
 let scaffold, lift, test, questionNames;
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -239,22 +239,22 @@ Then('no error is thrown', async function () {
 
 Then('the expected results for a(n) {string} are returned to the project scaffolder', async function (projectType) {
   const type = 'any' !== projectType ? projectType : this.projectType;
+  const {scripts, homepage} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(type)) {
     assert.include(Object.keys(this.scaffoldResult.badges.contribution), 'semantic-release');
   }
 
   if (projectTypes.PACKAGE === type) {
-    const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
-
     assert.equal(scripts['lint:publish'], 'publint --strict');
-    assertDevDependencyIsInstalled(this.execa.default, 'publint')
+    assertDevDependencyIsInstalled(this.execa.default, 'publint');
   }
 
   if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {
     assert.include(Object.keys(this.scaffoldResult.badges.status), 'coverage');
   }
 
+  assertHomepageDefinedProperlyForPackage(homepage, this.projectType, this.projectName, this.npmAccount, this.vcs);
   assertThatProperDirectoriesAreIgnoredFromVersionControl(this.scaffoldResult, type, this.buildDirectory);
   assertThatProperFilesAreIgnoredFromVersionControl(this.scaffoldResult, type);
   assertThatDocumentationResultsAreReturnedCorrectly(

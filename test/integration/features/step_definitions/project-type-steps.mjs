@@ -1,10 +1,23 @@
 import {promises as fs} from 'fs';
 import {fileExists} from '@form8ion/core';
-import {mergeIntoExistingPackageJson, projectTypes, writePackageJson} from '@form8ion/javascript-core';
+import {projectTypes} from '@form8ion/javascript-core';
 
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import any from '@travi/any';
+
+export function assertHomepageDefinedProperlyForPackage(homepage, projectType, projectName, npmAccount, vcs) {
+  if (projectTypes.PACKAGE === projectType && vcs && 'github' === vcs.host) {
+    const packageName = `@${npmAccount}/${projectName}`;
+    assert.equal(homepage, `https://npm.im/${packageName}`);
+  } else if (vcs && 'github' === vcs.host) {
+    assert.equal(homepage, `https://github.com/${vcs.owner}/${vcs.name}#readme`);
+  } else if (!vcs) {
+    assert.isUndefined(homepage);
+  } else {
+    assert.equal(homepage, '');
+  }
+}
 
 Given('the project will be a(n) {string}', async function (projectType) {
   const projectTypeChoices = [...Object.values(projectTypes), 'Other'];
