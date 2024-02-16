@@ -61,16 +61,13 @@ export default async function (options) {
   info('Writing project files', {level: 'secondary'});
 
   const packageName = buildPackageName(projectName, scope);
-  const {homepage: projectHomepage} = await scaffoldPackage({
+  await scaffoldPackage({
     projectRoot,
-    projectType,
     dialect,
     packageName,
     license,
-    vcs,
     author,
-    description,
-    pathWithinParent
+    description
   });
   const projectTypeResults = await scaffoldProjectType({
     projectType,
@@ -153,7 +150,8 @@ export default async function (options) {
     results: deepmerge({devDependencies: ['npm-run-all2'], packageManager}, mergedContributions),
     projectRoot,
     configs,
-    vcs
+    vcs,
+    pathWithinParent
   });
 
   return {
@@ -162,7 +160,7 @@ export default async function (options) {
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
     verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`,
-    projectDetails: {...projectHomepage && {homepage: projectHomepage}},
+    projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
     nextSteps: mergedContributions.nextSteps
   };
 }

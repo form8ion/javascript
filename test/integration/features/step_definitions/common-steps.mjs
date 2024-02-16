@@ -23,7 +23,7 @@ import {
   assertThatProperFilesAreIgnoredFromVersionControl
 } from './vcs-steps.mjs';
 import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.mjs';
-import {assertHomepageDefinedProperlyForPackage} from './project-type-steps.mjs';
+import {assertHomepageDefinedProperly} from './project-type-steps.mjs';
 
 let scaffold, lift, test, questionNames;
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -190,13 +190,15 @@ When('the scaffolder results are processed', async function () {
       name: this.projectName,
       exports: this.packageExports,
       publishConfig: this.publishConfig,
-      bin: this.packageBin
+      bin: this.packageBin,
+      repository: this.repository
     }
   });
 
   if (await test({projectRoot})) {
     this.results = await lift({
       projectRoot,
+      vcs: this.vcs,
       results: {
         scripts: this.scriptsResults,
         tags: this.tagsResults,
@@ -254,7 +256,14 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
     assert.include(Object.keys(this.scaffoldResult.badges.status), 'coverage');
   }
 
-  assertHomepageDefinedProperlyForPackage(homepage, this.projectType, this.projectName, this.npmAccount, this.vcs);
+  assertHomepageDefinedProperly(homepage, this.projectType, this.projectName, this.npmAccount, this.vcs);
+  assertHomepageDefinedProperly(
+    this.scaffoldResult.projectDetails.homepage,
+    this.projectType,
+    this.projectName,
+    this.npmAccount,
+    this.vcs
+  );
   assertThatProperDirectoriesAreIgnoredFromVersionControl(this.scaffoldResult, type, this.buildDirectory);
   assertThatProperFilesAreIgnoredFromVersionControl(this.scaffoldResult, type);
   assertThatDocumentationResultsAreReturnedCorrectly(

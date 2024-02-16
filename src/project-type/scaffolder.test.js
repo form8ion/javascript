@@ -23,7 +23,6 @@ describe('project-type scaffolder', () => {
   const packageManager = any.word();
   const visibility = any.word();
   const decisions = any.simpleObject();
-  const vcs = any.simpleObject();
   const publishRegistry = any.url();
   const dialect = any.word();
   const provideExample = any.boolean();
@@ -43,7 +42,6 @@ describe('project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      vcs,
       decisions,
       dialect,
       provideExample,
@@ -59,7 +57,6 @@ describe('project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      vcs,
       decisions,
       dialect,
       provideExample,
@@ -77,8 +74,7 @@ describe('project-type scaffolder', () => {
       packageName,
       packageManager,
       decisions,
-      visibility,
-      vcs
+      visibility
     })).toEqual(results);
   });
 
@@ -91,7 +87,6 @@ describe('project-type scaffolder', () => {
       projectType: projectTypes.CLI,
       packageName,
       visibility,
-      vcs,
       projectRoot,
       dialect,
       publishRegistry,

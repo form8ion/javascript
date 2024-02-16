@@ -3,6 +3,7 @@ import {error, info} from '@travi/cli-messages';
 import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE, writePackageJson} from '@form8ion/javascript-core';
 
 import sortPackageProperties from './property-sorter.js';
+import defineVcsHostDetails from './vcs-host-details.js';
 import {install} from '../dependencies/index.js';
 import {lift as liftScripts} from './scripts/index.js';
 
@@ -12,7 +13,9 @@ export default async function ({
   tags,
   dependencies,
   devDependencies,
-  packageManager
+  packageManager,
+  vcs,
+  pathWithinParent
 }) {
   if (scripts || tags) {
     info('Updating `package.json`', {level: 'secondary'});
@@ -25,7 +28,11 @@ export default async function ({
       projectRoot,
       config: sortPackageProperties({
         ...existingPackageJsonContents,
-        scripts: liftScripts({existingScripts: existingPackageJsonContents.scripts, scripts}),
+        ...defineVcsHostDetails(vcs, pathWithinParent),
+        scripts: liftScripts({
+          existingScripts: existingPackageJsonContents.scripts,
+          scripts
+        }),
         ...tags && {
           keywords: existingPackageJsonContents.keywords ? [...existingPackageJsonContents.keywords, ...tags] : tags
         }

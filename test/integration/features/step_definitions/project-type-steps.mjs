@@ -6,8 +6,8 @@ import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-export function assertHomepageDefinedProperlyForPackage(homepage, projectType, projectName, npmAccount, vcs) {
-  if (projectTypes.PACKAGE === projectType && vcs && 'github' === vcs.host) {
+export function assertHomepageDefinedProperly(homepage, projectType, projectName, npmAccount, vcs) {
+  if ([projectTypes.PACKAGE, projectTypes.CLI].includes(projectType)) {
     const packageName = `@${npmAccount}/${projectName}`;
     assert.equal(homepage, `https://npm.im/${packageName}`);
   } else if (vcs && 'github' === vcs.host) {
@@ -66,12 +66,22 @@ Given('the project is of type {string}', async function (projectType) {
     this.packageBin = any.word();
     this.publishConfig = {};
   }
+  this.repository = this.vcs && `${this.vcs.owner}/${this.vcs.name}`;
 });
 
 Given('the project is of type {string} but without exports defined', async function (projectType) {
   if (projectTypes.PACKAGE === projectType) {
     this.publishConfig = {};
   }
+});
+
+Given('the project is of type {string} but without repository details defined', async function (projectType) {
+  if (projectTypes.PACKAGE === projectType) {
+    this.packageExports = any.word();
+    this.publishConfig = {};
+  }
+
+  this.repository = null;
 });
 
 Then('the expected details are provided for a root-level project', async function () {

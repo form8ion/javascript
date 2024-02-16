@@ -35,6 +35,10 @@ Given(/^the project will be versioned on GitHub$/, async function () {
   this.vcs = {host: 'github', owner: repoOwner, name: repoName};
 });
 
+Given('the project is versioned on GitHub', async function () {
+  this.vcs = {host: 'github', owner: repoOwner, name: repoName};
+});
+
 Then('no repository details will be defined', async function () {
   const {repository} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`));
 

@@ -14,7 +14,7 @@ import * as dialects from '../dialects/index.js';
 import {lift as liftPackage} from '../package/index.js';
 import resolvePackageManager from './package-manager.js';
 
-export default async function ({projectRoot, vcs, results}) {
+export default async function ({projectRoot, vcs, results, pathWithinParent}) {
   info('Lifting JavaScript-specific details');
 
   const {
@@ -47,7 +47,7 @@ export default async function ({projectRoot, vcs, results}) {
 
   await liftPackage(
     deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs, pathWithinParent},
       enhancerResults
     ])
   );

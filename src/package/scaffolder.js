@@ -5,29 +5,23 @@ import buildPackageDetails from './details.js';
 
 export default async function ({
   projectRoot,
-  projectType,
   dialect,
   packageName,
   license,
-  vcs,
   author,
-  description,
-  pathWithinParent
+  description
 }) {
   info('Configuring package.json');
 
   const packageData = await buildPackageDetails({
     packageName,
-    projectType,
     dialect,
     license,
-    vcs,
     author,
-    description,
-    pathWithinParent
+    description
   });
 
   await writePackageJson({projectRoot, config: packageData});
 
-  return {homepage: packageData.homepage};
+  return {};
 }

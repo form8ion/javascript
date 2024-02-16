@@ -17,38 +17,28 @@ describe('package scaffolder', () => {
 
   it('should create the package file', async () => {
     const packageName = any.string();
-    const homepage = any.url();
-    const packageDetails = {...any.simpleObject(), homepage};
+    const packageDetails = any.simpleObject();
     const projectRoot = any.string();
-    const projectType = any.word();
     const dialect = any.word();
     const license = any.string();
-    const vcs = any.simpleObject();
     const author = any.simpleObject();
     const description = any.sentence();
-    const pathWithinParent = any.string();
     when(buildPackageDetails.default).calledWith({
       packageName,
-      projectType,
       dialect,
       license,
-      vcs,
       author,
-      description,
-      pathWithinParent
+      description
     }).mockResolvedValue(packageDetails);
 
     expect(await scaffold({
       projectRoot,
-      projectType,
       dialect,
       packageName,
       license,
-      vcs,
       author,
-      description,
-      pathWithinParent
-    })).toEqual({homepage});
+      description
+    })).toEqual({});
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config: packageDetails});
   });
 });

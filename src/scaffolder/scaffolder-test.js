@@ -112,14 +112,11 @@ suite('javascript project scaffolder', () => {
   const mergedContributions = deepmerge.all(contributors);
   const packageScaffoldingInputs = {
     projectRoot,
-    projectType,
     dialect: chosenDialect,
     packageName,
     license,
-    vcs: vcsDetails,
     author: {name: authorName, email: authorEmail, url: authorUrl},
-    description,
-    pathWithinParent
+    description
   };
   const commonPromptAnswers = {
     nodeVersionCategory,
@@ -134,7 +131,7 @@ suite('javascript project scaffolder', () => {
     packageManager,
     dialect: chosenDialect
   };
-  const liftResults = {...any.simpleObject(), badges: any.simpleObject()};
+  const liftResults = {...any.simpleObject(), badges: any.simpleObject(), homepage};
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -198,7 +195,7 @@ suite('javascript project scaffolder', () => {
         }
       })
       .resolves(projectTypePluginResults);
-    packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves({...any.simpleObject(), homepage});
+    packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves(any.simpleObject());
     prompts.prompt
       .withArgs(overrides, ciServices, hosts, visibility, vcsDetails, decisions, configs, pathWithinParent)
       .resolves(commonPromptAnswers);
@@ -275,7 +272,8 @@ suite('javascript project scaffolder', () => {
         results: deepmerge.all([{devDependencies: ['npm-run-all2'], packageManager}, ...contributors]),
         projectRoot,
         configs,
-        vcs: vcsDetails
+        vcs: vcsDetails,
+        pathWithinParent
       })
       .resolves(liftResults);
   });
@@ -355,7 +353,15 @@ suite('javascript project scaffolder', () => {
       });
 
       test('that details are not passed along if not defined', async () => {
-        packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves(any.simpleObject());
+        lift.default
+          .withArgs({
+            results: deepmerge.all([{devDependencies: ['npm-run-all2'], packageManager}, ...contributors]),
+            projectRoot,
+            configs,
+            vcs: vcsDetails,
+            pathWithinParent
+          })
+          .resolves(any.simpleObject());
 
         const {projectDetails} = await scaffold(options);
 

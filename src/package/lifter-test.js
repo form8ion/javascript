@@ -5,9 +5,10 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as scriptsLifter from './scripts/lifter.js';
-import * as propertySorter from './property-sorter.js';
 import * as dependenciesInstaller from '../dependencies/installer.js';
+import * as scriptsLifter from './scripts/lifter.js';
+import * as vcsHostDetails from './vcs-host-details.js';
+import * as propertySorter from './property-sorter.js';
 import liftPackage from './lifter.js';
 
 suite('package.json lifter', () => {
@@ -26,6 +27,7 @@ suite('package.json lifter', () => {
     sandbox.stub(fs, 'readFile');
     sandbox.stub(scriptsLifter, 'default');
     sandbox.stub(propertySorter, 'default');
+    sandbox.stub(vcsHostDetails, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -179,6 +181,26 @@ suite('package.json lifter', () => {
         .throws(new Error());
 
       await liftPackage({devDependencies, projectRoot, packageManager});
+    });
+  });
+
+  suite('vcs details', () => {
+    test('that vcs details are defined', async () => {
+      const vcs = any.simpleObject();
+      const pathWithinParent = any.string();
+      const vcsDetails = any.simpleObject();
+      vcsHostDetails.default.withArgs(vcs, pathWithinParent).returns(vcsDetails);
+      fs.readFile
+        .withArgs(pathToPackageJson, 'utf8')
+        .resolves(JSON.stringify({...packageJsonContents, scripts: {}}));
+      scriptsLifter.default.withArgs({existingScripts: {}, scripts: {}}).returns(updatedScripts);
+      propertySorter.default
+        .withArgs({...packageJsonContents, scripts: updatedScripts, ...vcsDetails})
+        .returns(sortedPackageContents);
+
+      await liftPackage({projectRoot, scripts: {}, vcs, pathWithinParent});
+
+      assert.calledWith(jsCore.writePackageJson, {projectRoot, config: sortedPackageContents});
     });
   });
 

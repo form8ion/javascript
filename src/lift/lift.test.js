@@ -41,6 +41,7 @@ describe('lift', () => {
 
   it('should lift results that are specific to js projects', async () => {
     const packageDetails = any.simpleObject();
+    const pathWithinParent = any.string();
     when(packageManagerResolver.default)
       .calledWith({projectRoot, packageManager: manager})
       .mockResolvedValue(packageManager);
@@ -62,11 +63,11 @@ describe('lift', () => {
       options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}
     }).mockResolvedValue(enhancerResults);
 
-    const liftResults = await lift({projectRoot, vcs: vcsDetails, results});
+    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent});
 
     expect(liftResults).toEqual(enhancerResults);
     expect(packageLifter.default).toHaveBeenCalledWith(deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager},
+      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs: vcsDetails, pathWithinParent},
       enhancerResults
     ]));
   });
