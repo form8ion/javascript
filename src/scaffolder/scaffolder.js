@@ -9,7 +9,7 @@ import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
 import scaffoldDocumentation from '../documentation/index.js';
-import scaffoldNodeVersion from '../node-version/index.js';
+import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildBadgesDetails from '../documentation/badges.js';
 import buildVcsIgnoreLists from '../vcs-ignore.js';
 import {scaffold as scaffoldPackage} from '../package/index.js';

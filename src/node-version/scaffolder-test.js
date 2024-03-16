@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 
 import * as nodeVersionTasks from './tasks.js';
-import scaffoldNodeVersion from './index.js';
+import {scaffold as scaffoldNodeVersion} from './index.js';
 
 suite('node-version scaffolder', () => {
   const projectRoot = any.string();
