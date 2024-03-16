@@ -1,11 +1,12 @@
-import {fileExists} from '@form8ion/core';
 import {test as nvmIsUsed} from './node-version/index.js';
+import {test as npmIsUsed} from './package-managers/npm/index.js';
+import {test as yarnIsUsed} from './package-managers/yarn/index.js';
 
 export default async function ({projectRoot}) {
   const [nvmIsConfigured, packageLockExists, yarnLockExists] = await Promise.all([
     nvmIsUsed({projectRoot}),
-    fileExists(`${projectRoot}/package-lock.json`),
-    fileExists(`${projectRoot}/yarn.lock`)
+    npmIsUsed({projectRoot}),
+    yarnIsUsed({projectRoot})
   ]);
 
   return nvmIsConfigured || packageLockExists || yarnLockExists;
