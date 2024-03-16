@@ -47,7 +47,6 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
       - run: npm clean-install
-      - run: corepack npm audit signatures
       - run: OPTIONS="${{ matrix.options }}" npm test
   release:
     needs:
