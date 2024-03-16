@@ -1,4 +1,4 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 import {info} from '@travi/cli-messages';
 
 import {determineLatestVersionOf, install as installNodeVersion} from './tasks.js';
