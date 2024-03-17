@@ -1,14 +1,16 @@
-import {fileExists} from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
+
+import {test as npmIsUsed} from '../package-managers/npm/index.js';
+import {test as yarnIsUsed} from '../package-managers/yarn/index.js';
 
 export default async function ({projectRoot, packageManager}) {
   if (packageManager) return packageManager;
 
-  if (await fileExists(`${projectRoot}/package-lock.json`)) {
+  if (await npmIsUsed({projectRoot})) {
     return packageManagers.NPM;
   }
 
-  if (await fileExists(`${projectRoot}/yarn.lock`)) {
+  if (await yarnIsUsed({projectRoot})) {
     return packageManagers.YARN;
   }
 
