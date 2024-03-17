@@ -1,5 +1,8 @@
 import {fileExists} from '@form8ion/core';
+import {packageManagers} from '@form8ion/javascript-core';
+
+import determineLockfilePath from '../lockfile-path-resolver.js';
 
 export default function ({projectRoot}) {
-  return fileExists(`${projectRoot}/package-lock.json`);
+  return fileExists(`${projectRoot}/${determineLockfilePath(packageManagers.NPM)}`);
 }
