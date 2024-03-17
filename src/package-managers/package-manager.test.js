@@ -4,8 +4,8 @@ import {describe, it, expect, vi, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {test as npmIsUsed} from '../package-managers/npm/index.js';
-import {test as yarnIsUsed} from '../package-managers/yarn/index.js';
+import {test as npmIsUsed} from './npm/index.js';
+import {test as yarnIsUsed} from './yarn/index.js';
 import derive from './package-manager.js';
 
 vi.mock('../package-managers/npm/index.js');

@@ -15,13 +15,13 @@ import * as enginesEnhancer from './enhancers/engines.js';
 import * as projectTypes from '../project-type/index.js';
 import * as dialects from '../dialects/index.js';
 import * as packageLifter from '../package/lifter.js';
-import * as packageManagerResolver from './package-manager.js';
+import {determineCurrent as packageManagerResolver} from '../package-managers/index.js';
 import lift from './lift.js';
 
 vi.mock('node:fs');
 vi.mock('@form8ion/core');
 vi.mock('../package/lifter');
-vi.mock('./package-manager');
+vi.mock('../package-managers/index.js');
 
 describe('lift', () => {
   const projectRoot = any.string();
@@ -42,7 +42,7 @@ describe('lift', () => {
   it('should lift results that are specific to js projects', async () => {
     const packageDetails = any.simpleObject();
     const pathWithinParent = any.string();
-    when(packageManagerResolver.default)
+    when(packageManagerResolver)
       .calledWith({projectRoot, packageManager: manager})
       .mockResolvedValue(packageManager);
     when(fs.readFile)

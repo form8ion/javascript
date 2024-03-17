@@ -1,7 +1,7 @@
 import {packageManagers} from '@form8ion/javascript-core';
 
-import {test as npmIsUsed} from '../package-managers/npm/index.js';
-import {test as yarnIsUsed} from '../package-managers/yarn/index.js';
+import {test as npmIsUsed} from './npm/index.js';
+import {test as yarnIsUsed} from './yarn/index.js';
 
 export default async function ({projectRoot, packageManager}) {
   if (packageManager) return packageManager;

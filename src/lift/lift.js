@@ -12,7 +12,7 @@ import * as enginesEnhancer from './enhancers/engines.js';
 import * as projectTypes from '../project-type/index.js';
 import * as dialects from '../dialects/index.js';
 import {lift as liftPackage} from '../package/index.js';
-import resolvePackageManager from './package-manager.js';
+import {determineCurrent as resolvePackageManager} from '../package-managers/index.js';
 
 export default async function ({projectRoot, vcs, results, pathWithinParent}) {
   info('Lifting JavaScript-specific details');
