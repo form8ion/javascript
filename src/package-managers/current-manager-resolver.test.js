@@ -6,7 +6,7 @@ import {when} from 'jest-when';
 
 import {test as npmIsUsed} from './npm/index.js';
 import {test as yarnIsUsed} from './yarn/index.js';
-import derive from './package-manager.js';
+import derive from './current-manager-resolver.js';
 
 vi.mock('../package-managers/npm/index.js');
 vi.mock('../package-managers/yarn/index.js');

@@ -1,2 +1,3 @@
 export {default as test} from './tester.js';
-export {default as determineCurrent} from './package-manager.js';
+export {default as determineCurrent} from './current-manager-resolver.js';
+export {default as defineLockfilePath} from './lockfile-path-resolver.js';

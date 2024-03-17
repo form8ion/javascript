@@ -3,17 +3,9 @@ import {packageManagers} from '@form8ion/javascript-core';
 import {write} from '@form8ion/config-file';
 
 import buildAllowedHostsList from './allowed-hosts-builder.js';
+import {defineLockfilePath as determineLockfilePathFor} from '../package-managers/index.js';
 
 const lockfileLintSupportedPackageManagers = [packageManagers.NPM, packageManagers.YARN];
-
-function determineLockfilePathFor(packageManager) {
-  const lockfilePaths = {
-    [packageManagers.NPM]: 'package-lock.json',
-    [packageManagers.YARN]: 'yarn.lock'
-  };
-
-  return lockfilePaths[packageManager];
-}
 
 function lockfileLintSupports(packageManager) {
   return lockfileLintSupportedPackageManagers.includes(packageManager);
