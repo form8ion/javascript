@@ -15,6 +15,7 @@ import * as enginesEnhancer from './enhancers/engines.js';
 import * as projectTypes from '../project-type/index.js';
 import * as dialects from '../dialects/index.js';
 import * as packageLifter from '../package/lifter.js';
+import * as packageManagers from '../package-managers/index.js';
 import {determineCurrent as packageManagerResolver} from '../package-managers/index.js';
 import lift from './lift.js';
 
@@ -58,7 +59,8 @@ describe('lift', () => {
         dialects,
         codeStylePlugin,
         npmConfigPlugin,
-        projectTypes
+        projectTypes,
+        packageManagers
       ],
       options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}
     }).mockResolvedValue(enhancerResults);

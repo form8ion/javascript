@@ -12,6 +12,7 @@ import * as enginesEnhancer from './enhancers/engines.js';
 import * as projectTypes from '../project-type/index.js';
 import * as dialects from '../dialects/index.js';
 import {lift as liftPackage} from '../package/index.js';
+import * as packageManagers from '../package-managers/index.js';
 import {determineCurrent as resolvePackageManager} from '../package-managers/index.js';
 
 export default async function ({projectRoot, vcs, results, pathWithinParent}) {
@@ -40,7 +41,8 @@ export default async function ({projectRoot, vcs, results, pathWithinParent}) {
       dialects,
       codeStylePlugin,
       npmConfigPlugin,
-      projectTypes
+      projectTypes,
+      packageManagers
     ],
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents)}
   });

@@ -11,7 +11,7 @@ describe('package-manager lifter', () => {
   });
 
   it('should lift package-manager details', async () => {
-    await liftPackageManger();
+    expect(await liftPackageManger()).toEqual({});
 
     expect(liftCorepack).toHaveBeenCalled();
   });
