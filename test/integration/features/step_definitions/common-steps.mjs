@@ -207,6 +207,8 @@ When('the scaffolder results are processed', async function () {
       },
       ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
     });
+  } else {
+    this.isJavaScriptProject = false;
   }
 });
 
