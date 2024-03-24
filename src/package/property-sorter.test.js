@@ -43,6 +43,7 @@ describe('package.json property sorter', () => {
         'scripts',
         'files',
         'publishConfig',
+        'packageManager',
         'config',
         'dependencies',
         'devDependencies',

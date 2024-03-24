@@ -28,6 +28,7 @@ export default function (packageContents) {
       'scripts',
       'files',
       'publishConfig',
+      'packageManager',
       'config',
       'dependencies',
       'devDependencies',
