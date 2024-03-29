@@ -39,9 +39,6 @@ describe('package build details', () => {
     when(templatePath).calledWith('example.mustache').mockReturnValue(pathToExampleTemplate);
     when(fs.readFile).calledWith(pathToExampleTemplate, 'utf8').mockResolvedValue(exampleTemplateContent);
     when(camelcase).calledWith(projectName).mockReturnValue(camelizedProjectName);
-    when(mustache.render)
-      .calledWith(exampleTemplateContent, {projectName: camelizedProjectName})
-      .mockReturnValue(exampleContent);
   });
 
   afterEach(() => {
@@ -77,6 +74,9 @@ describe('package build details', () => {
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .mockResolvedValue(bundlerResults);
+    when(mustache.render)
+      .calledWith(exampleTemplateContent, {projectName: camelizedProjectName, esm: false})
+      .mockReturnValue(exampleContent);
 
     const results = await buildDetails({
       dialect,

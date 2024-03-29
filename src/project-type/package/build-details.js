@@ -11,12 +11,12 @@ import determinePathToTemplateFile from '../../template-path.js';
 
 const defaultBuildDirectory = 'lib';
 
-async function createExample(projectRoot, projectName) {
+async function createExample(projectRoot, projectName, dialect) {
   return fs.writeFile(
     `${projectRoot}/example.js`,
     mustache.render(
       await fs.readFile(determinePathToTemplateFile('example.mustache'), 'utf8'),
-      {projectName: camelcase(projectName)}
+      {projectName: camelcase(projectName), esm: dialect === dialects.ESM}
     )
   );
 }
@@ -47,7 +47,7 @@ export default async function ({
   const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
   const [bundlerResults] = await Promise.all([
     scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.PACKAGE}),
-    provideExample ? await createExample(projectRoot, projectName) : Promise.resolve,
+    provideExample ? await createExample(projectRoot, projectName, dialect) : Promise.resolve,
     touch(`${pathToCreatedSrcDirectory}/index.js`)
   ]);
 
