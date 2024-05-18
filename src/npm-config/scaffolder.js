@@ -1,6 +1,6 @@
-import {promises as fs} from 'fs';
-import {stringify} from 'ini';
 import {projectTypes} from '@form8ion/javascript-core';
+
+import write from './writer.js';
 
 function projectWillNotBeConsumed(projectType) {
   return projectTypes.APPLICATION === projectType || projectTypes.CLI === projectType;
@@ -11,9 +11,9 @@ export default async function ({
   projectType,
   registries
 }) {
-  await fs.writeFile(
-    `${projectRoot}/.npmrc`,
-    stringify({
+  await write({
+    projectRoot,
+    config: {
       'update-notifier': false,
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
       ...Object.fromEntries(Object.entries(registries)
@@ -23,8 +23,8 @@ export default async function ({
 
           return [`@${scope}:registry`, url];
         }))
-    })
-  );
+    }
+  });
 
   return {scripts: {'lint:peer': 'npm ls >/dev/null'}};
 }

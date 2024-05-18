@@ -1,12 +1,13 @@
-import {promises as fs} from 'node:fs';
 import {projectTypes} from '@form8ion/javascript-core';
 
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 
+import write from './writer.js';
 import scaffoldNpmConfig from './scaffolder.js';
 
 vi.mock('node:fs');
+vi.mock('./writer.js');
 
 describe('npm config scaffolder', () => {
   const projectRoot = any.string();
@@ -18,28 +19,36 @@ describe('npm config scaffolder', () => {
   it('should save exact versions of dependencies for applications', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION, registries: {}});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      'update-notifier=false\nsave-exact=true\n'
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false,
+        'save-exact': true
+      }
+    });
   });
 
   it('should save exact versions of dependencies for cli applications', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI, registries: {}});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      'update-notifier=false\nsave-exact=true\n'
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false,
+        'save-exact': true
+      }
+    });
   });
 
   it('should allow semver ranges for dependencies of packages', async () => {
     await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE, registries: {}});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      'update-notifier=false\n'
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false
+      }
+    });
   });
 
   it('should define a registry override when provided', async () => {
@@ -47,10 +56,13 @@ describe('npm config scaffolder', () => {
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      `update-notifier=false\nregistry=${registries.registry}\n`
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false,
+        registry: registries.registry
+      }
+    });
   });
 
   it('should not define a publish registry when provided', async () => {
@@ -58,10 +70,13 @@ describe('npm config scaffolder', () => {
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      `update-notifier=false\nregistry=${registries.registry}\n`
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false,
+        registry: registries.registry
+      }
+    });
   });
 
   it('should add scoped registries when provided', async () => {
@@ -69,14 +84,15 @@ describe('npm config scaffolder', () => {
 
     await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      `${projectRoot}/.npmrc`,
-      `update-notifier=false\n${
-        Object.entries(registries)
-          .map(([scope, url]) => `@${scope}:registry=${url}`)
-          .join('\n')
-      }\n`
-    );
+    expect(write).toHaveBeenCalledWith({
+      projectRoot,
+      config: {
+        'update-notifier': false,
+        ...Object.fromEntries(
+          Object.entries(registries).map(([scope, url]) => ([`@${scope}:registry`, url]))
+        )
+      }
+    });
   });
 
   it('should define the script to enforce peer-dependency compatibility', async () => {
