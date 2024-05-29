@@ -123,5 +123,5 @@
     "testdouble": "3.20.2",
     "vitest": "1.6.0"
   },
-  "packageManager": "npm@10.8.0"
+  "packageManager": "npm@10.8.1"
 }
