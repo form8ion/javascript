@@ -130,8 +130,8 @@ describe('package project-type scaffolder', () => {
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
       config: {
-        main: './lib/index.mjs',
-        exports: './lib/index.mjs',
+        main: './lib/index.js',
+        exports: './lib/index.js',
         files: ['example.js', 'lib/'],
         sideEffects: false,
         publishConfig: {access: packageAccessLevel}

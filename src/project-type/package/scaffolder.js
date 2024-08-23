@@ -55,8 +55,8 @@ export default async function ({
           }
         },
         ...dialects.ESM === dialect && {
-          main: './lib/index.mjs',
-          exports: './lib/index.mjs'
+          main: './lib/index.js',
+          exports: './lib/index.js'
         },
         ...dialects.TYPESCRIPT === dialect && {
           main: './lib/index.js',

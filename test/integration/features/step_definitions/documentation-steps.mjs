@@ -27,7 +27,7 @@ export async function assertThatDocumentationIsDefinedAppropriately(
 
     assert.equal(exampleContents, `// remark-usage-ignore-next
 /* eslint-disable-next-line no-unused-vars */
-import ${camelcase(projectName)} from './lib/index${dialects.ESM === dialect ? '.mjs' : '.js'}';
+import ${camelcase(projectName)} from './lib/index.js';
 `);
     assert.isTrue(await fileExists(`${process.cwd()}/src/index.js`));
     assert.isDefined(packageDetails.scripts['generate:md']);
