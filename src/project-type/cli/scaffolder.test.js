@@ -10,7 +10,6 @@ import {scaffold as scaffoldPublishable} from '../publishable/index.js';
 import scaffoldCli from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
-vi.mock('@form8ion/rollup');
 vi.mock('../publishable/access-level');
 vi.mock('../publishable/bundler');
 vi.mock('../publishable');
