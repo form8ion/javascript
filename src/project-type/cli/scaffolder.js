@@ -47,7 +47,7 @@ export default async function ({
       devDependencies: ['rimraf'],
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
-      nextSteps: []
+      nextSteps: [{summary: 'Define supported node.js versions as `engines.node` in the `package.json` file'}]
     }
   ]);
 }

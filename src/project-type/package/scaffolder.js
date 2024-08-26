@@ -78,6 +78,7 @@ export default async function ({
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager, provideExample}),
       nextSteps: [
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
+        {summary: 'Define supported node.js versions as `engines.node` in the `package.json` file'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ]
     },

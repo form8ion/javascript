@@ -68,7 +68,7 @@ describe('cli project-type scaffolder', () => {
         directories: ['/bin/']
       },
       buildDirectory: 'bin',
-      nextSteps: []
+      nextSteps: [{summary: 'Define supported node.js versions as `engines.node` in the `package.json` file'}]
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
