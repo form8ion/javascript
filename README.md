@@ -103,6 +103,12 @@ const {
         scripts: {},
         eslint: {configs: [], ignore: {directories: []}},
         packageManager: 'npm'
+      },
+      enhancers: {
+        PluginName: {
+          test: () => true,
+          lift: () => ({})
+        }
       }
     });
   }

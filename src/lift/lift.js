@@ -15,7 +15,7 @@ import {lift as liftPackage} from '../package/index.js';
 import * as packageManagers from '../package-managers/index.js';
 import {determineCurrent as resolvePackageManager} from '../package-managers/index.js';
 
-export default async function ({projectRoot, vcs, results, pathWithinParent}) {
+export default async function ({projectRoot, vcs, results, pathWithinParent, enhancers = {}}) {
   info('Lifting JavaScript-specific details');
 
   const {
@@ -33,7 +33,8 @@ export default async function ({projectRoot, vcs, results, pathWithinParent}) {
 
   const enhancerResults = await applyEnhancers({
     results,
-    enhancers: [
+    enhancers: {
+      ...enhancers,
       huskyPlugin,
       enginesEnhancer,
       coveragePlugin,
@@ -43,7 +44,7 @@ export default async function ({projectRoot, vcs, results, pathWithinParent}) {
       npmConfigPlugin,
       projectTypes,
       packageManagers
-    ],
+    },
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents)}
   });
 
