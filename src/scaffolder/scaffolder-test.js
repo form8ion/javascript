@@ -251,6 +251,13 @@ suite('javascript project scaffolder', () => {
         visibility,
         projectRoot,
         configs,
+        plugins: {
+          applicationTypes,
+          packageTypes,
+          packageBundlers,
+          monorepoTypes,
+          unitTestFrameworks
+        },
         ciServices,
         overrides,
         hosts,
@@ -258,12 +265,7 @@ suite('javascript project scaffolder', () => {
         license,
         vcs: vcsDetails,
         description,
-        applicationTypes,
-        packageTypes,
-        packageBundlers,
-        monorepoTypes,
         decisions,
-        unitTestFrameworks,
         pathWithinParent,
         registries
       });

@@ -18,22 +18,22 @@ describe('project-type options validation', () => {
       validateOptions(packageBundlersSchema);
     });
 
-    it('should require a provided bundler to define a `scaffolder`', () => {
-      expect(() => validateOptions(packageBundlersSchema, {[key]: {}})).toThrowError(`"${key}.scaffolder" is required`);
+    it('should require a provided bundler to define a `scaffold`', () => {
+      expect(() => validateOptions(packageBundlersSchema, {[key]: {}})).toThrowError(`"${key}.scaffold" is required`);
     });
 
-    it('should require a defined `scaffolder` for a provided bundler to be a function', () => {
-      expect(() => validateOptions(packageBundlersSchema, {[key]: {scaffolder: any.word()}}))
-        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    it('should require a defined `scaffold` for a provided bundler to be a function', () => {
+      expect(() => validateOptions(packageBundlersSchema, {[key]: {scaffold: any.word()}}))
+        .toThrowError(`"${key}.scaffold" must be of type function`);
     });
 
-    it('should require a defined `scaffolder` function for a provided bundler to take an options object', () => {
-      expect(() => validateOptions(packageBundlersSchema, {[key]: {scaffolder: () => undefined}}))
-        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    it('should require a defined `scaffold` function for a provided bundler to take an options object', () => {
+      expect(() => validateOptions(packageBundlersSchema, {[key]: {scaffold: () => undefined}}))
+        .toThrowError(`"${key}.scaffold" must have an arity greater or equal to 1`);
     });
 
-    it('should consider bundler scaffolder function to be valid if an options object is provided', () => {
-      const bundlerOptions = {[key]: {scaffolder: options => options}};
+    it('should consider bundler scaffold function to be valid if an options object is provided', () => {
+      const bundlerOptions = {[key]: {scaffold: options => options}};
 
       expect(validateOptions(packageBundlersSchema, bundlerOptions)).toEqual(bundlerOptions);
     });
@@ -49,23 +49,23 @@ describe('project-type options validation', () => {
         .toThrowError(`"${key}" must be of type object`);
     });
 
-    it('should require a provided application-type to provide a scaffolder', () => {
+    it('should require a provided application-type to provide a scaffold', () => {
       expect(() => validateOptions(applicationTypesSchema, {[key]: {}}))
-        .toThrowError(`"${key}.scaffolder" is required`);
+        .toThrowError(`"${key}.scaffold" is required`);
     });
 
-    it('should require a provided application-type to provide a `scaffolder` function', () => {
-      expect(() => validateOptions(applicationTypesSchema, {[key]: {scaffolder: any.word()}}))
-        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    it('should require a provided application-type to provide a `scaffold` function', () => {
+      expect(() => validateOptions(applicationTypesSchema, {[key]: {scaffold: any.word()}}))
+        .toThrowError(`"${key}.scaffold" must be of type function`);
     });
 
-    it('should require the `scaffolder` for a provided application-type to accept a single argument', () => {
-      expect(() => validateOptions(applicationTypesSchema, {[key]: {scaffolder: () => undefined}}))
-        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    it('should require the `scaffold` for a provided application-type to accept a single argument', () => {
+      expect(() => validateOptions(applicationTypesSchema, {[key]: {scaffold: () => undefined}}))
+        .toThrowError(`"${key}.scaffold" must have an arity greater or equal to 1`);
     });
 
     it('should consider a provided application-type to be valid if an options object is provided', () => {
-      const options = {[key]: {scaffolder: scaffolderOptions => scaffolderOptions}};
+      const options = {[key]: {scaffold: scaffolderOptions => scaffolderOptions}};
 
       expect(validateOptions(applicationTypesSchema, options)).toEqual(options);
     });
@@ -81,23 +81,23 @@ describe('project-type options validation', () => {
         .toThrowError(`"${key}" must be of type object`);
     });
 
-    it('should require a provided package-type to provide a `scaffolder`', () => {
+    it('should require a provided package-type to provide a `scaffold`', () => {
       expect(() => validateOptions(packageTypesSchema, {[key]: {}}))
-        .toThrowError(`"${key}.scaffolder" is required`);
+        .toThrowError(`"${key}.scaffold" is required`);
     });
 
-    it('should require a scaffolder for a provided package-type to be a function', () => {
-      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffolder: any.word()}}))
-        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    it('should require a scaffold for a provided package-type to be a function', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffold: any.word()}}))
+        .toThrowError(`"${key}.scaffold" must be of type function`);
     });
 
-    it('should require a scaffolder function for a provided package-type to accept a single argument', () => {
-      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffolder: () => undefined}}))
-        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    it('should require a scaffold function for a provided package-type to accept a single argument', () => {
+      expect(() => validateOptions(packageTypesSchema, {[key]: {scaffold: () => undefined}}))
+        .toThrowError(`"${key}.scaffold" must have an arity greater or equal to 1`);
     });
 
-    it('should consider a provided package-type scaffolder to be valid if an options object is provided', () => {
-      validateOptions(packageTypesSchema, {[key]: {scaffolder: options => options}});
+    it('should consider a provided package-type scaffold to be valid if an options object is provided', () => {
+      validateOptions(packageTypesSchema, {[key]: {scaffold: options => options}});
     });
 
     it('should provide an empty object by default if package-types are not provided', () => {
@@ -111,23 +111,23 @@ describe('project-type options validation', () => {
         .toThrowError(`"${key}" must be of type object`);
     });
 
-    it('should require a provided monorepo-type to provide a `scaffolder`', () => {
+    it('should require a provided monorepo-type to provide a `scaffold`', () => {
       expect(() => validateOptions(monorepoTypesSchema, {[key]: {}}))
-        .toThrowError(`"${key}.scaffolder" is required`);
+        .toThrowError(`"${key}.scaffold" is required`);
     });
 
-    it('should require a scaffolder for a provided monorepo-type to be a function', () => {
-      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffolder: any.word()}}))
-        .toThrowError(`"${key}.scaffolder" must be of type function`);
+    it('should require a scaffold for a provided monorepo-type to be a function', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffold: any.word()}}))
+        .toThrowError(`"${key}.scaffold" must be of type function`);
     });
 
-    it('should require a scaffolder function for a provided monorepo-type to accept a single argument', () => {
-      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffolder: () => undefined}}))
-        .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+    it('should require a scaffold function for a provided monorepo-type to accept a single argument', () => {
+      expect(() => validateOptions(monorepoTypesSchema, {[key]: {scaffold: () => undefined}}))
+        .toThrowError(`"${key}.scaffold" must have an arity greater or equal to 1`);
     });
 
-    it('should consider a provided monorepo-type scaffolder to be valid if an options object is provided', () => {
-      validateOptions(monorepoTypesSchema, {[key]: {scaffolder: options => options}});
+    it('should consider a provided monorepo-type scaffold to be valid if an options object is provided', () => {
+      validateOptions(monorepoTypesSchema, {[key]: {scaffold: options => options}});
     });
 
     it('should provide an empty object by default if monorepo-types are not provided', () => {
