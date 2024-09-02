@@ -34,14 +34,16 @@ export default async function (options) {
     overrides,
     ciServices,
     hosts,
-    applicationTypes,
-    packageTypes,
-    packageBundlers,
-    monorepoTypes,
     decisions,
-    unitTestFrameworks,
     pathWithinParent,
-    registries
+    registries,
+    plugins: {
+      applicationTypes,
+      packageTypes,
+      monorepoTypes,
+      packageBundlers,
+      unitTestFrameworks
+    }
   } = validate(options);
 
   const {

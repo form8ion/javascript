@@ -66,13 +66,13 @@ export function validate(options) {
       })).default({})
     })
     .keys({
-      applicationTypes: applicationTypesSchema,
-      packageTypes: packageTypesSchema,
-      monorepoTypes: monorepoTypesSchema
-    })
-    .keys({
-      unitTestFrameworks: unitTestFrameworksSchema,
-      packageBundlers: packageBundlersSchema
+      plugins: {
+        unitTestFrameworks: unitTestFrameworksSchema,
+        packageBundlers: packageBundlersSchema,
+        applicationTypes: applicationTypesSchema,
+        packageTypes: packageTypesSchema,
+        monorepoTypes: monorepoTypesSchema
+      }
     })
     .keys({
       decisions: joi.object()

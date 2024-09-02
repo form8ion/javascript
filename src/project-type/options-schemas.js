@@ -1,7 +1,7 @@
 import joi from 'joi';
+import {optionsSchemas} from '@form8ion/core';
 
-const pluginSchema = joi.object({scaffolder: joi.func().arity(1).required()});
-const pluginMapSchema = joi.object().pattern(joi.string(), pluginSchema);
+const pluginMapSchema = joi.object().pattern(joi.string(), optionsSchemas.form8ionPlugin);
 
 export const packageBundlersSchema = pluginMapSchema.default({});
 

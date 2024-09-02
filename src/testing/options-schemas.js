@@ -1,5 +1,4 @@
 import joi from 'joi';
+import {optionsSchemas} from '@form8ion/core';
 
-export const unitTestFrameworksSchema = joi.object().required().pattern(/^/, joi.object({
-  scaffolder: joi.func().arity(1).required()
-}));
+export const unitTestFrameworksSchema = joi.object().required().pattern(/^/, optionsSchemas.form8ionPlugin);

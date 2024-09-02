@@ -13,16 +13,16 @@ describe('unit testing options validation', () => {
   });
 
   it('should require that a provided framework define a `scaffolder`', () => {
-    expect(() => validateOptions(unitTestFrameworksSchema, {[key]: {scaffolder: any.word()}}))
-      .toThrowError(`"${key}.scaffolder" must be of type function`);
+    expect(() => validateOptions(unitTestFrameworksSchema, {[key]: {scaffold: any.word()}}))
+      .toThrowError(`"${key}.scaffold" must be of type function`);
   });
 
-  it('should require that the `scaffolder` defined by a provided framework take an options object', () => {
-    expect(() => validateOptions(unitTestFrameworksSchema, {[key]: {scaffolder: () => undefined}}))
-      .toThrowError(`"${key}.scaffolder" must have an arity of 1`);
+  it('should require that the `scaffold` defined by a provided framework take an options object', () => {
+    expect(() => validateOptions(unitTestFrameworksSchema, {[key]: {scaffold: () => undefined}}))
+      .toThrowError(`"${key}.scaffold" must have an arity greater or equal to 1`);
   });
 
   it('should consider a provided framework definition valid if the scaffolder accepts an options object', () => {
-    validateOptions(unitTestFrameworksSchema, {[key]: {scaffolder: options => options}});
+    validateOptions(unitTestFrameworksSchema, {[key]: {scaffold: options => options}});
   });
 });
