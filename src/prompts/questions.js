@@ -37,7 +37,6 @@ function authorQuestions({name, email, url}) {
 }
 
 export async function prompt(
-  {npmAccount, author},
   ciServices,
   hosts,
   visibility,
@@ -114,9 +113,9 @@ export async function prompt(
       message: 'What is the scope?',
       when: scopePromptShouldBePresentedFactory(visibility),
       validate: validateScope(visibility),
-      default: npmAccount || maybeLoggedInNpmUsername
+      default: maybeLoggedInNpmUsername
     },
-    ...authorQuestions(author || {
+    ...authorQuestions({
       name: npmConf.get('init.author.name'),
       email: npmConf.get('init.author.email'),
       url: npmConf.get('init.author.url')

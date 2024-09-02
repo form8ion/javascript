@@ -43,16 +43,6 @@ export function validate(options) {
       }).default({})
     })
     .keys({
-      overrides: joi.object({
-        npmAccount: joi.string(),
-        author: joi.object({
-          name: joi.string().required(),
-          email: joi.string().email(),
-          url: joi.string().uri()
-        })
-      }).default({})
-    })
-    .keys({
       ciServices: joi.object().pattern(/^/, joi.object({
         scaffolder: joi.func().arity(1).required(),
         public: joi.boolean(),

@@ -444,75 +444,6 @@ suite('options validator', () => {
     });
   });
 
-  suite('overrides', () => {
-    const email = any.email();
-
-    test('that `npmAccount` can be overridden', () => {
-      validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {npmAccount: any.word()}
-      });
-    });
-
-    suite('author', () => {
-      test('that `author` can be overridden', () => {
-        validate({
-          projectRoot: any.string(),
-          projectName: any.string(),
-          visibility: any.fromList(['Public', 'Private']),
-          license: any.string(),
-          vcs: {host: any.word(), owner: any.word(), name: any.word()},
-          description: any.string(),
-          overrides: {author: {name: any.string(), email, url: any.url()}}
-        });
-      });
-    });
-
-    test('that `author.name` is required', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {}}
-      }),
-      '"overrides.author.name" is required'
-    ));
-
-    test('that `author.email` must be an email address when provided', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {name: any.string(), email: any.word()}}
-      }),
-      '"overrides.author.email" must be a valid email'
-    ));
-
-    test('that `author.url` must be a valid uri when provided', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {name: any.string(), email, url: any.string()}}
-      }),
-      '"overrides.author.url" must be a valid uri'
-    ));
-  });
-
   suite('ci services', () => {
     const ciServiceName = any.word();
 
@@ -902,7 +833,6 @@ suite('options validator', () => {
         {
           ...options,
           configs: {},
-          overrides: {},
           plugins: {
             applicationTypes: {},
             packageTypes: {},

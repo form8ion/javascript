@@ -31,7 +31,6 @@ export default async function (options) {
     vcs,
     description,
     configs,
-    overrides,
     ciServices,
     hosts,
     decisions,
@@ -58,7 +57,7 @@ export default async function (options) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(overrides, ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
+  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
 
   info('Writing project files', {level: 'secondary'});
 

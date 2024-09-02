@@ -80,7 +80,6 @@ const {
       packageTypes: {},
       packageBundlers: {}
     },
-    overrides: {npmAccount: accountName},
     ciServices: {},
     decisions: {
       [questionNames.DIALECT]: dialects.BABEL,
