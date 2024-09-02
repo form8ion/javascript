@@ -74,9 +74,14 @@ const {
       babelPreset: {name: `@${accountName}`, packageName: `@${accountName}/babel-preset`},
       commitlint: {name: `@${accountName}`, packageName: `@${accountName}/commitlint-config`}
     },
+    plugins: {
+      unitTestFrameworks: {},
+      applicationTypes: {},
+      packageTypes: {},
+      packageBundlers: {}
+    },
     overrides: {npmAccount: accountName},
     ciServices: {},
-    unitTestFrameworks: {},
     decisions: {
       [questionNames.DIALECT]: dialects.BABEL,
       [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
@@ -116,8 +121,8 @@ const {
   await scaffoldUnitTesting({
     projectRoot: process.cwd(),
     frameworks: {
-      Mocha: {scaffolder: options => options},
-      Jest: {scaffolder: options => options}
+      Mocha: {scaffold: options => options},
+      Jest: {scaffold: options => options}
     },
     visibility: 'Public',
     vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
