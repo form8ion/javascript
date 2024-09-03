@@ -256,9 +256,9 @@ suite('javascript project scaffolder', () => {
           packageBundlers,
           monorepoTypes,
           unitTestFrameworks,
-          hosts
+          hosts,
+          ciServices
         },
-        ciServices,
         projectName,
         license,
         vcs: vcsDetails,

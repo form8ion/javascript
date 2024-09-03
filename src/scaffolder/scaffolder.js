@@ -31,7 +31,6 @@ export default async function (options) {
     vcs,
     description,
     configs,
-    ciServices,
     decisions,
     pathWithinParent,
     registries,
@@ -41,7 +40,8 @@ export default async function (options) {
       monorepoTypes,
       packageBundlers,
       unitTestFrameworks,
-      hosts
+      hosts,
+      ciServices
     }
   } = validate(options);
 

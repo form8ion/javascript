@@ -37,20 +37,14 @@ export function validate(options) {
       }).default({})
     })
     .keys({
-      ciServices: joi.object().pattern(/^/, joi.object({
-        scaffolder: joi.func().arity(1).required(),
-        public: joi.boolean(),
-        private: joi.boolean()
-      })).default({})
-    })
-    .keys({
       plugins: {
         unitTestFrameworks: pluginsSchema,
         packageBundlers: pluginsSchema,
         applicationTypes: pluginsSchema,
         packageTypes: pluginsSchema,
         monorepoTypes: pluginsSchema,
-        hosts: pluginsSchema
+        hosts: pluginsSchema,
+        ciServices: pluginsSchema
       }
     })
     .keys({

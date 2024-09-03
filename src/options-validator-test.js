@@ -455,12 +455,12 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        ciServices: {[ciServiceName]: {}}
+        plugins: {ciServices: {[ciServiceName]: {}}}
       }),
-      `"ciServices.${ciServiceName}.scaffolder" is required`
+      `"plugins.ciServices.${ciServiceName}.scaffold" is required`
     ));
 
-    test('that a provided ci-service scaffolder must accept a single argument', () => assert.throws(
+    test('that a provided ci-service scaffold must accept a single argument', () => assert.throws(
       () => validate({
         projectRoot: any.string(),
         projectName: any.string(),
@@ -468,29 +468,19 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        ciServices: {[ciServiceName]: {scaffolder: () => undefined}}
+        plugins: {ciServices: {[ciServiceName]: {scaffold: () => undefined}}}
       }),
-      `"ciServices.${ciServiceName}.scaffolder" must have an arity of 1`
+      `"plugins.ciServices.${ciServiceName}.scaffold" must have an arity greater or equal to 1`
     ));
 
-    test('that a provided ci-service scaffolder can be enabled for public projects', () => validate({
+    test('that a provided ci-service scaffolder can be enabled', () => validate({
       projectRoot: any.string(),
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
       vcs: {host: any.word(), owner: any.word(), name: any.word()},
       description: any.string(),
-      ciServices: {[ciServiceName]: {scaffolder: options => options, public: any.boolean()}}
-    }));
-
-    test('that a provided ci-service scaffolder can be enabled for private projects', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      ciServices: {[ciServiceName]: {scaffolder: options => options, private: any.boolean()}}
+      plugins: {ciServices: {[ciServiceName]: {scaffold: options => options}}}
     }));
   });
 
@@ -779,9 +769,9 @@ suite('options validator', () => {
             monorepoTypes: {},
             packageBundlers: {},
             unitTestFrameworks: {},
-            hosts: {}
+            hosts: {},
+            ciServices: {}
           },
-          ciServices: {},
           registries: {}
         }
       );

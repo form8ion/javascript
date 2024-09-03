@@ -46,9 +46,9 @@ const {
       unitTestFrameworks: {},
       applicationTypes: {},
       packageTypes: {},
-      packageBundlers: {}
+      packageBundlers: {},
+      ciServices: {}
     },
-    ciServices: {},
     decisions: {
       [questionNames.DIALECT]: dialects.BABEL,
       [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
