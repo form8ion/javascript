@@ -9,7 +9,7 @@ import {when} from 'jest-when';
 import scaffoldCoverage from '../coverage/scaffolder.js';
 import prompt from './prompt.js';
 import scaffoldUnitTesting from './unit.js';
-import {unitTestFrameworksSchema} from './options-schemas.js';
+import {pluginsSchema} from '../plugins-schemas.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/core');
@@ -36,7 +36,7 @@ describe('unit testing scaffolder', () => {
   it('should scaffold the chosen framework', async () => {
     const visibility = any.word();
     const validatedFrameworks = any.simpleObject();
-    when(validateOptions).calledWith(unitTestFrameworksSchema, frameworks).mockReturnValue(validatedFrameworks);
+    when(validateOptions).calledWith(pluginsSchema, frameworks).mockReturnValue(validatedFrameworks);
     when(prompt).calledWith({frameworks: validatedFrameworks, decisions}).mockResolvedValue(chosenFramework);
     when(scaffoldChoice)
       .calledWith(validatedFrameworks, chosenFramework, {projectRoot, dialect})
