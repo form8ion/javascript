@@ -505,9 +505,9 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        hosts: {[hostName]: {}}
+        plugins: {hosts: {[hostName]: {}}}
       }),
-      `"hosts.${hostName}.scaffolder" is required`
+      `"plugins.hosts.${hostName}.scaffold" is required`
     ));
 
     test('that a provided scaffolder must accept a single argument', () => assert.throws(
@@ -518,70 +518,10 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        hosts: {[hostName]: {scaffolder: () => undefined}}
+        plugins: {hosts: {[hostName]: {scaffold: () => undefined}}}
       }),
-      `"hosts.${hostName}.scaffolder" must have an arity of 1`
+      `"plugins.hosts.${hostName}.scaffold" must have an arity greater or equal to 1`
     ));
-
-    // test('that provided `projectTypes` must be strings', () => assert.throws(
-    //   () => validate({
-    //     projectRoot: any.string(),
-    //     projectName: any.string(),
-    //     visibility: any.fromList(['Public', 'Private']),
-    //     license: any.string(),
-    //     vcs: {host: any.word(), owner: any.word(), name: any.word()},
-    //     description: any.string(),
-    //     hosts: {[hostName]: {scaffolder: options => options, projectTypes: [any.integer()]}}
-    //   }),
-    //   `"hosts.${hostName}.projectTypes[0]" must be a string`
-    // ));
-
-    test('that `projectTypes` must be valid types', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        hosts: {[hostName]: {scaffolder: options => options, projectTypes: [any.word()]}}
-      }),
-      `"hosts.${hostName}.projectTypes[0]" must be one of [static, node]`
-    ));
-
-    test('that `static` is a valid option for `projectTypes`', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      hosts: {[hostName]: {scaffolder: options => options, projectTypes: ['static']}}
-    }));
-
-    test('that `node` is a valid option for `projectTypes`', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      hosts: {[hostName]: {scaffolder: options => options, projectTypes: ['node']}}
-    }));
-
-    test('that `projectTypes` defaults to an empty list`', () => {
-      const validated = validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        hosts: {[hostName]: {scaffolder: options => options}}
-      });
-
-      assert.deepEqual(validated.hosts[hostName].projectTypes, []);
-    });
   });
 
   suite('application types', () => {
@@ -838,10 +778,10 @@ suite('options validator', () => {
             packageTypes: {},
             monorepoTypes: {},
             packageBundlers: {},
-            unitTestFrameworks: {}
+            unitTestFrameworks: {},
+            hosts: {}
           },
           ciServices: {},
-          hosts: {},
           registries: {}
         }
       );

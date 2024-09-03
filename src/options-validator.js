@@ -44,18 +44,13 @@ export function validate(options) {
       })).default({})
     })
     .keys({
-      hosts: joi.object().pattern(/^/, joi.object({
-        scaffolder: joi.func().arity(1).required(),
-        projectTypes: joi.array().items(joi.string().valid('static', 'node')).default([])
-      })).default({})
-    })
-    .keys({
       plugins: {
         unitTestFrameworks: pluginsSchema,
         packageBundlers: pluginsSchema,
         applicationTypes: pluginsSchema,
         packageTypes: pluginsSchema,
-        monorepoTypes: pluginsSchema
+        monorepoTypes: pluginsSchema,
+        hosts: pluginsSchema
       }
     })
     .keys({

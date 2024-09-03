@@ -255,10 +255,10 @@ suite('javascript project scaffolder', () => {
           packageTypes,
           packageBundlers,
           monorepoTypes,
-          unitTestFrameworks
+          unitTestFrameworks,
+          hosts
         },
         ciServices,
-        hosts,
         projectName,
         license,
         vcs: vcsDetails,
