@@ -1,6 +1,6 @@
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
-import * as commonPrompts from '@travi/language-scaffolder-prompts';
+import commonPrompts from '@travi/language-scaffolder-prompts';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
@@ -68,7 +68,7 @@ suite('prompts', () => {
 
     visibilityFilterForChoices.default.withArgs({}).returns({});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility, pathWithinParent: undefined})
+      .withArgs({vcs, ciServices, pathWithinParent: undefined})
       .returns(commonQuestions);
   });
 
@@ -222,7 +222,7 @@ suite('prompts', () => {
     execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Private', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 
@@ -238,7 +238,7 @@ suite('prompts', () => {
     execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Private', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 
@@ -254,7 +254,7 @@ suite('prompts', () => {
     execa.default.withArgs('npm', ['whoami']).rejects();
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Public', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 

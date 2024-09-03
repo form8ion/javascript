@@ -120,7 +120,7 @@ export async function prompt(
       email: npmConf.get('init.author.email'),
       url: npmConf.get('init.author.url')
     }),
-    ...commonQuestions(({vcs, ciServices, visibility, pathWithinParent})),
+    ...commonQuestions(({vcs, ciServices, pathWithinParent})),
     {
       name: questionNames.CONFIGURE_LINTING,
       message: 'Will there be source code that should be linted?',
