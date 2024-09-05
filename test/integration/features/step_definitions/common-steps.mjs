@@ -102,41 +102,47 @@ When(/^the project is scaffolded$/, async function () {
         commitlint: {name: any.word(), packageName: any.word()},
         ...this.typescriptConfig && {typescript: this.typescriptConfig}
       },
-      ciServices: {[any.word()]: {scaffolder: foo => ({foo}), public: true}},
-      applicationTypes: {
-        foo: {
-          scaffolder: foo => ({
-            foo,
-            eslint: {
-              configs: this.fooApplicationEslintConfigs,
-              ...this.fooApplicationEslintIgnoredDirectories && {
-                ignore: {directories: this.fooApplicationEslintIgnoredDirectories}
-              }
-            },
-            buildDirectory: this.fooApplicationBuildDirectory
-          })
-        }
-      },
-      monorepoTypes: {
-        foo: {scaffolder: foo => ({foo, scripts: this.fooMonorepoScripts})}
-      },
-      packageTypes: {
-        foo: {
-          scaffolder: async ({projectRoot}) => {
-            await fs.unlink(`${projectRoot}/tsconfig.json`);
-
-            return {};
+      plugins: {
+        unitTestFrameworks: {
+          foo: {scaffold: ({foo}) => ({testFilenamePattern: this.testFilenamePattern, foo})},
+          bar: {scaffold: ({bar}) => ({eslint: {configs: this.barUnitTestFrameworkEslintConfigs}, bar})}
+        },
+        packageBundlers: {
+          foo: {scaffold: async ({projectRoot}) => ({projectRoot, scripts: {['build:js']: 'build script'}})}
+        },
+        applicationTypes: {
+          foo: {
+            scaffold: foo => ({
+              foo,
+              eslint: {
+                configs: this.fooApplicationEslintConfigs,
+                ...this.fooApplicationEslintIgnoredDirectories && {
+                  ignore: {directories: this.fooApplicationEslintIgnoredDirectories}
+                }
+              },
+              buildDirectory: this.fooApplicationBuildDirectory
+            })
           }
         },
-        'lint-peer': {
-          scaffolder: ({projectRoot}) => ({
-            scripts: {'lint:peer': this.alternateLintPeerScript},
-            projectRoot
-          })
-        }
-      },
-      packageBundlers: {
-        foo: {scaffolder: async ({projectRoot}) => ({projectRoot, scripts: {['build:js']: 'build script'}})}
+        monorepoTypes: {
+          foo: {scaffold: foo => ({foo, scripts: this.fooMonorepoScripts})}
+        },
+        packageTypes: {
+          foo: {
+            scaffold: async ({projectRoot}) => {
+              await fs.unlink(`${projectRoot}/tsconfig.json`);
+
+              return {};
+            }
+          },
+          'lint-peer': {
+            scaffold: ({projectRoot}) => ({
+              scripts: {'lint:peer': this.alternateLintPeerScript},
+              projectRoot
+            })
+          }
+        },
+        ciServices: {[any.word()]: {scaffold: foo => ({foo}), public: true}}
       },
       decisions: {
         [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
@@ -162,10 +168,6 @@ When(/^the project is scaffolded$/, async function () {
         ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
         [questionNames.DIALECT]: this.dialect,
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
-      },
-      unitTestFrameworks: {
-        foo: {scaffolder: ({foo}) => ({testFilenamePattern: this.testFilenamePattern, foo})},
-        bar: {scaffolder: ({bar}) => ({eslint: {configs: this.barUnitTestFrameworkEslintConfigs}, bar})}
       },
       pathWithinParent: this.pathWithinParent,
       ...this.registries && {registries: this.registries}

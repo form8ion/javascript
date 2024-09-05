@@ -1,13 +1,7 @@
 import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
-import {unitTestFrameworksSchema} from './testing/options-schemas.js';
-import {
-  applicationTypesSchema,
-  monorepoTypesSchema,
-  packageBundlersSchema,
-  packageTypesSchema
-} from './project-type/options-schemas.js';
+import {pluginsSchema} from './plugins-schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -43,36 +37,15 @@ export function validate(options) {
       }).default({})
     })
     .keys({
-      overrides: joi.object({
-        npmAccount: joi.string(),
-        author: joi.object({
-          name: joi.string().required(),
-          email: joi.string().email(),
-          url: joi.string().uri()
-        })
-      }).default({})
-    })
-    .keys({
-      ciServices: joi.object().pattern(/^/, joi.object({
-        scaffolder: joi.func().arity(1).required(),
-        public: joi.boolean(),
-        private: joi.boolean()
-      })).default({})
-    })
-    .keys({
-      hosts: joi.object().pattern(/^/, joi.object({
-        scaffolder: joi.func().arity(1).required(),
-        projectTypes: joi.array().items(joi.string().valid('static', 'node')).default([])
-      })).default({})
-    })
-    .keys({
-      applicationTypes: applicationTypesSchema,
-      packageTypes: packageTypesSchema,
-      monorepoTypes: monorepoTypesSchema
-    })
-    .keys({
-      unitTestFrameworks: unitTestFrameworksSchema,
-      packageBundlers: packageBundlersSchema
+      plugins: {
+        unitTestFrameworks: pluginsSchema,
+        packageBundlers: pluginsSchema,
+        applicationTypes: pluginsSchema,
+        packageTypes: pluginsSchema,
+        monorepoTypes: pluginsSchema,
+        hosts: pluginsSchema,
+        ciServices: pluginsSchema
+      }
     })
     .keys({
       decisions: joi.object()

@@ -31,17 +31,18 @@ export default async function (options) {
     vcs,
     description,
     configs,
-    overrides,
-    ciServices,
-    hosts,
-    applicationTypes,
-    packageTypes,
-    packageBundlers,
-    monorepoTypes,
     decisions,
-    unitTestFrameworks,
     pathWithinParent,
-    registries
+    registries,
+    plugins: {
+      applicationTypes,
+      packageTypes,
+      monorepoTypes,
+      packageBundlers,
+      unitTestFrameworks,
+      hosts,
+      ciServices
+    }
   } = validate(options);
 
   const {
@@ -56,7 +57,7 @@ export default async function (options) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(overrides, ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
+  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
 
   info('Writing project files', {level: 'secondary'});
 

@@ -1,6 +1,6 @@
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
-import * as commonPrompts from '@travi/language-scaffolder-prompts';
+import commonPrompts from '@travi/language-scaffolder-prompts';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
@@ -68,7 +68,7 @@ suite('prompts', () => {
 
     visibilityFilterForChoices.default.withArgs({}).returns({});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility, pathWithinParent: undefined})
+      .withArgs({vcs, ciServices, pathWithinParent: undefined})
       .returns(commonQuestions);
   });
 
@@ -176,7 +176,7 @@ suite('prompts', () => {
       .resolves({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
 
     assert.deepEqual(
-      await prompt({}, ciServices, hosts, visibility, vcs, decisions, configs),
+      await prompt(ciServices, hosts, visibility, vcs, decisions, configs),
       {
         tests,
         projectType,
@@ -201,7 +201,7 @@ suite('prompts', () => {
     prompts.prompt.resolves({...answers, [questionNames.CONFIGURE_LINTING]: false});
 
     assert.deepEqual(
-      await prompt({}, ciServices, {}, visibility, vcs, decisions),
+      await prompt(ciServices, {}, visibility, vcs, decisions),
       {
         tests,
         projectType,
@@ -218,50 +218,15 @@ suite('prompts', () => {
     );
   });
 
-  test('that defaults are overridden by the provided options', async () => {
-    const npmAccount = any.word();
-    const authorOverrides = {name: any.string(), email: any.string(), url: any.url()};
-    const get = sinon.stub();
-    npmConf.default.returns({get});
-    prompts.prompt.resolves(answers);
-
-    await prompt({npmAccount, author: authorOverrides}, ciServices, {}, visibility, vcs, {});
-
-    assert.calledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter((
-        question => questionNames.SCOPE === question.name && npmAccount === question.default
-      )).length)
-    );
-    assert.calledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter((
-        question => questionNames.AUTHOR_NAME === question.name && authorOverrides.name === question.default
-      )).length)
-    );
-    assert.calledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter((
-        question => questionNames.AUTHOR_EMAIL === question.name && authorOverrides.email === question.default
-      )).length)
-    );
-    assert.calledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter((
-        question => questionNames.AUTHOR_URL === question.name && authorOverrides.url === question.default
-      )).length)
-    );
-  });
-
   test('that sub-projects are not asked about node version since already defined by the parent project', async () => {
     execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Private', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 
-    await prompt({}, ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
 
     assert.neverCalledWith(
       prompts.prompt,
@@ -273,11 +238,11 @@ suite('prompts', () => {
     execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Private', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 
-    await prompt({}, ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
 
     assert.neverCalledWith(
       prompts.prompt,
@@ -289,11 +254,11 @@ suite('prompts', () => {
     execa.default.withArgs('npm', ['whoami']).rejects();
     npmConf.default.returns({get: () => undefined});
     commonPrompts.questions
-      .withArgs({vcs, ciServices, visibility: 'Public', pathWithinParent})
+      .withArgs({vcs, ciServices, pathWithinParent})
       .returns(commonQuestions);
     prompts.prompt.resolves(answers);
 
-    await prompt({}, ciServices, {}, 'Public', vcs, {}, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Public', vcs, {}, null, pathWithinParent);
 
     assert.calledWith(
       prompts.prompt,

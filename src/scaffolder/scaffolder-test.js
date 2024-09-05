@@ -60,7 +60,6 @@ suite('javascript project scaffolder', () => {
   const tests = {unit: unitTested, integration: integrationTested};
   const vcsDetails = any.simpleObject();
   const chosenCiService = any.word();
-  const overrides = any.simpleObject();
   const description = any.sentence();
   const babelPresetName = any.string();
   const babelPreset = {name: babelPresetName};
@@ -197,7 +196,7 @@ suite('javascript project scaffolder', () => {
       .resolves(projectTypePluginResults);
     packageScaffolder.default.withArgs(packageScaffoldingInputs).resolves(any.simpleObject());
     prompts.prompt
-      .withArgs(overrides, ciServices, hosts, visibility, vcsDetails, decisions, configs, pathWithinParent)
+      .withArgs(ciServices, hosts, visibility, vcsDetails, decisions, configs, pathWithinParent)
       .resolves(commonPromptAnswers);
     jsCore.scaffoldChoice
       .withArgs(
@@ -251,19 +250,20 @@ suite('javascript project scaffolder', () => {
         visibility,
         projectRoot,
         configs,
-        ciServices,
-        overrides,
-        hosts,
+        plugins: {
+          applicationTypes,
+          packageTypes,
+          packageBundlers,
+          monorepoTypes,
+          unitTestFrameworks,
+          hosts,
+          ciServices
+        },
         projectName,
         license,
         vcs: vcsDetails,
         description,
-        applicationTypes,
-        packageTypes,
-        packageBundlers,
-        monorepoTypes,
         decisions,
-        unitTestFrameworks,
         pathWithinParent,
         registries
       });

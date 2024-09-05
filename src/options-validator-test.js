@@ -36,8 +36,7 @@ suite('options validator', () => {
       visibility: 'Public',
       license: any.string(),
       vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      unitTestFrameworks: {}
+      description: any.string()
     }));
 
     test('that `Private` is an allowed `visibility`', () => validate({
@@ -46,8 +45,7 @@ suite('options validator', () => {
       visibility: 'Private',
       license: any.string(),
       vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      unitTestFrameworks: {}
+      description: any.string()
     }));
 
     test('that `visibility` values other than `Public` or `Private` are invalid', () => assert.throws(
@@ -70,7 +68,7 @@ suite('options validator', () => {
     projectName: any.string(),
     visibility: any.fromList(['Public', 'Private']),
     license: any.string(),
-    unitTestFrameworks: {},
+    plugins: {unitTestFrameworks: {}},
     pathWithinParent: any.string()
   }));
 
@@ -185,8 +183,7 @@ suite('options validator', () => {
           license: any.string(),
           vcs: {host: any.word(), owner: any.word(), name: any.word()},
           description: any.string(),
-          configs: {eslint: {scope}},
-          unitTestFrameworks: {}
+          configs: {eslint: {scope}}
         });
       });
     });
@@ -266,8 +263,7 @@ suite('options validator', () => {
           license: any.string(),
           vcs: {host: any.word(), owner: any.word(), name: any.word()},
           description: any.string(),
-          configs: {typescript: {scope}},
-          unitTestFrameworks: {}
+          configs: {typescript: {scope}}
         });
       });
     });
@@ -347,8 +343,7 @@ suite('options validator', () => {
           license: any.string(),
           vcs: {host: any.word(), owner: any.word(), name: any.word()},
           description: any.string(),
-          configs: {prettier: {scope}},
-          unitTestFrameworks: {}
+          configs: {prettier: {scope}}
         });
       });
     });
@@ -434,8 +429,7 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        configs: {remark: any.string()},
-        unitTestFrameworks: {}
+        configs: {remark: any.string()}
       }));
 
       test('that the config is optional', () => validate({
@@ -445,81 +439,9 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        configs: {},
-        unitTestFrameworks: {}
+        configs: {}
       }));
     });
-  });
-
-  suite('overrides', () => {
-    const email = any.email();
-
-    test('that `npmAccount` can be overridden', () => {
-      validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {npmAccount: any.word()},
-        unitTestFrameworks: {}
-      });
-    });
-
-    suite('author', () => {
-      test('that `author` can be overridden', () => {
-        validate({
-          projectRoot: any.string(),
-          projectName: any.string(),
-          visibility: any.fromList(['Public', 'Private']),
-          license: any.string(),
-          vcs: {host: any.word(), owner: any.word(), name: any.word()},
-          description: any.string(),
-          overrides: {author: {name: any.string(), email, url: any.url()}},
-          unitTestFrameworks: {}
-        });
-      });
-    });
-
-    test('that `author.name` is required', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {}}
-      }),
-      '"overrides.author.name" is required'
-    ));
-
-    test('that `author.email` must be an email address when provided', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {name: any.string(), email: any.word()}}
-      }),
-      '"overrides.author.email" must be a valid email'
-    ));
-
-    test('that `author.url` must be a valid uri when provided', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        overrides: {author: {name: any.string(), email, url: any.string()}}
-      }),
-      '"overrides.author.url" must be a valid uri'
-    ));
   });
 
   suite('ci services', () => {
@@ -533,12 +455,12 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        ciServices: {[ciServiceName]: {}}
+        plugins: {ciServices: {[ciServiceName]: {}}}
       }),
-      `"ciServices.${ciServiceName}.scaffolder" is required`
+      `"plugins.ciServices.${ciServiceName}.scaffold" is required`
     ));
 
-    test('that a provided ci-service scaffolder must accept a single argument', () => assert.throws(
+    test('that a provided ci-service scaffold must accept a single argument', () => assert.throws(
       () => validate({
         projectRoot: any.string(),
         projectName: any.string(),
@@ -546,31 +468,19 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        ciServices: {[ciServiceName]: {scaffolder: () => undefined}}
+        plugins: {ciServices: {[ciServiceName]: {scaffold: () => undefined}}}
       }),
-      `"ciServices.${ciServiceName}.scaffolder" must have an arity of 1`
+      `"plugins.ciServices.${ciServiceName}.scaffold" must have an arity greater or equal to 1`
     ));
 
-    test('that a provided ci-service scaffolder can be enabled for public projects', () => validate({
+    test('that a provided ci-service scaffolder can be enabled', () => validate({
       projectRoot: any.string(),
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
       vcs: {host: any.word(), owner: any.word(), name: any.word()},
       description: any.string(),
-      ciServices: {[ciServiceName]: {scaffolder: options => options, public: any.boolean()}},
-      unitTestFrameworks: {}
-    }));
-
-    test('that a provided ci-service scaffolder can be enabled for private projects', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      ciServices: {[ciServiceName]: {scaffolder: options => options, private: any.boolean()}},
-      unitTestFrameworks: {}
+      plugins: {ciServices: {[ciServiceName]: {scaffold: options => options}}}
     }));
   });
 
@@ -585,9 +495,9 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        hosts: {[hostName]: {}}
+        plugins: {hosts: {[hostName]: {}}}
       }),
-      `"hosts.${hostName}.scaffolder" is required`
+      `"plugins.hosts.${hostName}.scaffold" is required`
     ));
 
     test('that a provided scaffolder must accept a single argument', () => assert.throws(
@@ -598,73 +508,10 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        hosts: {[hostName]: {scaffolder: () => undefined}}
+        plugins: {hosts: {[hostName]: {scaffold: () => undefined}}}
       }),
-      `"hosts.${hostName}.scaffolder" must have an arity of 1`
+      `"plugins.hosts.${hostName}.scaffold" must have an arity greater or equal to 1`
     ));
-
-    // test('that provided `projectTypes` must be strings', () => assert.throws(
-    //   () => validate({
-    //     projectRoot: any.string(),
-    //     projectName: any.string(),
-    //     visibility: any.fromList(['Public', 'Private']),
-    //     license: any.string(),
-    //     vcs: {host: any.word(), owner: any.word(), name: any.word()},
-    //     description: any.string(),
-    //     hosts: {[hostName]: {scaffolder: options => options, projectTypes: [any.integer()]}}
-    //   }),
-    //   `"hosts.${hostName}.projectTypes[0]" must be a string`
-    // ));
-
-    test('that `projectTypes` must be valid types', () => assert.throws(
-      () => validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        hosts: {[hostName]: {scaffolder: options => options, projectTypes: [any.word()]}}
-      }),
-      `"hosts.${hostName}.projectTypes[0]" must be one of [static, node]`
-    ));
-
-    test('that `static` is a valid option for `projectTypes`', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      hosts: {[hostName]: {scaffolder: options => options, projectTypes: ['static']}},
-      unitTestFrameworks: {}
-    }));
-
-    test('that `node` is a valid option for `projectTypes`', () => validate({
-      projectRoot: any.string(),
-      projectName: any.string(),
-      visibility: any.fromList(['Public', 'Private']),
-      license: any.string(),
-      vcs: {host: any.word(), owner: any.word(), name: any.word()},
-      description: any.string(),
-      hosts: {[hostName]: {scaffolder: options => options, projectTypes: ['node']}},
-      unitTestFrameworks: {}
-    }));
-
-    test('that `projectTypes` defaults to an empty list`', () => {
-      const validated = validate({
-        projectRoot: any.string(),
-        projectName: any.string(),
-        visibility: any.fromList(['Public', 'Private']),
-        license: any.string(),
-        vcs: {host: any.word(), owner: any.word(), name: any.word()},
-        description: any.string(),
-        hosts: {[hostName]: {scaffolder: options => options}},
-        unitTestFrameworks: {}
-      });
-
-      assert.deepEqual(validated.hosts[hostName].projectTypes, []);
-    });
   });
 
   suite('application types', () => {
@@ -676,9 +523,11 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        applicationTypes: {[key]: any.word()}
+        plugins: {
+          applicationTypes: {[key]: any.word()}
+        }
       }),
-      `"applicationTypes.${key}" must be of type object`
+      `"plugins.applicationTypes.${key}" must be of type object`
     ));
 
     test('that a provided application-type must provide a scaffolded', () => assert.throws(
@@ -687,9 +536,11 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        applicationTypes: {[key]: {}}
+        plugins: {
+          applicationTypes: {[key]: {}}
+        }
       }),
-      `"applicationTypes.${key}.scaffolder" is required`
+      `"plugins.applicationTypes.${key}.scaffold" is required`
     ));
 
     test('that a provided application-type must provide a scaffold function', () => assert.throws(
@@ -698,9 +549,11 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        applicationTypes: {[key]: {scaffolder: any.word()}}
+        plugins: {
+          applicationTypes: {[key]: {scaffold: any.word()}}
+        }
       }),
-      `"applicationTypes.${key}.scaffolder" must be of type function`
+      `"plugins.applicationTypes.${key}.scaffold" must be of type function`
     ));
 
     test('that a provided application-type scaffolder must accept a single argument', () => assert.throws(
@@ -709,9 +562,11 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        applicationTypes: {[key]: {scaffolder: () => undefined}}
+        plugins: {
+          applicationTypes: {[key]: {scaffold: () => undefined}}
+        }
       }),
-      `"applicationTypes.${key}.scaffolder" must have an arity of 1`
+      `"plugins.applicationTypes.${key}.scaffold" must have an arity greater or equal to 1`
     ));
 
     test('that a provided application-type scaffolder is valid if an options object is provided', () => validate({
@@ -719,8 +574,9 @@ suite('options validator', () => {
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
-      applicationTypes: {[key]: {scaffolder: options => options}},
-      unitTestFrameworks: {}
+      plugins: {
+        applicationTypes: {[key]: {scaffold: options => options}}
+      }
     }));
   });
 
@@ -733,9 +589,11 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        packageTypes: {[key]: any.word()}
+        plugins: {
+          packageTypes: {[key]: any.word()}
+        }
       }),
-      `"packageTypes.${key}" must be of type object`
+      `"plugins.packageTypes.${key}" must be of type object`
     ));
 
     test('that a provided package-type must provide a scaffolded', () => assert.throws(
@@ -744,9 +602,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        packageTypes: {[key]: {}}
+        plugins: {packageTypes: {[key]: {}}}
       }),
-      `"packageTypes.${key}.scaffolder" is required`
+      `"plugins.packageTypes.${key}.scaffold" is required`
     ));
 
     test('that a provided package-type must provide a scaffold function', () => assert.throws(
@@ -755,9 +613,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        packageTypes: {[key]: {scaffolder: any.word()}}
+        plugins: {packageTypes: {[key]: {scaffold: any.word()}}}
       }),
-      `"packageTypes.${key}.scaffolder" must be of type function`
+      `"plugins.packageTypes.${key}.scaffold" must be of type function`
     ));
 
     test('that a provided package-type scaffolder must accept a single argument', () => assert.throws(
@@ -766,9 +624,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        packageTypes: {[key]: {scaffolder: () => undefined}}
+        plugins: {packageTypes: {[key]: {scaffold: () => undefined}}}
       }),
-      `"packageTypes.${key}.scaffolder" must have an arity of 1`
+      `"plugins.packageTypes.${key}.scaffold" must have an arity greater or equal to 1`
     ));
 
     test('that a provided package-type scaffolder is valid if an options object is provided', () => validate({
@@ -776,8 +634,7 @@ suite('options validator', () => {
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
-      packageTypes: {[key]: {scaffolder: options => options}},
-      unitTestFrameworks: {}
+      plugins: {packageTypes: {[key]: {scaffold: options => options}}}
     }));
   });
 
@@ -790,9 +647,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        monorepoTypes: {[key]: any.word()}
+        plugins: {monorepoTypes: {[key]: any.word()}}
       }),
-      `"monorepoTypes.${key}" must be of type object`
+      `"plugins.monorepoTypes.${key}" must be of type object`
     ));
 
     test('that a provided monorepo-type must provide a scaffolded', () => assert.throws(
@@ -801,9 +658,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        monorepoTypes: {[key]: {}}
+        plugins: {monorepoTypes: {[key]: {}}}
       }),
-      `"monorepoTypes.${key}.scaffolder" is required`
+      `"plugins.monorepoTypes.${key}.scaffold" is required`
     ));
 
     test('that a provided monorepo-type must provide a scaffold function', () => assert.throws(
@@ -812,9 +669,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        monorepoTypes: {[key]: {scaffolder: any.word()}}
+        plugins: {monorepoTypes: {[key]: {scaffold: any.word()}}}
       }),
-      `"monorepoTypes.${key}.scaffolder" must be of type function`
+      `"plugins.monorepoTypes.${key}.scaffold" must be of type function`
     ));
 
     test('that a provided monorepo-type scaffolder must accept a single argument', () => assert.throws(
@@ -823,9 +680,9 @@ suite('options validator', () => {
         projectName: any.string(),
         visibility: any.fromList(['Public', 'Private']),
         license: any.string(),
-        monorepoTypes: {[key]: {scaffolder: () => undefined}}
+        plugins: {monorepoTypes: {[key]: {scaffold: () => undefined}}}
       }),
-      `"monorepoTypes.${key}.scaffolder" must have an arity of 1`
+      `"plugins.monorepoTypes.${key}.scaffold" must have an arity greater or equal to 1`
     ));
 
     test('that a provided monorepo-type scaffolder is valid if an options object is provided', () => validate({
@@ -833,8 +690,7 @@ suite('options validator', () => {
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
-      monorepoTypes: {[key]: {scaffolder: options => options}},
-      unitTestFrameworks: {}
+      plugins: {monorepoTypes: {[key]: {scaffold: options => options}}}
     }));
   });
 
@@ -882,7 +738,6 @@ suite('options validator', () => {
       projectName: any.string(),
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
-      unitTestFrameworks: {},
       registries: {[key]: any.url()}
     }));
   });
@@ -898,7 +753,7 @@ suite('options validator', () => {
         license: any.string(),
         vcs: {host: any.word(), owner: any.word(), name: any.word()},
         description: any.string(),
-        unitTestFrameworks: {}
+        plugins: {unitTestFrameworks: {}}
       };
 
       const validated = validate(options);
@@ -908,13 +763,15 @@ suite('options validator', () => {
         {
           ...options,
           configs: {},
-          overrides: {},
-          ciServices: {},
-          hosts: {},
-          applicationTypes: {},
-          monorepoTypes: {},
-          packageTypes: {},
-          packageBundlers: {},
+          plugins: {
+            applicationTypes: {},
+            packageTypes: {},
+            monorepoTypes: {},
+            packageBundlers: {},
+            unitTestFrameworks: {},
+            hosts: {},
+            ciServices: {}
+          },
           registries: {}
         }
       );
@@ -928,7 +785,7 @@ suite('options validator', () => {
       visibility: any.fromList(['Public', 'Private']),
       license: any.string(),
       decisions: any.simpleObject(),
-      unitTestFrameworks: {}
+      plugins: {unitTestFrameworks: {}}
     };
 
     validate(options);

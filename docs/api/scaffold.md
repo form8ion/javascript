@@ -27,7 +27,6 @@ Language scaffolder for JavaScript projects
     * [`babelPreset` __object__ (_optional_)](#babelpreset-object-optional)
     * [`typescript`: __object__ (_optional_)](#typescript-object-optional)
     * [`remark`: __string__ (_optional_)](#remark-string-optional)
-  * [`overrides` __object__ (_optional_)](#overrides-object-optional)
 
 ## Arguments
 
@@ -159,18 +158,3 @@ to be used for the project
 
 name of the package to use as a preset for configuring [remark](https://remark.js.org/)
 in the scaffolded project
-
-### `overrides` __object__ (_optional_)
-
-__DEPRECATED__ use [decisions](#decisions-object-optional) instead
-
-* `npmAccount` __string__ (_optional_)
-  the account the package should be published under. used to suggest a
-  [scope](https://docs.npmjs.com/misc/scope). defaults to `$ npm whoami`
-* `author` __object__ (_optional_)
-  [details](https://docs.npmjs.com/files/package.json#people-fields-author-contributors)
-  about the package author
-
-  * `name` __string__ (_required_) defaults to `$npm config get init.author.name`
-  * `email` __string__ (_optional_) defaults to `$npm config get init.author.email`
-  * `url` __string__ (_optional_) defaults to `$npm config get init.author.url`
