@@ -8,7 +8,7 @@ import sinon from 'sinon';
 
 import * as lift from '../lift/lift.js';
 import * as prompts from '../prompts/questions.js';
-import * as optionsValidator from '../options-validator.js';
+import * as optionsValidator from '../options/validator.js';
 import * as dialects from '../dialects/scaffolder.js';
 import * as verification from './verification/verifier.js';
 import * as codeStyle from '../code-style/scaffolder.js';

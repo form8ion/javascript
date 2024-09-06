@@ -1,7 +1,7 @@
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import {validate} from './options-validator.js';
+import {validate} from './validator.js';
 
 suite('options validator', () => {
   test('that the options are required', () => assert.throws(() => validate(), '"value" is required'));

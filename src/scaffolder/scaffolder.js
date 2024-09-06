@@ -4,7 +4,7 @@ import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import lift from '../lift/index.js';
-import {validate} from '../options-validator.js';
+import {validate} from '../options/validator.js';
 import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';

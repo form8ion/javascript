@@ -1,7 +1,7 @@
 import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
-import {pluginsSchema} from './plugins-schemas.js';
+import {pluginsSchema} from '../plugins-schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
