@@ -3,7 +3,7 @@ import {validateOptions} from '@form8ion/core';
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import {vcs, configs, scopeBasedConfigSchema} from './schemas.js';
+import {scopeBasedConfigSchema, vcs} from './schemas.js';
 
 describe('options schemas', () => {
   describe('vcs', () => {
@@ -36,22 +36,6 @@ describe('options schemas', () => {
     it('should require `name` to be a string', () => {
       expect(() => validateOptions(vcs, {host: any.word(), owner: any.word(), name: any.integer()}))
         .toThrowError('"name" must be a string');
-    });
-  });
-
-  describe('configs', () => {
-    it('should return an empty object when no `configs` are provided', () => {
-      expect(validateOptions(configs)).toEqual({});
-    });
-
-    it('should require `remark` to be a string, when provided', () => {
-      expect(() => validateOptions(configs, {remark: any.integer()})).toThrowError('"remark" must be a string');
-    });
-
-    it('should allow all configs to be populated', () => {
-      const options = {remark: any.word()};
-
-      expect(validateOptions(configs, options)).toEqual(options);
     });
   });
 
