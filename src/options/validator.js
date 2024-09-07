@@ -2,7 +2,7 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {pluginsSchema} from '../plugins-schemas.js';
-import {nameBasedConfigSchema, scopeBasedConfigSchema, vcs} from './schemas.js';
+import {nameBasedConfigSchema, registriesSchema, scopeBasedConfigSchema, vcsSchema} from './schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -14,7 +14,7 @@ export function validate(options) {
       description: joi.string(),
       pathWithinParent: joi.string()
     })
-    .keys({vcs})
+    .keys({vcs: vcsSchema})
     .keys({
       configs: joi.object({
         eslint: scopeBasedConfigSchema,
@@ -39,7 +39,7 @@ export function validate(options) {
     .keys({
       decisions: joi.object()
     })
-    .keys({registries: joi.object().pattern(joi.string(), joi.string().uri()).default({})});
+    .keys({registries: registriesSchema});
 
   return validateOptions(schema, options);
 }

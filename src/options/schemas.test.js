@@ -3,38 +3,39 @@ import {validateOptions} from '@form8ion/core';
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import {scopeBasedConfigSchema, nameBasedConfigSchema, vcs} from './schemas.js';
+import {scopeBasedConfigSchema, nameBasedConfigSchema, registriesSchema, vcsSchema} from './schemas.js';
 
 describe('options schemas', () => {
   describe('vcs', () => {
     it('should require `vcs` to be an object', () => {
-      expect(() => validateOptions(vcs, [])).toThrowError('"value" must be of type object');
+      expect(() => validateOptions(vcsSchema, [])).toThrowError('"value" must be of type object');
     });
 
     it('should require `host`', () => {
-      expect(() => validateOptions(vcs, {})).toThrowError('"host" is required');
+      expect(() => validateOptions(vcsSchema, {})).toThrowError('"host" is required');
     });
 
     it('should require `host` to be a string', () => {
-      expect(() => validateOptions(vcs, {host: any.integer()}))
+      expect(() => validateOptions(vcsSchema, {host: any.integer()}))
         .toThrowError('"host" must be a string');
     });
 
     it('should require `owner`', () => {
-      expect(() => validateOptions(vcs, {host: any.word()})).toThrowError('"owner" is required');
+      expect(() => validateOptions(vcsSchema, {host: any.word()})).toThrowError('"owner" is required');
     });
 
     it('should require `owner` to be a string', () => {
-      expect(() => validateOptions(vcs, {host: any.word(), owner: any.integer()}))
+      expect(() => validateOptions(vcsSchema, {host: any.word(), owner: any.integer()}))
         .toThrowError('"owner" must be a string');
     });
 
     it('should require `name`', () => {
-      expect(() => validateOptions(vcs, {host: any.word(), owner: any.word()})).toThrowError('"name" is required');
+      expect(() => validateOptions(vcsSchema, {host: any.word(), owner: any.word()}))
+        .toThrowError('"name" is required');
     });
 
     it('should require `name` to be a string', () => {
-      expect(() => validateOptions(vcs, {host: any.word(), owner: any.word(), name: any.integer()}))
+      expect(() => validateOptions(vcsSchema, {host: any.word(), owner: any.word(), name: any.integer()}))
         .toThrowError('"name" must be a string');
     });
   });
@@ -96,6 +97,27 @@ describe('options schemas', () => {
     it('should require the `name` to be a string', () => {
       expect(() => validateOptions(nameBasedConfigSchema, {packageName: any.word(), name: any.simpleObject()}))
         .toThrowError('"name" must be a string');
+    });
+  });
+
+  describe('registries', () => {
+    const key = any.word();
+
+    it('should return an empty object when no registries are provided', () => {
+      expect(validateOptions(registriesSchema)).toEqual({});
+    });
+
+    it('should require the `registries` definition to be an object', () => {
+      expect(() => validateOptions(registriesSchema, any.word())).toThrowError('"value" must be of type object');
+    });
+
+    it('should require the values to be strings', () => {
+      expect(() => validateOptions(registriesSchema, {[key]: any.integer()})).toThrowError(`"${key}" must be a string`);
+    });
+
+    it('should require the values to be URIs', () => {
+      expect(() => validateOptions(registriesSchema, {[key]: any.string()}))
+        .toThrowError(`"${key}" must be a valid uri`);
     });
   });
 });
