@@ -3,7 +3,7 @@ import {validateOptions} from '@form8ion/core';
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import {scopeBasedConfigSchema, vcs} from './schemas.js';
+import {scopeBasedConfigSchema, nameBasedConfigSchema, vcs} from './schemas.js';
 
 describe('options schemas', () => {
   describe('vcs', () => {
@@ -71,6 +71,31 @@ describe('options schemas', () => {
       const scope = `@${any.word()}-${any.word()}`;
 
       expect(validateOptions(scopeBasedConfigSchema, {scope})).toEqual({scope});
+    });
+  });
+
+  describe('name-based configs', () => {
+    it('should require a provided config to be an object', () => {
+      expect(() => validateOptions(nameBasedConfigSchema, any.word())).toThrowError('"value" must be of type object');
+    });
+
+    it('should require a provided config to have a `packageName` property', () => {
+      expect(() => validateOptions(nameBasedConfigSchema, {})).toThrowError('"packageName" is required');
+    });
+
+    it('should require the `packageName` to be a string', () => {
+      expect(() => validateOptions(nameBasedConfigSchema, {packageName: any.simpleObject()}))
+        .toThrowError('"packageName" must be a string');
+    });
+
+    it('should require a provided config to have a `name` property', () => {
+      expect(() => validateOptions(nameBasedConfigSchema, {packageName: any.word()}))
+        .toThrowError('"name" is required');
+    });
+
+    it('should require the `name` to be a string', () => {
+      expect(() => validateOptions(nameBasedConfigSchema, {packageName: any.word(), name: any.simpleObject()}))
+        .toThrowError('"name" must be a string');
     });
   });
 });

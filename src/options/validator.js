@@ -2,7 +2,7 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {pluginsSchema} from '../plugins-schemas.js';
-import {scopeBasedConfigSchema, vcs} from './schemas.js';
+import {nameBasedConfigSchema, scopeBasedConfigSchema, vcs} from './schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -20,14 +20,8 @@ export function validate(options) {
         eslint: scopeBasedConfigSchema,
         typescript: scopeBasedConfigSchema,
         prettier: scopeBasedConfigSchema,
-        commitlint: joi.object({
-          packageName: joi.string().required(),
-          name: joi.string().required()
-        }),
-        babelPreset: joi.object({
-          packageName: joi.string().required(),
-          name: joi.string().required()
-        }),
+        commitlint: nameBasedConfigSchema,
+        babelPreset: nameBasedConfigSchema,
         remark: joi.string()
       }).default({})
     })

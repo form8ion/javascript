@@ -7,3 +7,8 @@ export const vcs = joi.object({
 });
 
 export const scopeBasedConfigSchema = joi.object({scope: joi.string().regex(/^@[a-z0-9-]+$/i, 'scope').required()});
+
+export const nameBasedConfigSchema = joi.object({
+  packageName: joi.string().required(),
+  name: joi.string().required()
+});
