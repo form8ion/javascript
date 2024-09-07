@@ -7,3 +7,5 @@ export const vcs = joi.object({
     name: joi.string().required()
   })
 });
+
+export const configs = joi.object({remark: joi.string()}).default({});
