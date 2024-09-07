@@ -3,7 +3,13 @@ import {validateOptions} from '@form8ion/core';
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import {scopeBasedConfigSchema, nameBasedConfigSchema, registriesSchema, vcsSchema} from './schemas.js';
+import {
+  scopeBasedConfigSchema,
+  nameBasedConfigSchema,
+  registriesSchema,
+  vcsSchema,
+  visibilitySchema
+} from './schemas.js';
 
 describe('options schemas', () => {
   describe('vcs', () => {
@@ -107,6 +113,12 @@ describe('options schemas', () => {
       expect(validateOptions(registriesSchema)).toEqual({});
     });
 
+    it('should return the validated registries when valid', () => {
+      const registries = {[any.word()]: any.url()};
+
+      expect(validateOptions(registriesSchema, registries)).toEqual(registries);
+    });
+
     it('should require the `registries` definition to be an object', () => {
       expect(() => validateOptions(registriesSchema, any.word())).toThrowError('"value" must be of type object');
     });
@@ -118,6 +130,29 @@ describe('options schemas', () => {
     it('should require the values to be URIs', () => {
       expect(() => validateOptions(registriesSchema, {[key]: any.string()}))
         .toThrowError(`"${key}" must be a valid uri`);
+    });
+  });
+
+  describe('visibility', () => {
+    it('should require a value to be provided', () => {
+      expect(() => validateOptions(visibilitySchema)).toThrowError('"value" is required');
+    });
+
+    it('should allow `Public` as a valid value', () => {
+      const visibility = 'Public';
+
+      expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
+    });
+
+    it('should allow `Private` as a valid value', () => {
+      const visibility = 'Private';
+
+      expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
+    });
+
+    it('should consider values other than `Public` and `Private` as invalid', () => {
+      expect(() => validateOptions(visibilitySchema, any.word()))
+        .toThrowError('"value" must be one of [Public, Private]');
     });
   });
 });

@@ -2,14 +2,20 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {pluginsSchema} from '../plugins-schemas.js';
-import {nameBasedConfigSchema, registriesSchema, scopeBasedConfigSchema, vcsSchema} from './schemas.js';
+import {
+  nameBasedConfigSchema,
+  registriesSchema,
+  scopeBasedConfigSchema,
+  vcsSchema,
+  visibilitySchema
+} from './schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
     .keys({
       projectRoot: joi.string().required(),
       projectName: joi.string().regex(/^@\w*\//, {invert: true}).required(),
-      visibility: joi.string().valid('Public', 'Private').required(),
+      visibility: visibilitySchema,
       license: joi.string().required(),
       description: joi.string(),
       pathWithinParent: joi.string()
