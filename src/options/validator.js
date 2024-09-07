@@ -2,7 +2,7 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {pluginsSchema} from '../plugins-schemas.js';
-import {vcs} from './schemas.js';
+import {scopeBasedConfigSchema} from './schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -14,12 +14,18 @@ export function validate(options) {
       description: joi.string(),
       pathWithinParent: joi.string()
     })
-    .keys(vcs)
+    .keys({
+      vcs: joi.object({
+        host: joi.string().required(),
+        owner: joi.string().required(),
+        name: joi.string().required()
+      })
+    })
     .keys({
       configs: joi.object({
-        eslint: joi.object({scope: joi.string().regex(/^@[a-z0-9-]+$/i, 'scope').required()}),
-        typescript: joi.object({scope: joi.string().regex(/^@[a-z0-9-]+$/i, 'scope').required()}),
-        prettier: joi.object({scope: joi.string().regex(/^@[a-z0-9-]+$/i, 'scope').required()}),
+        eslint: scopeBasedConfigSchema,
+        typescript: scopeBasedConfigSchema,
+        prettier: scopeBasedConfigSchema,
         commitlint: joi.object({
           packageName: joi.string().required(),
           name: joi.string().required()
