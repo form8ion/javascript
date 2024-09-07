@@ -6,6 +6,7 @@ import any from '@travi/any';
 import {
   scopeBasedConfigSchema,
   nameBasedConfigSchema,
+  projectNameSchema,
   registriesSchema,
   vcsSchema,
   visibilitySchema
@@ -153,6 +154,29 @@ describe('options schemas', () => {
     it('should consider values other than `Public` and `Private` as invalid', () => {
       expect(() => validateOptions(visibilitySchema, any.word()))
         .toThrowError('"value" must be one of [Public, Private]');
+    });
+  });
+
+  describe('project name', () => {
+    it('should return the validated name', () => {
+      const projectName = any.word();
+
+      expect(validateOptions(projectNameSchema, projectName)).toEqual(projectName);
+    });
+
+    it('should require a value to be provided', () => {
+      expect(() => validateOptions(projectNameSchema)).toThrowError('"value" is required');
+    });
+
+    it('should require a value to be a string', () => {
+      expect(() => validateOptions(projectNameSchema, any.simpleObject())).toThrowError('"value" must be a string');
+    });
+
+    it('should prevent the project name from including a scope', () => {
+      const projectName = `@${any.word()}/${any.word()}`;
+
+      expect(() => validateOptions(projectNameSchema, projectName))
+        .toThrowError(`"value" with value "${projectName}" matches the inverted pattern: /^@\\w*\\//`);
     });
   });
 });

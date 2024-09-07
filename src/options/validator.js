@@ -4,6 +4,7 @@ import {validateOptions} from '@form8ion/core';
 import {pluginsSchema} from '../plugins-schemas.js';
 import {
   nameBasedConfigSchema,
+  projectNameSchema,
   registriesSchema,
   scopeBasedConfigSchema,
   vcsSchema,
@@ -14,7 +15,7 @@ export function validate(options) {
   const schema = joi.object().required()
     .keys({
       projectRoot: joi.string().required(),
-      projectName: joi.string().regex(/^@\w*\//, {invert: true}).required(),
+      projectName: projectNameSchema,
       visibility: visibilitySchema,
       license: joi.string().required(),
       description: joi.string(),

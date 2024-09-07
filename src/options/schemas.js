@@ -16,3 +16,5 @@ export const nameBasedConfigSchema = joi.object({
 export const registriesSchema = joi.object().pattern(joi.string(), joi.string().uri()).default({});
 
 export const visibilitySchema = joi.string().valid('Public', 'Private').required();
+
+export const projectNameSchema = joi.string().regex(/^@\w*\//, {invert: true}).required();
