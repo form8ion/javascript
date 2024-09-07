@@ -2,6 +2,7 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {pluginsSchema} from '../plugins-schemas.js';
+import {vcs} from './schemas.js';
 
 export function validate(options) {
   const schema = joi.object().required()
@@ -13,13 +14,7 @@ export function validate(options) {
       description: joi.string(),
       pathWithinParent: joi.string()
     })
-    .keys({
-      vcs: joi.object({
-        host: joi.string().required(),
-        owner: joi.string().required(),
-        name: joi.string().required()
-      })
-    })
+    .keys(vcs)
     .keys({
       configs: joi.object({
         eslint: joi.object({scope: joi.string().regex(/^@[a-z0-9-]+$/i, 'scope').required()}),
