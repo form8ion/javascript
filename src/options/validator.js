@@ -40,9 +40,6 @@ export function validate(options) {
       ciServices: pluginsSchema
     }
   }).required();
-  //   .keys({
-  //     projectName: joi.string().regex(/^@\w*\//, {invert: true}).required(),
-  //   })
 
   return validateOptions(schema, options);
 }
