@@ -7,9 +7,9 @@ import {
   projectNameSchema,
   registriesSchema,
   scopeBasedConfigSchema,
-  vcsSchema,
   visibilitySchema
 } from './schemas.js';
+import {vcsSchema} from '../vcs/schema.js';
 
 export function validate(options) {
   const schema = joi.object({

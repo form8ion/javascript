@@ -9,11 +9,11 @@ import {
   nameBasedConfigSchema, projectNameSchema,
   registriesSchema,
   scopeBasedConfigSchema,
-  vcsSchema,
   visibilitySchema
 } from './schemas.js';
 import {pluginsSchema} from '../plugins-schemas.js';
 import {validate} from './validator.js';
+import {vcsSchema} from '../vcs/schema.js';
 
 vi.mock('@form8ion/core');
 
