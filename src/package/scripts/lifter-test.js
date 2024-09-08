@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import * as testScriptUpdater from './test-script-updater.js';
 import liftScripts from './lifter.js';
 
-suite('package.json lifter', () => {
+suite('package.json scripts lifter', () => {
   let sandbox;
 
   setup(() => {
