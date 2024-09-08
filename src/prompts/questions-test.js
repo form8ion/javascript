@@ -11,7 +11,6 @@ import * as npmConf from '../../thirdparty-wrappers/npm-conf.js';
 import * as dialectChoices from '../dialects/prompt-choices.js';
 import * as validators from './validators.js';
 import * as conditionals from './conditionals.js';
-import * as visibilityFilterForChoices from './filter-by-visibility.js';
 import {prompt} from './questions.js';
 import {questionNames} from './question-names.js';
 
@@ -62,11 +61,9 @@ suite('prompts', () => {
     sandbox.stub(execa, 'default');
     sandbox.stub(validators, 'scope');
     sandbox.stub(conditionals, 'scopePromptShouldBePresentedFactory');
-    sandbox.stub(visibilityFilterForChoices, 'default');
     sandbox.stub(commonPrompts, 'questions');
     sandbox.stub(dialectChoices, 'default');
 
-    visibilityFilterForChoices.default.withArgs({}).returns({});
     commonPrompts.questions
       .withArgs({vcs, ciServices, pathWithinParent: undefined})
       .returns(commonQuestions);
@@ -77,8 +74,6 @@ suite('prompts', () => {
   test('that the user is prompted for the necessary details', async () => {
     const npmUser = any.word();
     const get = sinon.stub();
-    const filteredCiServiceNames = any.listOf(any.word);
-    const filteredCiServices = any.objectWithKeys(filteredCiServiceNames);
     const hosts = any.simpleObject();
     const dialects = any.listOf(any.simpleObject);
     const configs = any.simpleObject();
@@ -91,7 +86,6 @@ suite('prompts', () => {
     get.withArgs('init.author.url').returns(authorUrl);
     validators.scope.withArgs(visibility).returns(scopeValidator);
     conditionals.scopePromptShouldBePresentedFactory.withArgs(visibility).returns(scopePromptShouldBePresented);
-    visibilityFilterForChoices.default.withArgs(ciServices, visibility).returns(filteredCiServices);
     dialectChoices.default.withArgs(configs).returns(dialects);
     prompts.prompt
       .withArgs([
