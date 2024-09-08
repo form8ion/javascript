@@ -16,7 +16,7 @@ import * as npmConfig from '../npm-config/scaffolder.js';
 import * as documentation from '../documentation/scaffolder.js';
 import * as nodeVersionScaffolder from '../node-version/scaffolder.js';
 import * as badgeDetailsBuilder from '../documentation/badges.js';
-import * as vcsIgnoresBuilder from '../vcs-ignore.js';
+import * as vcsIgnoresBuilder from '../vcs/ignore-lists-builder.js';
 import * as packageScaffolder from '../package/scaffolder.js';
 import * as projectTypeScaffolder from '../project-type/scaffolder.js';
 import * as projectTypePluginScaffolder from '../project-type-plugin/scaffolder.js';
