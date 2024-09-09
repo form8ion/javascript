@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as configWriter from './config/write.js';
+import * as configWriter from './config/writer.js';
 import scaffoldBabel from './scaffolder.js';
 
 suite('babel config', () => {

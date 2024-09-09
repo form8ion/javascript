@@ -2,17 +2,13 @@ import * as configFile from '@form8ion/config-file';
 import {fileTypes} from '@form8ion/core';
 
 import any from '@travi/any';
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 
-import write from './write.js';
+import write from './writer.js';
 
 vi.mock('@form8ion/config-file');
 
-describe('write babel config', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
+describe('babel config writer', () => {
   it('should write the provided config to the rc file', async () => {
     const projectRoot = any.string();
     const config = any.simpleObject();

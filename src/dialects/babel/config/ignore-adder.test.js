@@ -1,12 +1,12 @@
 import any from '@travi/any';
 import {describe, expect, it, vi} from 'vitest';
 
-import writeConfig from './write.js';
+import writeConfig from './writer.js';
 import loadConfig from './loader.js';
 import addIgnore from './ignore-adder.js';
 
 vi.mock('node:fs');
-vi.mock('./write.js');
+vi.mock('./writer.js');
 vi.mock('./loader.js');
 
 describe('babel ignore adder', () => {

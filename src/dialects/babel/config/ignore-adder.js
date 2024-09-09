@@ -1,4 +1,4 @@
-import writeConfig from './write.js';
+import writeConfig from './writer.js';
 import loadConfig from './loader.js';
 
 export default async function ({projectRoot, ignore}) {
