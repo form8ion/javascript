@@ -2,9 +2,9 @@ import {load} from '@form8ion/config-file';
 
 import {describe, it, expect, vi} from 'vitest';
 import any from '@travi/any';
+import {when} from 'jest-when';
 
 import loadConfig from './loader.js';
-import {when} from 'jest-when';
 
 vi.mock('@form8ion/config-file');
 

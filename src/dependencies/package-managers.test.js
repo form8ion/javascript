@@ -2,7 +2,6 @@ import {DEV_DEPENDENCY_TYPE, packageManagers, PROD_DEPENDENCY_TYPE} from '@form8
 
 import {describe, expect, it} from 'vitest';
 import {details, getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
-import {assert} from 'chai';
 
 describe('package managers', () => {
   describe('details', () => {
@@ -34,10 +33,10 @@ describe('package managers', () => {
     function assertPackageManagerDetails(manager) {
       const {installationCommand, installationFlags} = details[manager];
 
-      assert.equal(getInstallationCommandFor(manager), installationCommand);
-      assert.equal(getDependencyTypeFlag(manager, DEV_DEPENDENCY_TYPE), installationFlags[DEV_DEPENDENCY_TYPE]);
-      assert.equal(getDependencyTypeFlag(manager, PROD_DEPENDENCY_TYPE), installationFlags[PROD_DEPENDENCY_TYPE]);
-      assert.equal(getExactFlag(manager), installationFlags.exact);
+      expect(getInstallationCommandFor(manager)).toEqual(installationCommand);
+      expect(getDependencyTypeFlag(manager, DEV_DEPENDENCY_TYPE)).toEqual(installationFlags[DEV_DEPENDENCY_TYPE]);
+      expect(getDependencyTypeFlag(manager, PROD_DEPENDENCY_TYPE)).toEqual(installationFlags[PROD_DEPENDENCY_TYPE]);
+      expect(getExactFlag(manager)).toEqual(installationFlags.exact);
     }
 
     it('should resolve the proper details for npm', () => assertPackageManagerDetails(packageManagers.NPM));
