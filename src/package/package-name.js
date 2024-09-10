@@ -1,5 +1,5 @@
 import {EOL} from 'os';
-import validatePackageName from '../thirdparty-wrappers/validate-npm-package-name.js';
+import validatePackageName from '../../thirdparty-wrappers/validate-npm-package-name.js';
 
 export default function (projectName, scope) {
   const name = `${scope ? `@${scope}/` : ''}${projectName}`;

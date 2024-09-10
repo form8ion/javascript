@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import sinon from 'sinon';
 
-import * as packageNameValidator from '../thirdparty-wrappers/validate-npm-package-name.js';
+import * as packageNameValidator from '../../thirdparty-wrappers/validate-npm-package-name.js';
 import packageName from './package-name.js';
 
 suite('package name', () => {

@@ -20,7 +20,7 @@ import * as vcsIgnoresBuilder from '../vcs/ignore-lists-builder.js';
 import * as packageScaffolder from '../package/scaffolder.js';
 import * as projectTypeScaffolder from '../project-type/scaffolder.js';
 import * as projectTypePluginScaffolder from '../project-type-plugin/scaffolder.js';
-import * as packageNameBuilder from '../package-name.js';
+import * as packageNameBuilder from '../package/package-name.js';
 import * as documentationCommandBuilder from '../documentation/generation-command.js';
 import scaffold from './scaffolder.js';
 

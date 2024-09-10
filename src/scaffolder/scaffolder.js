@@ -13,7 +13,7 @@ import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildBadgesDetails from '../documentation/badges.js';
 import buildVcsIgnoreLists from '../vcs/ignore-lists-builder.js';
 import {scaffold as scaffoldPackage} from '../package/index.js';
-import buildPackageName from '../package-name.js';
+import buildPackageName from '../package/package-name.js';
 import {scaffold as scaffoldProjectType} from '../project-type/index.js';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
 import buildDocumentationCommand from '../documentation/generation-command.js';

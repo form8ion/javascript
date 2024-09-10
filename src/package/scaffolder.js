@@ -13,15 +13,16 @@ export default async function ({
 }) {
   info('Configuring package.json');
 
-  const packageData = await buildPackageDetails({
-    packageName,
-    dialect,
-    license,
-    author,
-    description
+  await writePackageJson({
+    projectRoot,
+    config: await buildPackageDetails({
+      packageName,
+      dialect,
+      license,
+      author,
+      description
+    })
   });
-
-  await writePackageJson({projectRoot, config: packageData});
 
   return {};
 }
