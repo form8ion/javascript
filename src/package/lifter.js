@@ -17,26 +17,24 @@ export default async function ({
   vcs,
   pathWithinParent
 }) {
-  if (scripts || tags) {
-    info('Updating `package.json`', {level: 'secondary'});
+  info('Updating `package.json`', {level: 'secondary'});
 
-    const existingPackageJsonContents = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf8'));
+  const existingPackageJsonContents = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
 
-    await writePackageJson({
-      projectRoot,
-      config: sortPackageProperties({
-        ...existingPackageJsonContents,
-        ...defineVcsHostDetails(vcs, pathWithinParent),
-        scripts: liftScripts({
-          existingScripts: existingPackageJsonContents.scripts,
-          scripts
-        }),
-        ...tags && {
-          keywords: existingPackageJsonContents.keywords ? [...existingPackageJsonContents.keywords, ...tags] : tags
-        }
-      })
-    });
-  }
+  await writePackageJson({
+    projectRoot,
+    config: sortPackageProperties({
+      ...existingPackageJsonContents,
+      ...defineVcsHostDetails(vcs, pathWithinParent),
+      scripts: liftScripts({
+        existingScripts: existingPackageJsonContents.scripts,
+        scripts
+      }),
+      ...tags && {
+        keywords: existingPackageJsonContents.keywords ? [...existingPackageJsonContents.keywords, ...tags] : tags
+      }
+    })
+  });
 
   await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
 }
