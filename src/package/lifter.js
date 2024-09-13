@@ -1,5 +1,5 @@
 import {promises as fs} from 'fs';
-import {error, info} from '@travi/cli-messages';
+import {info} from '@travi/cli-messages';
 import {writePackageJson} from '@form8ion/javascript-core';
 
 import sortPackageProperties from './property-sorter.js';
@@ -38,10 +38,5 @@ export default async function ({
     });
   }
 
-  try {
-    await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
-  } catch (e) {
-    error('Failed to update dependencies');
-    error(e, {level: 'secondary'});
-  }
+  await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
 }

@@ -28,4 +28,10 @@ describe('dependencies processor', () => {
     expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
   });
+
+  it('should prevent an installation error from bubbling', async () => {
+    installDependencies.mockRejectedValue(new Error());
+
+    await expect(() => processDependencies({})).not.toThrowError();
+  });
 });
