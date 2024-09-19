@@ -1,21 +1,28 @@
+import commonPrompts from '@travi/language-scaffolder-prompts';
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
-import commonPrompts from '@travi/language-scaffolder-prompts';
 
-import sinon from 'sinon';
-import {assert} from 'chai';
+import {expect, describe, it, vi, beforeEach} from 'vitest';
 import any from '@travi/any';
+import {when} from 'jest-when';
 
-import * as execa from '../../thirdparty-wrappers/execa.js';
-import * as npmConf from '../../thirdparty-wrappers/npm-conf.js';
-import * as dialectChoices from '../dialects/prompt-choices.js';
-import * as validators from './validators.js';
+import execa from '../../thirdparty-wrappers/execa.js';
+import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
+import buildDialectChoices from '../dialects/prompt-choices.js';
+import {questionNames} from './question-names.js';
 import * as conditionals from './conditionals.js';
 import {prompt} from './questions.js';
-import {questionNames} from './question-names.js';
+import * as validators from './validators.js';
 
-suite('prompts', () => {
-  let sandbox;
+vi.mock('@travi/language-scaffolder-prompts');
+vi.mock('@form8ion/overridable-prompts');
+vi.mock('../../thirdparty-wrappers/execa.js');
+vi.mock('../../thirdparty-wrappers/npm-conf.js');
+vi.mock('../dialects/prompt-choices.js');
+vi.mock('./validators.js');
+vi.mock('./conditionals.js');
+
+describe('prompts', () => {
   const commonQuestions = any.listOf(any.simpleObject);
   const decisions = any.simpleObject();
   const vcs = any.simpleObject();
@@ -53,42 +60,32 @@ suite('prompts', () => {
     [questionNames.PROVIDE_EXAMPLE]: provideExample
   };
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
-
-    sandbox.stub(prompts, 'prompt');
-    sandbox.stub(npmConf, 'default');
-    sandbox.stub(execa, 'default');
-    sandbox.stub(validators, 'scope');
-    sandbox.stub(conditionals, 'scopePromptShouldBePresentedFactory');
-    sandbox.stub(commonPrompts, 'questions');
-    sandbox.stub(dialectChoices, 'default');
-
-    commonPrompts.questions
-      .withArgs({vcs, ciServices, pathWithinParent: undefined})
-      .returns(commonQuestions);
+  beforeEach(() => {
+    when(commonPrompts.questions)
+      .calledWith({vcs, ciServices, pathWithinParent: undefined})
+      .mockReturnValue(commonQuestions);
   });
 
-  teardown(() => sandbox.restore());
-
-  test('that the user is prompted for the necessary details', async () => {
+  it('should prompt the user for the necessary details', async () => {
     const npmUser = any.word();
-    const get = sinon.stub();
+    const get = vi.fn();
     const hosts = any.simpleObject();
     const dialects = any.listOf(any.simpleObject);
     const configs = any.simpleObject();
     const scopeValidator = () => undefined;
     const scopePromptShouldBePresented = () => undefined;
-    npmConf.default.returns({get});
-    execa.default.withArgs('npm', ['whoami']).resolves({stdout: npmUser});
-    get.withArgs('init.author.name').returns(authorName);
-    get.withArgs('init.author.email').returns(authorEmail);
-    get.withArgs('init.author.url').returns(authorUrl);
-    validators.scope.withArgs(visibility).returns(scopeValidator);
-    conditionals.scopePromptShouldBePresentedFactory.withArgs(visibility).returns(scopePromptShouldBePresented);
-    dialectChoices.default.withArgs(configs).returns(dialects);
-    prompts.prompt
-      .withArgs([
+    npmConfFactory.mockReturnValue({get});
+    when(get).calledWith('init.author.name').mockReturnValue(authorName);
+    when(get).calledWith('init.author.email').mockReturnValue(authorEmail);
+    when(get).calledWith('init.author.url').mockReturnValue(authorUrl);
+    when(execa).calledWith('npm', ['whoami']).mockResolvedValue({stdout: npmUser});
+    when(validators.scope).calledWith(visibility).mockReturnValue(scopeValidator);
+    when(conditionals.scopePromptShouldBePresentedFactory)
+      .calledWith(visibility)
+      .mockReturnValue(scopePromptShouldBePresented);
+    when(buildDialectChoices).calledWith(configs).mockReturnValue(dialects);
+    when(prompts.prompt)
+      .calledWith([
         {
           name: questionNames.DIALECT,
           message: 'Which JavaScript dialect should this project follow?',
@@ -114,7 +111,7 @@ suite('prompts', () => {
           name: questionNames.PROJECT_TYPE,
           message: 'What type of JavaScript project is this?',
           type: 'list',
-          choices: [...Object.values(projectTypes), new prompts.Separator(), 'Other'],
+          choices: [...Object.values(projectTypes), 'Other'],
           default: projectTypes.PACKAGE
         },
         {
@@ -164,99 +161,87 @@ suite('prompts', () => {
           type: 'list',
           message: 'Where will the application be hosted?',
           when: conditionals.projectIsApplication,
-          choices: [...Object.keys(hosts), new prompts.Separator(), 'Other']
+          choices: [...Object.keys(hosts), 'Other']
         }
       ], decisions)
-      .resolves({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
+      .mockResolvedValue({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
 
-    assert.deepEqual(
-      await prompt(ciServices, hosts, visibility, vcs, decisions, configs),
-      {
-        tests,
-        projectType,
-        ci,
-        chosenHost,
-        scope,
-        nodeVersionCategory,
-        author,
-        packageManager,
-        dialect,
-        configureLinting: true,
-        provideExample
-      }
-    );
+    expect(await prompt(ciServices, hosts, visibility, vcs, decisions, configs)).toEqual({
+      tests,
+      projectType,
+      ci,
+      chosenHost,
+      scope,
+      nodeVersionCategory,
+      author,
+      packageManager,
+      dialect,
+      configureLinting: true,
+      provideExample
+    });
   });
 
-  test('that the transpile/lint value is not overridden when set to `false`', async () => {
+  it('should not override the transpile/lint value when set to `false`', async () => {
     const npmUser = any.word();
-    const get = sinon.stub();
-    npmConf.default.returns({get});
-    execa.default.withArgs('npm', ['whoami']).resolves({stdout: npmUser});
-    prompts.prompt.resolves({...answers, [questionNames.CONFIGURE_LINTING]: false});
+    const get = vi.fn();
+    npmConfFactory.mockReturnValue({get});
+    when(execa).calledWith('npm', ['whoami']).mockResolvedValue({stdout: npmUser});
+    prompts.prompt.mockResolvedValue({...answers, [questionNames.CONFIGURE_LINTING]: false});
 
-    assert.deepEqual(
-      await prompt(ciServices, {}, visibility, vcs, decisions),
-      {
-        tests,
-        projectType,
-        ci,
-        chosenHost,
-        scope,
-        nodeVersionCategory,
-        author,
-        packageManager,
-        provideExample,
-        dialect,
-        configureLinting: false
-      }
-    );
+    expect(await prompt(ciServices, {}, visibility, vcs, decisions)).toEqual({
+      tests,
+      projectType,
+      ci,
+      chosenHost,
+      scope,
+      nodeVersionCategory,
+      author,
+      packageManager,
+      provideExample,
+      dialect,
+      configureLinting: false
+    });
   });
 
-  test('that sub-projects are not asked about node version since already defined by the parent project', async () => {
-    execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
-    npmConf.default.returns({get: () => undefined});
-    commonPrompts.questions
-      .withArgs({vcs, ciServices, pathWithinParent})
-      .returns(commonQuestions);
-    prompts.prompt.resolves(answers);
+  it('should not ask about node version for sub-projects since the parent project already defines', async () => {
+    when(execa).calledWith('npm', ['whoami']).mockResolvedValue({stdout: any.word()});
+    npmConfFactory.mockReturnValue({get: () => undefined});
+    when(commonPrompts.questions)
+      .calledWith({vcs, ciServices, pathWithinParent})
+      .mockReturnValue(commonQuestions);
+    prompts.prompt.mockResolvedValue(answers);
 
     await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
 
-    assert.neverCalledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter(question => questionNames.NODE_VERSION_CATEGORY === question.name).length)
-    );
+    const [questions] = prompts.prompt.mock.lastCall;
+    expect(questions.filter(question => questionNames.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
   });
 
-  test('that private packages are not asked about whether they should be scoped', async () => {
-    execa.default.withArgs('npm', ['whoami']).resolves({stdout: any.word()});
-    npmConf.default.returns({get: () => undefined});
-    commonPrompts.questions
-      .withArgs({vcs, ciServices, pathWithinParent})
-      .returns(commonQuestions);
-    prompts.prompt.resolves(answers);
+  it('should not ask whether private packages should be scoped', async () => {
+    when(execa).calledWith('npm', ['whoami']).mockResolvedValue({stdout: any.word()});
+    npmConfFactory.mockReturnValue({get: () => undefined});
+    when(commonPrompts.questions)
+      .calledWith({vcs, ciServices, pathWithinParent})
+      .mockReturnValue(commonQuestions);
+    prompts.prompt.mockResolvedValue(answers);
 
     await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
 
-    assert.neverCalledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length)
-    );
+    const [questions] = prompts.prompt.mock.lastCall;
+    expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
   });
 
-  test('that no logged-in-user is handled gracefully', async () => {
-    execa.default.withArgs('npm', ['whoami']).rejects();
-    npmConf.default.returns({get: () => undefined});
-    commonPrompts.questions
-      .withArgs({vcs, ciServices, pathWithinParent})
-      .returns(commonQuestions);
-    prompts.prompt.resolves(answers);
+  it('should handle a non-logged-in user gracefully', async () => {
+    when(execa).calledWith('npm', ['whoami']).mockRejectedValue(new Error());
+    npmConfFactory.mockReturnValue({get: () => undefined});
+    when(commonPrompts.questions)
+      .calledWith({vcs, ciServices, pathWithinParent})
+      .mockReturnValue(commonQuestions);
+    prompts.prompt.mockResolvedValue(answers);
 
     await prompt(ciServices, {}, 'Public', vcs, {}, null, pathWithinParent);
 
-    assert.calledWith(
-      prompts.prompt,
-      sinon.match(value => 1 === value.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length)
-    );
+    const [questions] = prompts.prompt.mock.lastCall;
+    expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(1);
   });
 });
