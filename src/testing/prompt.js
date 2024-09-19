@@ -1,4 +1,4 @@
-import {prompt, Separator} from '@form8ion/overridable-prompts';
+import {prompt} from '@form8ion/overridable-prompts';
 import {questionNames} from '../prompts/question-names.js';
 
 export default async function ({frameworks, decisions}) {
@@ -8,7 +8,7 @@ export default async function ({frameworks, decisions}) {
     name: questionNames.UNIT_TEST_FRAMEWORK,
     type: 'list',
     message: 'Which type of unit testing framework should be used?',
-    choices: [...Object.keys(frameworks), new Separator(), 'Other']
+    choices: [...Object.keys(frameworks), 'Other']
   }], decisions);
 
   return answers[questionNames.UNIT_TEST_FRAMEWORK];
