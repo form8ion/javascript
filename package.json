@@ -71,7 +71,7 @@
     "@hapi/hoek": "^11.0.0",
     "@travi/cli-messages": "^1.1.0",
     "@travi/language-scaffolder-prompts": "^2.0.0-beta.1",
-    "camelcase": "^6.2.1",
+    "camelcase": "^8.0.0",
     "deepmerge": "^4.2.2",
     "filedirname": "^3.0.0",
     "ini": "^5.0.0",
