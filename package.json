@@ -48,9 +48,7 @@
     "watch": "run-s 'build:js -- --watch'",
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
-    "test:unit:base": "npm-run-all --print-label build --parallel test:unit:vitest",
-    "test:unit:vitest": "DEBUG=any vitest run",
-    "test:unit:mocha": "DEBUG=any mocha 'src/**/*-test.js'"
+    "test:unit:base": "DEBUG=any vitest run"
   },
   "files": [
     "example.js",
@@ -109,7 +107,6 @@
     "js-yaml": "4.1.0",
     "lockfile-lint": "4.14.0",
     "ls-engines": "0.9.3",
-    "mocha": "10.7.3",
     "mock-fs": "5.2.0",
     "npm-run-all2": "6.2.2",
     "publint": "0.2.10",
@@ -119,7 +116,6 @@
     "rimraf": "6.0.1",
     "rollup": "2.79.1",
     "rollup-plugin-auto-external": "2.0.0",
-    "sinon": "18.0.0",
     "testdouble": "3.20.2",
     "vitest": "2.0.5"
   },
