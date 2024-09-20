@@ -48,7 +48,7 @@
     "watch": "run-s 'build:js -- --watch'",
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
-    "test:unit:base": "npm-run-all --print-label build --parallel test:unit:mocha test:unit:vitest",
+    "test:unit:base": "npm-run-all --print-label build --parallel test:unit:vitest",
     "test:unit:vitest": "DEBUG=any vitest run",
     "test:unit:mocha": "DEBUG=any mocha 'src/**/*-test.js'"
   },

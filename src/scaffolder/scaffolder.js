@@ -9,11 +9,10 @@ import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
 import scaffoldDocumentation from '../documentation/index.js';
-import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildBadgesDetails from '../documentation/badges.js';
+import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildVcsIgnoreLists from '../vcs/ignore-lists-builder.js';
 import {scaffold as scaffoldPackage} from '../package/index.js';
-import buildPackageName from '../package/package-name.js';
 import {scaffold as scaffoldProjectType} from '../project-type/index.js';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
 import buildDocumentationCommand from '../documentation/generation-command.js';
@@ -61,11 +60,11 @@ export default async function (options) {
 
   info('Writing project files', {level: 'secondary'});
 
-  const packageName = buildPackageName(projectName, scope);
-  await scaffoldPackage({
+  const {packageName} = await scaffoldPackage({
     projectRoot,
+    projectName,
+    scope,
     dialect,
-    packageName,
     license,
     author,
     description
@@ -79,8 +78,8 @@ export default async function (options) {
     visibility,
     applicationTypes,
     packageTypes,
-    packageBundlers,
     monorepoTypes,
+    packageBundlers,
     scope,
     tests,
     vcs,
