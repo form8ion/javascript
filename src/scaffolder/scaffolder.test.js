@@ -171,7 +171,7 @@ describe('javascript project scaffolder', () => {
     when(scaffoldDialect)
       .calledWith({dialect, configs, projectRoot, projectType, testFilenamePattern})
       .mockResolvedValue(dialectResults);
-    when(scaffoldNpmConfig).calledWith({projectType, projectRoot, registries}).mockResolvedValue(npmConfigResults);
+    when(scaffoldNpmConfig).calledWith({projectType, projectRoot}).mockResolvedValue(npmConfigResults);
     when(scaffoldCodeStyle)
       .calledWith({projectRoot, projectType, configs, vcs, configureLinting})
       .mockResolvedValue(codeStyleResults);

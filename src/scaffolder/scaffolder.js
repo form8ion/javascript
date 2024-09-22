@@ -101,7 +101,7 @@ export default async function (options) {
   });
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
-    scaffoldNpmConfig({projectType, projectRoot, registries: configs.registries}),
+    scaffoldNpmConfig({projectType, projectRoot}),
     scaffoldDialect({
       dialect,
       configs,
