@@ -22,6 +22,7 @@ describe('npm config scaffolder', () => {
     expect(write).toHaveBeenCalledWith({
       projectRoot,
       config: {
+        registry: 'https://registry.npmjs.org',
         'update-notifier': false,
         'save-exact': true
       }
@@ -34,6 +35,7 @@ describe('npm config scaffolder', () => {
     expect(write).toHaveBeenCalledWith({
       projectRoot,
       config: {
+        registry: 'https://registry.npmjs.org',
         'update-notifier': false,
         'save-exact': true
       }
@@ -46,6 +48,7 @@ describe('npm config scaffolder', () => {
     expect(write).toHaveBeenCalledWith({
       projectRoot,
       config: {
+        registry: 'https://registry.npmjs.org',
         'update-notifier': false
       }
     });
@@ -87,6 +90,7 @@ describe('npm config scaffolder', () => {
     expect(write).toHaveBeenCalledWith({
       projectRoot,
       config: {
+        registry: 'https://registry.npmjs.org',
         'update-notifier': false,
         ...Object.fromEntries(
           Object.entries(registries).map(([scope, url]) => ([`@${scope}:registry`, url]))

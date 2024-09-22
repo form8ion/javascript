@@ -1,5 +1,6 @@
 import {projectTypes} from '@form8ion/javascript-core';
 
+import buildRegistriesConfig from '../registries/npm-config/list-builder.js';
 import write from './writer.js';
 
 function projectWillNotBeConsumed(projectType) {
@@ -16,13 +17,7 @@ export default async function ({
     config: {
       'update-notifier': false,
       ...projectWillNotBeConsumed(projectType) && {'save-exact': true},
-      ...Object.fromEntries(Object.entries(registries)
-        .filter(([scope]) => 'publish' !== scope)
-        .map(([scope, url]) => {
-          if ('registry' === scope) return ['registry', url];
-
-          return [`@${scope}:registry`, url];
-        }))
+      ...buildRegistriesConfig(registries)
     }
   });
 
