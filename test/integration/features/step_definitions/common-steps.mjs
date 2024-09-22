@@ -48,6 +48,7 @@ Before(async function () {
   validate_npm_package_name(any.word());
 
   this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
+  this.projectRoot = process.cwd();
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   ({scaffold, lift, test, questionNames} = await import('@form8ion/javascript'));
@@ -91,7 +92,7 @@ When(/^the project is scaffolded$/, async function () {
 
   try {
     this.scaffoldResult = await scaffold({
-      projectRoot: process.cwd(),
+      projectRoot: this.projectRoot,
       projectName: this.projectName,
       visibility: this.visibility,
       license: any.string(),
@@ -100,7 +101,8 @@ When(/^the project is scaffolded$/, async function () {
         eslint: {scope: this.eslintScope},
         babelPreset: this.babelPreset,
         commitlint: {name: any.word(), packageName: any.word()},
-        ...this.typescriptConfig && {typescript: this.typescriptConfig}
+        ...this.typescriptConfig && {typescript: this.typescriptConfig},
+        ...this.registries && {registries: this.registries}
       },
       plugins: {
         unitTestFrameworks: {
@@ -170,7 +172,6 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
       },
       pathWithinParent: this.pathWithinParent,
-      ...this.registries && {registries: this.registries}
     });
   } catch (e) {
     this.resultError = e;
@@ -178,10 +179,8 @@ When(/^the project is scaffolded$/, async function () {
 });
 
 When('the scaffolder results are processed', async function () {
-  const projectRoot = process.cwd();
-
   await writePackageJson({
-    projectRoot,
+    projectRoot: this.projectRoot,
     config: {
       ...this.enginesNode && {engines: {node: this.enginesNode}},
       devDependencies: {},
@@ -197,9 +196,9 @@ When('the scaffolder results are processed', async function () {
     }
   });
 
-  if (await test({projectRoot})) {
+  if (await test({projectRoot: this.projectRoot})) {
     this.results = await lift({
-      projectRoot,
+      projectRoot: this.projectRoot,
       vcs: this.vcs,
       results: {
         scripts: this.scriptsResults,
@@ -207,7 +206,12 @@ When('the scaffolder results are processed', async function () {
         packageManager: this.packageManager,
         eslint: {configs: this.additionalShareableConfigs}
       },
-      ...this.eslintConfigScope && {configs: {eslint: {scope: this.eslintConfigScope}}}
+      ...(this.eslintConfigScope || this.registries) && {
+        configs: {
+          eslint: {scope: this.eslintConfigScope},
+          registries: this.registries
+        }
+      }
     });
   } else {
     this.isJavaScriptProject = false;

@@ -8,6 +8,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
+import * as registriesPlugin from '../registries/index.js';
 import * as coveragePlugin from '../coverage/index.js';
 import * as codeStylePlugin from '../code-style/index.js';
 import * as npmConfigPlugin from '../npm-config/index.js';
@@ -46,7 +47,8 @@ describe('lift', () => {
     codeStylePlugin,
     npmConfigPlugin,
     projectTypes,
-    packageManagers
+    packageManagers,
+    registriesPlugin
   };
 
   beforeEach(() => {
@@ -63,15 +65,16 @@ describe('lift', () => {
   });
 
   it('should lift results that are specific to js projects', async () => {
+    const configs = any.simpleObject();
     when(core.applyEnhancers)
       .calledWith({
         results,
         enhancers: internalEnhancers,
-        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}
+        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs}
       })
       .mockResolvedValue(enhancerResults);
 
-    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent});
+    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, configs});
 
     expect(liftResults).toEqual(enhancerResults);
     expect(liftPackage).toHaveBeenCalledWith(deepmerge.all([
@@ -86,7 +89,7 @@ describe('lift', () => {
       .calledWith({
         results,
         enhancers: {...enhancers, ...internalEnhancers},
-        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails}
+        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs: {}}
       })
       .mockResolvedValue(enhancerResults);
 

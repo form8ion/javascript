@@ -16,10 +16,14 @@ Given('an alternative registry is defined for publishing', async function () {
   this.registries = {publish: any.url()};
 });
 
+Given('the npmrc does not define registry', async function () {
+  await fs.writeFile(`${this.projectRoot}/.npmrc`, '');
+});
+
 Then('the registry configuration is defined', async function () {
   const [npmConfigIni, lockfileLintJson] = await Promise.all([
-    fs.readFile(`${process.cwd()}/.npmrc`, 'utf-8'),
-    fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8')
+    fs.readFile(`${this.projectRoot}/.npmrc`, 'utf-8'),
+    fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8')
   ]);
   const npmConfig = parse(npmConfigIni);
   const lockfileLintConfig = JSON.parse(lockfileLintJson);
@@ -41,7 +45,14 @@ Then('the registry configuration is defined', async function () {
 });
 
 Then('the publish registry is defined', async function () {
-  const {publishConfig} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+  const {publishConfig} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`, 'utf-8'));
 
   assert.equal(publishConfig.registry, this.registries.publish);
 });
+
+Then('registry is defined as the official registry', async function () {
+  const npmConfig = parse(await fs.readFile(`${this.projectRoot}/.npmrc`, 'utf-8'));
+
+  assert.equal(npmConfig.registry, 'https://registry.npmjs.org');
+});
+

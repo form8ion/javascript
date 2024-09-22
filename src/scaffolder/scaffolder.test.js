@@ -47,7 +47,9 @@ describe('javascript project scaffolder', () => {
   const projectRoot = any.string();
   const vcs = any.simpleObject();
   const pathWithinParent = any.string();
-  const configs = any.simpleObject();
+  const publishRegistry = any.url();
+  const registries = {...any.simpleObject(), publish: publishRegistry};
+  const configs = {...any.simpleObject(), registries};
   const packageManager = any.word();
   const visibility = any.word();
   const decisions = any.simpleObject();
@@ -75,8 +77,6 @@ describe('javascript project scaffolder', () => {
     const author = any.simpleObject();
     const configureLinting = any.boolean();
     const tests = any.simpleObject();
-    const publishRegistry = any.url();
-    const registries = {...any.simpleObject(), publish: publishRegistry};
     const ciServices = any.simpleObject();
     const hosts = any.simpleObject();
     const applicationTypes = any.simpleObject();
@@ -110,7 +110,6 @@ describe('javascript project scaffolder', () => {
         visibility,
         license,
         decisions,
-        registries,
         plugins: {ciServices, hosts, applicationTypes, packageTypes, monorepoTypes, packageBundlers, unitTestFrameworks}
       });
     when(prompt)

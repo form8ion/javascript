@@ -32,7 +32,6 @@ export default async function (options) {
     configs,
     decisions,
     pathWithinParent,
-    registries,
     plugins: {
       applicationTypes,
       packageTypes,
@@ -86,7 +85,7 @@ export default async function (options) {
     decisions,
     dialect,
     provideExample,
-    publishRegistry: registries.publish
+    publishRegistry: configs.registries.publish
   });
   const verificationResults = await scaffoldVerification({
     projectRoot,
@@ -94,7 +93,7 @@ export default async function (options) {
     visibility,
     packageManager,
     vcs,
-    registries,
+    registries: configs.registries,
     tests,
     unitTestFrameworks,
     decisions,
@@ -102,7 +101,7 @@ export default async function (options) {
   });
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
-    scaffoldNpmConfig({projectType, projectRoot, registries}),
+    scaffoldNpmConfig({projectType, projectRoot, registries: configs.registries}),
     scaffoldDialect({
       dialect,
       configs,

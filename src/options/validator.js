@@ -21,14 +21,14 @@ export function validate(options) {
     pathWithinParent: joi.string(),
     decisions: joi.object(),
     vcs: vcsSchema,
-    registries: registriesSchema,
     configs: joi.object({
       eslint: scopeBasedConfigSchema,
       typescript: scopeBasedConfigSchema,
       prettier: scopeBasedConfigSchema,
       commitlint: nameBasedConfigSchema,
       babelPreset: nameBasedConfigSchema,
-      remark: joi.string()
+      remark: joi.string(),
+      registries: registriesSchema
     }).default({}),
     plugins: {
       unitTestFrameworks: pluginsSchema,

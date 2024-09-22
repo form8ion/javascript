@@ -44,7 +44,8 @@ describe('options validator', () => {
         prettier: scopeBasedConfigSchema,
         commitlint: nameBasedConfigSchema,
         babelPreset: nameBasedConfigSchema,
-        remark: joiString
+        remark: joiString,
+        registries: registriesSchema
       })
       .mockReturnValue({default: configsDefault});
     when(configsDefault).calledWith({}).mockReturnValue(configs);
@@ -58,7 +59,6 @@ describe('options validator', () => {
         pathWithinParent: joiString,
         decisions: joiObject,
         vcs: vcsSchema,
-        registries: registriesSchema,
         configs,
         plugins: {
           unitTestFrameworks: pluginsSchema,
