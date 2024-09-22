@@ -1,8 +1,12 @@
 import {promises as fs} from 'fs';
-import {parse} from 'ini';
+import {fileTypes} from '@form8ion/core';
+import {write} from '@form8ion/config-file';
+
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
+
+import {read as readNpmConfig} from '../../../../src/npm-config/index.js';
 
 Given('registries are defined for scopes', async function () {
   this.registries = any.objectWithKeys(any.listOf(any.word), {factory: any.url});
@@ -20,12 +24,27 @@ Given('the npmrc does not define registry', async function () {
   await fs.writeFile(`${this.projectRoot}/.npmrc`, '');
 });
 
+Given('lockfile-lint is configured', async function () {
+  await write({
+    name: 'lockfile-lint',
+    format: fileTypes.JSON,
+    path: this.projectRoot,
+    config: {
+      ...any.simpleObject(),
+      'allowed-hosts': any.listOf(any.url)
+    }
+  });
+});
+
+Given('lockfile-lint is not configured', async function () {
+  return undefined;
+});
+
 Then('the registry configuration is defined', async function () {
-  const [npmConfigIni, lockfileLintJson] = await Promise.all([
-    fs.readFile(`${this.projectRoot}/.npmrc`, 'utf-8'),
+  const [npmConfig, lockfileLintJson] = await Promise.all([
+    readNpmConfig({projectRoot: this.projectRoot}),
     fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8')
   ]);
-  const npmConfig = parse(npmConfigIni);
   const lockfileLintConfig = JSON.parse(lockfileLintJson);
 
   Object.entries(this.registries).forEach(([scope, url]) => {
@@ -51,7 +70,37 @@ Then('the publish registry is defined', async function () {
 });
 
 Then('registry is defined as the official registry', async function () {
-  const npmConfig = parse(await fs.readFile(`${this.projectRoot}/.npmrc`, 'utf-8'));
+  const npmConfig = await readNpmConfig({projectRoot: this.projectRoot});
 
   assert.equal(npmConfig.registry, 'https://registry.npmjs.org');
+});
+
+Then('registry is defined as an alternate registry', async function () {
+  const npmConfig = await readNpmConfig({projectRoot: this.projectRoot});
+
+  assert.equal(npmConfig.registry, this.registries.registry);
+});
+
+Then('the lockfile-lint config allows the {string} registry', async function (packageManager) {
+  const {
+    'allowed-hosts': allowedHosts
+  } = JSON.parse(await fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8'));
+
+  assert.include(allowedHosts, packageManager);
+});
+
+Then('the lockfile-lint config allows the custom registry', async function () {
+  const {
+    'allowed-hosts': allowedHosts
+  } = JSON.parse(await fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8'));
+
+  assert.include(allowedHosts, this.registries.registry);
+});
+
+Then('the lockfile-lint config allows the scoped registries', async function () {
+  const {
+    'allowed-hosts': allowedHosts
+  } = JSON.parse(await fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8'));
+
+  Object.values(this.registries).forEach(registry => assert.include(allowedHosts, registry));
 });
