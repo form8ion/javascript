@@ -1,28 +1,23 @@
-import {promises as fs} from 'node:fs';
-import {stringify} from 'ini';
-
-import {describe, vi, it, expect, afterEach} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
+import read from './reader.js';
+import write from './writer.js';
 import liftNpmConfig from './lifter.js';
 
-vi.mock('node:fs');
+vi.mock('./reader.js');
+vi.mock('./writer.js');
 
 describe('npm config lifter', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should remove `provenance` and `engines-strict` properties from the config', async () => {
     const projectRoot = any.string();
     const desiredProperties = any.simpleObject();
-    const pathToConfig = `${projectRoot}/.npmrc`;
-    when(fs.readFile)
-      .calledWith(pathToConfig, 'utf-8')
-      .mockReturnValue(stringify({...desiredProperties, provenance: true, 'engines-strict': true}));
+    when(read)
+      .calledWith({projectRoot})
+      .mockResolvedValue({...desiredProperties, provenance: true, 'engines-strict': true});
 
     expect(await liftNpmConfig({projectRoot})).toEqual({});
-    expect(fs.writeFile).toHaveBeenCalledWith(pathToConfig, stringify(desiredProperties));
+    expect(write).toHaveBeenCalledWith({projectRoot, config: desiredProperties});
   });
 });
