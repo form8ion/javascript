@@ -53,10 +53,16 @@ Then('husky is configured for a {string} project', async function (packageManage
 
 Then('husky is configured for {string}', async function (packageManager) {
   if (packageManagers.NPM === packageManager) {
-    td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')), {ignoreExtraArgs: true});
+    td.verify(
+      this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
+      {ignoreExtraArgs: true}
+    );
   }
   if (packageManagers.YARN === packageManager) {
-    td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')), {ignoreExtraArgs: true});
+    td.verify(
+      this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
+      {ignoreExtraArgs: true}
+    );
   }
   td.verify(this.execa.default(td.matchers.contains(/(npm install|yarn add).*husky@latest/)), {ignoreExtraArgs: true});
   assert.equal(

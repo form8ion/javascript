@@ -6,7 +6,7 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import {assertDependenciesWereRemoved} from './dependencies-steps.mjs';
+import {assertDependenciesWereRemoved} from './dependencies-steps.js';
 
 Given('existing nyc config is present', async function () {
   await fs.writeFile(`${process.cwd()}/.nycrc`, JSON.stringify(any.simpleObject()));

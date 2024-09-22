@@ -79,7 +79,7 @@ $ ${
   packageManagers.YARN === packageManager ? 'yarn add' : ''
 } @${scope}/${projectName}
 \`\`\`${provideExample
-  ? `
+    ? `
 
 ### Example
 
@@ -88,7 +88,7 @@ run \`${
 }${
   packageManagers.YARN === packageManager ? 'yarn' : ''
 } generate:md\` to inject the usage example`
-  : ''
+    : ''
 }`
       );
     }
@@ -108,7 +108,7 @@ $ ${
   packageManagers.YARN === packageManager ? 'yarn add' : ''
 } @${scope}/${projectName}
 \`\`\`${provideExample
-  ? `
+    ? `
 
 ### Example
 
@@ -117,8 +117,8 @@ run \`${
 }${
   packageManagers.YARN === packageManager ? 'yarn' : ''
 } generate:md\` to inject the usage example`
-  : ''
-        }`
+    : ''
+}`
       );
     }
   }

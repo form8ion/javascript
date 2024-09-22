@@ -21,7 +21,7 @@ Then('the SLSA badge is added to the status group', async function () {
   assert.deepEqual(
     badges.status.slsa,
     {
-      img: `https://slsa.dev/images/gh-badge-level2.svg`,
+      img: 'https://slsa.dev/images/gh-badge-level2.svg',
       url: 'https://slsa.dev',
       text: 'SLSA Level 2'
     }

@@ -56,7 +56,9 @@ Given('an application-type plugin is chosen', async function () {
 });
 
 Given('the project is of type {string}', async function (projectType) {
-  const resolvedProjectType = 'Publishable' === projectType ? any.fromList([projectTypes.PACKAGE, projectTypes.CLI]) : projectType;
+  const resolvedProjectType = 'Publishable' === projectType
+    ? any.fromList([projectTypes.PACKAGE, projectTypes.CLI])
+    : projectType;
 
   if (projectTypes.PACKAGE === resolvedProjectType) {
     this.packageExports = any.word();

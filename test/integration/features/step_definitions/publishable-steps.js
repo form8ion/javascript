@@ -1,7 +1,7 @@
 import {Given, Then} from '@cucumber/cucumber';
 import {promises as fs} from 'node:fs';
 import {assert} from 'chai';
-import {assertDevDependencyIsInstalled} from './dependencies-steps.mjs';
+import {assertDevDependencyIsInstalled} from './dependencies-steps.js';
 
 Given('the package access is restricted', async function () {
   this.publishConfig.access = 'restricted';

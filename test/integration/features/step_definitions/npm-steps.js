@@ -46,7 +46,10 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
   } else {
     assert.equal(packageDetails.main, './lib/index.js');
     assert.equal(packageDetails.module, './lib/index.mjs');
-    assert.deepEqual(packageDetails.exports, {module: './lib/index.mjs', require: './lib/index.js', import: './lib/index.mjs'});
+    assert.deepEqual(
+      packageDetails.exports,
+      {module: './lib/index.mjs', require: './lib/index.js', import: './lib/index.mjs'}
+    );
     assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
     assert.isFalse(packageDetails.sideEffects);
   }
@@ -153,7 +156,9 @@ Given(/^the npm cli is logged in$/, function () {
   error.command = 'npm ls husky --json';
 
   td.when(this.execa.default('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
-  td.when(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install'))).thenResolve({stdout: ''});
+  td
+    .when(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')))
+    .thenResolve({stdout: ''});
   td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
@@ -169,5 +174,8 @@ Then('the npm cli is configured for use', async function () {
   assert.include(allowedHosts, packageManagers.NPM);
   assert.equal(path, 'package-lock.json');
   assert.equal(this.scaffoldResult.verificationCommand, 'npm run generate:md && npm test');
-  td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')), {ignoreExtraArgs: true});
+  td.verify(
+    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
+    {ignoreExtraArgs: true}
+  );
 });

@@ -6,7 +6,7 @@ import any from '@travi/any';
 import * as td from 'testdouble';
 import {assert} from 'chai';
 
-import {assertThatNpmConfigDetailsAreConfiguredCorrectlyFor} from './npm-steps.mjs';
+import {assertThatNpmConfigDetailsAreConfiguredCorrectlyFor} from './npm-steps.js';
 
 Given('the yarn cli is logged in', async function () {
   this.packageManager = packageManagers.YARN;
@@ -34,5 +34,8 @@ Then('the yarn cli is configured for use', async function () {
   assert.include(allowedHosts, packageManagers.YARN);
   assert.equal(path, 'yarn.lock');
   assert.equal(this.scaffoldResult.verificationCommand, 'yarn generate:md && yarn test');
-  td.verify(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')), {ignoreExtraArgs: true});
+  td.verify(
+    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
+    {ignoreExtraArgs: true}
+  );
 });

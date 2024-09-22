@@ -55,4 +55,3 @@ Then('registry is defined as the official registry', async function () {
 
   assert.equal(npmConfig.registry, 'https://registry.npmjs.org');
 });
-

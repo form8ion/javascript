@@ -7,7 +7,7 @@ import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import {assertDevDependencyIsInstalled} from './common-steps.mjs';
+import {assertDevDependencyIsInstalled} from './common-steps.js';
 
 async function assertBabelIsNotConfigured() {
   assert.isFalse(await fileExists(`${process.cwd()}/.babelrc.json`));
@@ -131,7 +131,9 @@ Then('the {string} dialect is configured', async function (dialect) {
     projectType
   } = this;
 
-  if (dialects.BABEL === dialect) await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa.default);
+  if (dialects.BABEL === dialect) {
+    await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa.default);
+  }
 
   if (dialects.TYPESCRIPT === dialect) {
     await assertTypescriptDialectDetailsAreCorrect(

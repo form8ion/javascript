@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 import {fileExists} from '@form8ion/core';
 
-import {assertDevDependencyIsInstalled} from './dependencies-steps.mjs';
+import {assertDevDependencyIsInstalled} from './dependencies-steps.js';
 
 const pathToYamlConfig = `${process.cwd()}/.eslintrc.yml`;
 const eslintConfigScope = `@${any.word()}`;

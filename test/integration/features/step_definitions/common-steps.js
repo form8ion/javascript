@@ -1,7 +1,7 @@
 import {promises as fs} from 'node:fs';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import validate_npm_package_name from 'validate-npm-package-name';
+import validateNpmPackageName from 'validate-npm-package-name';
 import {DEV_DEPENDENCY_TYPE, projectTypes, writePackageJson} from '@form8ion/javascript-core';
 
 import {After, Before, Given, Then, When} from '@cucumber/cucumber';
@@ -13,20 +13,20 @@ import {assert} from 'chai';
 import {
   assertThatNpmConfigDetailsAreConfiguredCorrectlyFor,
   assertThatPackageDetailsAreConfiguredCorrectlyFor
-} from './npm-steps.mjs';
+} from './npm-steps.js';
 import {
   assertThatDocumentationIsDefinedAppropriately,
   assertThatDocumentationResultsAreReturnedCorrectly
-} from './documentation-steps.mjs';
+} from './documentation-steps.js';
 import {
   assertThatProperDirectoriesAreIgnoredFromVersionControl,
   assertThatProperFilesAreIgnoredFromVersionControl
-} from './vcs-steps.mjs';
-import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.mjs';
-import {assertHomepageDefinedProperly} from './project-type-steps.mjs';
+} from './vcs-steps.js';
+import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.js';
+import {assertHomepageDefinedProperly} from './project-type-steps.js';
 
 let scaffold, lift, test, questionNames;
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));          // eslint-disable-line no-underscore-dangle
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
@@ -45,7 +45,7 @@ export function assertDevDependencyIsInstalled(execa, dependencyName) {
 }
 
 Before(async function () {
-  validate_npm_package_name(any.word());
+  validateNpmPackageName(any.word());
 
   this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
   this.projectRoot = process.cwd();
@@ -61,7 +61,7 @@ Before(async function () {
   });
 
   this.configureLinting = true;
-  this.provideExample = true,
+  this.provideExample = true;
   this.tested = true;
   this.visibility = any.fromList(['Public', 'Private']);
   this.eslintScope = `@${any.word()}`;
@@ -110,7 +110,7 @@ When(/^the project is scaffolded$/, async function () {
           bar: {scaffold: ({bar}) => ({eslint: {configs: this.barUnitTestFrameworkEslintConfigs}, bar})}
         },
         packageBundlers: {
-          foo: {scaffold: async ({projectRoot}) => ({projectRoot, scripts: {['build:js']: 'build script'}})}
+          foo: {scaffold: async ({projectRoot}) => ({projectRoot, scripts: {'build:js': 'build script'}})}
         },
         applicationTypes: {
           foo: {
@@ -158,10 +158,10 @@ When(/^the project is scaffolded$/, async function () {
         ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.PROVIDE_EXAMPLE]: this.provideExample,
-        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer ||
-          this.packageTypeChoiceAnswer ||
-          this.applicationTypeChoiceAnswer ||
-          'Other',
+        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer
+          || this.packageTypeChoiceAnswer
+          || this.applicationTypeChoiceAnswer
+          || 'Other',
         [questionNames.HOST]: 'Other',
         ...['Package', 'CLI'].includes(this.projectType) && {
           [questionNames.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,
@@ -171,7 +171,7 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.DIALECT]: this.dialect,
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
       },
-      pathWithinParent: this.pathWithinParent,
+      pathWithinParent: this.pathWithinParent
     });
   } catch (e) {
     this.resultError = e;
