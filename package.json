@@ -85,7 +85,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "10.9.0",
+    "@cucumber/cucumber": "11.0.1",
     "@form8ion/commitlint-config": "1.0.76",
     "@form8ion/eslint-config": "7.0.11",
     "@form8ion/eslint-config-cucumber": "1.4.1",
