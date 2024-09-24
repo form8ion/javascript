@@ -24,7 +24,7 @@ async function updateRegistriesInLockfileLintConfig(projectRoot, packageManager,
   await writeLockfileLintConfig({
     projectRoot,
     config: {
-      ...await readLockfileLintConfig(),
+      ...await readLockfileLintConfig({projectRoot}),
       'allowed-hosts': buildAllowedHostsList({packageManager, registries})
     }
   });

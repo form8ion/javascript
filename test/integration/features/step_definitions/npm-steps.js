@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 import {parse} from 'ini';
-import {dialects, packageManagers, projectTypes, projectTypeShouldBePublished} from '@form8ion/javascript-core';
+import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
 
 import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
@@ -81,6 +81,7 @@ function assertThatCliSpecificDetailsAreDefinedCorrectly(packageDetails, npmAcco
 }
 
 export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
+  projectRoot,
   projectType,
   visibility,
   tested,
@@ -89,7 +90,7 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
   projectName,
   npmAccount
 }) {
-  const packageDetails = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+  const packageDetails = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
 
   if (tested && projectTypes.PACKAGE === projectType && provideExample && dialects.COMMON_JS !== dialect) {
     assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label build --parallel lint:* --parallel test:*');
@@ -128,12 +129,12 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
   }
 }
 
-export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projectType) {
+export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projectRoot, projectType) {
   const {
     'update-notifier': updateNotifier,
     'save-exact': saveExact,
     provenance
-  } = parse(await fs.readFile(`${process.cwd()}/.npmrc`, 'utf-8'));
+  } = parse(await fs.readFile(`${projectRoot}/.npmrc`, 'utf-8'));
 
   assert.isFalse(updateNotifier);
 
@@ -143,7 +144,7 @@ export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projec
     assert.isUndefined(saveExact);
   }
 
-  if (!projectTypeShouldBePublished(projectType)) assert.isUndefined(provenance);
+  assert.isUndefined(provenance);
 }
 
 Given(/^the npm cli is logged in$/, function () {
@@ -165,7 +166,7 @@ Given(/^the npm cli is logged in$/, function () {
 Then('the npm cli is configured for use', async function () {
   const [lockfileLintConfig] = await Promise.all([
     fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8'),
-    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectType)
+    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectRoot, this.projectType)
   ]);
 
   const {type, 'allowed-hosts': allowedHosts, path} = JSON.parse(lockfileLintConfig);

@@ -1,10 +1,10 @@
-import {write as writeConfig, load as loadConfig} from '@form8ion/config-file';
-import {fileTypes} from '@form8ion/core';
+import {fileTypes, loadConfigFile} from '@form8ion/core';
+import {write as writeConfig} from '@form8ion/config-file';
 
 const configName = 'lockfile-lint';
 
-export function read() {
-  return loadConfig({name: configName});
+export function read({projectRoot}) {
+  return loadConfigFile({name: `.${configName}rc`, format: fileTypes.JSON, path: projectRoot});
 }
 
 export function write({projectRoot, config}) {

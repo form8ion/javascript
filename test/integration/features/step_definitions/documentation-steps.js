@@ -7,13 +7,14 @@ import {assert} from 'chai';
 import {Given} from '@cucumber/cucumber';
 
 export async function assertThatDocumentationIsDefinedAppropriately(
+  projectRoot,
   projectType,
   projectName,
   dialect,
   exampleShouldBeProvided
 ) {
-  const pathToExampleFile = `${process.cwd()}/example.js`;
-  const packageDetails = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+  const pathToExampleFile = `${projectRoot}/example.js`;
+  const packageDetails = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
 
   if (projectTypes.PACKAGE === projectType && exampleShouldBeProvided && dialects.COMMON_JS === dialect) {
     const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
@@ -29,7 +30,7 @@ export async function assertThatDocumentationIsDefinedAppropriately(
 /* eslint-disable-next-line no-unused-vars */
 import ${camelcase(projectName)} from './lib/index.js';
 `);
-    assert.isTrue(await fileExists(`${process.cwd()}/src/index.js`));
+    assert.isTrue(await fileExists(`${projectRoot}/src/index.js`));
     assert.isDefined(packageDetails.scripts['generate:md']);
     assert.isDefined(packageDetails.scripts['pregenerate:md']);
   } else {

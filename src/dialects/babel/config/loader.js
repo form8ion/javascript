@@ -1,5 +1,5 @@
-import {load} from '@form8ion/config-file';
+import {fileTypes, loadConfigFile} from '@form8ion/core';
 
-export default function () {
-  return load({name: 'babel'});
+export default function ({projectRoot}) {
+  return loadConfigFile({path: projectRoot, name: '.babelrc', format: fileTypes.JSON});
 }

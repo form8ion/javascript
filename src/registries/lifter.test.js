@@ -35,7 +35,7 @@ describe('registries lifter', () => {
     const existingLockfileLintConfig = any.simpleObject();
     const allowedHosts = any.listOf(any.url);
     when(lockfileLintIsAlreadyConfigured).calledWith({projectRoot}).mockResolvedValue(true);
-    readLockfileLintConfig.mockResolvedValue(existingLockfileLintConfig);
+    when(readLockfileLintConfig).calledWith({projectRoot}).mockResolvedValue(existingLockfileLintConfig);
     when(buildAllowedHostsList).calledWith({packageManager, registries}).mockReturnValue(allowedHosts);
 
     expect(await liftRegistries({projectRoot, packageManager, configs})).toEqual({});

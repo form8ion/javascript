@@ -9,13 +9,14 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 
 export async function assertThatProperDirectoriesAreIgnoredFromEslint(
+  projectRoot,
   projectType,
   configureLinting,
   unitTested,
   buildDirectory
 ) {
   if (configureLinting) {
-    const eslintIgnoreDetails = (await fs.readFile(`${process.cwd()}/.eslintignore`, 'utf-8')).toString().split(EOL);
+    const eslintIgnoreDetails = (await fs.readFile(`${projectRoot}/.eslintignore`, 'utf-8')).toString().split(EOL);
 
     if (projectTypes.MONOREPO !== projectType) {
       assert.include(eslintIgnoreDetails, `/${buildDirectory}/`);

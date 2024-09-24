@@ -46,13 +46,13 @@ Then('no repository details will be defined', async function () {
 });
 
 Then('repository details will be defined using the shorthand', async function () {
-  const {repository} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`));
+  const {repository} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`));
 
   assert.equal(repository, `${repoOwner}/${repoName}`);
 });
 
 Then('the repository details include the path within the parent project', async function () {
-  const {repository} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`));
+  const {repository} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`));
 
   assert.deepEqual(
     repository,

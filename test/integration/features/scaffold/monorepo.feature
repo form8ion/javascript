@@ -10,7 +10,8 @@ Feature: Monorepo
     And the npm cli is logged in
     And a babel preset is provided
     When the project is scaffolded
-    Then the repository details include the path within the parent project
+    Then no error is thrown
+    And the repository details include the path within the parent project
     And project-level tools are not installed for a sub-project
     And the expected files for a "Package" are generated
     And the expected results for a "Package" are returned to the project scaffolder

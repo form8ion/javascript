@@ -44,7 +44,7 @@ name of the project (w/o a [scope](https://docs.npmjs.com/misc/scope))
 
 short summary of the project
 
-### `pathWithinParent` __string__ (_required_)
+### `pathWithinParent` __string__ (_optional_)
 
 path within a parent project when scaffolding a sub-project
 

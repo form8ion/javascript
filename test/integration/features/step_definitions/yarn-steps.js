@@ -25,7 +25,7 @@ Given('the yarn cli is logged in', async function () {
 Then('the yarn cli is configured for use', async function () {
   const [lockfileLintConfig] = await Promise.all([
     fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8'),
-    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectType)
+    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectRoot, this.projectType)
   ]);
 
   const {type, 'allowed-hosts': allowedHosts, path} = JSON.parse(lockfileLintConfig);

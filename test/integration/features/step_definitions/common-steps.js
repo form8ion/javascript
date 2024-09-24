@@ -67,6 +67,7 @@ Before(async function () {
   this.eslintScope = `@${any.word()}`;
   this.barUnitTestFrameworkEslintConfigs = any.listOf(any.word);
   this.fooMonorepoScripts = any.simpleObject();
+  this.projectName = `${any.word()}-${any.word()}`;
 });
 
 After(function () {
@@ -88,7 +89,6 @@ Given(/^the project will have "([^"]*)" visibility$/, function (visibility) {
 
 When(/^the project is scaffolded$/, async function () {
   const shouldBeScopedAnswer = true;
-  this.projectName = `${any.word()}-${any.word()}`;
 
   try {
     this.scaffoldResult = await scaffold({
@@ -221,12 +221,14 @@ When('the scaffolder results are processed', async function () {
 Then('the expected files for a(n) {string} are generated', async function (projectType) {
   await Promise.all([
     assertThatProperDirectoriesAreIgnoredFromEslint(
+      this.projectRoot,
       projectType,
       this.configureLinting,
       this.tested,
       this.buildDirectory
     ),
     assertThatPackageDetailsAreConfiguredCorrectlyFor({
+      projectRoot: this.projectRoot,
       projectType,
       visibility: this.visibility,
       dialect: this.dialect,
@@ -236,8 +238,14 @@ Then('the expected files for a(n) {string} are generated', async function (proje
       projectName: this.projectName,
       npmAccount: this.npmAccount
     }),
-    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projectType),
-    assertThatDocumentationIsDefinedAppropriately(projectType, this.projectName, this.dialect, this.provideExample)
+    assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectRoot, projectType),
+    assertThatDocumentationIsDefinedAppropriately(
+      this.projectRoot,
+      projectType,
+      this.projectName,
+      this.dialect,
+      this.provideExample
+    )
   ]);
 });
 
@@ -249,7 +257,7 @@ Then('no error is thrown', async function () {
 
 Then('the expected results for a(n) {string} are returned to the project scaffolder', async function (projectType) {
   const type = 'any' !== projectType ? projectType : this.projectType;
-  const {scripts, homepage} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+  const {scripts, homepage} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`, 'utf-8'));
 
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(type)) {
     assert.include(Object.keys(this.scaffoldResult.badges.contribution), 'semantic-release');
