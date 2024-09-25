@@ -29,7 +29,7 @@ export function validate(options) {
       babelPreset: nameBasedConfigSchema,
       remark: joi.string(),
       registries: registriesSchema
-    }).default({}),
+    }).default({registries: {}}),
     plugins: {
       unitTestFrameworks: pluginsSchema,
       packageBundlers: pluginsSchema,

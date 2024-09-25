@@ -48,7 +48,7 @@ describe('options validator', () => {
         registries: registriesSchema
       })
       .mockReturnValue({default: configsDefault});
-    when(configsDefault).calledWith({}).mockReturnValue(configs);
+    when(configsDefault).calledWith({registries: {}}).mockReturnValue(configs);
     when(joi.object)
       .calledWith({
         projectRoot: requiredString,
