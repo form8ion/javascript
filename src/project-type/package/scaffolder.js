@@ -55,8 +55,8 @@ export default async function ({
           }
         },
         ...dialects.ESM === dialect && {
-          main: './lib/index.mjs',
-          exports: './lib/index.mjs'
+          main: './lib/index.js',
+          exports: './lib/index.js'
         },
         ...dialects.TYPESCRIPT === dialect && {
           main: './lib/index.js',
@@ -78,6 +78,7 @@ export default async function ({
       documentation: scaffoldPackageDocumentation({packageName, visibility, scope, packageManager, provideExample}),
       nextSteps: [
         {summary: 'Add the appropriate `save` flag to the installation instructions in the README'},
+        {summary: 'Define supported node.js versions as `engines.node` in the `package.json` file'},
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ]
     },

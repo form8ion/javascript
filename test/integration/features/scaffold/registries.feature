@@ -1,4 +1,4 @@
-Feature: Registries
+Feature: Scaffold Registries
 
   Scenario: registries defined for scopes
     Given the project will be an "any"

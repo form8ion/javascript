@@ -1,10 +1,9 @@
-import {promises as fs} from 'node:fs';
-
-import writeConfig from './write.js';
+import writeConfig from './writer.js';
+import loadConfig from './loader.js';
 
 export default async function ({projectRoot, ignore}) {
   if (ignore) {
-    const existingConfig = JSON.parse(await fs.readFile(`${projectRoot}/.babelrc.json`, 'utf-8'));
+    const existingConfig = await loadConfig({projectRoot});
 
     await writeConfig({projectRoot, config: {...existingConfig, ignore: [`./${ignore}/`]}});
   }

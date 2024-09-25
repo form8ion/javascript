@@ -4,16 +4,15 @@ import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import lift from '../lift/index.js';
-import {validate} from '../options-validator.js';
+import {validate} from '../options/validator.js';
 import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
 import scaffoldDocumentation from '../documentation/index.js';
-import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildBadgesDetails from '../documentation/badges.js';
-import buildVcsIgnoreLists from '../vcs-ignore.js';
+import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
+import buildVcsIgnoreLists from '../vcs/ignore-lists-builder.js';
 import {scaffold as scaffoldPackage} from '../package/index.js';
-import buildPackageName from '../package-name.js';
 import {scaffold as scaffoldProjectType} from '../project-type/index.js';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
 import buildDocumentationCommand from '../documentation/generation-command.js';
@@ -31,17 +30,17 @@ export default async function (options) {
     vcs,
     description,
     configs,
-    overrides,
-    ciServices,
-    hosts,
-    applicationTypes,
-    packageTypes,
-    packageBundlers,
-    monorepoTypes,
     decisions,
-    unitTestFrameworks,
     pathWithinParent,
-    registries
+    plugins: {
+      applicationTypes,
+      packageTypes,
+      monorepoTypes,
+      packageBundlers,
+      unitTestFrameworks,
+      hosts,
+      ciServices
+    }
   } = validate(options);
 
   const {
@@ -56,15 +55,15 @@ export default async function (options) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(overrides, ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
+  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
 
   info('Writing project files', {level: 'secondary'});
 
-  const packageName = buildPackageName(projectName, scope);
-  await scaffoldPackage({
+  const {packageName} = await scaffoldPackage({
     projectRoot,
+    projectName,
+    scope,
     dialect,
-    packageName,
     license,
     author,
     description
@@ -78,15 +77,15 @@ export default async function (options) {
     visibility,
     applicationTypes,
     packageTypes,
-    packageBundlers,
     monorepoTypes,
+    packageBundlers,
     scope,
     tests,
     vcs,
     decisions,
     dialect,
     provideExample,
-    publishRegistry: registries.publish
+    publishRegistry: configs.registries.publish
   });
   const verificationResults = await scaffoldVerification({
     projectRoot,
@@ -94,7 +93,7 @@ export default async function (options) {
     visibility,
     packageManager,
     vcs,
-    registries,
+    registries: configs.registries,
     tests,
     unitTestFrameworks,
     decisions,
@@ -102,7 +101,7 @@ export default async function (options) {
   });
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
-    scaffoldNpmConfig({projectType, projectRoot, registries}),
+    scaffoldNpmConfig({projectType, projectRoot}),
     scaffoldDialect({
       dialect,
       configs,

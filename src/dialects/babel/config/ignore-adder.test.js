@@ -1,28 +1,22 @@
-import {promises as fs} from 'node:fs';
-
 import any from '@travi/any';
+import {describe, expect, it, vi} from 'vitest';
 import {when} from 'jest-when';
-import {afterEach, describe, expect, it, vi} from 'vitest';
 
-import writeConfig from './write.js';
+import writeConfig from './writer.js';
+import loadConfig from './loader.js';
 import addIgnore from './ignore-adder.js';
 
 vi.mock('node:fs');
-vi.mock('./write.js');
+vi.mock('./writer.js');
+vi.mock('./loader.js');
 
 describe('babel ignore adder', () => {
   const projectRoot = any.string();
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should add the provided ignore to the existing config', async () => {
     const pathToIgnore = any.string();
     const existingConfig = any.simpleObject();
-    when(fs.readFile)
-      .calledWith(`${projectRoot}/.babelrc.json`, 'utf-8')
-      .mockResolvedValue(JSON.stringify(existingConfig));
+    when(loadConfig).calledWith({projectRoot}).mockResolvedValue(existingConfig);
 
     await addIgnore({projectRoot, ignore: pathToIgnore});
 
@@ -33,7 +27,7 @@ describe('babel ignore adder', () => {
   it('should not update the config if no `buildDirectory` is provided', async () => {
     await addIgnore({projectRoot});
 
-    expect(fs.readFile).not.toHaveBeenCalled();
+    expect(loadConfig).not.toHaveBeenCalled();
     expect(writeConfig).not.toHaveBeenCalled();
   });
 });

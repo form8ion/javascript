@@ -1,5 +1,5 @@
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
-import {prompt as promptWithInquirer, Separator} from '@form8ion/overridable-prompts';
+import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
 import {warn} from '@travi/cli-messages';
 
@@ -37,7 +37,6 @@ function authorQuestions({name, email, url}) {
 }
 
 export async function prompt(
-  {npmAccount, author},
   ciServices,
   hosts,
   visibility,
@@ -99,7 +98,7 @@ export async function prompt(
       name: questionNames.PROJECT_TYPE,
       message: 'What type of JavaScript project is this?',
       type: 'list',
-      choices: [...Object.values(projectTypes), new Separator(), 'Other'],
+      choices: [...Object.values(projectTypes), 'Other'],
       default: projectTypes.PACKAGE
     },
     ...'Private' === visibility ? [] : [{
@@ -114,14 +113,14 @@ export async function prompt(
       message: 'What is the scope?',
       when: scopePromptShouldBePresentedFactory(visibility),
       validate: validateScope(visibility),
-      default: npmAccount || maybeLoggedInNpmUsername
+      default: maybeLoggedInNpmUsername
     },
-    ...authorQuestions(author || {
+    ...authorQuestions({
       name: npmConf.get('init.author.name'),
       email: npmConf.get('init.author.email'),
       url: npmConf.get('init.author.url')
     }),
-    ...commonQuestions(({vcs, ciServices, visibility, pathWithinParent})),
+    ...commonQuestions(({vcs, ciServices, pathWithinParent})),
     {
       name: questionNames.CONFIGURE_LINTING,
       message: 'Will there be source code that should be linted?',
@@ -139,7 +138,7 @@ export async function prompt(
       type: 'list',
       message: 'Where will the application be hosted?',
       when: projectIsApplication,
-      choices: [...Object.keys(hosts), new Separator(), 'Other']
+      choices: [...Object.keys(hosts), 'Other']
     }
   ], decisions);
 

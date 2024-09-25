@@ -7,8 +7,5 @@ export default {
     autoExternal(),
     nodeResolve({mainFields: ['module']})
   ],
-  output: [
-    {file: 'lib/index.js', format: 'cjs', sourcemap: true},
-    {file: 'lib/index.mjs', format: 'es', sourcemap: true}
-  ]
+  output: [{file: 'lib/index.js', format: 'esm', sourcemap: true}]
 };

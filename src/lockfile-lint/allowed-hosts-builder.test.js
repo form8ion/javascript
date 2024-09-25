@@ -10,6 +10,10 @@ describe('allowed-hosts builder', () => {
     expect(buildAllowedHostsList({packageManager, registries: {}})).toEqual([packageManager]);
   });
 
+  it('should list the package-manager in the allowed list, even when no registries are provided', () => {
+    expect(buildAllowedHostsList({packageManager, registries: undefined})).toEqual([packageManager]);
+  });
+
   it('should allow additional registries when provided', () => {
     const registries = any.simpleObject();
 

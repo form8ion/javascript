@@ -4,6 +4,7 @@ Feature: Scripts
     Given no additional scripts are included in the results
     And an "npm" lockfile exists
     And husky is not installed
+    And lockfile-lint is configured
     When the scaffolder results are processed
     Then the existing scripts still exist
     And no extra scripts were added
@@ -12,6 +13,7 @@ Feature: Scripts
     Given additional scripts are included in the results
     And an "npm" lockfile exists
     And husky is not installed
+    And lockfile-lint is configured
     When the scaffolder results are processed
     Then the existing scripts still exist
     And the additional scripts exist
@@ -20,6 +22,7 @@ Feature: Scripts
     Given additional scripts that duplicate existing scripts are included in the results
     And an "npm" lockfile exists
     And husky is not installed
+    And lockfile-lint is configured
     When the scaffolder results are processed
     Then the additional scripts exist
 

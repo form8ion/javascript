@@ -3,11 +3,11 @@ import {validateOptions} from '@form8ion/core';
 import {scaffoldChoice as scaffoldFrameworkChoice} from '@form8ion/javascript-core';
 
 import {scaffold as scaffoldCoverage} from '../coverage/index.js';
-import {unitTestFrameworksSchema} from './options-schemas.js';
 import chooseFramework from './prompt.js';
+import {pluginsSchema} from '../plugins-schemas.js';
 
 export default async function ({projectRoot, frameworks, decisions, visibility, vcs, pathWithinParent, dialect}) {
-  const validatedFrameworks = validateOptions(unitTestFrameworksSchema, frameworks);
+  const validatedFrameworks = validateOptions(pluginsSchema, frameworks);
   const [framework, coverage] = await Promise.all([
     chooseFramework({frameworks: validatedFrameworks, decisions})
       .then(chosenFramework => scaffoldFrameworkChoice(validatedFrameworks, chosenFramework, {projectRoot, dialect})),

@@ -4,8 +4,5 @@ extends:
   - '@form8ion/mocha'
   - '@form8ion/cucumber'
 
-overrides:
-  - files: example.js
-    rules:
-      import/no-extraneous-dependencies: off
-      no-console: off
+parserOptions:
+  ecmaVersion: 2022

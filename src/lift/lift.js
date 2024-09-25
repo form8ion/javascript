@@ -5,6 +5,7 @@ import {applyEnhancers} from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
 
+import * as registriesPlugin from '../registries/index.js';
 import * as coveragePlugin from '../coverage/index.js';
 import * as codeStylePlugin from '../code-style/index.js';
 import * as npmConfigPlugin from '../npm-config/index.js';
@@ -15,7 +16,7 @@ import {lift as liftPackage} from '../package/index.js';
 import * as packageManagers from '../package-managers/index.js';
 import {determineCurrent as resolvePackageManager} from '../package-managers/index.js';
 
-export default async function ({projectRoot, vcs, results, pathWithinParent}) {
+export default async function ({projectRoot, vcs, results, pathWithinParent, enhancers = {}, configs = {}}) {
   info('Lifting JavaScript-specific details');
 
   const {
@@ -33,7 +34,8 @@ export default async function ({projectRoot, vcs, results, pathWithinParent}) {
 
   const enhancerResults = await applyEnhancers({
     results,
-    enhancers: [
+    enhancers: {
+      ...enhancers,
       huskyPlugin,
       enginesEnhancer,
       coveragePlugin,
@@ -42,9 +44,10 @@ export default async function ({projectRoot, vcs, results, pathWithinParent}) {
       codeStylePlugin,
       npmConfigPlugin,
       projectTypes,
-      packageManagers
-    ],
-    options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents)}
+      packageManagers,
+      registriesPlugin
+    },
+    options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs}
   });
 
   await liftPackage(

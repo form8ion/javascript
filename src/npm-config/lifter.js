@@ -1,16 +1,14 @@
-import {promises as fs} from 'node:fs';
-import {parse, stringify} from 'ini';
+import read from './reader.js';
+import write from './writer.js';
 
 export default async function ({projectRoot}) {
-  const pathToConfig = `${projectRoot}/.npmrc`;
-
   const {
     provenance,
     'engines-strict': enginesStrict,
     ...remainingProperties
-  } = parse(await fs.readFile(pathToConfig, 'utf-8'));
+  } = await read({projectRoot});
 
-  await fs.writeFile(pathToConfig, stringify(remainingProperties));
+  await write({projectRoot, config: remainingProperties});
 
   return {};
 }

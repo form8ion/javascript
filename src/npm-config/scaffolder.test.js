@@ -17,7 +17,7 @@ describe('npm config scaffolder', () => {
   });
 
   it('should save exact versions of dependencies for applications', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION, registries: {}});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.APPLICATION});
 
     expect(write).toHaveBeenCalledWith({
       projectRoot,
@@ -29,7 +29,7 @@ describe('npm config scaffolder', () => {
   });
 
   it('should save exact versions of dependencies for cli applications', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI, registries: {}});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.CLI});
 
     expect(write).toHaveBeenCalledWith({
       projectRoot,
@@ -41,58 +41,9 @@ describe('npm config scaffolder', () => {
   });
 
   it('should allow semver ranges for dependencies of packages', async () => {
-    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE, registries: {}});
+    await scaffoldNpmConfig({projectRoot, projectType: projectTypes.PACKAGE});
 
-    expect(write).toHaveBeenCalledWith({
-      projectRoot,
-      config: {
-        'update-notifier': false
-      }
-    });
-  });
-
-  it('should define a registry override when provided', async () => {
-    const registries = {registry: any.url()};
-
-    await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
-
-    expect(write).toHaveBeenCalledWith({
-      projectRoot,
-      config: {
-        'update-notifier': false,
-        registry: registries.registry
-      }
-    });
-  });
-
-  it('should not define a publish registry when provided', async () => {
-    const registries = {registry: any.url(), publish: any.url()};
-
-    await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
-
-    expect(write).toHaveBeenCalledWith({
-      projectRoot,
-      config: {
-        'update-notifier': false,
-        registry: registries.registry
-      }
-    });
-  });
-
-  it('should add scoped registries when provided', async () => {
-    const registries = any.objectWithKeys(any.listOf(any.word), {factory: any.word});
-
-    await scaffoldNpmConfig({projectRoot, projectType: any.word(), registries});
-
-    expect(write).toHaveBeenCalledWith({
-      projectRoot,
-      config: {
-        'update-notifier': false,
-        ...Object.fromEntries(
-          Object.entries(registries).map(([scope, url]) => ([`@${scope}:registry`, url]))
-        )
-      }
-    });
+    expect(write).toHaveBeenCalledWith({projectRoot, config: {'update-notifier': false}});
   });
 
   it('should define the script to enforce peer-dependency compatibility', async () => {
