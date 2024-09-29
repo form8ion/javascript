@@ -1,6 +1,5 @@
 import {promises as fs} from 'fs';
 
-import makeDir from 'make-dir';
 import {fileExists} from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
 
@@ -41,7 +40,7 @@ Given('husky config is in v4 format', async function () {
 });
 
 Given('husky config is in v5 format', async function () {
-  await makeDir(`${process.cwd()}/.husky`);
+  await fs.mkdir(`${process.cwd()}/.husky`, {recursive: true});
 });
 
 Then('husky is configured for a {string} project', async function (packageManager) {

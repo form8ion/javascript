@@ -1,5 +1,4 @@
 import {promises as fs} from 'fs';
-import makeDir from 'make-dir';
 import {directoryExists, fileExists} from '@form8ion/core';
 
 import {Given, Then} from '@cucumber/cucumber';
@@ -10,8 +9,8 @@ import {assertDependenciesWereRemoved} from './dependencies-steps.js';
 
 Given('existing nyc config is present', async function () {
   await fs.writeFile(`${process.cwd()}/.nycrc`, JSON.stringify(any.simpleObject()));
-  const nycOutputDirectory = await makeDir(`${process.cwd()}/.nyc_output`);
-  await fs.writeFile(`${nycOutputDirectory}/foo.txt`, any.string());
+  await fs.mkdir(`${this.projectRoot}/.nyc_output`, {recursive: true});
+  await fs.writeFile(`${this.projectRoot}/.nyc_output/foo.txt`, any.string());
 });
 
 Given('existing c8 config is present', async function () {
