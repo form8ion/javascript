@@ -1,4 +1,4 @@
-import commonPrompts from '@travi/language-scaffolder-prompts';
+import * as commonPrompts from '@travi/language-scaffolder-prompts';
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 
