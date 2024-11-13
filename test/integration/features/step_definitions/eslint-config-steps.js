@@ -59,5 +59,5 @@ Then('dependencies are defined for the additional configs', async function () {
     return `${this.eslintConfigScope}/eslint-config-${config.name}`;
   });
 
-  assertDevDependencyIsInstalled(this.execa.default, additionalConfigPackageNames.join(' '));
+  assertDevDependencyIsInstalled(this.execa, additionalConfigPackageNames.join(' '));
 });

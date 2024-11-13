@@ -1,10 +1,11 @@
+import {execa} from 'execa';
+
 import any from '@travi/any';
 import {describe, it, expect, vi} from 'vitest';
 
-import execa from '../../thirdparty-wrappers/execa.js';
 import removeDependencies from './remover.js';
 
-vi.mock('../../thirdparty-wrappers/execa.js');
+vi.mock('execa');
 
 describe('dependency remover', () => {
   it('should remove the dependencies using the named package manager', async () => {

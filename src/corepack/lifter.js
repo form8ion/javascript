@@ -1,4 +1,4 @@
-import execa from '../../thirdparty-wrappers/execa.js';
+import {execa} from 'execa';
 
 export default async function () {
   await execa('corepack', ['use', 'npm@latest']);

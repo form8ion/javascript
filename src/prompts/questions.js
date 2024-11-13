@@ -3,7 +3,7 @@ import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
 import {warn} from '@travi/cli-messages';
 
-import execa from '../../thirdparty-wrappers/execa.js';
+import {execa} from 'execa';
 import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
 import buildDialectChoices from '../dialects/prompt-choices.js';
 import {

@@ -16,13 +16,13 @@ export async function assertHookContainsScript(hook, script) {
 
 Given('husky v5 is installed', async function () {
   td
-    .when(this.execa.default('npm', ['ls', 'husky', '--json']))
+    .when(this.execa('npm', ['ls', 'husky', '--json']))
     .thenResolve({stdout: JSON.stringify({dependencies: {husky: {version: '5.0.0'}}})});
 });
 
 Given('husky v4 is installed', async function () {
   td
-    .when(this.execa.default('npm', ['ls', 'husky', '--json']))
+    .when(this.execa('npm', ['ls', 'husky', '--json']))
     .thenResolve({stdout: JSON.stringify({dependencies: {husky: {version: '4.5.6'}}})});
 });
 
@@ -32,7 +32,7 @@ Given('husky is not installed', async function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Given('husky config is in v4 format', async function () {
@@ -44,7 +44,7 @@ Given('husky config is in v5 format', async function () {
 });
 
 Then('husky is configured for a {string} project', async function (packageManager) {
-  td.verify(this.execa.default(td.matchers.contains(/(npm install|yarn add).*husky/)), {ignoreExtraArgs: true});
+  td.verify(this.execa(td.matchers.contains(/(npm install|yarn add).*husky/)), {ignoreExtraArgs: true});
 
   await assertHookContainsScript('pre-commit', `${packageManager} test`);
   await assertHookContainsScript('commit-msg', 'npx --no-install commitlint --edit $1');
@@ -53,17 +53,17 @@ Then('husky is configured for a {string} project', async function (packageManage
 Then('husky is configured for {string}', async function (packageManager) {
   if (packageManagers.NPM === packageManager) {
     td.verify(
-      this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
+      this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
       {ignoreExtraArgs: true}
     );
   }
   if (packageManagers.YARN === packageManager) {
     td.verify(
-      this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
+      this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
       {ignoreExtraArgs: true}
     );
   }
-  td.verify(this.execa.default(td.matchers.contains(/(npm install|yarn add).*husky@latest/)), {ignoreExtraArgs: true});
+  td.verify(this.execa(td.matchers.contains(/(npm install|yarn add).*husky@latest/)), {ignoreExtraArgs: true});
   assert.equal(
     JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8')).scripts.prepare,
     'husky'

@@ -132,7 +132,7 @@ Then('the {string} dialect is configured', async function (dialect) {
   } = this;
 
   if (dialects.BABEL === dialect) {
-    await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa.default);
+    await assertBabelDialectDetailsAreCorrect(babelPreset, buildDirectory, this.execa);
   }
 
   if (dialects.TYPESCRIPT === dialect) {
@@ -145,7 +145,7 @@ Then('the {string} dialect is configured', async function (dialect) {
       testFilenamePattern,
       projectType,
       this.packageTypeChoiceAnswer,
-      this.execa.default
+      this.execa
     );
   }
 

@@ -21,5 +21,5 @@ export function assertDependenciesWereRemoved(execa, packageManager, dependencyN
 }
 
 Then('ls-engines is added as a dependency', async function () {
-  assertDevDependencyIsInstalled(this.execa.default, 'ls-engines');
+  assertDevDependencyIsInstalled(this.execa, 'ls-engines');
 });
