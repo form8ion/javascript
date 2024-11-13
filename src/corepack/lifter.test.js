@@ -1,9 +1,10 @@
+import {execa} from 'execa';
+
 import {describe, it, vi, expect, afterEach} from 'vitest';
 
-import execa from '../../thirdparty-wrappers/execa.js';
 import liftCorepack from './lifter.js';
 
-vi.mock('../../thirdparty-wrappers/execa.js');
+vi.mock('execa');
 
 describe('corepack lifter', () => {
   afterEach(() => {

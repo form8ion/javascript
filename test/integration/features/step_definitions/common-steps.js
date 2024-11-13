@@ -47,7 +47,7 @@ export function assertDevDependencyIsInstalled(execa, dependencyName) {
 Before(async function () {
   validateNpmPackageName(any.word());
 
-  this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
+  this.execa = (await td.replaceEsm('execa')).execa;
   this.projectRoot = process.cwd();
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
@@ -265,7 +265,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
 
   if (projectTypes.PACKAGE === type) {
     assert.equal(scripts['lint:publish'], 'publint --strict');
-    assertDevDependencyIsInstalled(this.execa.default, 'publint');
+    assertDevDependencyIsInstalled(this.execa, 'publint');
   }
 
   if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {

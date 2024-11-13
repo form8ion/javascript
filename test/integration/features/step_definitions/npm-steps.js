@@ -156,11 +156,11 @@ Given(/^the npm cli is logged in$/, function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa.default('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
+  td.when(this.execa('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
   td
-    .when(this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')))
+    .when(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')))
     .thenResolve({stdout: ''});
-  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Then('the npm cli is configured for use', async function () {
@@ -176,7 +176,7 @@ Then('the npm cli is configured for use', async function () {
   assert.equal(path, 'package-lock.json');
   assert.equal(this.scaffoldResult.verificationCommand, 'npm run generate:md && npm test');
   td.verify(
-    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
+    this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
     {ignoreExtraArgs: true}
   );
 });

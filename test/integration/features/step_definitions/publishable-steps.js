@@ -23,5 +23,5 @@ Then('publint is configured', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   assert.equal(scripts['lint:publish'], 'publint --strict');
-  assertDevDependencyIsInstalled(this.execa.default, 'publint');
+  assertDevDependencyIsInstalled(this.execa, 'publint');
 });

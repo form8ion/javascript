@@ -1,14 +1,14 @@
+import {execa} from 'execa';
 import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
 
 import {vi, it, describe, expect, beforeEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import execa from '../../thirdparty-wrappers/execa.js';
 import {getDependencyTypeFlag, getInstallationCommandFor, getExactFlag} from './package-managers.js';
 import install from './installer.js';
 
-vi.mock('../../thirdparty-wrappers/execa.js');
+vi.mock('execa');
 vi.mock('./package-managers.js');
 
 describe('dependencies installer', () => {

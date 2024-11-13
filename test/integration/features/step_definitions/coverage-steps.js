@@ -21,7 +21,7 @@ Then('nyc is not configured for code coverage', async function () {
   assert.isFalse(await fileExists(`${process.cwd()}/.nycrc`));
   assert.isFalse(await directoryExists(`${process.cwd()}/.nyc_output`));
   assertDependenciesWereRemoved(
-    this.execa.default,
+    this.execa,
     this.packageManager,
     ['nyc', '@istanbuljs/nyc-config-babel', 'babel-plugin-istanbul']
   );

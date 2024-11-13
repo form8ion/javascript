@@ -1,3 +1,4 @@
+import {execa} from 'execa';
 import * as commonPrompts from '@travi/language-scaffolder-prompts';
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
@@ -6,7 +7,6 @@ import {expect, describe, it, vi, beforeEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import execa from '../../thirdparty-wrappers/execa.js';
 import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
 import buildDialectChoices from '../dialects/prompt-choices.js';
 import {questionNames} from './question-names.js';
@@ -14,9 +14,9 @@ import * as conditionals from './conditionals.js';
 import {prompt} from './questions.js';
 import * as validators from './validators.js';
 
+vi.mock('execa');
 vi.mock('@travi/language-scaffolder-prompts');
 vi.mock('@form8ion/overridable-prompts');
-vi.mock('../../thirdparty-wrappers/execa.js');
 vi.mock('../../thirdparty-wrappers/npm-conf.js');
 vi.mock('../dialects/prompt-choices.js');
 vi.mock('./validators.js');

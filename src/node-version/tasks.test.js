@@ -1,11 +1,12 @@
+import {execa} from 'execa';
+
 import {it, expect, describe, afterEach, vi} from 'vitest';
 import {when} from 'jest-when';
 import any from '@travi/any';
 
-import execa from '../../thirdparty-wrappers/execa.js';
 import {determineLatestVersionOf, install} from './tasks.js';
 
-vi.mock('../../thirdparty-wrappers/execa.js');
+vi.mock('execa');
 
 describe('node-version tasks', () => {
   const majorVersion = any.integer();
