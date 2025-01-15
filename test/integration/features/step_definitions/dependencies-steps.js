@@ -2,9 +2,17 @@ import {Then} from '@cucumber/cucumber';
 import * as td from 'testdouble';
 
 import {DEV_DEPENDENCY_TYPE} from '@form8ion/javascript-core';
+import any from '@travi/any';
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
+}
+
+export function versionSegment() {
+  return any.integer({max: 20});
+}
+export function semverStringFactory({major = versionSegment()} = {}) {
+  return `v${major}.${versionSegment()}.${versionSegment()}`;
 }
 
 export function assertDevDependencyIsInstalled(execa, dependencyName) {

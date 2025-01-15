@@ -203,8 +203,11 @@ When('the scaffolder results are processed', async function () {
       results: {
         scripts: this.scriptsResults,
         tags: this.tagsResults,
-        packageManager: this.packageManager,
-        eslint: {configs: this.additionalShareableConfigs}
+        ...this.resultsPackageManager && {packageManager: this.resultsPackageManager},
+        eslint: {configs: this.additionalShareableConfigs},
+        ...this.packageManagerPinnedVersion && {
+          packageManager: `${this.packageManager}@${this.packageManagerPinnedVersion}`
+        }
       },
       ...(this.eslintConfigScope || this.registries) && {
         configs: {
