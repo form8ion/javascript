@@ -26,4 +26,8 @@ describe('npm predicate', () => {
 
     expect(await npmIsUsed({projectRoot})).toBe(false);
   });
+
+  it('should return true if the package manager is pinned to npm', async () => {
+    expect(await npmIsUsed({projectRoot, pinnedPackageManager: 'npm@1.2.3'})).toBe(true);
+  });
 });

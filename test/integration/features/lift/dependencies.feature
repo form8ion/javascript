@@ -15,7 +15,6 @@ Feature: Dependencies
     When the scaffolder results are processed
     Then dependencies are installed with "npm"
 
-  @wip
   Scenario: npm pinned in the package.json
     Given "npm" is pinned in the package.json
     And the node version is captured for the project
@@ -34,7 +33,6 @@ Feature: Dependencies
     When the scaffolder results are processed
     Then dependencies are installed with "yarn"
 
-  @wip
   Scenario: yarn pinned in the package.json
     Given "yarn" is pinned in the package.json
     And the node version is captured for the project

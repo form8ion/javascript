@@ -1,6 +1,7 @@
+import {promises as fs} from 'node:fs';
 import {packageManagers} from '@form8ion/javascript-core';
 
-import {describe, it, expect, vi, afterEach} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
@@ -8,14 +9,18 @@ import {test as npmIsUsed} from './npm/index.js';
 import {test as yarnIsUsed} from './yarn/index.js';
 import derive from './current-manager-resolver.js';
 
-vi.mock('../package-managers/npm/index.js');
-vi.mock('../package-managers/yarn/index.js');
+vi.mock('node:fs');
+vi.mock('./npm/index.js');
+vi.mock('./yarn/index.js');
 
 describe('package manager', () => {
   const projectRoot = any.string();
+  const pinnedPackageManager = any.word();
 
-  afterEach(() => {
-    vi.clearAllMocks();
+  beforeEach(() => {
+    when(fs.readFile)
+      .calledWith(`${projectRoot}/package.json`, 'utf-8')
+      .mockResolvedValue(JSON.stringify({...any.simpleObject(), packageManager: pinnedPackageManager}));
   });
 
   it('should return an already defined manager directly', async () => {
@@ -25,21 +30,21 @@ describe('package manager', () => {
   });
 
   it('should return `npm` when a `package-lock.json` exists', async () => {
-    when(npmIsUsed).calledWith({projectRoot}).mockResolvedValue(true);
+    when(npmIsUsed).calledWith({projectRoot, pinnedPackageManager}).mockResolvedValue(true);
 
     expect(await derive({projectRoot})).toEqual(packageManagers.NPM);
   });
 
   it('should return `yarn` when a `yarn.lock` exists', async () => {
-    when(npmIsUsed).calledWith({projectRoot}).mockResolvedValue(false);
-    when(yarnIsUsed).calledWith({projectRoot}).mockResolvedValue(true);
+    when(npmIsUsed).calledWith({projectRoot, pinnedPackageManager}).mockResolvedValue(false);
+    when(yarnIsUsed).calledWith({projectRoot, pinnedPackageManager}).mockResolvedValue(true);
 
     expect(await derive({projectRoot})).toEqual(packageManagers.YARN);
   });
 
   it('should throw an error when no manager is provided and no lockfile is found', async () => {
-    when(npmIsUsed).calledWith({projectRoot}).mockResolvedValue(false);
-    when(yarnIsUsed).calledWith({projectRoot}).mockResolvedValue(false);
+    when(npmIsUsed).calledWith({projectRoot, pinnedPackageManager}).mockResolvedValue(false);
+    when(yarnIsUsed).calledWith({projectRoot, pinnedPackageManager}).mockResolvedValue(false);
 
     await expect(() => derive({projectRoot})).rejects.toThrowError('Package-manager could not be determined');
   });

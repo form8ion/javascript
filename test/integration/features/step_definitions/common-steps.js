@@ -192,7 +192,10 @@ When('the scaffolder results are processed', async function () {
       exports: this.packageExports,
       publishConfig: this.publishConfig,
       bin: this.packageBin,
-      repository: this.repository
+      repository: this.repository,
+      ...this.packageManagerPinnedVersion && {
+        packageManager: `${this.packageManager}@${this.packageManagerPinnedVersion}`
+      }
     }
   });
 
@@ -204,10 +207,7 @@ When('the scaffolder results are processed', async function () {
         scripts: this.scriptsResults,
         tags: this.tagsResults,
         ...this.resultsPackageManager && {packageManager: this.resultsPackageManager},
-        eslint: {configs: this.additionalShareableConfigs},
-        ...this.packageManagerPinnedVersion && {
-          packageManager: `${this.packageManager}@${this.packageManagerPinnedVersion}`
-        }
+        eslint: {configs: this.additionalShareableConfigs}
       },
       ...(this.eslintConfigScope || this.registries) && {
         configs: {

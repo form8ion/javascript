@@ -1,4 +1,4 @@
-import {describe, it, vi, expect, afterEach} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
@@ -11,10 +11,6 @@ vi.mock('./yarn/index.js');
 
 describe('package managers predicate', () => {
   const projectRoot = any.string();
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it('should return `true` if npm is used', async () => {
     when(npmIsUsed).calledWith({projectRoot}).mockResolvedValue(true);
