@@ -8,6 +8,7 @@ import {validate} from '../options/validator.js';
 import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
+import {scaffold as scaffoldPackageManager} from '../package-managers/index.js';
 import scaffoldDocumentation from '../documentation/index.js';
 import buildBadgesDetails from '../documentation/badges.js';
 import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
@@ -109,7 +110,8 @@ export default async function (options) {
       projectType,
       testFilenamePattern: verificationResults.testFilenamePattern
     }),
-    scaffoldCodeStyle({projectRoot, projectType, configs, vcs, configureLinting})
+    scaffoldCodeStyle({projectRoot, projectType, configs, vcs, configureLinting}),
+    scaffoldPackageManager({projectRoot, packageManager})
   ]);
   const projectTypePluginResults = await scaffoldProjectTypePlugin({
     projectRoot,

@@ -6,6 +6,7 @@ import {Given, Then} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 import * as td from 'testdouble';
+import {semverStringFactory} from './dependencies-steps.js';
 
 function isNonConsumable(projectType) {
   const {APPLICATION, CLI} = projectTypes;
@@ -150,6 +151,7 @@ export async function assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(projec
 Given(/^the npm cli is logged in$/, function () {
   this.packageManager = packageManagers.NPM;
   this.npmAccount = any.word();
+  this.npmCliVersion = semverStringFactory();
 
   const error = new Error('Command failed with exit code 1: npm ls husky --json');
   error.exitCode = 1;
@@ -157,6 +159,7 @@ Given(/^the npm cli is logged in$/, function () {
   error.command = 'npm ls husky --json';
 
   td.when(this.execa('npm', ['whoami'])).thenResolve({stdout: this.npmAccount});
+  td.when(this.execa('npm', ['--version'])).thenResolve({stdout: this.npmCliVersion});
   td
     .when(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')))
     .thenResolve({stdout: ''});
@@ -164,14 +167,17 @@ Given(/^the npm cli is logged in$/, function () {
 });
 
 Then('the npm cli is configured for use', async function () {
-  const [lockfileLintConfig] = await Promise.all([
+  const [lockfileLintConfig, packageContents] = await Promise.all([
     fs.readFile(`${process.cwd()}/.lockfile-lintrc.json`, 'utf-8'),
+    fs.readFile(`${process.cwd()}/package.json`, 'utf-8'),
     assertThatNpmConfigDetailsAreConfiguredCorrectlyFor(this.projectRoot, this.projectType)
   ]);
 
   const {type, 'allowed-hosts': allowedHosts, path} = JSON.parse(lockfileLintConfig);
+  const {packageManager} = JSON.parse(packageContents);
 
   assert.equal(type, packageManagers.NPM);
+  assert.equal(packageManager, `${packageManagers.NPM}@${this.npmCliVersion}`);
   assert.include(allowedHosts, packageManagers.NPM);
   assert.equal(path, 'package-lock.json');
   assert.equal(this.scaffoldResult.verificationCommand, 'npm run generate:md && npm test');

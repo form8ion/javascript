@@ -11,6 +11,7 @@ import {scaffold as scaffoldVerification} from './verification/index.js';
 import {scaffold as scaffoldCodeStyle} from '../code-style/index.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
+import {scaffold as scaffoldPackageManager} from '../package-managers/index.js';
 import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
 import buildVcsIgnoreLists from '../vcs/ignore-lists-builder.js';
@@ -30,6 +31,7 @@ vi.mock('../package/index.js');
 vi.mock('../code-style/index.js');
 vi.mock('../dialects/index.js');
 vi.mock('../npm-config/index.js');
+vi.mock('../package-managers/index.js');
 vi.mock('../node-version/index.js');
 vi.mock('../project-type-plugin/index.js');
 vi.mock('../vcs/ignore-lists-builder.js');
@@ -248,6 +250,7 @@ describe('javascript project scaffolder', () => {
       verificationCommand: `${documentationCommand} && ${packageManager} test`,
       nextSteps: mergedNextSteps
     });
+    expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
   });
 
   it('should return the project homepage when available', async () => {
