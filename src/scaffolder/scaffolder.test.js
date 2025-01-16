@@ -241,13 +241,13 @@ describe('javascript project scaffolder', () => {
     const results = await scaffold(options);
 
     expect(results).toEqual({
+      ...mergedResults,
       documentation,
       tags,
       badges: badgeResults,
       // projectDetails: {},
       vcsIgnore,
-      verificationCommand: `${documentationCommand} && ${packageManager} test`,
-      nextSteps: mergedNextSteps
+      verificationCommand: `${documentationCommand} && ${packageManager} test`
     });
     expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
   });

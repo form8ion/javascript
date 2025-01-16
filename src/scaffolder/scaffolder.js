@@ -156,12 +156,12 @@ export default async function (options) {
   // });
 
   return {
+    ...mergedContributions,
     badges: buildBadgesDetails([mergedContributions/*, liftResults*/]),
     documentation: scaffoldDocumentation({projectTypeResults, packageManager}),
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
     verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`,
     // projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
-    nextSteps: mergedContributions.nextSteps
   };
 }
