@@ -156,7 +156,7 @@ export default async function (options) {
   // });
 
   return {
-    badges: buildBadgesDetails([mergedContributions, liftResults]),
+    badges: buildBadgesDetails([mergedContributions/*, liftResults*/]),
     documentation: scaffoldDocumentation({projectTypeResults, packageManager}),
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
