@@ -31,12 +31,11 @@ describe('lift', () => {
   const tags = any.listOf(any.word);
   const javascriptDependencies = any.simpleObject();
   const dependencies = {...any.simpleObject(), javascript: javascriptDependencies};
-  const devDependencies = any.listOf(any.word);
   const packageManager = any.word();
   const manager = any.word();
   const enhancerResults = any.simpleObject();
   const vcsDetails = any.simpleObject();
-  const results = {...any.simpleObject(), scripts, tags, dependencies, devDependencies, packageManager: manager};
+  const results = {...any.simpleObject(), scripts, tags, dependencies, packageManager: manager};
   const pathWithinParent = any.string();
   const packageDetails = any.simpleObject();
   const internalEnhancers = {
@@ -105,5 +104,11 @@ describe('lift', () => {
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, enhancers});
 
     expect(liftResults).toEqual(enhancerResults);
+  });
+
+  it('should not error when no dependencies are provided', async () => {
+    core.applyEnhancers.mockResolvedValue(enhancerResults);
+
+    await lift({projectRoot, vcs: vcsDetails, results: any.simpleObject(), pathWithinParent});
   });
 });
