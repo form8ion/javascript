@@ -147,13 +147,13 @@ export default async function (options) {
     projectTypePluginResults
   ]);
 
-  const liftResults = await lift({
-    results: deepmerge({devDependencies: ['npm-run-all2'], packageManager}, mergedContributions),
-    projectRoot,
-    configs,
-    vcs,
-    pathWithinParent
-  });
+  // const liftResults = await lift({
+  //   results: deepmerge({devDependencies: ['npm-run-all2'], packageManager}, mergedContributions),
+  //   projectRoot,
+  //   configs,
+  //   vcs,
+  //   pathWithinParent
+  // });
 
   return {
     badges: buildBadgesDetails([mergedContributions, liftResults]),
@@ -161,7 +161,7 @@ export default async function (options) {
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
     verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`,
-    projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
+    // projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
     nextSteps: mergedContributions.nextSteps
   };
 }
