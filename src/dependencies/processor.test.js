@@ -13,17 +13,24 @@ describe('dependencies processor', () => {
   const packageManager = any.word();
 
   it('should process the provided dependency lists', async () => {
-    const dependencies = any.listOf(any.word);
-    const devDependencies = any.listOf(any.word);
+    const production = any.listOf(any.word);
+    const development = any.listOf(any.word);
 
-    await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
+    await processDependencies({dependencies: {production, development}, projectRoot, packageManager});
 
-    expect(installDependencies).toHaveBeenCalledWith(dependencies, PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
-    expect(installDependencies).toHaveBeenCalledWith(devDependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(installDependencies).toHaveBeenCalledWith(production, PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(installDependencies).toHaveBeenCalledWith(development, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
   });
 
   it('should process as empty lists when dependencies are not provided', async () => {
     await processDependencies({projectRoot, packageManager});
+
+    expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+  });
+
+  it('should process as empty lists when dependency types are not provided', async () => {
+    await processDependencies({projectRoot, packageManager, dependencies: {}});
 
     expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);

@@ -23,7 +23,6 @@ export default async function ({projectRoot, vcs, results, pathWithinParent, enh
     scripts,
     tags,
     dependencies,
-    devDependencies,
     packageManager: manager
   } = results;
 
@@ -52,7 +51,7 @@ export default async function ({projectRoot, vcs, results, pathWithinParent, enh
 
   await liftPackage(
     deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs, pathWithinParent},
+      {projectRoot, scripts, tags, dependencies: dependencies.javascript, packageManager, vcs, pathWithinParent},
       enhancerResults
     ])
   );

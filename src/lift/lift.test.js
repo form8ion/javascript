@@ -29,7 +29,8 @@ describe('lift', () => {
   const projectRoot = any.string();
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
-  const dependencies = any.listOf(any.word);
+  const javascriptDependencies = any.simpleObject();
+  const dependencies = {...any.simpleObject(), javascript: javascriptDependencies};
   const devDependencies = any.listOf(any.word);
   const packageManager = any.word();
   const manager = any.word();
@@ -78,7 +79,15 @@ describe('lift', () => {
 
     expect(liftResults).toEqual(enhancerResults);
     expect(liftPackage).toHaveBeenCalledWith(deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs: vcsDetails, pathWithinParent},
+      {
+        projectRoot,
+        scripts,
+        tags,
+        dependencies: javascriptDependencies,
+        packageManager,
+        vcs: vcsDetails,
+        pathWithinParent
+      },
       enhancerResults
     ]));
   });

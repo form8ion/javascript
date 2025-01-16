@@ -20,8 +20,7 @@ vi.mock('./property-sorter.js');
 
 describe('package.json lifter', () => {
   const projectRoot = any.string();
-  const dependencies = any.listOf(any.word);
-  const devDependencies = any.listOf(any.word);
+  const dependencies = any.simpleObject();
   const packageManager = any.word();
   const vcs = any.simpleObject();
   const pathWithinParent = any.string();
@@ -46,10 +45,10 @@ describe('package.json lifter', () => {
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts})
       .mockReturnValue(config);
 
-    await liftPackage({dependencies, devDependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
+    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
-    expect(processDependencies).toHaveBeenCalledWith({dependencies, devDependencies, projectRoot, packageManager});
+    expect(processDependencies).toHaveBeenCalledWith({dependencies, projectRoot, packageManager});
   });
 
   it('should update keywords if tags are provided', async () => {
@@ -61,16 +60,7 @@ describe('package.json lifter', () => {
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts, keywords: tags})
       .mockReturnValue(config);
 
-    await liftPackage({
-      dependencies,
-      devDependencies,
-      projectRoot,
-      packageManager,
-      vcs,
-      pathWithinParent,
-      scripts,
-      tags
-    });
+    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
   });
@@ -90,16 +80,7 @@ describe('package.json lifter', () => {
       })
       .mockReturnValue(config);
 
-    await liftPackage({
-      dependencies,
-      devDependencies,
-      projectRoot,
-      packageManager,
-      vcs,
-      pathWithinParent,
-      scripts,
-      tags
-    });
+    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
   });
