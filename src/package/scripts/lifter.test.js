@@ -14,6 +14,9 @@ describe('package.json scripts lifter', () => {
     const updatedScripts = any.simpleObject();
     when(updateTestScript).calledWith({...existingScripts, ...scripts}).mockReturnValue(updatedScripts);
 
-    expect(liftScripts({existingScripts, scripts})).toEqual(updatedScripts);
+    expect(liftScripts({existingScripts, scripts})).toEqual({
+      scripts: updatedScripts,
+      dependencies: {javascript: {development: ['npm-run-all2']}}
+    });
   });
 });
