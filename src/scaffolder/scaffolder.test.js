@@ -21,7 +21,6 @@ import scaffoldDocumentation from '../documentation/index.js';
 import {validate} from '../options/validator.js';
 import buildBadgesDetails from '../documentation/badges.js';
 import {prompt} from '../prompts/questions.js';
-import lift from '../lift/index.js';
 import scaffold from './scaffolder.js';
 
 vi.mock('deepmerge');
@@ -41,7 +40,6 @@ vi.mock('../documentation/index.js');
 vi.mock('../options/validator.js');
 vi.mock('../prompts/questions.js');
 vi.mock('../documentation/badges.js');
-vi.mock('../lift/index.js');
 vi.mock('./verification/index.js');
 
 describe('javascript project scaffolder', () => {
@@ -226,9 +224,6 @@ describe('javascript project scaffolder', () => {
         projectTypePluginResults
       ])
       .mockReturnValue(mergedResults);
-    when(deepmerge)
-      .calledWith({devDependencies: ['npm-run-all2'], packageManager}, mergedResults)
-      .mockReturnValue(scaffoldingResults);
   });
 
   it('should scaffold the javascript details', async () => {
@@ -245,21 +240,9 @@ describe('javascript project scaffolder', () => {
       documentation,
       tags,
       badges: badgeResults,
-      // projectDetails: {},
       vcsIgnore,
       verificationCommand: `${documentationCommand} && ${packageManager} test`
     });
     expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
-  });
-
-  it.skip('should return the project homepage when available', async () => {
-    const homepage = any.url();
-    when(lift)
-      .calledWith({projectRoot, vcs, pathWithinParent, configs, results: scaffoldingResults})
-      .mockResolvedValue({homepage});
-
-    const {projectDetails} = await scaffold(options);
-
-    expect(projectDetails.homepage).toEqual(homepage);
   });
 });

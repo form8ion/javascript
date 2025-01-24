@@ -289,7 +289,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
 
   assertHomepageDefinedProperly(homepage, this.projectType, this.projectName, this.npmAccount, this.vcs);
   assertHomepageDefinedProperly(
-    this.scaffoldResult.projectDetails.homepage,
+    this.liftResult.homepage,
     this.projectType,
     this.projectName,
     this.npmAccount,

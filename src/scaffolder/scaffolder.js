@@ -161,7 +161,6 @@ export default async function (options) {
     documentation: scaffoldDocumentation({projectTypeResults, packageManager}),
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
-    verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`,
-    // projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
+    verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`
   };
 }
