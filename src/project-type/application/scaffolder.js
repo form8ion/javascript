@@ -16,8 +16,7 @@ export default async function ({projectRoot}) {
       start: `node ./${buildDirectory}/index.js`,
       prebuild: 'run-s clean'
     },
-    dependencies: [],
-    devDependencies: ['rimraf'],
+    dependencies: {javascript: {development: ['rimraf']}},
     vcsIgnore: {files: ['.env'], directories: [`/${buildDirectory}/`]},
     buildDirectory,
     nextSteps: []

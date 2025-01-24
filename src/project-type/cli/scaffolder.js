@@ -43,8 +43,7 @@ export default async function ({
         build: 'npm-run-all --print-label --parallel build:*',
         prepack: 'run-s build'
       },
-      dependencies: ['update-notifier'],
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {production: ['update-notifier'], development: ['rimraf']}},
       vcsIgnore: {files: [], directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
       nextSteps: [{summary: 'Define supported node.js versions as `engines.node` in the `package.json` file'}]
