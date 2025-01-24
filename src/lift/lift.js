@@ -22,7 +22,7 @@ export default async function ({projectRoot, vcs, results, pathWithinParent, enh
   const {
     scripts,
     tags,
-    dependencies: {javascript: dependencies} = {},
+    dependencies,
     packageManager: manager
   } = results;
 

@@ -15,7 +15,7 @@ describe('babel scaffolder', () => {
     const babelPreset = {name: babelPresetName, packageName: babelPresetPackageName};
 
     expect(await scaffoldBabel({preset: babelPreset, projectRoot, tests: {unit: true}}))
-      .toEqual({devDependencies: ['@babel/register', babelPresetPackageName], eslint: {}});
+      .toEqual({dependencies: {javascript: {development: ['@babel/register', babelPresetPackageName]}}, eslint: {}});
     expect(write).toHaveBeenCalledWith({projectRoot, config: {presets: [babelPresetName]}});
   });
 

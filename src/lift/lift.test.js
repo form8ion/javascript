@@ -29,8 +29,7 @@ describe('lift', () => {
   const projectRoot = any.string();
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
-  const javascriptDependencies = any.simpleObject();
-  const dependencies = {...any.simpleObject(), javascript: javascriptDependencies};
+  const dependencies = any.simpleObject();
   const packageManager = any.word();
   const manager = any.word();
   const enhancerResults = any.simpleObject();
@@ -82,7 +81,7 @@ describe('lift', () => {
         projectRoot,
         scripts,
         tags,
-        dependencies: javascriptDependencies,
+        dependencies,
         packageManager,
         vcs: vcsDetails,
         pathWithinParent
@@ -104,11 +103,5 @@ describe('lift', () => {
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, enhancers});
 
     expect(liftResults).toEqual(enhancerResults);
-  });
-
-  it('should not error when no dependencies are provided', async () => {
-    core.applyEnhancers.mockResolvedValue(enhancerResults);
-
-    await lift({projectRoot, vcs: vcsDetails, results: any.simpleObject(), pathWithinParent});
   });
 });

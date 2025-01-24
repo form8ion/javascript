@@ -16,7 +16,7 @@ describe('dependencies processor', () => {
     const production = any.listOf(any.word);
     const development = any.listOf(any.word);
 
-    await processDependencies({dependencies: {production, development}, projectRoot, packageManager});
+    await processDependencies({dependencies: {javascript: {production, development}}, projectRoot, packageManager});
 
     expect(installDependencies).toHaveBeenCalledWith(production, PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith(development, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
@@ -29,8 +29,15 @@ describe('dependencies processor', () => {
     expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
   });
 
-  it('should process as empty lists when dependency types are not provided', async () => {
+  it('should process as empty lists when javascript dependencies are not provided', async () => {
     await processDependencies({projectRoot, packageManager, dependencies: {}});
+
+    expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+  });
+
+  it('should process as empty lists when dependency types are not provided', async () => {
+    await processDependencies({projectRoot, packageManager, dependencies: {javascript: {}}});
 
     expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
@@ -39,6 +46,13 @@ describe('dependencies processor', () => {
   it('should prevent an installation error from bubbling', async () => {
     installDependencies.mockRejectedValue(new Error());
 
-    await expect(() => processDependencies({})).not.toThrowError();
+    await expect(() => processDependencies({dependencies: {javascript: {}}})).not.toThrowError();
+  });
+
+  it('should throw an error if dependencies is defined as an array rather than an object', async () => {
+    const dependencies = any.listOf(any.word);
+
+    await expect(() => processDependencies({dependencies}))
+      .rejects.toThrowError(`Expected dependencies to be an object. Instead received: ${dependencies}`);
   });
 });
