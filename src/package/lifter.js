@@ -12,6 +12,7 @@ export default async function ({
   scripts,
   tags,
   dependencies,
+  devDependencies,
   packageManager,
   vcs,
   pathWithinParent
@@ -35,5 +36,5 @@ export default async function ({
     })
   });
 
-  await processDependencies({dependencies, projectRoot, packageManager});
+  await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
 }

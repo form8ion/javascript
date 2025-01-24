@@ -38,6 +38,7 @@ describe('package.json lifter', () => {
 
   it('should update package.json properties and process dependencies', async () => {
     const existingPackageContents = {...any.simpleObject(), scripts: existingScripts};
+    const devDependencies = any.listOf(any.word);
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
       .mockResolvedValue(JSON.stringify(existingPackageContents));
@@ -45,10 +46,10 @@ describe('package.json lifter', () => {
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts})
       .mockReturnValue(config);
 
-    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
+    await liftPackage({dependencies, devDependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
-    expect(processDependencies).toHaveBeenCalledWith({dependencies, projectRoot, packageManager});
+    expect(processDependencies).toHaveBeenCalledWith({dependencies, devDependencies, projectRoot, packageManager});
   });
 
   it('should update keywords if tags are provided', async () => {

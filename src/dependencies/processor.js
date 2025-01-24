@@ -3,8 +3,14 @@ import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE} from '@form8ion/javascript-co
 
 import install from './installer.js';
 
-export default async function ({dependencies = {}, projectRoot, packageManager}) {
+export default async function ({dependencies = {}, devDependencies, projectRoot, packageManager}) {
   info('Processing dependencies');
+
+  if (Array.isArray(devDependencies)) {
+    throw new Error(
+      `devDependencies provided as: ${devDependencies}. Instead, provide under dependencies.javascript.development`
+    );
+  }
 
   if (Array.isArray(dependencies)) {
     throw new Error(`Expected dependencies to be an object. Instead received: ${dependencies}`);

@@ -30,11 +30,12 @@ describe('lift', () => {
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
   const dependencies = any.simpleObject();
+  const devDependencies = any.simpleObject();
   const packageManager = any.word();
   const manager = any.word();
   const enhancerResults = any.simpleObject();
   const vcsDetails = any.simpleObject();
-  const results = {...any.simpleObject(), scripts, tags, dependencies, packageManager: manager};
+  const results = {...any.simpleObject(), scripts, tags, dependencies, devDependencies, packageManager: manager};
   const pathWithinParent = any.string();
   const packageDetails = any.simpleObject();
   const internalEnhancers = {
@@ -59,10 +60,6 @@ describe('lift', () => {
       .mockResolvedValue(JSON.stringify(packageDetails));
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should lift results that are specific to js projects', async () => {
     const configs = any.simpleObject();
     when(core.applyEnhancers)
@@ -82,6 +79,7 @@ describe('lift', () => {
         scripts,
         tags,
         dependencies,
+        devDependencies,
         packageManager,
         vcs: vcsDetails,
         pathWithinParent

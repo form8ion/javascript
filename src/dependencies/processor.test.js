@@ -55,4 +55,12 @@ describe('dependencies processor', () => {
     await expect(() => processDependencies({dependencies}))
       .rejects.toThrowError(`Expected dependencies to be an object. Instead received: ${dependencies}`);
   });
+
+  it('should throw an error if devDependencies is defined as an array', async () => {
+    const devDependencies = any.listOf(any.word);
+
+    await expect(() => processDependencies({devDependencies})).rejects.toThrowError(
+      `devDependencies provided as: ${devDependencies}. Instead, provide under dependencies.javascript.development`
+    );
+  });
 });
