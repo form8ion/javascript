@@ -60,11 +60,11 @@
   "packageManager": "npm@11.0.0+sha512.11dff29565d2297c74e7c594a9762581bde969f0aa5cbe6f5b3644bf008a16c065ece61094d9ffbb81125be38df8e1ba43eb8244b3d30c61eb797e9a2440e3ec",
   "dependencies": {
     "@form8ion/codecov": "^6.0.0",
-    "@form8ion/commit-convention": "^7.0.0",
+    "@form8ion/commit-convention": "^8.0.0-beta.1",
     "@form8ion/config-file": "^1.1.1",
     "@form8ion/core": "^4.0.0",
-    "@form8ion/eslint": "^6.1.0",
-    "@form8ion/husky": "^6.0.0-beta.2",
+    "@form8ion/eslint": "^7.0.0-beta.1",
+    "@form8ion/husky": "^7.0.0-beta.1",
     "@form8ion/javascript-core": "^12.0.0-beta.1",
     "@form8ion/overridable-prompts": "^1.2.0",
     "@form8ion/prettier": "^2.0.0",
@@ -114,6 +114,6 @@
     "rollup": "4.30.1",
     "rollup-plugin-auto-external": "2.0.0",
     "testdouble": "3.20.2",
-    "vitest": "2.1.8"
+    "vitest": "3.0.2"
   }
 }
