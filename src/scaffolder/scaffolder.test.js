@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
-import {it, vi, expect, describe, beforeEach} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {when} from 'jest-when';
 import any from '@travi/any';
 
@@ -19,7 +19,6 @@ import {scaffold as scaffoldProjectType} from '../project-type/index.js';
 import buildDocumentationCommand from '../documentation/generation-command.js';
 import scaffoldDocumentation from '../documentation/index.js';
 import {validate} from '../options/validator.js';
-import buildBadgesDetails from '../documentation/badges.js';
 import {prompt} from '../prompts/questions.js';
 import scaffold from './scaffolder.js';
 
@@ -59,7 +58,6 @@ describe('javascript project scaffolder', () => {
   const dialect = any.word();
   const provideExample = any.boolean();
   const scope = any.word();
-  const scaffoldingResults = any.simpleObject();
   const vcsIgnore = any.simpleObject();
   const mergedVcsIgnore = any.simpleObject();
   const mergedNextSteps = any.listOf(any.simpleObject);
@@ -227,22 +225,15 @@ describe('javascript project scaffolder', () => {
   });
 
   it('should scaffold the javascript details', async () => {
-    const badgeResults = any.simpleObject();
-    // when(lift)
-    //   .calledWith({projectRoot, vcs, pathWithinParent, configs, results: scaffoldingResults})
-    //   .mockResolvedValue(liftResults);
-    when(buildBadgesDetails).calledWith([mergedResults]).mockReturnValue(badgeResults);
-
     const results = await scaffold(options);
 
+    expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
     expect(results).toEqual({
       ...mergedResults,
       documentation,
       tags,
-      badges: badgeResults,
       vcsIgnore,
       verificationCommand: `${documentationCommand} && ${packageManager} test`
     });
-    expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
   });
 });
