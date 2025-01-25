@@ -4,7 +4,7 @@ import * as core from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 

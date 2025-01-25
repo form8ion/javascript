@@ -97,6 +97,7 @@ When(/^the project is scaffolded$/, async function () {
       visibility: this.visibility,
       license: any.string(),
       vcs: this.vcs,
+      pathWithinParent: this.pathWithinParent,
       configs: {
         eslint: {scope: this.eslintScope},
         babelPreset: this.babelPreset,
@@ -170,13 +171,13 @@ When(/^the project is scaffolded$/, async function () {
         ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
         [questionNames.DIALECT]: this.dialect,
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
-      },
-      pathWithinParent: this.pathWithinParent
+      }
     });
 
     this.liftResult = await lift({
       projectRoot: this.projectRoot,
       vcs: this.vcs,
+      pathWithinParent: this.pathWithinParent,
       results: this.scaffoldResult,
       ...(this.eslintConfigScope || this.registries) && {
         configs: {
