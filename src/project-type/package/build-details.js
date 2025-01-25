@@ -54,7 +54,7 @@ export default async function ({
   return deepmerge(
     bundlerResults,
     {
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {development: ['rimraf']}},
       scripts: {
         clean: `rimraf ./${defaultBuildDirectory}`,
         prebuild: 'run-s clean',

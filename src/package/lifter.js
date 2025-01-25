@@ -1,4 +1,5 @@
 import {promises as fs} from 'node:fs';
+import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {writePackageJson} from '@form8ion/javascript-core';
 
@@ -20,21 +21,27 @@ export default async function ({
   info('Updating `package.json`', {level: 'secondary'});
 
   const existingPackageJsonContents = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
+  const {scripts: liftedScripts, dependencies: scriptDependencies} = liftScripts({
+    existingScripts: existingPackageJsonContents.scripts,
+    scripts
+  });
 
   await writePackageJson({
     projectRoot,
     config: sortPackageProperties({
       ...existingPackageJsonContents,
       ...defineVcsHostDetails(vcs, pathWithinParent),
-      scripts: liftScripts({
-        existingScripts: existingPackageJsonContents.scripts,
-        scripts
-      }),
+      scripts: liftedScripts,
       ...tags && {
         keywords: existingPackageJsonContents.keywords ? [...existingPackageJsonContents.keywords, ...tags] : tags
       }
     })
   });
 
-  await processDependencies({dependencies, devDependencies, projectRoot, packageManager});
+  await processDependencies({
+    dependencies: deepmerge(dependencies, scriptDependencies),
+    devDependencies,
+    projectRoot,
+    packageManager
+  });
 }

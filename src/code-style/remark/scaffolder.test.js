@@ -20,7 +20,7 @@ describe('remark scaffolder', () => {
   it('should write the config and define dependencies', async () => {
     expect(await scaffoldRemark({config, projectRoot, vcs: any.simpleObject()}))
       .toEqual({
-        devDependencies: [config, 'remark-cli', 'remark-toc'],
+        dependencies: {javascript: {development: [config, 'remark-cli', 'remark-toc']}},
         scripts: {
           'lint:md': 'remark . --frail',
           'generate:md': 'remark . --output'
@@ -49,7 +49,7 @@ describe('remark scaffolder', () => {
   it('should configure the remark-usage plugin for package projects', async () => {
     expect(await scaffoldRemark({config, projectRoot, projectType: projectTypes.PACKAGE, vcs: any.simpleObject()}))
       .toEqual({
-        devDependencies: [config, 'remark-cli', 'remark-toc', 'remark-usage'],
+        dependencies: {javascript: {development: [config, 'remark-cli', 'remark-toc', 'remark-usage']}},
         scripts: {
           'lint:md': 'remark . --frail',
           'generate:md': 'remark . --output'

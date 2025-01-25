@@ -13,7 +13,7 @@ export default async function ({projectRoot}) {
   });
 
   return {
-    devDependencies: ['cross-env', 'c8'],
+    dependencies: {javascript: {development: ['cross-env', 'c8']}},
     vcsIgnore: {files: [], directories: ['/coverage/']},
     eslint: {ignore: {directories: ['/coverage/']}}
   };

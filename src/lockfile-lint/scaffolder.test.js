@@ -26,7 +26,7 @@ describe('lockfile linting scaffolder', () => {
     const allowedHosts = any.listOf(any.url);
     when(buildAllowedHosts).calledWith({packageManager: packageManagers.NPM, registries}).mockReturnValue(allowedHosts);
 
-    const {devDependencies, scripts} = await scaffoldLockfileLint({
+    const {dependencies, scripts} = await scaffoldLockfileLint({
       projectRoot,
       packageManager: packageManagers.NPM,
       registries
@@ -43,7 +43,7 @@ describe('lockfile linting scaffolder', () => {
         'allowed-hosts': allowedHosts
       }
     });
-    expect(devDependencies).toEqual(['lockfile-lint']);
+    expect(dependencies.javascript.development).toEqual(['lockfile-lint']);
     expect(scripts['lint:lockfile']).toEqual('lockfile-lint');
   });
 
@@ -53,7 +53,7 @@ describe('lockfile linting scaffolder', () => {
       .calledWith({packageManager: packageManagers.YARN, registries})
       .mockReturnValue(allowedHosts);
 
-    const {devDependencies, scripts} = await scaffoldLockfileLint({
+    const {dependencies, scripts} = await scaffoldLockfileLint({
       projectRoot,
       packageManager: packageManagers.YARN,
       registries
@@ -70,7 +70,7 @@ describe('lockfile linting scaffolder', () => {
         'allowed-hosts': allowedHosts
       }
     });
-    expect(devDependencies).toEqual(['lockfile-lint']);
+    expect(dependencies.javascript.development).toEqual(['lockfile-lint']);
     expect(scripts['lint:lockfile']).toEqual('lockfile-lint');
   });
 
