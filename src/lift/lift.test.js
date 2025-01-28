@@ -74,16 +74,7 @@ describe('lift', () => {
 
     expect(liftResults).toEqual(enhancerResults);
     expect(liftPackage).toHaveBeenCalledWith(deepmerge.all([
-      {
-        projectRoot,
-        scripts,
-        tags,
-        dependencies,
-        devDependencies,
-        packageManager,
-        vcs: vcsDetails,
-        pathWithinParent
-      },
+      {projectRoot, packageManager, vcs: vcsDetails, pathWithinParent},
       enhancerResults
     ]));
   });
