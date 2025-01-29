@@ -25,7 +25,7 @@ describe('testing scaffolder', () => {
     when(scaffoldUnitTesting)
       .calledWith({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect, pathWithinParent})
       .mockResolvedValue({
-        devDependencies: unitTestingDevDependencies,
+        dependencies: {javascript: {development: unitTestingDevDependencies}},
         scripts: unitTestScripts,
         vcsIgnore: {files: unitTestFilesToIgnoreFromVcs, directories: unitTestDirectoriesToIgnoreFromVcs},
         nextSteps: unitTestNextSteps
@@ -43,7 +43,7 @@ describe('testing scaffolder', () => {
       dialect,
       pathWithinParent
     })).toEqual({
-      devDependencies: ['@travi/any', ...unitTestingDevDependencies],
+      dependencies: {javascript: {development: ['@travi/any', ...unitTestingDevDependencies]}},
       scripts: unitTestScripts,
       vcsIgnore: {files: unitTestFilesToIgnoreFromVcs, directories: unitTestDirectoriesToIgnoreFromVcs},
       eslint: {},
@@ -53,11 +53,11 @@ describe('testing scaffolder', () => {
 
   it('should not scaffold unit testing if the project will not be unit tested', async () => {
     expect(await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: true}, pathWithinParent}))
-      .toEqual({devDependencies: ['@travi/any'], eslint: {}});
+      .toEqual({dependencies: {javascript: {development: ['@travi/any']}}, eslint: {}});
   });
 
   it('should not scaffold testing if the project will not be tested', async () => {
     expect(await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: false}, pathWithinParent}))
-      .toEqual({devDependencies: [], eslint: {}});
+      .toEqual({dependencies: {javascript: {development: []}}, eslint: {}});
   });
 });

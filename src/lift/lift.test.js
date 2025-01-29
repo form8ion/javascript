@@ -4,7 +4,7 @@ import * as core from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
@@ -29,8 +29,8 @@ describe('lift', () => {
   const projectRoot = any.string();
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
-  const dependencies = any.listOf(any.word);
-  const devDependencies = any.listOf(any.word);
+  const dependencies = any.simpleObject();
+  const devDependencies = any.simpleObject();
   const packageManager = any.word();
   const manager = any.word();
   const enhancerResults = any.simpleObject();
@@ -60,10 +60,6 @@ describe('lift', () => {
       .mockResolvedValue(JSON.stringify(packageDetails));
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should lift results that are specific to js projects', async () => {
     const configs = any.simpleObject();
     when(core.applyEnhancers)
@@ -78,7 +74,7 @@ describe('lift', () => {
 
     expect(liftResults).toEqual(enhancerResults);
     expect(liftPackage).toHaveBeenCalledWith(deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs: vcsDetails, pathWithinParent},
+      {projectRoot, packageManager, vcs: vcsDetails, pathWithinParent},
       enhancerResults
     ]));
   });

@@ -22,8 +22,7 @@ describe('application project-type scaffolder', () => {
         start: `node ./${buildDirectory}/index.js`,
         prebuild: 'run-s clean'
       },
-      dependencies: [],
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {development: ['rimraf']}},
       vcsIgnore: {
         files: ['.env'],
         directories: [`/${buildDirectory}/`]

@@ -14,7 +14,7 @@ export default async function ({projectRoot, packageDetails}) {
     await liftProvenance({packageDetails, projectRoot}),
     {
       homepage,
-      devDependencies: ['publint'],
+      dependencies: {javascript: {development: ['publint']}},
       scripts: {'lint:publish': 'publint --strict'},
       badges: defineBadges(packageName, packageAccessLevel)
     }

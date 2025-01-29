@@ -3,14 +3,12 @@ import {info} from '@travi/cli-messages';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
-import lift from '../lift/index.js';
 import {validate} from '../options/validator.js';
 import {prompt} from '../prompts/questions.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
 import {scaffold as scaffoldPackageManager} from '../package-managers/index.js';
 import scaffoldDocumentation from '../documentation/index.js';
-import buildBadgesDetails from '../documentation/badges.js';
 import {scaffold as scaffoldNodeVersion} from '../node-version/index.js';
 import buildVcsIgnoreLists from '../vcs/ignore-lists-builder.js';
 import {scaffold as scaffoldPackage} from '../package/index.js';
@@ -147,21 +145,11 @@ export default async function (options) {
     projectTypePluginResults
   ]);
 
-  const liftResults = await lift({
-    results: deepmerge({devDependencies: ['npm-run-all2'], packageManager}, mergedContributions),
-    projectRoot,
-    configs,
-    vcs,
-    pathWithinParent
-  });
-
   return {
-    badges: buildBadgesDetails([mergedContributions, liftResults]),
+    ...mergedContributions,
     documentation: scaffoldDocumentation({projectTypeResults, packageManager}),
     tags: projectTypeResults.tags,
     vcsIgnore: buildVcsIgnoreLists(mergedContributions.vcsIgnore),
-    verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`,
-    projectDetails: {...liftResults.homepage && {homepage: liftResults.homepage}},
-    nextSteps: mergedContributions.nextSteps
+    verificationCommand: `${buildDocumentationCommand(packageManager)} && ${packageManager} test`
   };
 }

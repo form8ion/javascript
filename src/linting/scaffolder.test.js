@@ -1,4 +1,4 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
@@ -9,33 +9,23 @@ vi.mock('../lockfile-lint');
 
 describe('linting scaffolder', () => {
   const pathWithinParent = any.string();
-  const lockfileDevDependencies = any.listOf(any.string);
-  const lockfileScripts = any.simpleObject();
   const projectRoot = any.string();
   const packageManager = any.word();
   const vcs = any.simpleObject();
   const registries = any.simpleObject();
 
-  beforeEach(() => {
+  it('should configure linters when config definitions are provided', async () => {
+    const lockfileLintResults = any.simpleObject();
     when(scaffoldLockfileLint)
       .calledWith({projectRoot, packageManager, registries})
-      .mockResolvedValue({devDependencies: lockfileDevDependencies, scripts: lockfileScripts});
-  });
+      .mockResolvedValue(lockfileLintResults);
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should configure linters when config definitions are provided', async () => {
-    const {devDependencies, scripts} = await scaffold({
+    expect(await scaffold({
       projectRoot,
       vcs,
       packageManager,
       pathWithinParent,
       registries
-    });
-
-    expect(devDependencies).toEqual(lockfileDevDependencies);
-    expect(scripts).toEqual(lockfileScripts);
+    })).toEqual(lockfileLintResults);
   });
 });

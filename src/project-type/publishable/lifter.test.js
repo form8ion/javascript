@@ -32,7 +32,12 @@ describe('publishable project-type lifter', () => {
     when(defineBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
-      {scripts: {'lint:publish': 'publint --strict'}, devDependencies: ['publint'], badges: badgesResults, homepage}
+      {
+        scripts: {'lint:publish': 'publint --strict'},
+        dependencies: {javascript: {development: ['publint']}},
+        badges: badgesResults,
+        homepage
+      }
     ).mockReturnValue(mergedResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(mergedResults);

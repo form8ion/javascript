@@ -5,17 +5,18 @@ import stubbedFs from 'mock-fs';
 import * as td from 'testdouble';
 import 'validate-npm-package-name';
 
-// remark-usage-ignore-next 10
+// remark-usage-ignore-next 11
 stubbedFs({
   node_modules: stubbedFs.load(resolve('node_modules')),
   '.nvmrc': 'v1.2.3',
   lib: stubbedFs.load(resolve('lib')),
   templates: stubbedFs.load(resolve('templates'))
 });
-const execa = td.replace('execa');
+const {execa} = await td.replaceEsm('execa');
 td.when(execa('. ~/.nvm/nvm.sh && nvm ls-remote --lts', {shell: true}))
   .thenResolve({stdout: ['v16.5.4', ''].join('\n')});
 td.when(execa('. ~/.nvm/nvm.sh && nvm install', {shell: true})).thenReturn({stdout: {pipe: () => undefined}});
+td.when(execa('npm', ['--version'])).thenResolve({stdout: '10.6.18'});
 
 const {dialects, projectTypes} = await import('@form8ion/javascript-core');
 const {
@@ -69,8 +70,7 @@ if (await thisIsAJavaScriptProject({projectRoot})) {
     projectRoot,
     configs: {eslint: {scope: '@foo'}},
     results: {
-      dependencies: [],
-      devDependencies: [],
+      dependencies: {javascript: {production: [], development: []}},
       scripts: {},
       eslint: {configs: [], ignore: {directories: []}},
       packageManager: 'npm'

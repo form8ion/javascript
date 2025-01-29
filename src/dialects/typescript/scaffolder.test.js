@@ -82,9 +82,9 @@ describe('typescript dialect scaffolder', () => {
   });
 
   it('should define dev dependencies', async () => {
-    const {devDependencies} = await scaffoldTypescriptDialect({config: {scope}});
+    const {dependencies} = await scaffoldTypescriptDialect({config: {scope}});
 
-    expect(devDependencies).toEqual(['typescript', `${scope}/tsconfig`]);
+    expect(dependencies.javascript.development).toEqual(['typescript', `${scope}/tsconfig`]);
   });
 
   it('should ignore files from version control', async () => {

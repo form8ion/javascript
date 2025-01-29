@@ -60,8 +60,7 @@ describe('cli project-type scaffolder', () => {
         build: 'npm-run-all --print-label --parallel build:*',
         prepack: 'run-s build'
       },
-      dependencies: ['update-notifier'],
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {production: ['update-notifier'], development: ['rimraf']}},
       vcsIgnore: {
         files: [],
         directories: ['/bin/']

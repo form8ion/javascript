@@ -97,6 +97,7 @@ When(/^the project is scaffolded$/, async function () {
       visibility: this.visibility,
       license: any.string(),
       vcs: this.vcs,
+      pathWithinParent: this.pathWithinParent,
       configs: {
         eslint: {scope: this.eslintScope},
         babelPreset: this.babelPreset,
@@ -170,8 +171,20 @@ When(/^the project is scaffolded$/, async function () {
         ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
         [questionNames.DIALECT]: this.dialect,
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
-      },
-      pathWithinParent: this.pathWithinParent
+      }
+    });
+
+    this.liftResult = await lift({
+      projectRoot: this.projectRoot,
+      vcs: this.vcs,
+      pathWithinParent: this.pathWithinParent,
+      results: this.scaffoldResult,
+      ...(this.eslintConfigScope || this.registries) && {
+        configs: {
+          eslint: {scope: this.eslintConfigScope},
+          registries: this.registries
+        }
+      }
     });
   } catch (e) {
     this.resultError = e;
@@ -263,7 +276,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
   const {scripts, homepage} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`, 'utf-8'));
 
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(type)) {
-    assert.include(Object.keys(this.scaffoldResult.badges.contribution), 'semantic-release');
+    assert.include(Object.keys(this.liftResult.badges.contribution), 'semantic-release');
   }
 
   if (projectTypes.PACKAGE === type) {
@@ -272,12 +285,12 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
   }
 
   if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {
-    assert.include(Object.keys(this.scaffoldResult.badges.status), 'coverage');
+    assert.include(Object.keys(this.liftResult.badges.status), 'coverage');
   }
 
   assertHomepageDefinedProperly(homepage, this.projectType, this.projectName, this.npmAccount, this.vcs);
   assertHomepageDefinedProperly(
-    this.scaffoldResult.projectDetails.homepage,
+    this.liftResult.homepage,
     this.projectType,
     this.projectName,
     this.npmAccount,

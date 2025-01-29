@@ -8,7 +8,7 @@ export default async function ({projectRoot, preset}) {
   await write({projectRoot, config: {presets: [preset.name]}});
 
   return {
-    devDependencies: ['@babel/register', preset.packageName],
+    dependencies: {javascript: {development: ['@babel/register', preset.packageName]}},
     eslint: {}
   };
 }

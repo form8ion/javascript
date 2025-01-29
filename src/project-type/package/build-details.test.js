@@ -89,7 +89,7 @@ describe('package build details', () => {
 
     expect(results).toEqual({
       ...bundlerResults,
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {development: ['rimraf']}},
       scripts: {
         clean: 'rimraf ./lib',
         prebuild: 'run-s clean',
@@ -122,7 +122,7 @@ describe('package build details', () => {
 
     expect(results).toEqual({
       ...bundlerResults,
-      devDependencies: ['rimraf'],
+      dependencies: {javascript: {development: ['rimraf']}},
       scripts: {
         clean: 'rimraf ./lib',
         prebuild: 'run-s clean',

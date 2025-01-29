@@ -32,7 +32,7 @@ export default async function ({projectRoot, packageManager, registries}) {
   });
 
   return {
-    devDependencies: ['lockfile-lint'],
+    dependencies: {javascript: {development: ['lockfile-lint']}},
     scripts: {'lint:lockfile': 'lockfile-lint'}
   };
 }

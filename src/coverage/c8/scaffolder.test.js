@@ -20,7 +20,7 @@ describe('c8 scaffolder', () => {
 
     expect(await scaffoldC8({projectRoot, vcs: {owner: vcsOwner, name: vcsName, host: 'github'}, visibility: 'Public'}))
       .toEqual({
-        devDependencies: ['cross-env', 'c8'],
+        dependencies: {javascript: {development: ['cross-env', 'c8']}},
         vcsIgnore: {files: [], directories: ['/coverage/']},
         eslint: {ignore: {directories: ['/coverage/']}}
       });
