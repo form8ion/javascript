@@ -1,5 +1,4 @@
 import {promises as fs} from 'fs';
-import makeDir from 'make-dir';
 import touch from 'touch';
 import camelcase from 'camelcase';
 import mustache from 'mustache';
@@ -25,7 +24,6 @@ describe('package build details', () => {
   const projectRoot = any.string();
   const projectName = any.word();
   const pathToExample = `${projectRoot}/example.js`;
-  const pathToCreatedSrcDirectory = any.string();
   const bundlerResults = any.simpleObject();
   const exampleContent = any.string();
   const pathToExampleTemplate = any.string();
@@ -35,7 +33,6 @@ describe('package build details', () => {
   const decisions = any.simpleObject();
 
   beforeEach(() => {
-    when(makeDir).calledWith(`${projectRoot}/src`).mockResolvedValue(pathToCreatedSrcDirectory);
     when(templatePath).calledWith('example.mustache').mockReturnValue(pathToExampleTemplate);
     when(fs.readFile).calledWith(pathToExampleTemplate, 'utf8').mockResolvedValue(exampleTemplateContent);
     when(camelcase).calledWith(projectName).mockReturnValue(camelizedProjectName);
@@ -101,7 +98,8 @@ describe('package build details', () => {
       buildDirectory: 'lib',
       badges: {consumer: {}}
     });
-    expect(touch).toHaveBeenCalledWith(`${pathToCreatedSrcDirectory}/index.js`);
+    expect(fs.mkdir).toHaveBeenCalledWith(`${projectRoot}/src`, {recursive: true});
+    expect(touch).toHaveBeenCalledWith(`${projectRoot}/src/index.js`);
     expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, exampleContent);
   });
 

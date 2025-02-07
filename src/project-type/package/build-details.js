@@ -1,7 +1,6 @@
 import {promises as fs} from 'fs';
 import deepmerge from 'deepmerge';
 import mustache from 'mustache';
-import mkdir from 'make-dir';
 import touch from 'touch';
 import camelcase from 'camelcase';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
@@ -44,11 +43,11 @@ export default async function ({
 }) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName, provideExample});
 
-  const pathToCreatedSrcDirectory = await mkdir(`${projectRoot}/src`);
+  await fs.mkdir(`${projectRoot}/src`, {recursive: true});
   const [bundlerResults] = await Promise.all([
     scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.PACKAGE}),
     provideExample ? await createExample(projectRoot, projectName, dialect) : Promise.resolve,
-    touch(`${pathToCreatedSrcDirectory}/index.js`)
+    touch(`${projectRoot}/src/index.js`)
   ]);
 
   return deepmerge(
