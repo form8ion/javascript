@@ -8,7 +8,7 @@ Language scaffolder for JavaScript projects
   * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
   * [`projectName` __string__ (_required_)](#projectname-string-required)
   * [`description` __string__ (_optional_)](#description-string-optional)
-  * [`pathWithinParent` __string__ (_required_)](#pathwithinparent-string-required)
+  * [`pathWithinParent` __string__ (_optional_)](#pathwithinparent-string-optional)
   * [`license` __string__ (_required_)](#license-string-required)
   * [`decisions` __object__ (_optional_)](#decisions-object-optional)
   * [`visibility` __string__ (_required_)](#visibility-string-required)

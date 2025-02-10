@@ -19,16 +19,8 @@ import {determineCurrent as resolvePackageManager} from '../package-managers/ind
 export default async function ({projectRoot, vcs, results, pathWithinParent, enhancers = {}, configs = {}}) {
   info('Lifting JavaScript-specific details');
 
-  const {
-    scripts,
-    tags,
-    dependencies,
-    devDependencies,
-    packageManager: manager
-  } = results;
-
   const [packageManager, packageContents] = await Promise.all([
-    resolvePackageManager({projectRoot, packageManager: manager}),
+    resolvePackageManager({projectRoot, packageManager: results.packageManager}),
     fs.readFile(`${projectRoot}/package.json`, 'utf8')
   ]);
 
@@ -50,12 +42,7 @@ export default async function ({projectRoot, vcs, results, pathWithinParent, enh
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs}
   });
 
-  await liftPackage(
-    deepmerge.all([
-      {projectRoot, scripts, tags, dependencies, devDependencies, packageManager, vcs, pathWithinParent},
-      enhancerResults
-    ])
-  );
+  await liftPackage(deepmerge.all([{projectRoot, packageManager, vcs, pathWithinParent}, enhancerResults]));
 
   return enhancerResults;
 }

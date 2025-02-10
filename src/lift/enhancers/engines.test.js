@@ -42,10 +42,10 @@ describe('engines enhancer', () => {
       const packageName = any.word();
       const packageDetails = {...any.simpleObject(), name: packageName};
 
-      const {scripts, badges, devDependencies} = await lift({projectRoot, packageDetails});
+      const {scripts, badges, dependencies} = await lift({projectRoot, packageDetails});
 
       expect(scripts['lint:engines']).toEqual('ls-engines');
-      expect(devDependencies).toEqual(['ls-engines']);
+      expect(dependencies.javascript.development).toEqual(['ls-engines']);
       expect(badges.consumer.node)
         .toEqual({img: `https://img.shields.io/node/v/${packageName}?logo=node.js`, text: 'node'});
     });

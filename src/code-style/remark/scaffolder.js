@@ -27,12 +27,12 @@ export default async function ({config, projectRoot, projectType, vcs}) {
 
   return deepmerge(
     {
-      devDependencies: [config, 'remark-cli', 'remark-toc'],
+      dependencies: {javascript: {development: [config, 'remark-cli', 'remark-toc']}},
       scripts: {
         'lint:md': 'remark . --frail',
         'generate:md': 'remark . --output'
       }
     },
-    {...projectTypes.PACKAGE === projectType && {devDependencies: ['remark-usage']}}
+    {...projectTypes.PACKAGE === projectType && {dependencies: {javascript: {development: ['remark-usage']}}}}
   );
 }
