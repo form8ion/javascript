@@ -4,9 +4,11 @@ import {describe, it, expect, vi} from 'vitest';
 import any from '@travi/any';
 
 import installDependencies from './installer.js';
+import removeDependencies from './remover.js';
 import processDependencies from './processor.js';
 
 vi.mock('./installer.js');
+vi.mock('./remover.js');
 
 describe('dependencies processor', () => {
   const projectRoot = any.string();
@@ -15,11 +17,17 @@ describe('dependencies processor', () => {
   it('should process the provided dependency lists', async () => {
     const production = any.listOf(any.word);
     const development = any.listOf(any.word);
+    const remove = any.listOf(any.word);
 
-    await processDependencies({dependencies: {javascript: {production, development}}, projectRoot, packageManager});
+    await processDependencies({
+      dependencies: {javascript: {production, development, remove}},
+      projectRoot,
+      packageManager
+    });
 
     expect(installDependencies).toHaveBeenCalledWith(production, PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith(development, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(removeDependencies).toHaveBeenCalledWith({packageManager, dependencies: remove});
   });
 
   it('should process as empty lists when dependencies are not provided', async () => {
@@ -41,6 +49,7 @@ describe('dependencies processor', () => {
 
     expect(installDependencies).toHaveBeenCalledWith([], PROD_DEPENDENCY_TYPE, projectRoot, packageManager);
     expect(installDependencies).toHaveBeenCalledWith([], DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    expect(removeDependencies).toHaveBeenCalledWith({packageManager, dependencies: []});
   });
 
   it('should prevent an installation error from bubbling', async () => {

@@ -8,13 +8,14 @@ export async function lift({projectRoot, packageManager, vcs}) {
   const codecovResults = await liftCodecov({projectRoot, packageManager, vcs});
 
   if (await nycIsConfigured({projectRoot})) {
-    const [c8Results] = await Promise.all([
+    const [c8Results, nycResults] = await Promise.all([
       scaffoldC8({projectRoot}),
-      removeNyc({projectRoot, packageManager})
+      removeNyc({projectRoot})
     ]);
 
     return deepmerge.all([
       c8Results,
+      nycResults,
       codecovResults,
       {
         scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},

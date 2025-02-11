@@ -1,11 +1,16 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 
-import removeDependencies from '../../dependencies/remover.js';
-
-export default async function ({projectRoot, packageManager}) {
+export default async function ({projectRoot}) {
   await Promise.all([
     fs.unlink(`${projectRoot}/.nycrc`),
-    fs.rm(`${projectRoot}/.nyc_output`, {recursive: true, force: true}),
-    removeDependencies({packageManager, dependencies: ['nyc', '@istanbuljs/nyc-config-babel', 'babel-plugin-istanbul']})
+    fs.rm(`${projectRoot}/.nyc_output`, {recursive: true, force: true})
   ]);
+
+  return {
+    dependencies: {
+      javascript: {
+        remove: ['nyc', '@istanbuljs/nyc-config-babel', 'babel-plugin-istanbul']
+      }
+    }
+  };
 }
