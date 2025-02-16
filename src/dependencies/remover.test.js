@@ -16,4 +16,13 @@ describe('dependency remover', () => {
 
     expect(execa).toHaveBeenCalledWith(packageManager, ['remove', ...dependencies]);
   });
+
+  it('should not attempt to remove when no dependencies are provided', async () => {
+    const packageManager = any.word();
+    const dependencies = [];
+
+    await removeDependencies({packageManager, dependencies});
+
+    expect(execa).not.toHaveBeenCalled();
+  });
 });
