@@ -16,7 +16,12 @@ describe('package.json scripts lifter', () => {
 
     expect(liftScripts({existingScripts, scripts})).toEqual({
       scripts: updatedScripts,
-      dependencies: {javascript: {development: ['npm-run-all2']}}
+      dependencies: {
+        javascript: {
+          development: ['npm-run-all2'],
+          remove: ['npm-run-all']
+        }
+      }
     });
   });
 });
