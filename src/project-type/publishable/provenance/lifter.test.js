@@ -36,4 +36,12 @@ describe('provenance lifter', () => {
     expect(enhanceSlsa).not.toHaveBeenCalled();
     expect(mergeIntoExistingPackageJson).not.toHaveBeenCalled();
   });
+
+  it('should not configure provenance for a package without `publishConfig`', async () => {
+    const packageDetails = any.simpleObject();
+
+    expect(await lift({packageDetails, projectRoot})).toEqual({});
+    expect(enhanceSlsa).not.toHaveBeenCalled();
+    expect(mergeIntoExistingPackageJson).not.toHaveBeenCalled();
+  });
 });
