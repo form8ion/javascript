@@ -14,7 +14,8 @@ describe('test script updater', () => {
     expect(updateTestScript({...scripts, 'pregenerate:md': 'run-s build'})).toEqual({
       ...scripts,
       'pregenerate:md': 'run-s build',
-      test: 'npm-run-all --print-label build --parallel lint:*'
+      pretest: 'run-s build',
+      test: 'npm-run-all --print-label --parallel lint:*'
     });
   });
 

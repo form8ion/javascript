@@ -9,10 +9,7 @@ function projectShouldBeBuiltForVerification(scripts) {
 export default function (scripts) {
   return {
     ...scripts,
-    test: `npm-run-all --print-label${
-      projectShouldBeBuiltForVerification(scripts) ? ' build' : ''
-    } --parallel lint:*${
-      projectWillBeTested(scripts) ? ' --parallel test:*' : ''
-    }`
+    ...projectShouldBeBuiltForVerification(scripts) && {pretest: 'run-s build'},
+    test: `npm-run-all --print-label --parallel lint:*${projectWillBeTested(scripts) ? ' --parallel test:*' : ''}`
   };
 }

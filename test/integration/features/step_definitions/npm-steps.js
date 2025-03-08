@@ -94,10 +94,13 @@ export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({
   const packageDetails = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
 
   if (tested && projectTypes.PACKAGE === projectType && provideExample && dialects.COMMON_JS !== dialect) {
-    assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label build --parallel lint:* --parallel test:*');
+    assert.equal(packageDetails.scripts.pretest, 'run-s build');
+    assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label --parallel lint:* --parallel test:*');
   } else if (tested) {
+    assert.isUndefined(packageDetails.scripts.pretest);
     assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label --parallel lint:* --parallel test:*');
   } else {
+    assert.isUndefined(packageDetails.scripts.pretest);
     assert.equal(packageDetails.scripts.test, 'npm-run-all --print-label --parallel lint:*');
   }
 

@@ -58,7 +58,8 @@ Then('the script is added for ensuring the node engines requirement is met', asy
 });
 
 Then('the updated test script includes build', async function () {
-  const {scripts: {test}} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+  const {scripts: {pretest, test}} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
 
-  assert.include(test, 'build');
+  assert.equal(pretest, 'run-s build');
+  assert.notInclude(test, 'build');
 });
