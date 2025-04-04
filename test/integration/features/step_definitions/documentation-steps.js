@@ -1,5 +1,4 @@
-import {promises as fs} from 'fs';
-import camelcase from 'camelcase';
+import {promises as fs} from 'node:fs';
 import {fileExists} from '@form8ion/core';
 import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
 
@@ -19,16 +18,14 @@ export async function assertThatDocumentationIsDefinedAppropriately(
   if (projectTypes.PACKAGE === projectType && exampleShouldBeProvided && dialects.COMMON_JS === dialect) {
     const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
 
-    assert.equal(exampleContents, `const ${camelcase(projectName)} = require('.');\n`);
+    assert.equal(exampleContents, "const {} = require('.');\n");
     assert.isTrue(await fileExists(`${process.cwd()}/index.js`));
     assert.isDefined(packageDetails.scripts['generate:md']);
     assert.isUndefined(packageDetails.scripts['pregenerate:md']);
   } else if (projectTypes.PACKAGE === projectType && exampleShouldBeProvided) {
     const exampleContents = (await fs.readFile(pathToExampleFile)).toString();
 
-    assert.equal(exampleContents, `// remark-usage-ignore-next
-/* eslint-disable-next-line no-unused-vars */
-import ${camelcase(projectName)} from './lib/index.js';
+    assert.equal(exampleContents, `import {} from './lib/index.js';
 `);
     assert.isTrue(await fileExists(`${projectRoot}/src/index.js`));
     assert.isDefined(packageDetails.scripts['generate:md']);

@@ -1,23 +1,17 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 import touch from 'touch';
-import camelcase from 'camelcase';
-import mustache from 'mustache';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import templatePath from '../../template-path.js';
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 import buildDetails from './build-details.js';
 
-vi.mock('fs');
+vi.mock('node:fs');
 vi.mock('make-dir');
-vi.mock('camelcase');
-vi.mock('mustache');
 vi.mock('touch');
-vi.mock('../../template-path');
 vi.mock('../publishable/bundler');
 
 describe('package build details', () => {
@@ -25,22 +19,8 @@ describe('package build details', () => {
   const projectName = any.word();
   const pathToExample = `${projectRoot}/example.js`;
   const bundlerResults = any.simpleObject();
-  const exampleContent = any.string();
-  const pathToExampleTemplate = any.string();
-  const exampleTemplateContent = any.string();
-  const camelizedProjectName = any.word();
   const packageBundlers = any.simpleObject();
   const decisions = any.simpleObject();
-
-  beforeEach(() => {
-    when(templatePath).calledWith('example.mustache').mockReturnValue(pathToExampleTemplate);
-    when(fs.readFile).calledWith(pathToExampleTemplate, 'utf8').mockResolvedValue(exampleTemplateContent);
-    when(camelcase).calledWith(projectName).mockReturnValue(camelizedProjectName);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it('should correctly define a common-js project', async () => {
     const results = await buildDetails({
@@ -51,7 +31,7 @@ describe('package build details', () => {
     });
 
     expect(results).toEqual({});
-    expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, `const ${camelizedProjectName} = require('.');\n`);
+    expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, "const {} = require('.');\n");
     expect(touch).toHaveBeenCalledWith(`${projectRoot}/index.js`);
   });
 
@@ -71,9 +51,6 @@ describe('package build details', () => {
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .mockResolvedValue(bundlerResults);
-    when(mustache.render)
-      .calledWith(exampleTemplateContent, {projectName: camelizedProjectName, esm: false})
-      .mockReturnValue(exampleContent);
 
     const results = await buildDetails({
       dialect,
@@ -100,7 +77,7 @@ describe('package build details', () => {
     });
     expect(fs.mkdir).toHaveBeenCalledWith(`${projectRoot}/src`, {recursive: true});
     expect(touch).toHaveBeenCalledWith(`${projectRoot}/src/index.js`);
-    expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, exampleContent);
+    expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, "import {} from './lib/index.js';\n");
   });
 
   it('should not create the example file for a modern-js project when `provideExample` is `false`', async () => {

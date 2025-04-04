@@ -1,37 +1,28 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
-import mustache from 'mustache';
 import touch from 'touch';
-import camelcase from 'camelcase';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
-import determinePathToTemplateFile from '../../template-path.js';
 
 const defaultBuildDirectory = 'lib';
 
-async function createExample(projectRoot, projectName, dialect) {
-  return fs.writeFile(
-    `${projectRoot}/example.js`,
-    mustache.render(
-      await fs.readFile(determinePathToTemplateFile('example.mustache'), 'utf8'),
-      {projectName: camelcase(projectName), esm: dialect === dialects.ESM}
-    )
-  );
+async function createExample(projectRoot) {
+  return fs.writeFile(`${projectRoot}/example.js`, "import {} from './lib/index.js';\n");
 }
 
-async function buildDetailsForCommonJsProject({projectRoot, projectName, provideExample}) {
+async function buildDetailsForCommonJsProject({projectRoot, provideExample}) {
   await Promise.all([
     touch(`${projectRoot}/index.js`),
     provideExample
-      ? fs.writeFile(`${projectRoot}/example.js`, `const ${camelcase(projectName)} = require('.');\n`)
+      ? fs.writeFile(`${projectRoot}/example.js`, "const {} = require('.');\n")
       : Promise.resolve()
   ]);
 
   return {};
 }
 
-export default async function ({
+export default async function buildDetails({
   projectRoot,
   projectName,
   visibility,
@@ -41,7 +32,7 @@ export default async function ({
   provideExample,
   decisions
 }) {
-  if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, projectName, provideExample});
+  if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, provideExample});
 
   await fs.mkdir(`${projectRoot}/src`, {recursive: true});
   const [bundlerResults] = await Promise.all([
