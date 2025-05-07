@@ -74,7 +74,6 @@
     "camelcase": "^8.0.0",
     "deepmerge": "^4.2.2",
     "execa": "^9.5.1",
-    "filedirname": "^3.0.0",
     "ini": "^5.0.0",
     "joi": "^17.5.0",
     "mustache": "^4.2.0",

@@ -54,10 +54,7 @@ Before(async function () {
   ({scaffold, lift, test, questionNames} = await import('@form8ion/javascript'));
 
   stubbedFs({
-    node_modules: stubbedNodeModules,
-    templates: {
-      'example.mustache': await fs.readFile(resolve(...pathToProjectRoot, 'templates', 'example.mustache'))
-    }
+    node_modules: stubbedNodeModules
   });
 
   this.configureLinting = true;
