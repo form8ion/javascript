@@ -4,7 +4,7 @@ import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 import defineBadges from './badges.js';
 import {lift as liftProvenance} from './provenance/index.js';
 
-export default async function ({projectRoot, packageDetails}) {
+export default async function liftPublishable({projectRoot, packageDetails}) {
   const {name: packageName, publishConfig: {access: packageAccessLevel}} = packageDetails;
   const homepage = `https://npm.im/${packageName}`;
 

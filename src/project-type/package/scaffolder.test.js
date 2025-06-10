@@ -91,7 +91,7 @@ describe('package project-type scaffolder', () => {
           require: './lib/index.js',
           import: './lib/index.mjs'
         },
-        files: ['example.js', 'lib/'],
+        files: ['example.js', 'lib/', 'src/'],
         publishConfig: {access: packageAccessLevel}
       }
     });
@@ -133,7 +133,7 @@ describe('package project-type scaffolder', () => {
       config: {
         main: './lib/index.js',
         exports: './lib/index.js',
-        files: ['example.js', 'lib/'],
+        files: ['example.js', 'lib/', 'src/'],
         sideEffects: false,
         publishConfig: {access: packageAccessLevel}
       }
@@ -183,7 +183,7 @@ describe('package project-type scaffolder', () => {
           require: './lib/index.js',
           import: './lib/index.mjs'
         },
-        files: ['example.js', 'lib/'],
+        files: ['example.js', 'lib/', 'src/'],
         publishConfig: {access: packageAccessLevel}
       }
     });
@@ -270,7 +270,7 @@ describe('package project-type scaffolder', () => {
           require: './lib/index.js',
           import: './lib/index.mjs'
         },
-        files: ['example.js', 'lib/'],
+        files: ['example.js', 'lib/', 'src/'],
         publishConfig: {
           access: packageAccessLevel,
           registry: publishRegistry

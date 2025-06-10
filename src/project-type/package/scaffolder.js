@@ -38,7 +38,7 @@ export default async function ({
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {
-        files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/']],
+        files: ['example.js', ...dialects.COMMON_JS === dialect ? ['index.js'] : ['lib/', 'src/']],
         publishConfig: {
           access: packageAccessLevel,
           ...publishRegistry && {registry: publishRegistry}

@@ -32,7 +32,7 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
     assert.equal(packageDetails.main, './lib/index.js');
     assert.equal(packageDetails.exports, './lib/index.js');
     assert.isUndefined(packageDetails.module);
-    assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
+    assert.deepEqual(packageDetails.files, ['example.js', 'lib/', 'src/']);
     assert.isFalse(packageDetails.sideEffects);
   } else if (dialects.TYPESCRIPT === dialect) {
     assert.equal(packageDetails.types, './lib/index.d.ts');
@@ -42,7 +42,7 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
       packageDetails.exports,
       {types: './lib/index.d.ts', require: './lib/index.js', import: './lib/index.mjs'}
     );
-    assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
+    assert.deepEqual(packageDetails.files, ['example.js', 'lib/', 'src/']);
     assert.isFalse(packageDetails.sideEffects);
   } else {
     assert.equal(packageDetails.main, './lib/index.js');
@@ -51,7 +51,7 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
       packageDetails.exports,
       {module: './lib/index.mjs', require: './lib/index.js', import: './lib/index.mjs'}
     );
-    assert.deepEqual(packageDetails.files, ['example.js', 'lib/']);
+    assert.deepEqual(packageDetails.files, ['example.js', 'lib/', 'src/']);
     assert.isFalse(packageDetails.sideEffects);
   }
 

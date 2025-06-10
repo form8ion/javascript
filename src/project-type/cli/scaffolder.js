@@ -7,7 +7,7 @@ import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 
 const defaultBuildDirectory = 'bin';
 
-export default async function ({
+export default async function scaffoldCli({
   packageName,
   visibility,
   projectRoot,
