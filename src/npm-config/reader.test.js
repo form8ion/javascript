@@ -3,7 +3,7 @@ import {stringify} from 'ini';
 import {fileExists} from '@form8ion/core';
 
 import {describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import any from '@travi/any';
 
 import readConfig from './reader.js';
@@ -17,16 +17,16 @@ describe('npm config reader', () => {
 
   it('should read the .npmrc file', async () => {
     const existingProperties = any.simpleObject();
-    when(fileExists).calledWith(pathToConfig).mockResolvedValue(true);
+    when(fileExists).calledWith(pathToConfig).thenResolve(true);
     when(fs.readFile)
       .calledWith(pathToConfig, 'utf-8')
-      .mockReturnValue(stringify(existingProperties));
+      .thenReturn(stringify(existingProperties));
 
     expect(await readConfig({projectRoot})).toEqual(existingProperties);
   });
 
   it('should return empty when the file does not exist', async () => {
-    when(fileExists).calledWith(pathToConfig).mockResolvedValue(false);
+    when(fileExists).calledWith(pathToConfig).thenResolve(false);
 
     expect(await readConfig({projectRoot})).toEqual({});
   });

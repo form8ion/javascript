@@ -1,7 +1,7 @@
 import * as prompts from '@form8ion/overridable-prompts';
 
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import {describe, expect, it, vi} from 'vitest';
 
 import {questionNames} from '../prompts/question-names.js';
@@ -26,7 +26,7 @@ describe('project-type prompts', () => {
         }],
         decisions
       )
-      .mockResolvedValue(answers);
+      .thenResolve(answers);
 
     expect(await prompt({types, projectType, decisions})).toEqual(chosenType);
   });

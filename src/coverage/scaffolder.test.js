@@ -2,7 +2,7 @@ import {scaffold as scaffoldCodecov} from '@form8ion/codecov';
 
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import scaffoldC8 from './c8/scaffolder.js';
 import scaffold from './scaffolder.js';
@@ -22,8 +22,8 @@ describe('coverage scaffolder', () => {
     const c8Results = any.simpleObject();
     const codecovResults = any.simpleObject();
     const pathWithinParent = any.string();
-    when(scaffoldC8).calledWith({projectRoot}).mockResolvedValue(c8Results);
-    when(scaffoldCodecov).calledWith({vcs, visibility, pathWithinParent}).mockResolvedValue(codecovResults);
+    when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
+    when(scaffoldCodecov).calledWith({vcs, visibility, pathWithinParent}).thenResolve(codecovResults);
 
     const results = await scaffold({vcs, visibility, projectRoot, pathWithinParent});
 

@@ -1,7 +1,7 @@
 import * as prompts from '@form8ion/overridable-prompts';
 
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import {describe, expect, it, vi} from 'vitest';
 
 import {questionNames} from '../prompts/question-names.js';
@@ -22,7 +22,7 @@ describe('project-type prompts', () => {
         message: 'Which type of unit testing framework should be used?',
         choices: [...Object.keys(frameworks), 'Other']
       }], decisions)
-      .mockResolvedValue(answers);
+      .thenResolve(answers);
 
     expect(await prompt({frameworks, decisions})).toEqual(chosenType);
   });

@@ -4,7 +4,7 @@ import {writePackageJson} from '@form8ion/javascript-core';
 
 import any from '@travi/any';
 import {vi, it, describe, expect} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import scaffoldNpm from './scaffolder.js';
 
@@ -20,8 +20,8 @@ describe('npm scaffolder', () => {
     const cliVersion = any.word();
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
-      .mockResolvedValue(JSON.stringify(existingPackageContents));
-    when(execa).calledWith('npm', ['--version']).mockResolvedValue({stdout: cliVersion});
+      .thenResolve(JSON.stringify(existingPackageContents));
+    when(execa).calledWith('npm', ['--version']).thenResolve({stdout: cliVersion});
 
     await scaffoldNpm({projectRoot});
 

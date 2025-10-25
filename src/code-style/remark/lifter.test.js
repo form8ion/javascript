@@ -3,7 +3,7 @@ import {load, write} from '@form8ion/config-file';
 
 import any from '@travi/any';
 import {describe, it, expect, afterEach, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import lift from './lifter.js';
 
@@ -18,7 +18,7 @@ describe('remark lifter', () => {
 
   it('should copy existing config to json format', async () => {
     const existingConfig = any.simpleObject();
-    when(load).calledWith({name: 'remark'}).mockResolvedValue(existingConfig);
+    when(load).calledWith({name: 'remark'}).thenResolve(existingConfig);
 
     expect(await lift({projectRoot})).toEqual({});
 

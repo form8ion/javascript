@@ -1,6 +1,6 @@
 import any from '@travi/any';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import buildAllowedHostsList from '../lockfile-lint/allowed-hosts-builder.js';
 import {
@@ -27,16 +27,16 @@ describe('registries lifter', () => {
   const existingNpmConfig = any.simpleObject();
 
   beforeEach(() => {
-    when(readNpmConfig).calledWith({projectRoot}).mockResolvedValue(existingNpmConfig);
-    when(buildRegistriesConfig).calledWith(registries).mockReturnValue(processedRegistryDetails);
+    when(readNpmConfig).calledWith({projectRoot}).thenResolve(existingNpmConfig);
+    when(buildRegistriesConfig).calledWith(registries).thenReturn(processedRegistryDetails);
   });
 
   it('should define the registries in the npmrc and lockfile-lint configs', async () => {
     const existingLockfileLintConfig = any.simpleObject();
     const allowedHosts = any.listOf(any.url);
-    when(lockfileLintIsAlreadyConfigured).calledWith({projectRoot}).mockResolvedValue(true);
-    when(readLockfileLintConfig).calledWith({projectRoot}).mockResolvedValue(existingLockfileLintConfig);
-    when(buildAllowedHostsList).calledWith({packageManager, registries}).mockReturnValue(allowedHosts);
+    when(lockfileLintIsAlreadyConfigured).calledWith({projectRoot}).thenResolve(true);
+    when(readLockfileLintConfig).calledWith({projectRoot}).thenResolve(existingLockfileLintConfig);
+    when(buildAllowedHostsList).calledWith({packageManager, registries}).thenReturn(allowedHosts);
 
     expect(await liftRegistries({projectRoot, packageManager, configs})).toEqual({});
 
@@ -52,10 +52,10 @@ describe('registries lifter', () => {
 
   it('should scaffold lockfile-lint if not already present', async () => {
     const lockfileLintResults = any.simpleObject();
-    when(lockfileLintIsAlreadyConfigured).calledWith({projectRoot}).mockResolvedValue(false);
+    when(lockfileLintIsAlreadyConfigured).calledWith({projectRoot}).thenResolve(false);
     when(scaffoldLockfileLint)
       .calledWith({projectRoot, packageManager, registries})
-      .mockResolvedValue(lockfileLintResults);
+      .thenResolve(lockfileLintResults);
 
     expect(await liftRegistries({projectRoot, packageManager, configs}))
       .toEqual(lockfileLintResults);

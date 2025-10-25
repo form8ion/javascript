@@ -2,7 +2,7 @@ import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core'
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
@@ -39,10 +39,10 @@ describe('package project-type scaffolder', () => {
   beforeEach(() => {
     when(documentationScaffolder.default)
       .calledWith({scope, packageName, visibility, packageManager, provideExample})
-      .mockReturnValue(documentation);
+      .thenReturn(documentation);
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
-      .mockReturnValue(packageAccessLevel);
+      .thenReturn(packageAccessLevel);
   });
 
   afterEach(() => {
@@ -51,7 +51,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a modern-js package', async () => {
     const dialect = dialects.BABEL;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -61,7 +61,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       decisions
-    }).mockResolvedValue(buildDetailsResults);
+    }).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -99,7 +99,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to an esm-only package', async () => {
     const dialect = dialects.ESM;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -109,7 +109,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       decisions
-    }).mockResolvedValue(buildDetailsResults);
+    }).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -142,7 +142,7 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a typescript package', async () => {
     const dialect = dialects.TYPESCRIPT;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -152,7 +152,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       decisions
-    }).mockResolvedValue(buildDetailsResults);
+    }).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -191,7 +191,7 @@ describe('package project-type scaffolder', () => {
 
   it('should not include build details when the project will not be scaffolded', async () => {
     const dialect = dialects.COMMON_JS;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -201,7 +201,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       decisions
-    }).mockResolvedValue(buildDetailsResults);
+    }).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -233,7 +233,7 @@ describe('package project-type scaffolder', () => {
   it('should define the registry to publish to when provided', async () => {
     const publishRegistry = any.url();
     const dialect = dialects.BABEL;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -243,7 +243,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       decisions
-    }).mockResolvedValue(buildDetailsResults);
+    }).thenResolve(buildDetailsResults);
 
     await scaffoldPackage({
       projectRoot,

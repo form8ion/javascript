@@ -2,7 +2,7 @@ import {promises as fs} from 'node:fs';
 
 import {describe, it, expect, vi, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {lift, test as predicate} from './engines.js';
 
@@ -19,19 +19,19 @@ describe('engines enhancer', () => {
     it('should return `true` when `engines.node` is defined', async () => {
       when(fs.readFile)
         .calledWith(`${projectRoot}/package.json`, 'utf8')
-        .mockResolvedValue(JSON.stringify({engines: {node: any.word()}}));
+        .thenResolve(JSON.stringify({engines: {node: any.word()}}));
 
       expect(await predicate({projectRoot})).toBe(true);
     });
 
     it('should return `false` when `engines.node` is not defined', async () => {
-      fs.readFile.mockReturnValue(JSON.stringify({engines: {}}));
+      when(fs.readFile).calledWith(`${projectRoot}/package.json`, 'utf8').thenReturn(JSON.stringify({engines: {}}));
 
       expect(await predicate({projectRoot})).toBe(false);
     });
 
     it('should return `false` when `engines` is not defined', async () => {
-      fs.readFile.mockReturnValue(JSON.stringify({}));
+      when(fs.readFile).calledWith(`${projectRoot}/package.json`, 'utf8').thenReturn(JSON.stringify({}));
 
       expect(await predicate({projectRoot})).toBe(false);
     });

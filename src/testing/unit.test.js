@@ -4,7 +4,7 @@ import deepmerge from 'deepmerge';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import scaffoldCoverage from '../coverage/scaffolder.js';
 import prompt from './prompt.js';
@@ -36,21 +36,21 @@ describe('unit testing scaffolder', () => {
   it('should scaffold the chosen framework', async () => {
     const visibility = any.word();
     const validatedFrameworks = any.simpleObject();
-    when(validateOptions).calledWith(pluginsSchema, frameworks).mockReturnValue(validatedFrameworks);
-    when(prompt).calledWith({frameworks: validatedFrameworks, decisions}).mockResolvedValue(chosenFramework);
+    when(validateOptions).calledWith(pluginsSchema, frameworks).thenReturn(validatedFrameworks);
+    when(prompt).calledWith({frameworks: validatedFrameworks, decisions}).thenResolve(chosenFramework);
     when(scaffoldChoice)
       .calledWith(validatedFrameworks, chosenFramework, {projectRoot, dialect})
-      .mockResolvedValue(unitTestFrameworkResults);
+      .thenResolve(unitTestFrameworkResults);
     when(scaffoldCoverage)
       .calledWith({projectRoot, vcs, visibility, pathWithinParent})
-      .mockResolvedValue(coverageResults);
+      .thenResolve(coverageResults);
     when(deepmerge.all)
       .calledWith([
         {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}},
         unitTestFrameworkResults,
         coverageResults
       ])
-      .mockReturnValue(mergedResults);
+      .thenReturn(mergedResults);
 
     expect(await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility, pathWithinParent, dialect}))
       .toEqual(mergedResults);

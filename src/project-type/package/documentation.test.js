@@ -2,7 +2,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 
 import any from '@travi/any';
 import {describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import buildDocumentationCommand from '../../documentation/generation-command.js';
 import scaffoldDocumentation from './documentation.js';
@@ -14,7 +14,7 @@ describe('package documentation', () => {
   const documentationGenerationCommand = any.string();
 
   it('should provide `npm install` instructions for packages when the package manager is npm', () => {
-    when(buildDocumentationCommand).calledWith(packageManagers.NPM).mockReturnValue(documentationGenerationCommand);
+    when(buildDocumentationCommand).calledWith(packageManagers.NPM).thenReturn(documentationGenerationCommand);
 
     const documentation = scaffoldDocumentation({
       packageName,
@@ -34,7 +34,7 @@ run \`${documentationGenerationCommand}\` to inject the usage example`);
   });
 
   it('should not include the example section when `provideExample` is `false`', () => {
-    when(buildDocumentationCommand).calledWith(packageManagers.NPM).mockReturnValue(documentationGenerationCommand);
+    when(buildDocumentationCommand).calledWith(packageManagers.NPM).thenReturn(documentationGenerationCommand);
 
     const documentation = scaffoldDocumentation({
       packageName,
@@ -50,7 +50,7 @@ $ npm install ${packageName}
   });
 
   it('should provide `yarn add` instructions for packages when the package manager is yarn', () => {
-    when(buildDocumentationCommand).calledWith(packageManagers.YARN).mockReturnValue(documentationGenerationCommand);
+    when(buildDocumentationCommand).calledWith(packageManagers.YARN).thenReturn(documentationGenerationCommand);
 
     const documentation = scaffoldDocumentation({
       packageName,
@@ -80,7 +80,7 @@ run \`${documentationGenerationCommand}\` to inject the usage example`);
 
   it('should provide an access note for private packages', () => {
     const scope = any.word();
-    when(buildDocumentationCommand).calledWith(packageManagers.NPM).mockReturnValue(documentationGenerationCommand);
+    when(buildDocumentationCommand).calledWith(packageManagers.NPM).thenReturn(documentationGenerationCommand);
 
     const documentation = scaffoldDocumentation({
       packageName,

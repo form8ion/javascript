@@ -2,7 +2,7 @@ import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-c
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
@@ -29,11 +29,11 @@ describe('cli project-type scaffolder', () => {
   beforeEach(() => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
-      .mockReturnValue(packageAccessLevel);
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).mockReturnValue(publishableResults);
+      .thenReturn(packageAccessLevel);
+    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.CLI})
-      .mockResolvedValue(bundlerResults);
+      .thenResolve(bundlerResults);
   });
 
   afterEach(() => {

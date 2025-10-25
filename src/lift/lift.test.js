@@ -6,7 +6,7 @@ import * as commitConventionPlugin from '@form8ion/commit-convention';
 
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import * as registriesPlugin from '../registries/index.js';
 import * as coveragePlugin from '../coverage/index.js';
@@ -54,10 +54,10 @@ describe('lift', () => {
   beforeEach(() => {
     when(packageManagerResolver)
       .calledWith({projectRoot, packageManager: manager})
-      .mockResolvedValue(packageManager);
+      .thenResolve(packageManager);
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf8')
-      .mockResolvedValue(JSON.stringify(packageDetails));
+      .thenResolve(JSON.stringify(packageDetails));
   });
 
   it('should lift results that are specific to js projects', async () => {
@@ -68,7 +68,7 @@ describe('lift', () => {
         enhancers: internalEnhancers,
         options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs}
       })
-      .mockResolvedValue(enhancerResults);
+      .thenResolve(enhancerResults);
 
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, configs});
 
@@ -87,7 +87,7 @@ describe('lift', () => {
         enhancers: {...enhancers, ...internalEnhancers},
         options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs: {}}
       })
-      .mockResolvedValue(enhancerResults);
+      .thenResolve(enhancerResults);
 
     const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, enhancers});
 

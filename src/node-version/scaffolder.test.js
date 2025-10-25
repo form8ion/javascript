@@ -2,7 +2,7 @@ import {promises as fs} from 'node:fs';
 
 import {vi, it, expect, describe, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {determineLatestVersionOf, install as installNodeVersion} from './tasks.js';
 import {scaffold as scaffoldNodeVersion} from './index.js';
@@ -20,7 +20,7 @@ describe('node-version scaffolder', () => {
   it('should configure nvm with the desired version', async () => {
     const nodeVersionCategory = any.word();
     const version = any.word();
-    when(determineLatestVersionOf).calledWith(nodeVersionCategory).mockResolvedValue(version);
+    when(determineLatestVersionOf).calledWith(nodeVersionCategory).thenResolve(version);
 
     expect(await scaffoldNodeVersion({projectRoot, nodeVersionCategory})).toEqual(version);
     expect(installNodeVersion).toHaveBeenCalledWith(nodeVersionCategory);

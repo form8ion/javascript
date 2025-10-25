@@ -4,7 +4,7 @@ import deepmerge from 'deepmerge';
 
 import {describe, vi, it, expect, afterEach, beforeEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {scaffold as scaffoldRemark} from './remark/index.js';
 import {scaffold} from './index.js';
@@ -29,11 +29,11 @@ describe('code-style scaffolder', () => {
   const mergedResults = any.simpleObject();
 
   beforeEach(() => {
-    when(scaffoldEslint).calledWith({projectRoot, config: configForEslint}).mockResolvedValue(eslintResults);
+    when(scaffoldEslint).calledWith({projectRoot, config: configForEslint}).thenResolve(eslintResults);
     when(scaffoldRemark)
       .calledWith({projectRoot, projectType, config: configForRemark, vcs})
-      .mockResolvedValue(remarkResults);
-    when(scaffoldPrettier).calledWith({projectRoot, config: configForPrettier}).mockResolvedValue(prettierResults);
+      .thenResolve(remarkResults);
+    when(scaffoldPrettier).calledWith({projectRoot, config: configForPrettier}).thenResolve(prettierResults);
   });
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('code-style scaffolder', () => {
   });
 
   it('should configure linters when config definitions are provided', async () => {
-    when(deepmerge.all).calledWith([eslintResults, remarkResults, prettierResults]).mockReturnValue(mergedResults);
+    when(deepmerge.all).calledWith([eslintResults, remarkResults, prettierResults]).thenReturn(mergedResults);
 
     const result = await scaffold({
       projectRoot,
@@ -56,7 +56,7 @@ describe('code-style scaffolder', () => {
   });
 
   it('should not scaffold eslint when a config is not provided', async () => {
-    when(deepmerge.all).calledWith([remarkResults, prettierResults]).mockReturnValue(mergedResults);
+    when(deepmerge.all).calledWith([remarkResults, prettierResults]).thenReturn(mergedResults);
 
     const result = await scaffold({
       projectRoot,
@@ -71,7 +71,7 @@ describe('code-style scaffolder', () => {
   });
 
   it('should not scaffold eslint when `transpileLint` is false', async () => {
-    when(deepmerge.all).calledWith([remarkResults, prettierResults]).mockReturnValue(mergedResults);
+    when(deepmerge.all).calledWith([remarkResults, prettierResults]).thenReturn(mergedResults);
 
     const result = await scaffold({
       projectRoot,

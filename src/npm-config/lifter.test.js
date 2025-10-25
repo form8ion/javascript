@@ -1,6 +1,6 @@
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import read from './reader.js';
 import write from './writer.js';
@@ -15,7 +15,7 @@ describe('npm config lifter', () => {
     const desiredProperties = any.simpleObject();
     when(read)
       .calledWith({projectRoot})
-      .mockResolvedValue({...desiredProperties, provenance: true, 'engines-strict': true});
+      .thenResolve({...desiredProperties, provenance: true, 'engines-strict': true});
 
     expect(await liftNpmConfig({projectRoot})).toEqual({});
     expect(write).toHaveBeenCalledWith({projectRoot, config: desiredProperties});

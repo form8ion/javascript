@@ -1,7 +1,7 @@
 import {scaffoldChoice as scaffoldChosenBundler} from '@form8ion/javascript-core';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import any from '@travi/any';
 
 import chooseBundler from './prompt.js';
@@ -23,10 +23,10 @@ describe('package bundler scaffolder', () => {
     const decisions = any.simpleObject();
     const bundlerResults = any.simpleObject();
     const chosenBundler = any.word();
-    when(chooseBundler).calledWith({bundlers, decisions}).mockResolvedValue(chosenBundler);
+    when(chooseBundler).calledWith({bundlers, decisions}).thenResolve(chosenBundler);
     when(scaffoldChosenBundler)
       .calledWith(bundlers, chosenBundler, {projectRoot, dialect, projectType})
-      .mockResolvedValue(bundlerResults);
+      .thenResolve(bundlerResults);
 
     expect(await scaffoldBundler({bundlers, projectRoot, projectType, dialect, decisions})).toEqual(bundlerResults);
   });

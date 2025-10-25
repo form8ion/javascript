@@ -2,7 +2,7 @@ import {fileExists} from '@form8ion/core';
 
 import {expect, describe, it, vi, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import yarnIsUsed from './tester.js';
 
@@ -16,13 +16,13 @@ describe('yarn predicate', () => {
   });
 
   it('should return `true` is a `yarn.lock` exists', async () => {
-    when(fileExists).calledWith(`${projectRoot}/yarn.lock`).mockResolvedValue(true);
+    when(fileExists).calledWith(`${projectRoot}/yarn.lock`).thenResolve(true);
 
     expect(await yarnIsUsed({projectRoot})).toBe(true);
   });
 
   it('should return `false` is a `yarn.lock` does not exist', async () => {
-    when(fileExists).calledWith(`${projectRoot}/yarn.lock`).mockResolvedValue(false);
+    when(fileExists).calledWith(`${projectRoot}/yarn.lock`).thenResolve(false);
 
     expect(await yarnIsUsed({projectRoot})).toBe(false);
   });

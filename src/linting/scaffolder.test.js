@@ -1,6 +1,6 @@
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {scaffold as scaffoldLockfileLint} from '../lockfile-lint/index.js';
 import {scaffold} from './index.js';
@@ -18,7 +18,7 @@ describe('linting scaffolder', () => {
     const lockfileLintResults = any.simpleObject();
     when(scaffoldLockfileLint)
       .calledWith({projectRoot, packageManager, registries})
-      .mockResolvedValue(lockfileLintResults);
+      .thenResolve(lockfileLintResults);
 
     expect(await scaffold({
       projectRoot,

@@ -2,7 +2,7 @@ import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import enhanceSlsa from './slsa.js';
 import lift from './lifter.js';
@@ -20,7 +20,7 @@ describe('provenance lifter', () => {
   it('should configure provenance for a public package published to the official registry', async () => {
     const packageDetails = {...any.simpleObject(), publishConfig: {access: 'public'}};
     const slsaResults = any.simpleObject();
-    when(enhanceSlsa).calledWith({provenance: true}).mockReturnValue(slsaResults);
+    when(enhanceSlsa).calledWith({provenance: true}).thenReturn(slsaResults);
 
     expect(await lift({packageDetails, projectRoot})).toEqual(slsaResults);
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({

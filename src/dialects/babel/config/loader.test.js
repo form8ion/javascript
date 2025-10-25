@@ -2,7 +2,7 @@ import {fileTypes, loadConfigFile} from '@form8ion/core';
 
 import {describe, it, expect, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import loadConfig from './loader.js';
 
@@ -14,7 +14,7 @@ describe('babel config loader', () => {
     const parsedConfig = any.simpleObject();
     when(loadConfigFile)
       .calledWith({name: '.babelrc', format: fileTypes.JSON, path: projectRoot})
-      .mockResolvedValue(parsedConfig);
+      .thenResolve(parsedConfig);
 
     expect(await loadConfig({projectRoot})).toEqual(parsedConfig);
   });

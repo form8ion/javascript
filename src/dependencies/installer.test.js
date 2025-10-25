@@ -3,7 +3,7 @@ import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
 
 import {vi, it, describe, expect, beforeEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {getDependencyTypeFlag, getInstallationCommandFor, getExactFlag} from './package-managers.js';
 import install from './installer.js';
@@ -22,7 +22,7 @@ describe('dependencies installer', () => {
   const exactFlag = any.word();
 
   beforeEach(() => {
-    when(getInstallationCommandFor).calledWith(packageManager).mockReturnValue(installationCommand);
+    when(getInstallationCommandFor).calledWith(packageManager).thenReturn(installationCommand);
   });
 
   it('should avoid execution when there are no dependencies to install', async () => {
@@ -33,7 +33,7 @@ describe('dependencies installer', () => {
 
   it('should install dependencies', async () => {
     const dependenciesType = any.word();
-    when(getDependencyTypeFlag).calledWith(packageManager, dependenciesType).mockReturnValue(typeFlag);
+    when(getDependencyTypeFlag).calledWith(packageManager, dependenciesType).thenReturn(typeFlag);
 
     await install(dependencies, dependenciesType, projectRoot, packageManager);
 
@@ -47,8 +47,8 @@ describe('dependencies installer', () => {
 
   it('should pin versions when installing dev-dependencies', async () => {
     await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
-    when(getDependencyTypeFlag).calledWith(packageManager, DEV_DEPENDENCY_TYPE).mockReturnValue(typeFlag);
-    when(getExactFlag).calledWith(packageManager).mockReturnValue(exactFlag);
+    when(getDependencyTypeFlag).calledWith(packageManager, DEV_DEPENDENCY_TYPE).thenReturn(typeFlag);
+    when(getExactFlag).calledWith(packageManager).thenReturn(exactFlag);
 
     await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
 
@@ -61,9 +61,9 @@ describe('dependencies installer', () => {
   });
 
   it('should default to `npm` when the package-manager is not specified', async () => {
-    when(getDependencyTypeFlag).calledWith(packageManagers.NPM, DEV_DEPENDENCY_TYPE).mockReturnValue(typeFlag);
-    when(getExactFlag).calledWith(packageManagers.NPM).mockReturnValue(exactFlag);
-    when(getInstallationCommandFor).calledWith(packageManagers.NPM).mockReturnValue(installationCommand);
+    when(getDependencyTypeFlag).calledWith(packageManagers.NPM, DEV_DEPENDENCY_TYPE).thenReturn(typeFlag);
+    when(getExactFlag).calledWith(packageManagers.NPM).thenReturn(exactFlag);
+    when(getInstallationCommandFor).calledWith(packageManagers.NPM).thenReturn(installationCommand);
 
     await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot);
 

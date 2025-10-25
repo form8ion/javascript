@@ -4,7 +4,7 @@ import {dialects, projectTypes} from '@form8ion/javascript-core';
 
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 import buildDetails from './build-details.js';
@@ -50,7 +50,7 @@ describe('package build details', () => {
     const dialect = dialects.BABEL;
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
-      .mockResolvedValue(bundlerResults);
+      .thenResolve(bundlerResults);
 
     const results = await buildDetails({
       dialect,
@@ -84,7 +84,7 @@ describe('package build details', () => {
     const dialect = dialects.BABEL;
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
-      .mockResolvedValue(bundlerResults);
+      .thenResolve(bundlerResults);
 
     const results = await buildDetails({
       dialect,

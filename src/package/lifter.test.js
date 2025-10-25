@@ -4,7 +4,7 @@ import {writePackageJson} from '@form8ion/javascript-core';
 
 import {describe, it, expect, vi, beforeEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {process as processDependencies} from '../dependencies/index.js';
 import {lift as liftScripts} from './scripts/index.js';
@@ -36,11 +36,11 @@ describe('package.json lifter', () => {
   const scriptDependencies = any.simpleObject();
 
   beforeEach(() => {
-    when(defineVcsHostDetails).calledWith(vcs, pathWithinParent).mockReturnValue(vcsDetails);
+    when(defineVcsHostDetails).calledWith(vcs, pathWithinParent).thenReturn(vcsDetails);
     when(liftScripts)
       .calledWith({existingScripts, scripts})
-      .mockReturnValue({scripts: liftedScripts, dependencies: scriptDependencies});
-    when(deepmerge).calledWith(dependencies, scriptDependencies).mockReturnValue(mergedDependencies);
+      .thenReturn({scripts: liftedScripts, dependencies: scriptDependencies});
+    when(deepmerge).calledWith(dependencies, scriptDependencies).thenReturn(mergedDependencies);
   });
 
   it('should update package.json properties and process dependencies', async () => {
@@ -48,10 +48,10 @@ describe('package.json lifter', () => {
     const devDependencies = any.listOf(any.word);
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
-      .mockResolvedValue(JSON.stringify(existingPackageContents));
+      .thenResolve(JSON.stringify(existingPackageContents));
     when(sortPackageProperties)
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts})
-      .mockReturnValue(config);
+      .thenReturn(config);
 
     await liftPackage({dependencies, devDependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
 
@@ -68,10 +68,10 @@ describe('package.json lifter', () => {
     const existingPackageContents = {...any.simpleObject(), scripts: existingScripts};
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
-      .mockResolvedValue(JSON.stringify(existingPackageContents));
+      .thenResolve(JSON.stringify(existingPackageContents));
     when(sortPackageProperties)
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts, keywords: tags})
-      .mockReturnValue(config);
+      .thenReturn(config);
 
     await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
 
@@ -83,7 +83,7 @@ describe('package.json lifter', () => {
     const existingPackageContents = {...any.simpleObject(), scripts: existingScripts, keywords: existingKeywords};
     when(fs.readFile)
       .calledWith(`${projectRoot}/package.json`, 'utf-8')
-      .mockResolvedValue(JSON.stringify(existingPackageContents));
+      .thenResolve(JSON.stringify(existingPackageContents));
     when(sortPackageProperties)
       .calledWith({
         ...existingPackageContents,
@@ -91,7 +91,7 @@ describe('package.json lifter', () => {
         scripts: liftedScripts,
         keywords: [...existingKeywords, ...tags]
       })
-      .mockReturnValue(config);
+      .thenReturn(config);
 
     await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
 

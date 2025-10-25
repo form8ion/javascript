@@ -2,7 +2,7 @@ import {fileExists} from '@form8ion/core';
 
 import {describe, vi, it, expect, afterEach, beforeEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import testForRemark from './tester.js';
 
@@ -24,22 +24,22 @@ describe('remark predicate', () => {
   });
 
   it('should return true when json remark config is present in the project', async () => {
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).mockResolvedValue(true);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).thenResolve(true);
 
     expect(await testForRemark({projectRoot})).toBe(true);
   });
 
   it('should return true when js remark config is present in the project', async () => {
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).mockResolvedValue(false);
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.js`).mockResolvedValue(true);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).thenResolve(false);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.js`).thenResolve(true);
 
     expect(await testForRemark({projectRoot})).toBe(true);
   });
 
   it('should return true when cjs remark config is present in the project', async () => {
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).mockResolvedValue(false);
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.js`).mockResolvedValue(false);
-    when(fileExists).calledWith(`${projectRoot}/.remarkrc.cjs`).mockResolvedValue(true);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.json`).thenResolve(false);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.js`).thenResolve(false);
+    when(fileExists).calledWith(`${projectRoot}/.remarkrc.cjs`).thenResolve(true);
 
     expect(await testForRemark({projectRoot})).toBe(true);
   });

@@ -3,7 +3,7 @@ import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import any from '@travi/any';
 
 import {scaffold as scaffoldPackage} from '../package/index.js';
@@ -98,7 +98,7 @@ describe('javascript project scaffolder', () => {
 
     when(validate)
       .calledWith(options)
-      .mockReturnValue({
+      .thenReturn({
         projectRoot,
         projectName,
         description,
@@ -112,7 +112,7 @@ describe('javascript project scaffolder', () => {
       });
     when(prompt)
       .calledWith(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent)
-      .mockResolvedValue({
+      .thenResolve({
         packageManager,
         dialect,
         scope,
@@ -125,11 +125,11 @@ describe('javascript project scaffolder', () => {
         nodeVersionCategory,
         configureLinting
       });
-    when(scaffoldDocumentation).calledWith({packageManager, projectTypeResults}).mockReturnValue(documentation);
-    when(buildDocumentationCommand).calledWith(packageManager).mockReturnValue(documentationCommand);
+    when(scaffoldDocumentation).calledWith({packageManager, projectTypeResults}).thenReturn(documentation);
+    when(buildDocumentationCommand).calledWith(packageManager).thenReturn(documentationCommand);
     when(scaffoldPackage)
       .calledWith({projectRoot, projectName, scope, dialect, license, author, description})
-      .mockResolvedValue(packageResults);
+      .thenResolve(packageResults);
     when(scaffoldProjectType)
       .calledWith({
         projectRoot,
@@ -150,7 +150,7 @@ describe('javascript project scaffolder', () => {
         tests,
         publishRegistry
       })
-      .mockResolvedValue(projectTypeResults);
+      .thenResolve(projectTypeResults);
     when(scaffoldVerification)
       .calledWith({
         projectRoot,
@@ -164,32 +164,32 @@ describe('javascript project scaffolder', () => {
         pathWithinParent,
         unitTestFrameworks
       })
-      .mockResolvedValue(verificationResults);
-    when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}).mockResolvedValue(nodeVersionResults);
+      .thenResolve(verificationResults);
+    when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}).thenResolve(nodeVersionResults);
     when(scaffoldDialect)
       .calledWith({dialect, configs, projectRoot, projectType, testFilenamePattern})
-      .mockResolvedValue(dialectResults);
-    when(scaffoldNpmConfig).calledWith({projectType, projectRoot}).mockResolvedValue(npmConfigResults);
+      .thenResolve(dialectResults);
+    when(scaffoldNpmConfig).calledWith({projectType, projectRoot}).thenResolve(npmConfigResults);
     when(scaffoldCodeStyle)
       .calledWith({projectRoot, projectType, configs, vcs, configureLinting})
-      .mockResolvedValue(codeStyleResults);
+      .thenResolve(codeStyleResults);
     when(scaffoldChoice)
       .calledWith(
         ciServices,
         ciChoice,
         {projectRoot, vcs, visibility, projectType, projectName, nodeVersion: nodeVersionResults, tests}
       )
-      .mockResolvedValue(ciServiceResults);
+      .thenResolve(ciServiceResults);
     when(scaffoldChoice)
       .calledWith(
         hosts,
         hostChoice,
         {projectRoot, projectName, nodeVersion: nodeVersionResults, buildDirectory: `./${buildDirectory}`}
       )
-      .mockResolvedValue(hostResults);
+      .thenResolve(hostResults);
     when(scaffoldCommitConvention)
       .calledWith({projectRoot, projectType, configs, pathWithinParent})
-      .mockResolvedValue(commitConventionResults);
+      .thenResolve(commitConventionResults);
     when(scaffoldProjectTypePlugin)
       .calledWith({
         projectRoot,
@@ -207,8 +207,8 @@ describe('javascript project scaffolder', () => {
           [projectTypes.MONOREPO]: monorepoTypes
         }
       })
-      .mockResolvedValue(projectTypePluginResults);
-    when(buildVcsIgnoreLists).calledWith(mergedVcsIgnore).mockReturnValue(vcsIgnore);
+      .thenResolve(projectTypePluginResults);
+    when(buildVcsIgnoreLists).calledWith(mergedVcsIgnore).thenReturn(vcsIgnore);
     when(deepmerge.all)
       .calledWith([
         hostResults,
@@ -221,7 +221,7 @@ describe('javascript project scaffolder', () => {
         dialectResults,
         projectTypePluginResults
       ])
-      .mockReturnValue(mergedResults);
+      .thenReturn(mergedResults);
   });
 
   it('should scaffold the javascript details', async () => {

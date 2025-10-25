@@ -2,7 +2,7 @@ import {writePackageJson} from '@form8ion/javascript-core';
 
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import * as buildPackageDetails from './details.js';
 import buildPackageName from './package-name.js';
@@ -23,14 +23,14 @@ describe('package scaffolder', () => {
     const license = any.string();
     const author = any.simpleObject();
     const description = any.sentence();
-    when(buildPackageName).calledWith(projectName, scope).mockReturnValue(packageName);
+    when(buildPackageName).calledWith(projectName, scope).thenReturn(packageName);
     when(buildPackageDetails.default).calledWith({
       packageName,
       dialect,
       license,
       author,
       description
-    }).mockResolvedValue(packageDetails);
+    }).thenResolve(packageDetails);
 
     expect(await scaffold({
       projectRoot,

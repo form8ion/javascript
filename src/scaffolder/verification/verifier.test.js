@@ -3,7 +3,7 @@ import {scaffold as scaffoldHusky} from '@form8ion/husky';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import * as testingScaffolder from './testing/scaffolder.js';
 import {scaffold as scaffoldLinting} from '../../linting/index.js';
@@ -37,12 +37,12 @@ describe('verification', () => {
     const mergedResults = any.simpleObject();
     when(scaffoldLinting)
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
-      .mockResolvedValue(lintingResults);
+      .thenResolve(lintingResults);
     when(testingScaffolder.default)
       .calledWith({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
-      .mockResolvedValue(testingResults);
-    when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).mockResolvedValue(huskyResults);
-    when(deepmerge.all).calledWith([testingResults, lintingResults, huskyResults]).mockReturnValue(mergedResults);
+      .thenResolve(testingResults);
+    when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).thenResolve(huskyResults);
+    when(deepmerge.all).calledWith([testingResults, lintingResults, huskyResults]).thenReturn(mergedResults);
 
     expect(await scaffoldVerification({
       projectRoot,

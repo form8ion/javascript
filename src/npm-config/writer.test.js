@@ -3,7 +3,7 @@ import {stringify} from 'ini';
 
 import {describe, expect, vi, it} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import write from './writer.js';
 
@@ -15,7 +15,7 @@ describe('npm config writer', () => {
     const projectRoot = any.string();
     const config = any.simpleObject();
     const stringifiedIniConfig = any.string();
-    when(stringify).calledWith(config).mockReturnValue(stringifiedIniConfig);
+    when(stringify).calledWith(config).thenReturn(stringifiedIniConfig);
 
     await write({projectRoot, config});
 

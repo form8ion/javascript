@@ -4,7 +4,7 @@ import {write as writeConfigFile} from '@form8ion/config-file';
 
 import {afterEach, vi, expect, it, describe} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import buildAllowedHosts from './allowed-hosts-builder.js';
 import scaffoldLockfileLint from './scaffolder.js';
@@ -24,7 +24,7 @@ describe('lockfile linting scaffolder', () => {
 
   it('should be configured properly for npm', async () => {
     const allowedHosts = any.listOf(any.url);
-    when(buildAllowedHosts).calledWith({packageManager: packageManagers.NPM, registries}).mockReturnValue(allowedHosts);
+    when(buildAllowedHosts).calledWith({packageManager: packageManagers.NPM, registries}).thenReturn(allowedHosts);
 
     const {dependencies, scripts} = await scaffoldLockfileLint({
       projectRoot,
@@ -51,7 +51,7 @@ describe('lockfile linting scaffolder', () => {
     const allowedHosts = any.listOf(any.url);
     when(buildAllowedHosts)
       .calledWith({packageManager: packageManagers.YARN, registries})
-      .mockReturnValue(allowedHosts);
+      .thenReturn(allowedHosts);
 
     const {dependencies, scripts} = await scaffoldLockfileLint({
       projectRoot,

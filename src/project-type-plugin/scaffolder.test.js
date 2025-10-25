@@ -1,7 +1,7 @@
 import {scaffoldChoice} from '@form8ion/javascript-core';
 
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import {describe, expect, it, vi} from 'vitest';
 
 import chooseProjectTypePlugin from './prompt.js';
@@ -28,14 +28,14 @@ describe('chosen project-type plugin scaffolder', () => {
     const plugins = {...any.simpleObject(), [projectType]: pluginsForProjectType};
     when(chooseProjectTypePlugin)
       .calledWith({types: pluginsForProjectType, decisions, projectType})
-      .mockReturnValue(chosenType);
+      .thenReturn(chosenType);
     when(scaffoldChoice)
       .calledWith(
         pluginsForProjectType,
         chosenType,
         {projectRoot, packageManager, projectName, packageName, tests, scope, dialect}
       )
-      .mockResolvedValue(typeScaffoldingResults);
+      .thenResolve(typeScaffoldingResults);
 
     expect(await scaffold({
       projectRoot,

@@ -1,7 +1,7 @@
 import {fileTypes, loadConfigFile} from '@form8ion/core';
 import {write as writeConfig} from '@form8ion/config-file';
 
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import any from '@travi/any';
 import {describe, expect, it, vi} from 'vitest';
 
@@ -17,7 +17,7 @@ describe('lockfile-lint config', () => {
     const config = any.simpleObject();
     when(loadConfigFile)
       .calledWith({name: '.lockfile-lintrc', format: fileTypes.JSON, path: projectRoot})
-      .mockResolvedValue(config);
+      .thenResolve(config);
 
     expect(await read({projectRoot})).toEqual(config);
   });

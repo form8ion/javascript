@@ -2,7 +2,7 @@ import {projectTypes} from '@form8ion/javascript-core';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {scaffold as scaffoldPackageType} from './package/index.js';
 import {scaffold as scaffoldApplicationType} from './application/index.js';
@@ -46,7 +46,7 @@ describe('project-type scaffolder', () => {
       dialect,
       provideExample,
       publishRegistry
-    }).mockResolvedValue(results);
+    }).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.PACKAGE,
@@ -65,7 +65,7 @@ describe('project-type scaffolder', () => {
   });
 
   it('should apply the application-type scaffolder when the project-type is `Application`', async () => {
-    when(scaffoldApplicationType).calledWith({projectRoot}).mockResolvedValue(results);
+    when(scaffoldApplicationType).calledWith({projectRoot}).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.APPLICATION,
@@ -81,7 +81,7 @@ describe('project-type scaffolder', () => {
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
     when(scaffoldCliType)
       .calledWith({packageName, visibility, projectRoot, dialect, publishRegistry, decisions, packageBundlers})
-      .mockResolvedValue(results);
+      .thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.CLI,
@@ -96,7 +96,7 @@ describe('project-type scaffolder', () => {
   });
 
   it('should apply the monorepo-type scaffolder when the project-type is `Monorepo`', async () => {
-    when(scaffoldMonorepoType).calledWith({projectRoot}).mockResolvedValue(results);
+    when(scaffoldMonorepoType).calledWith({projectRoot}).thenResolve(results);
 
     expect(await projectTypeScaffolder({projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions}))
       .toEqual(results);

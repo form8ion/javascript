@@ -2,7 +2,7 @@ import sortObjectKeys from 'sort-object-keys';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import sortProperties from './property-sorter.js';
 
@@ -49,7 +49,7 @@ describe('package.json property sorter', () => {
         'devDependencies',
         'peerDependencies'
       ]
-    ).mockReturnValue(sortedPackageContents);
+    ).thenReturn(sortedPackageContents);
 
     expect(sortProperties(packageContents)).toEqual(sortedPackageContents);
   });

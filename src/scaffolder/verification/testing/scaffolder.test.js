@@ -1,6 +1,6 @@
 import any from '@travi/any';
 import {it, expect, describe, vi, beforeEach} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import scaffoldUnitTesting from '../../../testing/unit.js';
 import scaffoldTesting from './scaffolder.js';
@@ -24,7 +24,7 @@ describe('testing scaffolder', () => {
   beforeEach(() => {
     when(scaffoldUnitTesting)
       .calledWith({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect, pathWithinParent})
-      .mockResolvedValue({
+      .thenResolve({
         dependencies: {javascript: {development: unitTestingDevDependencies}},
         scripts: unitTestScripts,
         vcsIgnore: {files: unitTestFilesToIgnoreFromVcs, directories: unitTestDirectoriesToIgnoreFromVcs},

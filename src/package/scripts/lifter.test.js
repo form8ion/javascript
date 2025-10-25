@@ -1,5 +1,5 @@
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import {describe, expect, it, vi} from 'vitest';
 
 import updateTestScript from './test-script-updater.js';
@@ -12,7 +12,7 @@ describe('package.json scripts lifter', () => {
     const existingScripts = any.simpleObject();
     const scripts = any.simpleObject();
     const updatedScripts = any.simpleObject();
-    when(updateTestScript).calledWith({...existingScripts, ...scripts}).mockReturnValue(updatedScripts);
+    when(updateTestScript).calledWith({...existingScripts, ...scripts}).thenReturn(updatedScripts);
 
     expect(liftScripts({existingScripts, scripts})).toEqual({
       scripts: updatedScripts,

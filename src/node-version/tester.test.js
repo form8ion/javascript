@@ -2,7 +2,7 @@ import {fileExists} from '@form8ion/core';
 
 import {expect, describe, it, vi, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import npmIsUsed from './tester.js';
 
@@ -16,13 +16,13 @@ describe('nvm predicate', () => {
   });
 
   it('should return `true` is a `.nvmrc` exists', async () => {
-    when(fileExists).calledWith(`${projectRoot}/.nvmrc`).mockResolvedValue(true);
+    when(fileExists).calledWith(`${projectRoot}/.nvmrc`).thenResolve(true);
 
     expect(await npmIsUsed({projectRoot})).toBe(true);
   });
 
   it('should return `false` is a `.nvmrc` does not exist', async () => {
-    when(fileExists).calledWith(`${projectRoot}/.nvmrc`).mockResolvedValue(false);
+    when(fileExists).calledWith(`${projectRoot}/.nvmrc`).thenResolve(false);
 
     expect(await npmIsUsed({projectRoot})).toBe(false);
   });

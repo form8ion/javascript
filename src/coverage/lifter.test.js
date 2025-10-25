@@ -3,7 +3,7 @@ import {lift as liftCodecov} from '@form8ion/codecov';
 
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import testForNyc from './nyc/tester.js';
 import removeNyc from './nyc/remover.js';
@@ -26,10 +26,10 @@ describe('coverage lifter', () => {
   it('should replace `nyc` with `c8` if nyc config exists', async () => {
     const nycResults = any.simpleObject();
     const mergedResults = any.simpleObject();
-    when(scaffoldC8).calledWith({projectRoot}).mockResolvedValue(c8Results);
-    when(testForNyc).calledWith({projectRoot}).mockResolvedValue(true);
-    when(removeNyc).calledWith({projectRoot}).mockResolvedValue(nycResults);
-    when(liftCodecov).calledWith({projectRoot, packageManager, vcs}).mockResolvedValue(codecovResults);
+    when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
+    when(testForNyc).calledWith({projectRoot}).thenResolve(true);
+    when(removeNyc).calledWith({projectRoot}).thenResolve(nycResults);
+    when(liftCodecov).calledWith({projectRoot, packageManager, vcs}).thenResolve(codecovResults);
     when(deepmerge.all).calledWith([
       c8Results,
       nycResults,
@@ -41,15 +41,15 @@ describe('coverage lifter', () => {
             + ' after the migration away from `nyc`'
         }]
       }
-    ]).mockReturnValue(mergedResults);
+    ]).thenReturn(mergedResults);
 
     expect(await lift({projectRoot, packageManager, vcs})).toEqual(mergedResults);
   });
 
   it('should not replace `nyc` with `c8` if nyc config does not exist', async () => {
-    when(scaffoldC8).calledWith({projectRoot}).mockResolvedValue(c8Results);
-    when(testForNyc).calledWith({projectRoot}).mockResolvedValue(false);
-    when(liftCodecov).calledWith({projectRoot, packageManager}).mockResolvedValue(codecovResults);
+    when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
+    when(testForNyc).calledWith({projectRoot}).thenResolve(false);
+    when(liftCodecov).calledWith({projectRoot, packageManager}).thenResolve(codecovResults);
 
     expect(await lift({projectRoot, packageManager})).toEqual(codecovResults);
 

@@ -2,7 +2,7 @@ import joi from 'joi';
 import {validateOptions} from '@form8ion/core';
 
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 import any from '@travi/any';
 
 import {
@@ -34,9 +34,9 @@ describe('options validator', () => {
     const joiObject = any.simpleObject();
     const configsDefault = vi.fn();
     const configs = any.simpleObject();
-    joi.string.mockReturnValue(joiString);
-    when(joiRequiredString).calledWith().mockReturnValue(requiredString);
-    when(joi.object).calledWith().mockReturnValue(joiObject);
+    when(joi.string).calledWith().thenReturn(joiString);
+    when(joiRequiredString).calledWith().thenReturn(requiredString);
+    when(joi.object).calledWith().thenReturn(joiObject);
     when(joi.object)
       .calledWith({
         eslint: scopeBasedConfigSchema,
@@ -47,8 +47,8 @@ describe('options validator', () => {
         remark: joiString,
         registries: registriesSchema
       })
-      .mockReturnValue({default: configsDefault});
-    when(configsDefault).calledWith({registries: {}}).mockReturnValue(configs);
+      .thenReturn({default: configsDefault});
+    when(configsDefault).calledWith({registries: {}}).thenReturn(configs);
     when(joi.object)
       .calledWith({
         projectRoot: requiredString,
@@ -70,9 +70,9 @@ describe('options validator', () => {
           ciServices: pluginsSchema
         }
       })
-      .mockReturnValue({required: joiRequiredObject});
-    when(joiRequiredObject).calledWith().mockReturnValue(schema);
-    when(validateOptions).calledWith(schema, options).mockReturnValue(validatedOptions);
+      .thenReturn({required: joiRequiredObject});
+    when(joiRequiredObject).calledWith().thenReturn(schema);
+    when(validateOptions).calledWith(schema, options).thenReturn(validatedOptions);
 
     expect(validate(options)).toEqual(validatedOptions);
   });

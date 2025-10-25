@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {test as packagePredicate} from './package/index.js';
 import {test as cliPredicate} from './cli/index.js';
@@ -20,31 +20,31 @@ describe('project-type tester', () => {
   });
 
   it('should return `true` if the result of the package tester is `true`', async () => {
-    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(true);
-    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
 
     expect(await test({projectRoot, packageDetails})).toBe(true);
   });
 
   it('should return `true` if the result of the cli tester is `true`', async () => {
-    when(cliPredicate).calledWith({projectRoot}).mockResolvedValue(true);
-    when(packagePredicate).calledWith({projectRoot}).mockResolvedValue(false);
+    when(cliPredicate).calledWith({projectRoot}).thenResolve(true);
+    when(packagePredicate).calledWith({projectRoot}).thenResolve(false);
 
     expect(await test({projectRoot})).toBe(true);
   });
 
   it('should return `true` if the result of the application tester is `true`', async () => {
-    when(applicationPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(true);
-    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
-    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
+    when(applicationPredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
 
     expect(await test({projectRoot, packageDetails})).toBe(true);
   });
 
   it('should return `false` if none of the available testers result in `true`', async () => {
-    when(applicationPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
-    when(cliPredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
-    when(packagePredicate).calledWith({projectRoot, packageDetails}).mockResolvedValue(false);
+    when(applicationPredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
+    when(cliPredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
+    when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
 
     expect(await test({projectRoot, packageDetails})).toBe(false);
   });

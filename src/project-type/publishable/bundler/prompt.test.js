@@ -2,7 +2,7 @@ import * as prompts from '@form8ion/overridable-prompts';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {questionNames} from '../../../prompts/question-names.js';
 import prompt from './prompt.js';
@@ -24,7 +24,7 @@ describe('bundler prompt', () => {
       type: 'list',
       message: 'Which bundler should be used?',
       choices: [...Object.keys(bundlers), 'Other']
-    }], decisions).mockResolvedValue(answers);
+    }], decisions).thenResolve(answers);
 
     expect(await prompt({bundlers, decisions})).toEqual(chosenType);
   });

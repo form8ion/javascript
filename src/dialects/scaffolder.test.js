@@ -2,7 +2,7 @@ import {dialects} from '@form8ion/javascript-core';
 
 import any from '@travi/any';
 import {describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {scaffold as scaffoldBabel} from './babel/index.js';
 import {scaffold as scaffoldTypescript} from './typescript/index.js';
@@ -23,7 +23,7 @@ describe('dialect scaffolder', () => {
   it('should scaffold babel when chosen', async () => {
     const babelPreset = any.word();
     const babelResults = any.simpleObject();
-    when(scaffoldBabel).calledWith({preset: babelPreset, projectRoot}).mockResolvedValue(babelResults);
+    when(scaffoldBabel).calledWith({preset: babelPreset, projectRoot}).thenResolve(babelResults);
 
     expect(await scaffoldDialect({dialect: dialects.BABEL, configs: {babelPreset}, projectRoot}))
       .toEqual(babelResults);
@@ -36,7 +36,7 @@ describe('dialect scaffolder', () => {
     const projectType = any.word();
     when(scaffoldTypescript)
       .calledWith({config: typescriptConfigs, projectType, projectRoot, testFilenamePattern})
-      .mockResolvedValue(typescriptResults);
+      .thenResolve(typescriptResults);
 
     expect(await scaffoldDialect({
       dialect: dialects.TYPESCRIPT,

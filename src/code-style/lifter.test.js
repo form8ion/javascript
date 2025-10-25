@@ -3,7 +3,7 @@ import * as eslintPlugin from '@form8ion/eslint';
 
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import liftCodeStyle from './lifter.js';
 
@@ -18,7 +18,7 @@ describe('code-style lifter', () => {
   it('should lift the code-style tools', async () => {
     const options = any.simpleObject();
     const results = any.simpleObject();
-    when(applyEnhancers).calledWith({options, enhancers: [eslintPlugin]}).mockResolvedValue(results);
+    when(applyEnhancers).calledWith({options, enhancers: [eslintPlugin]}).thenResolve(results);
 
     expect(await liftCodeStyle(options)).toEqual(results);
   });

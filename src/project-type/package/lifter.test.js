@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {lift as liftPublishable} from '../publishable/index.js';
 import lift from './lifter.js';
@@ -16,7 +16,7 @@ describe('package project-type lifter', () => {
     const projectRoot = any.string();
     const packageDetails = any.simpleObject();
     const publishableResults = any.simpleObject();
-    when(liftPublishable).calledWith({projectRoot, packageDetails}).mockResolvedValue(publishableResults);
+    when(liftPublishable).calledWith({projectRoot, packageDetails}).thenResolve(publishableResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(publishableResults);
   });

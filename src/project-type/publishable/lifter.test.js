@@ -3,7 +3,7 @@ import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import defineBadges from './badges.js';
 import {lift as liftProvenance} from './provenance/index.js';
@@ -28,8 +28,8 @@ describe('publishable project-type lifter', () => {
     const mergedResults = any.simpleObject();
     const badgesResults = any.simpleObject();
     const homepage = `https://npm.im/${packageName}`;
-    when(liftProvenance).calledWith({packageDetails, projectRoot}).mockResolvedValue(provenanceResults);
-    when(defineBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badgesResults);
+    when(liftProvenance).calledWith({packageDetails, projectRoot}).thenResolve(provenanceResults);
+    when(defineBadges).calledWith(packageName, packageAccessLevel).thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
       {
@@ -38,7 +38,7 @@ describe('publishable project-type lifter', () => {
         badges: badgesResults,
         homepage
       }
-    ).mockReturnValue(mergedResults);
+    ).thenReturn(mergedResults);
 
     expect(await lift({projectRoot, packageDetails})).toEqual(mergedResults);
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({projectRoot, config: {homepage}});

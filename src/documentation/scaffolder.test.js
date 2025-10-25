@@ -1,6 +1,6 @@
 import any from '@travi/any';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import buildDocumentationCommand from './generation-command.js';
 import scaffoldDocumentation from './scaffolder.js';
@@ -25,7 +25,7 @@ $ ${packageManager} test
 \`\`\``;
 
   beforeEach(() => {
-    when(buildDocumentationCommand).calledWith(packageManager).mockReturnValue(documentationGenerationCommand);
+    when(buildDocumentationCommand).calledWith(packageManager).thenReturn(documentationGenerationCommand);
   });
 
   it('should provide project-type documentation and contribution details', () => {

@@ -1,6 +1,6 @@
 import {afterEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import scaffoldBadges from './badges.js';
 import scaffoldPublishable from './scaffolder.js';
@@ -16,7 +16,7 @@ describe('publishable project-type scaffolder', () => {
     const packageName = any.word();
     const packageAccessLevel = any.word();
     const badgesResults = any.simpleObject();
-    when(scaffoldBadges).calledWith(packageName, packageAccessLevel).mockReturnValue(badgesResults);
+    when(scaffoldBadges).calledWith(packageName, packageAccessLevel).thenReturn(badgesResults);
 
     expect(await scaffoldPublishable({packageName, packageAccessLevel})).toEqual({badges: badgesResults});
   });
