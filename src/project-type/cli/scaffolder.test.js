@@ -70,7 +70,7 @@ describe('cli project-type scaffolder', () => {
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
-      config: {bin: {}, files: ['bin/'], publishConfig: {access: packageAccessLevel}}
+      config: {bin: {}, files: ['bin/', 'src/'], publishConfig: {access: packageAccessLevel}}
     });
   });
 
@@ -92,7 +92,7 @@ describe('cli project-type scaffolder', () => {
       projectRoot,
       config: {
         bin: {},
-        files: ['bin/'],
+        files: ['bin/', 'src/'],
         publishConfig: {
           access: packageAccessLevel,
           registry: publishRegistry

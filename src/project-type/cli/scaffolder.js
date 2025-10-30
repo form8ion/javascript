@@ -24,7 +24,7 @@ export default async function scaffoldCli({
       projectRoot,
       config: {
         bin: {},
-        files: [`${defaultBuildDirectory}/`],
+        files: [`${defaultBuildDirectory}/`, 'src/'],
         publishConfig: {
           access: packageAccessLevel,
           ...publishRegistry && {registry: publishRegistry}
