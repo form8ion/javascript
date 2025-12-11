@@ -21,4 +21,8 @@ describe('package project-type tester', () => {
   it('should return `false` when there are no indicators that the project is a package type', async () => {
     expect(await test({packageDetails: any.simpleObject()})).toBe(false);
   });
+
+  it('should return `false` when `private` is set to `true`', async () => {
+    expect(await test({packageDetails: {...any.simpleObject(), private: true, exports: any.word()}})).toBe(false);
+  });
 });

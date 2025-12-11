@@ -1,3 +1,3 @@
-export default async function ({packageDetails: {exports, publishConfig, bin}}) {
-  return !!exports || (!!publishConfig && !bin);
+export default async function ({packageDetails: {exports, publishConfig, bin, private: projectMarkedPrivate}}) {
+  return !projectMarkedPrivate && (!!exports || (!!publishConfig && !bin));
 }
