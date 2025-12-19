@@ -77,7 +77,7 @@ describe('lockfile linting scaffolder', () => {
   it('should throw an error for unsupported package managers', async () => {
     const packageManager = any.word();
 
-    await expect(scaffoldLockfileLint({projectRoot, packageManager})).rejects.toThrowError(
+    await expect(() => scaffoldLockfileLint({projectRoot, packageManager})).rejects.toThrowError(
       `The ${packageManager} package manager is currently not supported by lockfile-lint. `
       + `Only ${lockfileLintSupportedPackageManagers.join(' and ')} are currently supported.`
     );
