@@ -60,7 +60,7 @@
   },
   "packageManager": "npm@11.7.0+sha512.c22099a6fff8d5b2286c2a09df5352b4858a7c0c716320f58989d60ad8b29ecf2ce6fdfe97ccb41c23ffb1272e1fa079f868487dd6b81d02a2a9e199c095a117",
   "dependencies": {
-    "@form8ion/codecov": "^6.0.0",
+    "@form8ion/codecov": "^7.0.0-beta.1",
     "@form8ion/commit-convention": "^8.0.0-beta.6",
     "@form8ion/config-file": "^1.1.1",
     "@form8ion/core": "^4.0.0",
