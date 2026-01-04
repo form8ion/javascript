@@ -1,6 +1,6 @@
 import updateTestScript from './test-script-updater.js';
 
-export default function ({existingScripts, scripts}) {
+export default function liftScripts({existingScripts, scripts}) {
   return {
     scripts: updateTestScript({...existingScripts, ...scripts}),
     dependencies: {

@@ -6,7 +6,7 @@ function projectShouldBeBuiltForVerification(scripts) {
   return 'run-s build' === scripts['pregenerate:md'];
 }
 
-export default function (scripts) {
+export default function updateTestScript(scripts) {
   return {
     ...scripts,
     ...projectShouldBeBuiltForVerification(scripts) && {pretest: 'run-s build'},
