@@ -8,8 +8,12 @@ describe('script name comparator', () => {
   const A_BEFORE_B = -1;
   const baseScriptName = any.word();
 
-  it('should consider undefined sort orders as equivalent', async () => {
-    expect(compareScriptNames(any.word(), any.word())).toEqual(0);
+  it('should sort alphabetically if no other rules apply', async () => {
+    const a = `a${any.word()}`;
+    const b = `b${any.word()}`;
+
+    expect(compareScriptNames(a, b)).toEqual(A_BEFORE_B);
+    expect(compareScriptNames(b, a)).toEqual(A_AFTER_B);
   });
 
   it('should sort `pre` scripts ahead of their related scripts', async () => {
@@ -45,6 +49,17 @@ describe('script name comparator', () => {
 
     expect(compareScriptNames(`prelint:${any.word()}`, `pretest:${any.word()}`)).toEqual(A_BEFORE_B);
     expect(compareScriptNames(`pretest:${any.word()}`, `prelint:${any.word()}`)).toEqual(A_AFTER_B);
+  });
+
+  it('should sort subscripts alphabetically', async () => {
+    const a = `a${any.word()}`;
+    const b = `b${any.word()}`;
+
+    expect(compareScriptNames(`lint:${a}`, `lint:${b}`)).toEqual(A_BEFORE_B);
+    expect(compareScriptNames(`lint:${b}`, `lint:${a}`)).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames(`test:${a}`, `test:${b}`)).toEqual(A_BEFORE_B);
+    expect(compareScriptNames(`test:${b}`, `test:${a}`)).toEqual(A_AFTER_B);
   });
 
   it('should sort undefined scripts below `lint:` scripts', async () => {

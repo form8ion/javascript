@@ -43,13 +43,13 @@ export default function compareScriptNames(a, b) {
     return 1;
   }
 
-  if (aBase.startsWith('lint:')) {
+  if (aBase.startsWith('lint:') && !bBase.startsWith('lint:')) {
     return -1;
   }
 
-  if (bBase.startsWith('lint:')) {
+  if (bBase.startsWith('lint:') && !aBase.startsWith('lint:')) {
     return 1;
   }
 
-  return 0;
+  return a.localeCompare(b);
 }
