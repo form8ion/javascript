@@ -1,8 +1,9 @@
 import updateTestScript from './test-script-updater.js';
+import sortScripts from './scripts-sorter.js';
 
 export default function ({existingScripts, scripts}) {
   return {
-    scripts: updateTestScript({...existingScripts, ...scripts}),
+    scripts: sortScripts(updateTestScript({...existingScripts, ...scripts})),
     dependencies: {
       javascript: {
         development: ['npm-run-all2'],
