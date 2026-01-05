@@ -14,6 +14,10 @@ function isPostScriptFor(a, b) {
   return isRelatedScript(a, b, 'post');
 }
 
+function getBaseScriptOf(script) {
+  return script.replace(/^(?:pre|post)/, '');
+}
+
 export default function compareScriptNames(a, b) {
   if (isPreScriptFor(a, b)) return -1;
   if (isPreScriptFor(b, a)) return 1;
@@ -28,11 +32,14 @@ export default function compareScriptNames(a, b) {
     return -sortTestScript(b, a);
   }
 
-  if (a.startsWith('lint:') && b.startsWith('test:')) {
+  const aBase = getBaseScriptOf(a);
+  const bBase = getBaseScriptOf(b);
+
+  if (aBase.startsWith('lint:') && bBase.startsWith('test:')) {
     return -1;
   }
 
-  if (b.startsWith('lint:') && a.startsWith('test:')) {
+  if (bBase.startsWith('lint:') && aBase.startsWith('test:')) {
     return 1;
   }
 
