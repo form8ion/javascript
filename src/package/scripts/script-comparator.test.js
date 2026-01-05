@@ -46,4 +46,9 @@ describe('script name comparator', () => {
     expect(compareScriptNames(`prelint:${any.word()}`, `pretest:${any.word()}`)).toEqual(A_BEFORE_B);
     expect(compareScriptNames(`pretest:${any.word()}`, `prelint:${any.word()}`)).toEqual(A_AFTER_B);
   });
+
+  it('should sort undefined scripts below `lint:` scripts', async () => {
+    expect(compareScriptNames(any.word(), `lint:${any.word()}`)).toEqual(A_AFTER_B);
+    expect(compareScriptNames(`lint:${any.word()}`, any.word())).toEqual(A_BEFORE_B);
+  });
 });

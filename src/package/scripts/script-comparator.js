@@ -43,5 +43,13 @@ export default function compareScriptNames(a, b) {
     return 1;
   }
 
+  if (aBase.startsWith('lint:')) {
+    return -1;
+  }
+
+  if (bBase.startsWith('lint:')) {
+    return 1;
+  }
+
   return 0;
 }
