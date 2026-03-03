@@ -1,7 +1,3 @@
-function sortTestScript() {
-  return -1;
-}
-
 function isRelatedScript(a, b, prefix) {
   return a.startsWith(prefix) && a.slice(prefix.length) === b;
 }
@@ -19,11 +15,13 @@ function getBaseScriptOf(script) {
 }
 
 function getCategoryOrder(base) {
-  if (base.startsWith('lint:')) return 0;
-  if ('test:unit' === base) return 1;
-  if ('test:integration' === base) return 2;
-  if (base.startsWith('test:')) return 1;
-  return 3;
+  if ('test' === base) return 0;
+  if (base.startsWith('lint:')) return 1;
+  if ('test:unit' === base) return 2;
+  if ('test:integration' === base) return 3;
+  if (base.startsWith('test:')) return 2;
+
+  return 4;
 }
 
 export default function compareScriptNames(a, b) {
@@ -31,14 +29,6 @@ export default function compareScriptNames(a, b) {
   if (isPreScriptFor(b, a)) return 1;
   if (isPostScriptFor(a, b)) return 1;
   if (isPostScriptFor(b, a)) return -1;
-
-  if ('test' === a) {
-    return sortTestScript(a, b);
-  }
-
-  if ('test' === b) {
-    return -sortTestScript(b, a);
-  }
 
   const aBase = getBaseScriptOf(a);
   const bBase = getBaseScriptOf(b);

@@ -10,6 +10,7 @@ Before(function () {
     'lint:md': any.string(),
     prepare: any.string(),
     'test:unit': any.string(),
+    pretest: any.string(),
     'prelint:publish': 'run-s build',
     'test:integration': any.string()
   };
@@ -75,6 +76,7 @@ Then('the updated test script includes build', async function () {
 Then('the scripts are ordered correctly', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
   const {
+    pretest,
     test,
     'test:unit': testUnit,
     'test:integration': testIntegration,
@@ -86,6 +88,7 @@ Then('the scripts are ordered correctly', async function () {
   assert.deepEqual(
     Object.keys(scripts),
     [
+      'pretest',
       'test',
       'lint:lockfile',
       'lint:md',
