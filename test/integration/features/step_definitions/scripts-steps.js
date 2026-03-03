@@ -4,7 +4,15 @@ import {assert} from 'chai';
 import {Before, Given, Then} from '@cucumber/cucumber';
 
 Before(function () {
-  this.existingScripts = {...any.simpleObject(), test: any.string()};
+  this.existingScripts = {
+    ...any.simpleObject(),
+    test: any.string(),
+    'lint:md': any.string(),
+    prepare: any.string(),
+    'test:unit': any.string(),
+    'prelint:publish': 'run-s build',
+    'test:integration': any.string()
+  };
 });
 
 Given('no additional scripts are included in the results', async function () {
@@ -62,4 +70,30 @@ Then('the updated test script includes build', async function () {
 
   assert.equal(pretest, 'run-s build');
   assert.notInclude(test, 'build');
+});
+
+Then('the scripts are ordered correctly', async function () {
+  const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+  const {
+    test,
+    'test:unit': testUnit,
+    'test:integration': testIntegration,
+    'prelint:publish': prelintPublish,
+    'lint:md': lintMd,
+    ...otherExistingScripts
+  } = this.existingScripts;
+
+  assert.deepEqual(
+    Object.keys(scripts),
+    [
+      'test',
+      'lint:lockfile',
+      'lint:md',
+      'prelint:publish',
+      'lint:publish',
+      'test:unit',
+      'test:integration',
+      ...Object.keys(otherExistingScripts).sort((a, b) => a.localeCompare(b))
+    ]
+  );
 });

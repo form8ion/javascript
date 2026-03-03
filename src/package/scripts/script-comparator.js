@@ -18,6 +18,14 @@ function getBaseScriptOf(script) {
   return script.replace(/^(?:pre|post)/, '');
 }
 
+function getCategoryOrder(base) {
+  if (base.startsWith('lint:')) return 0;
+  if ('test:unit' === base) return 1;
+  if ('test:integration' === base) return 2;
+  if (base.startsWith('test:')) return 1;
+  return 3;
+}
+
 export default function compareScriptNames(a, b) {
   if (isPreScriptFor(a, b)) return -1;
   if (isPreScriptFor(b, a)) return 1;
@@ -35,21 +43,8 @@ export default function compareScriptNames(a, b) {
   const aBase = getBaseScriptOf(a);
   const bBase = getBaseScriptOf(b);
 
-  if (aBase.startsWith('lint:') && bBase.startsWith('test:')) {
-    return -1;
-  }
-
-  if (bBase.startsWith('lint:') && aBase.startsWith('test:')) {
-    return 1;
-  }
-
-  if (aBase.startsWith('lint:') && !bBase.startsWith('lint:')) {
-    return -1;
-  }
-
-  if (bBase.startsWith('lint:') && !aBase.startsWith('lint:')) {
-    return 1;
-  }
+  const categoryDiff = getCategoryOrder(aBase) - getCategoryOrder(bBase);
+  if (0 !== categoryDiff) return 0 > categoryDiff ? -1 : 1;
 
   return a.localeCompare(b);
 }

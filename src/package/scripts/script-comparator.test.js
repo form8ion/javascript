@@ -66,4 +66,14 @@ describe('script name comparator', () => {
     expect(compareScriptNames(any.word(), `lint:${any.word()}`)).toEqual(A_AFTER_B);
     expect(compareScriptNames(`lint:${any.word()}`, any.word())).toEqual(A_BEFORE_B);
   });
+
+  it('should sort `test:unit` ahead of `test:integration`', async () => {
+    expect(compareScriptNames('test:unit', 'test:integration')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:integration', 'test:unit')).toEqual(A_AFTER_B);
+  });
+
+  it('should sort uncategorized scripts below `test:` scripts', async () => {
+    expect(compareScriptNames(any.word(), `test:${any.word()}`)).toEqual(A_AFTER_B);
+    expect(compareScriptNames(`test:${any.word()}`, any.word())).toEqual(A_BEFORE_B);
+  });
 });
