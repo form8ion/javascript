@@ -80,6 +80,24 @@ describe('script name comparator', () => {
     expect(compareScriptNames('test:integration', 'test:unit')).toEqual(A_AFTER_B);
   });
 
+  it('should sort `test:unit` sub-scripts after `test:unit`', async () => {
+    expect(compareScriptNames('test:unit', 'test:unit:base')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:unit:base', 'test:unit')).toEqual(A_AFTER_B);
+  });
+
+  it('should sort `test:integration` sub-scripts after `test:integration`', async () => {
+    expect(compareScriptNames('test:integration', 'test:integration:base')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:integration:base', 'test:integration')).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames('test:integration', 'pretest:integration:base')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('pretest:integration:base', 'test:integration')).toEqual(A_AFTER_B);
+  });
+
+  it('should sort `test:unit` sub-scripts ahead of `test:integration`', async () => {
+    expect(compareScriptNames('test:unit:base', 'test:integration')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:integration', 'test:unit:base')).toEqual(A_AFTER_B);
+  });
+
   it('should sort uncategorized scripts below `test:` scripts', async () => {
     expect(compareScriptNames(any.word(), `test:${any.word()}`)).toEqual(A_AFTER_B);
     expect(compareScriptNames(`test:${any.word()}`, any.word())).toEqual(A_BEFORE_B);

@@ -17,8 +17,8 @@ function getBaseScriptOf(script) {
 function getCategoryOrder(base) {
   if ('test' === base) return 0;
   if (base.startsWith('lint:')) return 1;
-  if ('test:unit' === base) return 2;
-  if ('test:integration' === base) return 3;
+  if (base.startsWith('test:unit')) return 2;
+  if (base.startsWith('test:integration')) return 3;
   if (base.startsWith('test:')) return 2;
 
   return 4;
@@ -35,6 +35,9 @@ export default function compareScriptNames(a, b) {
 
   const categoryDiff = getCategoryOrder(aBase) - getCategoryOrder(bBase);
   if (0 !== categoryDiff) return 0 > categoryDiff ? -1 : 1;
+
+  const baseCompare = aBase.localeCompare(bBase);
+  if (0 !== baseCompare) return 0 > baseCompare ? -1 : 1;
 
   return a.localeCompare(b);
 }
