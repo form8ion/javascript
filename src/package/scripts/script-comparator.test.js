@@ -14,6 +14,9 @@ describe('script name comparator', () => {
 
     expect(compareScriptNames(a, b)).toEqual(A_BEFORE_B);
     expect(compareScriptNames(b, a)).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames('pebfifu', 'prepare')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('prepare', 'pebfifu')).toEqual(A_AFTER_B);
   });
 
   it('should sort `pre` scripts ahead of their related scripts', async () => {
@@ -33,6 +36,9 @@ describe('script name comparator', () => {
 
     expect(compareScriptNames('posttest', 'test')).toEqual(A_AFTER_B);
     expect(compareScriptNames('test', 'posttest')).toEqual(A_BEFORE_B);
+
+    expect(compareScriptNames(`postlint:${any.word()}`, `test:${any.word()}`)).toEqual(A_BEFORE_B);
+    expect(compareScriptNames(`test:${any.word()}`, `postlint:${any.word()}`)).toEqual(A_AFTER_B);
   });
 
   it('should sort the `test` script ahead of any sub-test scripts', async () => {

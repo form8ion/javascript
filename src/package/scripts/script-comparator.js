@@ -11,7 +11,9 @@ function isPostScriptFor(a, b) {
 }
 
 function getBaseScriptOf(script) {
-  return script.replace(/^(?:pre|post)/, '');
+  if (script.startsWith('pre')) return script.slice(3);
+  if (script.startsWith('post')) return script.slice(4);
+  return script;
 }
 
 function getCategoryOrder(base) {
@@ -36,8 +38,8 @@ export default function compareScriptNames(a, b) {
   const categoryDiff = getCategoryOrder(aBase) - getCategoryOrder(bBase);
   if (0 !== categoryDiff) return 0 > categoryDiff ? -1 : 1;
 
-  const baseCompare = aBase.localeCompare(bBase);
-  if (0 !== baseCompare) return 0 > baseCompare ? -1 : 1;
+  const aKey = bBase === aBase || b === aBase || aBase.startsWith(`${b}:`) ? aBase : a;
+  const bKey = aBase === bBase || a === bBase || bBase.startsWith(`${a}:`) ? bBase : b;
 
-  return a.localeCompare(b);
+  return aKey.localeCompare(bKey);
 }
