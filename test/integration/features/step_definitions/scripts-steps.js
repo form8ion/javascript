@@ -4,7 +4,24 @@ import {assert} from 'chai';
 import {Before, Given, Then} from '@cucumber/cucumber';
 
 Before(function () {
-  this.existingScripts = {...any.simpleObject(), test: any.string()};
+  this.existingScripts = {
+    ...any.simpleObject(),
+    test: any.string(),
+    'lint:md': any.string(),
+    prepare: any.string(),
+    'pretest:integration:base': any.string(),
+    'test:unit:base': any.string(),
+    'test:integration:base': any.string(),
+    'test:integration:debug': any.string(),
+    'test:integration:focus': any.string(),
+    'test:integration:focus:debug': any.string(),
+    'test:integration:wip': any.string(),
+    'test:integration:wip:debug': any.string(),
+    'test:unit': any.string(),
+    pretest: any.string(),
+    'prelint:publish': 'run-s build',
+    'test:integration': any.string()
+  };
 });
 
 Given('no additional scripts are included in the results', async function () {
@@ -62,4 +79,48 @@ Then('the updated test script includes build', async function () {
 
   assert.equal(pretest, 'run-s build');
   assert.notInclude(test, 'build');
+});
+
+Then('the scripts are ordered correctly', async function () {
+  const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
+  const {
+    pretest,
+    test,
+    'test:unit': testUnit,
+    'test:integration': testIntegration,
+    'pretest:integration:base': pretestIntegrationBase,
+    'test:integration:base': testIntegrationBase,
+    'test:integration:debug': testIntegrationDebug,
+    'test:integration:focus': testIntegrationFocus,
+    'test:unit:base': testUnitBase,
+    'test:integration:focus:debug': testIntegrationFocusDebug,
+    'test:integration:wip': testIntegrationWip,
+    'test:integration:wip:debug': testIntegrationWipDebug,
+    'prelint:publish': prelintPublish,
+    'lint:md': lintMd,
+    ...otherExistingScripts
+  } = this.existingScripts;
+
+  assert.deepEqual(
+    Object.keys(scripts),
+    [
+      'pretest',
+      'test',
+      'lint:lockfile',
+      'lint:md',
+      'prelint:publish',
+      'lint:publish',
+      'test:unit',
+      'test:unit:base',
+      'test:integration',
+      'pretest:integration:base',
+      'test:integration:base',
+      'test:integration:debug',
+      'test:integration:focus',
+      'test:integration:focus:debug',
+      'test:integration:wip',
+      'test:integration:wip:debug',
+      ...Object.keys(otherExistingScripts).sort((a, b) => a.localeCompare(b))
+    ]
+  );
 });

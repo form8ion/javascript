@@ -1,7 +1,7 @@
-import sortProperties from 'sort-object-keys';
+import sortObjectKeys from 'sort-object-keys';
 
-export default function (packageContents) {
-  return sortProperties(
+export default function sortProperties(packageContents) {
+  return sortObjectKeys(
     packageContents,
     [
       'name',
