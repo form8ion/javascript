@@ -4,6 +4,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
+import {scaffold as scaffoldRunkit} from '../../runkit/index.js';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
 import * as buildDetails from './build-details.js';
@@ -11,6 +12,7 @@ import * as documentationScaffolder from './documentation.js';
 import scaffoldPackage from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
+vi.mock('../../runkit/index.js');
 vi.mock('../publishable/access-level.js');
 vi.mock('../publishable/index.js');
 vi.mock('./build-details.js');
@@ -95,6 +97,7 @@ describe('package project-type scaffolder', () => {
         publishConfig: {access: packageAccessLevel}
       }
     });
+    expect(scaffoldRunkit).toHaveBeenCalledWith({projectRoot, visibility});
   });
 
   it('should scaffold details specific to an esm-only package', async () => {

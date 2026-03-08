@@ -2,12 +2,13 @@ import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import scaffoldPackageDocumentation from './documentation.js';
+import {scaffold as scaffoldRunkit} from '../../runkit/index.js';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
+import scaffoldPackageDocumentation from './documentation.js';
 import buildDetails from './build-details.js';
 
-export default async function ({
+export default async function scaffoldPackageProjectType({
   projectRoot,
   projectName,
   packageName,
@@ -44,7 +45,6 @@ export default async function ({
           ...publishRegistry && {registry: publishRegistry}
         },
         sideEffects: false,
-        ...'Public' === visibility && {runkitExampleFilename: './example.js'},
         ...dialects.BABEL === dialect && {
           main: './lib/index.js',
           module: './lib/index.mjs',
@@ -71,6 +71,7 @@ export default async function ({
       }
     })
   ]);
+  await scaffoldRunkit({projectRoot, visibility});
 
   return deepmerge.all([
     publishableResults,
