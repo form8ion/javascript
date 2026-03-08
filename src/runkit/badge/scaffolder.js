@@ -1,13 +1,11 @@
-export default function scaffoldRunkitBadge({packageName, visibility}) {
+export default function scaffoldRunkitBadge({packageName}) {
   return {
     badges: {
       consumer: {
-        ...'Public' === visibility && {
-          runkit: {
-            img: `https://badge.runkitcdn.com/${packageName}.svg`,
-            text: `Try ${packageName} on RunKit`,
-            link: `https://npm.runkit.com/${packageName}`
-          }
+        runkit: {
+          img: `https://badge.runkitcdn.com/${packageName}.svg`,
+          text: `Try ${packageName} on RunKit`,
+          link: `https://npm.runkit.com/${packageName}`
         }
       }
     }

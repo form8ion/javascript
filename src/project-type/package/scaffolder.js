@@ -29,8 +29,6 @@ export default async function scaffoldPackageProjectType({
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions
@@ -71,7 +69,7 @@ export default async function scaffoldPackageProjectType({
       }
     })
   ]);
-  await scaffoldRunkit({projectRoot, visibility});
+  const runkitResults = await scaffoldRunkit({projectRoot, packageName, visibility});
 
   return deepmerge.all([
     publishableResults,
@@ -83,6 +81,7 @@ export default async function scaffoldPackageProjectType({
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ]
     },
-    detailsForBuild
+    detailsForBuild,
+    runkitResults
   ]);
 }

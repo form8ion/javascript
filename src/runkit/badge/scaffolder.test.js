@@ -7,7 +7,7 @@ describe('runkit badge scaffolder', () => {
   it('should define the badge details', async () => {
     const packageName = any.word();
 
-    expect(scaffoldRunkitBadge({packageName, visibility: 'Public'})).toEqual({
+    expect(scaffoldRunkitBadge({packageName})).toEqual({
       badges: {
         consumer: {
           runkit: {
@@ -18,9 +18,5 @@ describe('runkit badge scaffolder', () => {
         }
       }
     });
-  });
-
-  it('should not define the badge when the project is not public', async () => {
-    expect(scaffoldRunkitBadge({visibility: any.word()})).toEqual({badges: {consumer: {}}});
   });
 });

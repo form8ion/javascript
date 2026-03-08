@@ -1,7 +1,11 @@
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-export default function scaffoldRunkit({projectRoot, visibility}) {
+import {scaffold as scaffoldBadge} from './badge/index.js';
+
+export default async function scaffoldRunkit({projectRoot, packageName, visibility}) {
   if ('Public' !== visibility) return {};
 
-  return mergeIntoExistingPackageJson({projectRoot, config: {runkitExampleFilename: './example.js'}});
+  await mergeIntoExistingPackageJson({projectRoot, config: {runkitExampleFilename: './example.js'}});
+
+  return scaffoldBadge({packageName});
 }

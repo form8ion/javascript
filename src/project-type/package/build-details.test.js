@@ -6,14 +6,12 @@ import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import scaffoldRunkitBadge from '../../runkit/badge/scaffolder.js';
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 import buildDetails from './build-details.js';
 
 vi.mock('node:fs');
 vi.mock('make-dir');
 vi.mock('touch');
-vi.mock('../../runkit/badge/scaffolder.js');
 vi.mock('../publishable/bundler');
 
 describe('package build details', () => {
@@ -23,7 +21,6 @@ describe('package build details', () => {
   const bundlerResults = any.simpleObject();
   const packageBundlers = any.simpleObject();
   const decisions = any.simpleObject();
-  const badges = any.simpleObject();
 
   it('should correctly define a common-js project', async () => {
     const results = await buildDetails({
@@ -54,7 +51,6 @@ describe('package build details', () => {
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .thenResolve(bundlerResults);
-    when(scaffoldRunkitBadge).calledWith({packageName: undefined, visibility: undefined}).thenReturn(badges);
 
     const results = await buildDetails({
       dialect,
@@ -76,8 +72,7 @@ describe('package build details', () => {
         'pregenerate:md': 'run-s build'
       },
       vcsIgnore: {directories: ['/lib/']},
-      buildDirectory: 'lib',
-      ...badges
+      buildDirectory: 'lib'
     });
     expect(fs.mkdir).toHaveBeenCalledWith(`${projectRoot}/src`, {recursive: true});
     expect(touch).toHaveBeenCalledWith(`${projectRoot}/src/index.js`);
@@ -86,12 +81,9 @@ describe('package build details', () => {
 
   it('should not create the example file for a modern-js project when `provideExample` is `false`', async () => {
     const dialect = dialects.BABEL;
-    const packageName = any.word();
-    const visibility = 'Public';
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
       .thenResolve(bundlerResults);
-    when(scaffoldRunkitBadge).calledWith({packageName, visibility}).thenReturn(badges);
 
     const results = await buildDetails({
       dialect,
@@ -99,9 +91,7 @@ describe('package build details', () => {
       projectName,
       packageBundlers,
       decisions,
-      provideExample: false,
-      packageName,
-      visibility
+      provideExample: false
     });
 
     expect(results).toEqual({
@@ -114,8 +104,7 @@ describe('package build details', () => {
         prepack: 'run-s build'
       },
       vcsIgnore: {directories: ['/lib/']},
-      buildDirectory: 'lib',
-      ...badges
+      buildDirectory: 'lib'
     });
     expect(fs.writeFile).not.toHaveBeenCalled();
   });

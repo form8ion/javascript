@@ -1,6 +1,6 @@
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -37,6 +37,7 @@ describe('package project-type scaffolder', () => {
   const documentation = any.simpleObject();
   const decisions = any.simpleObject();
   const buildDetailsResults = any.simpleObject();
+  const runkitResults = any.simpleObject();
 
   beforeEach(() => {
     when(documentationScaffolder.default)
@@ -45,10 +46,7 @@ describe('package project-type scaffolder', () => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .thenReturn(packageAccessLevel);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
+    when(scaffoldRunkit).calledWith({projectRoot, visibility, packageName}).thenReturn(runkitResults);
   });
 
   it('should scaffold details specific to a modern-js package', async () => {
@@ -58,8 +56,6 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions
@@ -80,7 +76,8 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps
+      nextSteps: commonNextSteps,
+      ...runkitResults
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -97,7 +94,6 @@ describe('package project-type scaffolder', () => {
         publishConfig: {access: packageAccessLevel}
       }
     });
-    expect(scaffoldRunkit).toHaveBeenCalledWith({projectRoot, visibility});
   });
 
   it('should scaffold details specific to an esm-only package', async () => {
@@ -107,8 +103,6 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions
@@ -129,7 +123,8 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps
+      nextSteps: commonNextSteps,
+      ...runkitResults
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -150,8 +145,6 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions
@@ -172,7 +165,8 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps
+      nextSteps: commonNextSteps,
+      ...runkitResults
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -199,8 +193,6 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions
@@ -221,7 +213,8 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps
+      nextSteps: commonNextSteps,
+      ...runkitResults
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -241,8 +234,6 @@ describe('package project-type scaffolder', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      visibility,
-      packageName,
       dialect,
       provideExample,
       decisions

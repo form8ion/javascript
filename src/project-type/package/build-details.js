@@ -2,8 +2,6 @@ import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
 import touch from 'touch';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
-
-import scaffoldRunkitBadge from '../../runkit/badge/scaffolder.js';
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 
 const defaultBuildDirectory = 'lib';
@@ -26,8 +24,6 @@ async function buildDetailsForCommonJsProject({projectRoot, provideExample}) {
 export default async function buildDetails({
   projectRoot,
   projectName,
-  visibility,
-  packageName,
   packageBundlers,
   dialect,
   provideExample,
@@ -54,8 +50,7 @@ export default async function buildDetails({
         ...provideExample && {'pregenerate:md': 'run-s build'}
       },
       vcsIgnore: {directories: [`/${defaultBuildDirectory}/`]},
-      buildDirectory: defaultBuildDirectory,
-      ...scaffoldRunkitBadge({packageName, visibility})
+      buildDirectory: defaultBuildDirectory
     }
   );
 }
