@@ -6,7 +6,6 @@
     <option name="workingDirectory" value="$PROJECT_DIR$" />
     <envs>
       <env name="DEBUG" value="any" />
-      <env name="ANY_SEED" value="9751127387862.652" />
     </envs>
     <method v="2">
       <option name="NpmBeforeRunTask" enabled="true">
