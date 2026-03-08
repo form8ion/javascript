@@ -8,7 +8,7 @@ import defineVcsHostDetails from './vcs-host-details.js';
 import {process as processDependencies} from '../dependencies/index.js';
 import {lift as liftScripts} from './scripts/index.js';
 
-export default async function ({
+export default async function liftPackageJson({
   projectRoot,
   scripts,
   tags,

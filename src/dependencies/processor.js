@@ -4,7 +4,7 @@ import {DEV_DEPENDENCY_TYPE, PROD_DEPENDENCY_TYPE} from '@form8ion/javascript-co
 import install from './installer.js';
 import remove from './remover.js';
 
-export default async function ({dependencies = {}, devDependencies, projectRoot, packageManager}) {
+export default async function processDependencies({dependencies = {}, devDependencies, projectRoot, packageManager}) {
   info('Processing dependencies');
 
   if (Array.isArray(devDependencies)) {
