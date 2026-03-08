@@ -19,6 +19,5 @@ Then('the runkit details are removed from the package.json', async function () {
 });
 
 Then('a next-step is defined to suggest removing the runkit badge from the README', async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
+  assert.include(this.results.nextSteps, 'Remove the runkit badge from the README');
 });

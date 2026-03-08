@@ -1,4 +1,4 @@
-Feature: Remove Runkit details from existing package
+Feature: Remove Runkit details from existing package since the service is no longer available
 
   @wip
   Scenario: package with legacy runkit details
