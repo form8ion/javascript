@@ -4,7 +4,6 @@ import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import {scaffold as scaffoldRunkit} from '../../runkit/index.js';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
 import * as buildDetails from './build-details.js';
@@ -12,7 +11,6 @@ import * as documentationScaffolder from './documentation.js';
 import scaffoldPackage from './scaffolder.js';
 
 vi.mock('@form8ion/javascript-core');
-vi.mock('../../runkit/index.js');
 vi.mock('../publishable/access-level.js');
 vi.mock('../publishable/index.js');
 vi.mock('./build-details.js');
@@ -37,7 +35,6 @@ describe('package project-type scaffolder', () => {
   const documentation = any.simpleObject();
   const decisions = any.simpleObject();
   const buildDetailsResults = any.simpleObject();
-  const runkitResults = any.simpleObject();
 
   beforeEach(() => {
     when(documentationScaffolder.default)
@@ -46,7 +43,6 @@ describe('package project-type scaffolder', () => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .thenReturn(packageAccessLevel);
-    when(scaffoldRunkit).calledWith({projectRoot, visibility, packageName}).thenReturn(runkitResults);
   });
 
   it('should scaffold details specific to a modern-js package', async () => {
@@ -76,8 +72,7 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps,
-      ...runkitResults
+      nextSteps: commonNextSteps
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -123,8 +118,7 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps,
-      ...runkitResults
+      nextSteps: commonNextSteps
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -165,8 +159,7 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps,
-      ...runkitResults
+      nextSteps: commonNextSteps
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,
@@ -213,8 +206,7 @@ describe('package project-type scaffolder', () => {
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
-      nextSteps: commonNextSteps,
-      ...runkitResults
+      nextSteps: commonNextSteps
     });
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

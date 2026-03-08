@@ -56,12 +56,11 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
   }
 
   if ('Public' === visibility) {
-    assert.equal(packageDetails.runkitExampleFilename, './example.js');
     assert.equal(packageDetails.publishConfig.access, 'public');
   } else {
-    assert.isUndefined(packageDetails.runkitExampleFilename);
     assert.deepEqual(packageDetails.publishConfig.access, 'restricted');
   }
+  assert.isUndefined(packageDetails.runkitExampleFilename);
 }
 
 function assertThatApplicationSpecificDetailsAreDefinedCorrectly(packageDetails, projectName) {

@@ -2,7 +2,6 @@ import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import {scaffold as scaffoldRunkit} from '../../runkit/index.js';
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
 import scaffoldPackageDocumentation from './documentation.js';
@@ -69,7 +68,6 @@ export default async function scaffoldPackageProjectType({
       }
     })
   ]);
-  const runkitResults = await scaffoldRunkit({projectRoot, packageName, visibility});
 
   return deepmerge.all([
     publishableResults,
@@ -81,7 +79,6 @@ export default async function scaffoldPackageProjectType({
         {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
       ]
     },
-    detailsForBuild,
-    runkitResults
+    detailsForBuild
   ]);
 }
