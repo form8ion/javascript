@@ -205,7 +205,8 @@ When('the scaffolder results are processed', async function () {
       repository: this.repository,
       ...this.packageManagerPinnedVersion && {
         packageManager: `${this.packageManager}@${this.packageManagerPinnedVersion}`
-      }
+      },
+      ...this.runkitExampleFilename && {runkitExampleFilename: this.runkitExampleFilename}
     }
   });
 
