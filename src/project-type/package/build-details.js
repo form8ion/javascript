@@ -3,6 +3,7 @@ import deepmerge from 'deepmerge';
 import touch from 'touch';
 import {dialects, projectTypes} from '@form8ion/javascript-core';
 
+import scaffoldRunkitBadge from '../../runkit/badge/scaffolder.js';
 import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 
 const defaultBuildDirectory = 'lib';
@@ -54,17 +55,7 @@ export default async function buildDetails({
       },
       vcsIgnore: {directories: [`/${defaultBuildDirectory}/`]},
       buildDirectory: defaultBuildDirectory,
-      badges: {
-        consumer: {
-          ...'Public' === visibility && {
-            runkit: {
-              img: `https://badge.runkitcdn.com/${packageName}.svg`,
-              text: `Try ${packageName} on RunKit`,
-              link: `https://npm.runkit.com/${packageName}`
-            }
-          }
-        }
-      }
+      ...scaffoldRunkitBadge({packageName, visibility})
     }
   );
 }
