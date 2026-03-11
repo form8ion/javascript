@@ -89,6 +89,9 @@ describe('script name comparator', () => {
   it('should sort `test:unit` sub-scripts after `test:unit`', async () => {
     expect(compareScriptNames('test:unit', 'test:unit:base')).toEqual(A_BEFORE_B);
     expect(compareScriptNames('test:unit:base', 'test:unit')).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames('test:unit', 'pretest:unit:base')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('pretest:unit:base', 'test:unit')).toEqual(A_AFTER_B);
   });
 
   it('should sort `test:integration` sub-scripts after `test:integration`', async () => {

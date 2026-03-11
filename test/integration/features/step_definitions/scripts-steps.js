@@ -5,7 +5,8 @@ import {Before, Given, Then} from '@cucumber/cucumber';
 
 Before(function () {
   this.existingScripts = {
-    ...any.simpleObject(),
+    aaa: any.string(),
+    zzz: any.string(),
     test: any.string(),
     'lint:md': any.string(),
     prepare: any.string(),
@@ -14,8 +15,10 @@ Before(function () {
     'test:integration:base': any.string(),
     'test:integration:debug': any.string(),
     'test:integration:focus': any.string(),
+    build: any.string(),
     'test:integration:focus:debug': any.string(),
     'test:integration:wip': any.string(),
+    prebuild: any.string(),
     'test:integration:wip:debug': any.string(),
     'test:unit': any.string(),
     pretest: any.string(),
@@ -83,23 +86,6 @@ Then('the updated test script includes build', async function () {
 
 Then('the scripts are ordered correctly', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf8'));
-  const {
-    pretest,
-    test,
-    'test:unit': testUnit,
-    'test:integration': testIntegration,
-    'pretest:integration:base': pretestIntegrationBase,
-    'test:integration:base': testIntegrationBase,
-    'test:integration:debug': testIntegrationDebug,
-    'test:integration:focus': testIntegrationFocus,
-    'test:unit:base': testUnitBase,
-    'test:integration:focus:debug': testIntegrationFocusDebug,
-    'test:integration:wip': testIntegrationWip,
-    'test:integration:wip:debug': testIntegrationWipDebug,
-    'prelint:publish': prelintPublish,
-    'lint:md': lintMd,
-    ...otherExistingScripts
-  } = this.existingScripts;
 
   assert.deepEqual(
     Object.keys(scripts),
@@ -120,7 +106,11 @@ Then('the scripts are ordered correctly', async function () {
       'test:integration:focus:debug',
       'test:integration:wip',
       'test:integration:wip:debug',
-      ...Object.keys(otherExistingScripts).sort((a, b) => a.localeCompare(b))
+      'aaa',
+      'prebuild',
+      'build',
+      'prepare',
+      'zzz'
     ]
   );
 });

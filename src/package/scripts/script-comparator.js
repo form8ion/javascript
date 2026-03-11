@@ -10,13 +10,14 @@ function isPostScriptFor(a, b) {
   return isRelatedScript(a, b, 'post');
 }
 
-function getBaseScriptOf(script) {
+function stripPrefix(script) {
   if (script.startsWith('pre')) return script.slice(3);
   if (script.startsWith('post')) return script.slice(4);
   return script;
 }
 
-function getCategoryOrder(base) {
+function getCategoryOrder(script) {
+  const base = stripPrefix(script);
   if ('test' === base) return 0;
   if (base.startsWith('lint:')) return 1;
   if (base.startsWith('test:unit')) return 2;
@@ -32,14 +33,14 @@ export default function compareScriptNames(a, b) {
   if (isPostScriptFor(a, b)) return 1;
   if (isPostScriptFor(b, a)) return -1;
 
-  const aBase = getBaseScriptOf(a);
-  const bBase = getBaseScriptOf(b);
-
-  const categoryDiff = getCategoryOrder(aBase) - getCategoryOrder(bBase);
+  const categoryDiff = getCategoryOrder(a) - getCategoryOrder(b);
   if (0 !== categoryDiff) return 0 > categoryDiff ? -1 : 1;
 
-  const aKey = bBase === aBase || b === aBase || aBase.startsWith(`${b}:`) ? aBase : a;
-  const bKey = aBase === bBase || a === bBase || bBase.startsWith(`${a}:`) ? bBase : b;
+  const aStripped = stripPrefix(a);
+  const bStripped = stripPrefix(b);
+
+  const aKey = aStripped.startsWith(`${b}:`) ? aStripped : a;
+  const bKey = bStripped.startsWith(`${a}:`) ? bStripped : b;
 
   return aKey.localeCompare(bKey);
 }
