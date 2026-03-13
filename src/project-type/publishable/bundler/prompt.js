@@ -2,7 +2,7 @@ import {prompt} from '@form8ion/overridable-prompts';
 
 import {questionNames} from '../../../prompts/question-names.js';
 
-export default async function ({bundlers, decisions}) {
+export default async function gatherBundlerInput({bundlers, decisions}) {
   if (!Object.keys(bundlers).length) return 'Other';
 
   const answers = await prompt([{

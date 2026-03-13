@@ -1,6 +1,6 @@
 import {promises as fs} from 'node:fs';
 import {stringify} from 'ini';
 
-export default async function ({projectRoot, config}) {
+export default async function writeNpmConfig({projectRoot, config}) {
   await fs.writeFile(`${projectRoot}/.npmrc`, stringify(config));
 }

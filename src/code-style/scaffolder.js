@@ -4,7 +4,7 @@ import {scaffold as scaffoldEslint} from '@form8ion/eslint';
 
 import {scaffold as scaffoldRemark} from './remark/index.js';
 
-export default async function ({
+export default async function scaffoldCodeStyle({
   projectRoot,
   projectType,
   configs,

@@ -1,6 +1,6 @@
 import {promises as fs} from 'node:fs';
 
-export default async function ({projectRoot}) {
+export default async function removeNyc({projectRoot}) {
   await Promise.all([
     fs.unlink(`${projectRoot}/.nycrc`),
     fs.rm(`${projectRoot}/.nyc_output`, {recursive: true, force: true})

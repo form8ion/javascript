@@ -6,7 +6,7 @@ function projectWillNotBeConsumed(projectType) {
   return projectTypes.APPLICATION === projectType || projectTypes.CLI === projectType;
 }
 
-export default async function ({projectRoot, projectType}) {
+export default async function scaffoldNpmConfiguration({projectRoot, projectType}) {
   await write({
     projectRoot,
     config: {'update-notifier': false, ...projectWillNotBeConsumed(projectType) && {'save-exact': true}}

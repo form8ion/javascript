@@ -12,7 +12,7 @@ function getInstallationCommand(packageManager) {
   );
 }
 
-export default function ({scope, packageName, packageManager, visibility, provideExample}) {
+export default function scaffoldPackageDocumentation({scope, packageName, packageManager, visibility, provideExample}) {
   return {
     usage: `### Installation
 ${'Private' === visibility ? `

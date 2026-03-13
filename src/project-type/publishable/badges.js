@@ -1,4 +1,4 @@
-export default function (packageName, accessLevel) {
+export default function scaffoldPublishableBadges(packageName, accessLevel) {
   return {
     consumer: {
       ...'public' === accessLevel && {

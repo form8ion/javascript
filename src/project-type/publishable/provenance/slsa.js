@@ -1,4 +1,4 @@
-export default function ({provenance}) {
+export default function scaffoldSlsa({provenance}) {
   if (provenance) {
     return {
       badges: {

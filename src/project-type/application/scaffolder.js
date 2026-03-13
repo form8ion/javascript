@@ -3,7 +3,7 @@ import {info} from '@travi/cli-messages';
 
 const defaultBuildDirectory = 'public';
 
-export default async function ({projectRoot}) {
+export default async function scaffoldApplication({projectRoot}) {
   info('Scaffolding Application Details');
 
   await mergeIntoExistingPackageJson({projectRoot, config: {private: true}});

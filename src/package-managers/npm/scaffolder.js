@@ -2,7 +2,7 @@ import {promises as fs} from 'node:fs';
 import {execa} from 'execa';
 import {writePackageJson} from '@form8ion/javascript-core';
 
-export default async function ({projectRoot}) {
+export default async function scaffoldNpmPackageManager({projectRoot}) {
   const [packageContents, {stdout}] = await Promise.all([
     fs.readFile(`${projectRoot}/package.json`, 'utf-8'),
     execa('npm', ['--version'])

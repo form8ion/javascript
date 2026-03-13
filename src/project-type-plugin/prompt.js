@@ -2,7 +2,7 @@ import {prompt} from '@form8ion/overridable-prompts';
 
 import {questionNames} from '../prompts/question-names.js';
 
-export default async function ({types, projectType, decisions}) {
+export default async function gatherProjectTypePluginInput({types, projectType, decisions}) {
   if (!Object.keys(types).length) return 'Other';
 
   const answers = await prompt([{

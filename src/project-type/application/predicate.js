@@ -1,3 +1,3 @@
-export default function ({packageDetails}) {
+export default function projectIsApplication({packageDetails}) {
   return !!packageDetails.private;
 }

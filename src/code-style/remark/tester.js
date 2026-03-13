@@ -1,6 +1,6 @@
 import {fileExists} from '@form8ion/core';
 
-export default async function ({projectRoot}) {
+export default async function remarkConfigured({projectRoot}) {
   const [jsonConfigExists, jsConfigExists, cjsConfigExists] = await Promise.all([
     fileExists(`${projectRoot}/.remarkrc.json`),
     fileExists(`${projectRoot}/.remarkrc.js`),

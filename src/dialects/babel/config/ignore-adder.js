@@ -1,7 +1,7 @@
 import writeConfig from './writer.js';
 import loadConfig from './loader.js';
 
-export default async function ({projectRoot, ignore}) {
+export default async function addIgnores({projectRoot, ignore}) {
   if (ignore) {
     const existingConfig = await loadConfig({projectRoot});
 

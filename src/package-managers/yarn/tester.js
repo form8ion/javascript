@@ -3,7 +3,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 
 import determineLockfilePath from '../lockfile-path-resolver.js';
 
-export default function ({projectRoot, pinnedPackageManager = ''}) {
+export default function packageManagerIsYarn({projectRoot, pinnedPackageManager = ''}) {
   const [packageManager] = pinnedPackageManager.split('@');
 
   return packageManagers.YARN === packageManager

@@ -4,7 +4,12 @@ import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
 import {execa} from 'execa';
 import {getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
 
-export default async function (dependencies, dependenciesType, projectRoot, packageManager = packageManagers.NPM) {
+export default async function installDependencies(
+  dependencies,
+  dependenciesType,
+  projectRoot,
+  packageManager = packageManagers.NPM
+) {
   if (dependencies.length) {
     info(`Installing ${dependenciesType} dependencies`, {level: 'secondary'});
 

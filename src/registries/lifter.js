@@ -30,7 +30,7 @@ async function updateRegistriesInLockfileLintConfig(projectRoot, packageManager,
   });
 }
 
-export default async function ({projectRoot, packageManager, configs: {registries}}) {
+export default async function liftRegistries({projectRoot, packageManager, configs: {registries}}) {
   await updateRegistriesInNpmConfig(registries, projectRoot);
 
   if (!(await lockfileLintIsAlreadyConfigured({projectRoot}))) {

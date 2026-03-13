@@ -1,7 +1,7 @@
 import read from './reader.js';
 import write from './writer.js';
 
-export default async function ({projectRoot}) {
+export default async function liftNpmConfig({projectRoot}) {
   const {
     provenance,
     'engines-strict': enginesStrict,

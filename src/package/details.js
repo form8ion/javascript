@@ -1,6 +1,6 @@
 import {dialects} from '@form8ion/javascript-core';
 
-export default function ({
+export default function scaffoldPackageJsonDetails({
   packageName,
   dialect,
   license,

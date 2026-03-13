@@ -1,4 +1,4 @@
-export default function (vcs, pathWithinParent) {
+export default function scaffoldVcsHostDetails(vcs, pathWithinParent) {
   return vcs && 'github' === vcs.host && {
     repository: pathWithinParent
       ? {

@@ -6,6 +6,6 @@ const scaffolders = {
   yarn: scaffoldYarn
 };
 
-export default function ({projectRoot, packageManager}) {
+export default function scaffoldPackageManager({projectRoot, packageManager}) {
   return scaffolders[packageManager]({projectRoot});
 }

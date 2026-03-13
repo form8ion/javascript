@@ -1,3 +1,3 @@
-export default async function ({packageDetails: {bin}}) {
+export default async function projectIsCli({packageDetails: {bin}}) {
   return !!bin;
 }

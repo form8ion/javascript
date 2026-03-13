@@ -16,7 +16,14 @@ import {lift as liftPackage} from '../package/index.js';
 import * as packageManagers from '../package-managers/index.js';
 import {determineCurrent as resolvePackageManager} from '../package-managers/index.js';
 
-export default async function ({projectRoot, vcs, results, pathWithinParent, enhancers = {}, configs = {}}) {
+export default async function liftJavaScript({
+  projectRoot,
+  vcs,
+  results,
+  pathWithinParent,
+  enhancers = {},
+  configs = {}
+}) {
   info('Lifting JavaScript-specific details');
 
   const [packageManager, packageContents] = await Promise.all([

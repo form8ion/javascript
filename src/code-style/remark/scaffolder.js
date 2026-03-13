@@ -3,7 +3,7 @@ import {fileTypes} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {write} from '@form8ion/config-file';
 
-export default async function ({config, projectRoot, projectType, vcs}) {
+export default async function scaffoldRemark({config, projectRoot, projectType, vcs}) {
   await write({
     format: fileTypes.JSON,
     path: projectRoot,

@@ -4,7 +4,7 @@ import {writePackageJson} from '@form8ion/javascript-core';
 import buildPackageName from './package-name.js';
 import buildPackageDetails from './details.js';
 
-export default async function ({
+export default async function scaffoldPackage({
   projectRoot,
   projectName,
   scope,

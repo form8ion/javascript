@@ -18,7 +18,7 @@ import buildDocumentationCommand from '../documentation/generation-command.js';
 import {scaffold as scaffoldVerification} from './verification/index.js';
 import {scaffold as scaffoldCodeStyle} from '../code-style/index.js';
 
-export default async function (options) {
+export default async function scaffoldJavascript(options) {
   info('Initializing JavaScript project');
 
   const {

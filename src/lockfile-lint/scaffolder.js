@@ -11,7 +11,7 @@ function lockfileLintSupports(packageManager) {
   return lockfileLintSupportedPackageManagers.includes(packageManager);
 }
 
-export default async function ({projectRoot, packageManager, registries}) {
+export default async function scaffoldLockfileLint({projectRoot, packageManager, registries}) {
   if (!lockfileLintSupports(packageManager)) {
     throw new Error(
       `The ${packageManager} package manager is currently not supported by lockfile-lint. `

@@ -1,7 +1,7 @@
 import {fileTypes, writeConfigFile} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 
-export default async function ({config, projectType, projectRoot, testFilenamePattern}) {
+export default async function scaffoldTypescript({config, projectType, projectRoot, testFilenamePattern}) {
   const shareableTsConfigPackage = `${config.scope}/tsconfig`;
 
   await writeConfigFile({

@@ -4,7 +4,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 import {test as npmIsUsed} from './npm/index.js';
 import {test as yarnIsUsed} from './yarn/index.js';
 
-export default async function ({projectRoot, packageManager}) {
+export default async function resolveCurrentPackageManager({projectRoot, packageManager}) {
   if (packageManager) return packageManager;
 
   const {packageManager: pinnedPackageManager} = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));

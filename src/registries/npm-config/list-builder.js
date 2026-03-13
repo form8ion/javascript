@@ -1,4 +1,4 @@
-export default function (registries = {}) {
+export default function buildRegistriesList(registries = {}) {
   return Object.entries(registries)
     .filter(([scope]) => 'publish' !== scope)
     .reduce((acc, [scope, url]) => {

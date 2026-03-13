@@ -1,6 +1,6 @@
 import {write} from './config/index.js';
 
-export default async function ({projectRoot, preset}) {
+export default async function scaffoldBabel({projectRoot, preset}) {
   if (!preset) {
     throw new Error('No babel preset provided. Cannot configure babel transpilation');
   }

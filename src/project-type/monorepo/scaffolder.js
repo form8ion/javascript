@@ -1,7 +1,7 @@
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 import {info} from '@travi/cli-messages';
 
-export default async function ({projectRoot}) {
+export default async function scaffoldMonorepo({projectRoot}) {
   info('Scaffolding Monorepo Details');
 
   await mergeIntoExistingPackageJson({projectRoot, config: {private: true}});

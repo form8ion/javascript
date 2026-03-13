@@ -5,7 +5,7 @@ import {scaffold as scaffoldApplicationType} from './application/index.js';
 import {scaffold as scaffoldMonorepoType} from './monorepo/index.js';
 import {scaffold as scaffoldCliType} from './cli/index.js';
 
-export default async function ({
+export default async function scaffoldProjectType({
   projectType,
   projectRoot,
   projectName,

@@ -1,6 +1,6 @@
 import {packageManagers} from '@form8ion/javascript-core';
 
-export default function (packageManager) {
+export default function scaffoldGenerationCommand(packageManager) {
   if (packageManagers.NPM === packageManager) return 'npm run generate:md';
   if (packageManagers.YARN === packageManager) return 'yarn generate:md';
 

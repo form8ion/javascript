@@ -1,6 +1,6 @@
 import buildGenerationCommand from './generation-command.js';
 
-export default function ({projectTypeResults, packageManager}) {
+export default function scaffoldDocumentation({projectTypeResults, packageManager}) {
   return {
     toc: `Run \`${buildGenerationCommand(packageManager)}\` to generate a table of contents`,
     ...projectTypeResults.documentation,
