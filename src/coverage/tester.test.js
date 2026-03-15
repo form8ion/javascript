@@ -1,12 +1,13 @@
+import {test as c8IsPresent} from '@form8ion/c8';
+
 import any from '@travi/any';
 import {afterEach, vi, describe, expect, it} from 'vitest';
 import {when} from 'vitest-when';
 
-import c8IsPresent from './c8/tester.js';
 import nycIsPresent from './nyc/tester.js';
 import coverageIsConfigured from './tester.js';
 
-vi.mock('./c8/tester.js');
+vi.mock('@form8ion/c8');
 vi.mock('./nyc/tester.js');
 
 describe('coverage predicate', () => {

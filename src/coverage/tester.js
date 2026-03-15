@@ -1,4 +1,5 @@
-import c8IsConfigured from './c8/tester.js';
+import {test as c8IsConfigured} from '@form8ion/c8';
+
 import nycIsConfigured from './nyc/tester.js';
 
 export default async function testCoverageBeingCollected({projectRoot}) {

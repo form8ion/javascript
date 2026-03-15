@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import {lift as liftCodecov} from '@form8ion/codecov';
+import {scaffold as scaffoldC8} from '@form8ion/c8';
 
-import {scaffold as scaffoldC8} from './c8/index.js';
 import {test as nycIsConfigured, remove as removeNyc} from './nyc/index.js';
 
 export async function lift({projectRoot, packageManager, vcs}) {

@@ -1,14 +1,14 @@
 import {scaffold as scaffoldCodecov} from '@form8ion/codecov';
+import {scaffold as scaffoldC8} from '@form8ion/c8';
 
 import {describe, vi, it, expect, afterEach} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import scaffoldC8 from './c8/scaffolder.js';
 import scaffold from './scaffolder.js';
 
 vi.mock('@form8ion/codecov');
-vi.mock('./c8/scaffolder');
+vi.mock('@form8ion/c8');
 
 describe('coverage scaffolder', () => {
   afterEach(() => {

@@ -1,5 +1,6 @@
 import deepmerge from 'deepmerge';
 import {lift as liftCodecov} from '@form8ion/codecov';
+import {scaffold as scaffoldC8} from '@form8ion/c8';
 
 import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
@@ -7,14 +8,13 @@ import {when} from 'vitest-when';
 
 import testForNyc from './nyc/tester.js';
 import removeNyc from './nyc/remover.js';
-import scaffoldC8 from './c8/scaffolder.js';
 import {lift} from './lifter.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/codecov');
+vi.mock('@form8ion/c8');
 vi.mock('./nyc/tester');
 vi.mock('./nyc/remover');
-vi.mock('./c8/scaffolder');
 
 describe('coverage lifter', () => {
   const projectRoot = any.string();
