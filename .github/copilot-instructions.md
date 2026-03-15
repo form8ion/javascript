@@ -29,7 +29,7 @@ npm test
 
 Follow this exact sequence for ALL code changes. Work in small increments — make one change at a time and validate before proceeding.
 
-1. **Research**: Search codebase for existing patterns, commands, utilities. Use Context7 MCP tools for library/API documentation.
+1. **Research**: Search codebase for existing patterns, commands, utilities. Understand how similar functionality is implemented.
 2. **Write failing integration test**: Create test describing desired behavior (use Cucumber for integration tests)
 3. **Verify failure**: Run `npm run test:integration` — confirm clear failure message
 4. **Write failing unit test**: Create test describing desired behavior
