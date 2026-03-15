@@ -146,6 +146,7 @@ describe('Config Loader', () => {
 ## Boundaries
 
 **✅ Always do:**
+- Precede all terminal commands with a single space to avoid polluting bash history
 - Run `nvm use` before any npm command
 - Write tests before implementation (TDD)
 - Run lint and tests after every change
