@@ -67,6 +67,14 @@ Task is NOT complete until all verification passes.
   If you find yourself writing a comment, ask how you can change the code to eliminate the need for it.
   Extract functions, rename variables, or restructure code to make the intent clear without comments.
 
+## Naming Conventions
+
+* Use camelCase for variables and functions
+* Use kebab-case for file names
+* Use nouns for file names and variables
+* Use verbs for function names
+* Use descriptive names that convey intent
+* Use full words — avoid abbreviations and acronyms unless widely understood
 
 ## Testing Standards
 
