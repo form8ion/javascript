@@ -62,6 +62,11 @@ Task is NOT complete until all verification passes.
 - Keep cyclomatic complexity low
 - Remove all unused imports and variables
 - Run lint and tests after EVERY change
+- Never use code comments.
+  Instead, refactor code to be self-explanatory.
+  If you find yourself writing a comment, ask how you can change the code to eliminate the need for it.
+  Extract functions, rename variables, or restructure code to make the intent clear without comments.
+
 
 ## Testing Standards
 
