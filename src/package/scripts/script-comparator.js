@@ -39,8 +39,8 @@ export default function compareScriptNames(a, b) {
   const aStripped = stripPrefix(a);
   const bStripped = stripPrefix(b);
 
-  const aKey = aStripped.startsWith(`${b}:`) ? aStripped : a;
-  const bKey = bStripped.startsWith(`${a}:`) ? bStripped : b;
+  const aKey = aStripped !== a ? aStripped : a;
+  const bKey = bStripped !== b ? bStripped : b;
 
   return aKey.localeCompare(bKey);
 }

@@ -6,6 +6,7 @@ import {Before, Given, Then} from '@cucumber/cucumber';
 Before(function () {
   this.existingScripts = {
     aaa: any.string(),
+    ccc: any.string(),
     zzz: any.string(),
     test: any.string(),
     'lint:md': any.string(),
@@ -109,6 +110,7 @@ Then('the scripts are ordered correctly', async function () {
       'aaa',
       'prebuild',
       'build',
+      'ccc',
       'prepare',
       'zzz'
     ]
