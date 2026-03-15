@@ -113,6 +113,10 @@ describe('Config Loader', () => {
 - Ensure all code paths have corresponding tests
 - Test happy paths, unhappy paths, and edge cases
 - Never modify tests to pass without understanding root cause
+- When a mock returns/resolves a value, do not assert that the mock was called (or was called with specific arguments).
+  Instead, leverage `vitest-when` to make the mock return different values based on the arguments it is called with, and assert the expected result of the function under test.
+  This ensures the test is focused on the behavior of the function under test rather than coupling it to specific implementation details of how it interacts with its dependencies.
+- If a mock does not return/resolve a value and only has side-effects, consider whether it's behavior could be adjusted to return a value that can be asserted instead of asserting the mock call directly.
 
 ## Dependencies
 
