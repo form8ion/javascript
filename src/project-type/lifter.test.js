@@ -19,20 +19,22 @@ describe('lift project-type', () => {
   });
 
   it('should lift a package project-type', async () => {
+    const registry = any.url();
     const liftPackageResults = any.simpleObject();
     when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
-    when(liftPackage).calledWith({projectRoot, packageDetails}).thenResolve(liftPackageResults);
+    when(liftPackage).calledWith({projectRoot, packageDetails, registry}).thenResolve(liftPackageResults);
 
-    expect(await lift({projectRoot, packageDetails})).toEqual(liftPackageResults);
+    expect(await lift({projectRoot, packageDetails, configs: {registries: {registry}}})).toEqual(liftPackageResults);
   });
 
   it('should lift a cli project-type', async () => {
+    const registry = any.url();
     const liftCliResults = any.simpleObject();
     when(cliPredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
     when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
-    when(liftCli).calledWith({projectRoot, packageDetails}).thenResolve(liftCliResults);
+    when(liftCli).calledWith({projectRoot, packageDetails, registry}).thenResolve(liftCliResults);
 
-    expect(await lift({projectRoot, packageDetails})).toEqual(liftCliResults);
+    expect(await lift({projectRoot, packageDetails, configs: {registries: {registry}}})).toEqual(liftCliResults);
   });
 
   it('should define the repository as the homepage if the available project-type lifters do not apply', async () => {

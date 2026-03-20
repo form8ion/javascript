@@ -12,12 +12,14 @@ Feature: Lift Registries
   Scenario: npmrc exists, no registry defined, custom registry provided
     Given the npmrc does not define registry
     And an "npm" lockfile exists
+    And the project is of type "CLI"
     And husky v5 is installed
     And lockfile-lint is configured
     And an override is defined for the official registry
     When the scaffolder results are processed
     Then registry is defined as an alternate registry
     And the lockfile-lint config allows the custom registry
+    And the version badge references the custom registry
 
   Scenario: npmrc exists, no registry defined, custom scoped registry provided
     Given the npmrc does not define registry

@@ -4,7 +4,7 @@ import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 import defineBadges from './badges.js';
 import {lift as liftProvenance} from './provenance/index.js';
 
-export default async function liftPublishable({projectRoot, packageDetails}) {
+export default async function liftPublishable({projectRoot, packageDetails, registry}) {
   const {name: packageName, publishConfig: {access: packageAccessLevel}} = packageDetails;
   const homepage = `https://npm.im/${packageName}`;
 
@@ -16,7 +16,7 @@ export default async function liftPublishable({projectRoot, packageDetails}) {
       homepage,
       dependencies: {javascript: {development: ['publint']}},
       scripts: {'lint:publish': 'publint --strict'},
-      badges: defineBadges(packageName, packageAccessLevel)
+      badges: defineBadges(packageName, packageAccessLevel, registry)
     }
   );
 }

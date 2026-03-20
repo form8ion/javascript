@@ -62,11 +62,11 @@ Given('the project is of type {string}', async function (projectType) {
 
   if (projectTypes.PACKAGE === resolvedProjectType) {
     this.packageExports = any.word();
-    this.publishConfig = {};
+    this.publishConfig = {access: 'public'};
   }
   if (projectTypes.CLI === resolvedProjectType) {
     this.packageBin = any.word();
-    this.publishConfig = {};
+    this.publishConfig = {access: 'public'};
   }
   this.repository = this.vcs && `${this.vcs.owner}/${this.vcs.name}`;
 });

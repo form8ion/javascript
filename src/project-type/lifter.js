@@ -7,9 +7,11 @@ function vcsRepositoryHostedOnGithub(vcs) {
   return vcs && 'github' === vcs.host;
 }
 
-export default async function liftProjectType({projectRoot, packageDetails, vcs}) {
-  if (await isPackage({projectRoot, packageDetails})) return liftPackage({projectRoot, packageDetails});
-  if (await isCli({projectRoot, packageDetails})) return liftCli({projectRoot, packageDetails});
+export default async function liftProjectType({projectRoot, packageDetails, vcs, configs}) {
+  const registry = configs?.registries?.registry;
+
+  if (await isPackage({projectRoot, packageDetails})) return liftPackage({projectRoot, packageDetails, registry});
+  if (await isCli({projectRoot, packageDetails})) return liftCli({projectRoot, packageDetails, registry});
 
   let homepage;
 

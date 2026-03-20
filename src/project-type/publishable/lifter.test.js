@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -15,21 +15,18 @@ vi.mock('./provenance');
 vi.mock('./badges');
 
 describe('publishable project-type lifter', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should lift the details of the package project', async () => {
     const projectRoot = any.string();
     const packageName = any.word();
     const packageAccessLevel = any.word();
+    const registry = any.url();
     const packageDetails = {...any.simpleObject(), name: packageName, publishConfig: {access: packageAccessLevel}};
     const provenanceResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     const badgesResults = any.simpleObject();
     const homepage = `https://npm.im/${packageName}`;
     when(liftProvenance).calledWith({packageDetails, projectRoot}).thenResolve(provenanceResults);
-    when(defineBadges).calledWith(packageName, packageAccessLevel).thenReturn(badgesResults);
+    when(defineBadges).calledWith(packageName, packageAccessLevel, registry).thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
       {
@@ -40,7 +37,7 @@ describe('publishable project-type lifter', () => {
       }
     ).thenReturn(mergedResults);
 
-    expect(await lift({projectRoot, packageDetails})).toEqual(mergedResults);
+    expect(await lift({projectRoot, packageDetails, registry})).toEqual(mergedResults);
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({projectRoot, config: {homepage}});
   });
 });
