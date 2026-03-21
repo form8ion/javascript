@@ -2,19 +2,19 @@ import {validateOptions} from '@form8ion/core';
 import {scaffoldChoice} from '@form8ion/javascript-core';
 import deepmerge from 'deepmerge';
 
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import scaffoldCoverage from '../coverage/scaffolder.js';
+import scaffoldCoverage from '../../coverage/scaffolder.js';
 import prompt from './prompt.js';
-import scaffoldUnitTesting from './unit.js';
-import {pluginsSchema} from '../plugins-schemas.js';
+import scaffoldUnitTesting from './scaffolder.js';
+import {pluginsSchema} from '../../plugins-schemas.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/core');
 vi.mock('@form8ion/javascript-core');
-vi.mock('../coverage/scaffolder.js');
+vi.mock('../../coverage/scaffolder.js');
 vi.mock('./prompt.js');
 
 describe('unit testing scaffolder', () => {
@@ -28,10 +28,6 @@ describe('unit testing scaffolder', () => {
   const coverageResults = any.simpleObject();
   const unitTestFrameworkResults = any.simpleObject();
   const mergedResults = any.simpleObject();
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it('should scaffold the chosen framework', async () => {
     const visibility = any.word();

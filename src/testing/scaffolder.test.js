@@ -2,10 +2,10 @@ import any from '@travi/any';
 import {it, expect, describe, vi, beforeEach} from 'vitest';
 import {when} from 'vitest-when';
 
-import scaffoldUnitTesting from '../../../testing/unit.js';
+import {scaffold as scaffoldUnitTesting} from './unit/index.js';
 import scaffoldTesting from './scaffolder.js';
 
-vi.mock('../../../testing/unit.js');
+vi.mock('./unit/index.js');
 
 describe('testing scaffolder', () => {
   const projectRoot = any.string();

@@ -1,24 +1,20 @@
 import deepmerge from 'deepmerge';
 import {scaffold as scaffoldHusky} from '@form8ion/husky';
 
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import * as testingScaffolder from './testing/scaffolder.js';
+import {scaffold as scaffoldTesting} from '../../testing/index.js';
 import {scaffold as scaffoldLinting} from '../../linting/index.js';
 import {scaffoldVerification} from './verifier.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/husky');
-vi.mock('./testing/scaffolder');
-vi.mock('../../linting');
+vi.mock('../../testing/index.js');
+vi.mock('../../linting/index.js');
 
-describe('verification', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
+describe('verification scaffolder', () => {
   it('should scaffold linting and testing', async () => {
     const projectRoot = any.string();
     const visibility = any.string();
@@ -38,7 +34,7 @@ describe('verification', () => {
     when(scaffoldLinting)
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .thenResolve(lintingResults);
-    when(testingScaffolder.default)
+    when(scaffoldTesting)
       .calledWith({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
       .thenResolve(testingResults);
     when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).thenResolve(huskyResults);

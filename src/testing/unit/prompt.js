@@ -1,5 +1,5 @@
 import {prompt} from '@form8ion/overridable-prompts';
-import {questionNames} from '../prompts/question-names.js';
+import {questionNames} from '../../prompts/question-names.js';
 
 export default async function gatherUnitTestingInput({frameworks, decisions}) {
   if (!Object.keys(frameworks).length) return 'Other';

@@ -2,9 +2,9 @@ import deepmerge from 'deepmerge';
 import {validateOptions} from '@form8ion/core';
 import {scaffoldChoice as scaffoldFrameworkChoice} from '@form8ion/javascript-core';
 
-import {scaffold as scaffoldCoverage} from '../coverage/index.js';
+import {scaffold as scaffoldCoverage} from '../../coverage/index.js';
 import chooseFramework from './prompt.js';
-import {pluginsSchema} from '../plugins-schemas.js';
+import {pluginsSchema} from '../../plugins-schemas.js';
 
 export default async function scaffoldUnitTesting({
   projectRoot,

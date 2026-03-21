@@ -1,6 +1,6 @@
 import deepmerge from 'deepmerge';
 
-import scaffoldUnitTesting from '../../../testing/unit.js';
+import {scaffold as scaffoldUnitTesting} from './unit/index.js';
 
 export default async function scaffoldTesting({
   projectRoot,
