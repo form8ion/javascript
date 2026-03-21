@@ -12,7 +12,7 @@ import * as registriesPlugin from '../registries/index.js';
 import * as coveragePlugin from '../coverage/index.js';
 import * as codeStylePlugin from '../code-style/index.js';
 import * as npmConfigPlugin from '../npm-config/index.js';
-import * as enginesEnhancer from './enhancers/engines.js';
+import * as enginesEnhancer from '../engines/index.js';
 import * as projectTypes from '../project-type/index.js';
 import * as dialects from '../dialects/index.js';
 import liftPackage from '../package/lifter.js';
