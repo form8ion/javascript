@@ -1,8 +1,8 @@
 import deepmerge from 'deepmerge';
 import {scaffold as scaffoldHusky} from '@form8ion/husky';
 
-import {scaffold as scaffoldTesting} from '../../testing/index.js';
-import {scaffold as scaffoldLinting} from '../../linting/index.js';
+import {scaffold as scaffoldTesting} from '../testing/index.js';
+import {scaffold as scaffoldLinting} from '../linting/index.js';
 
 export async function scaffoldVerification({
   projectRoot,

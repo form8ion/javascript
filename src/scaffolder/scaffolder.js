@@ -15,7 +15,7 @@ import {scaffold as scaffoldPackage} from '../package/index.js';
 import {scaffold as scaffoldProjectType} from '../project-type/index.js';
 import {scaffold as scaffoldProjectTypePlugin} from '../project-type-plugin/index.js';
 import buildDocumentationCommand from '../documentation/generation-command.js';
-import {scaffold as scaffoldVerification} from './verification/index.js';
+import {scaffold as scaffoldVerification} from '../verification/index.js';
 import {scaffold as scaffoldCodeStyle} from '../code-style/index.js';
 
 export default async function scaffoldJavascript(options) {

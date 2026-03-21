@@ -7,7 +7,7 @@ import {when} from 'vitest-when';
 import any from '@travi/any';
 
 import {scaffold as scaffoldPackage} from '../package/index.js';
-import {scaffold as scaffoldVerification} from './verification/index.js';
+import {scaffold as scaffoldVerification} from '../verification/index.js';
 import {scaffold as scaffoldCodeStyle} from '../code-style/index.js';
 import {scaffold as scaffoldDialect} from '../dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from '../npm-config/index.js';
@@ -39,7 +39,7 @@ vi.mock('../documentation/index.js');
 vi.mock('../options/validator.js');
 vi.mock('../prompts/questions.js');
 vi.mock('../documentation/badges.js');
-vi.mock('./verification/index.js');
+vi.mock('../verification/index.js');
 
 describe('javascript project scaffolder', () => {
   const options = any.simpleObject();

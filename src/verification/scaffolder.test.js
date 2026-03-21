@@ -5,14 +5,14 @@ import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import {scaffold as scaffoldTesting} from '../../testing/index.js';
-import {scaffold as scaffoldLinting} from '../../linting/index.js';
-import {scaffoldVerification} from './verifier.js';
+import {scaffold as scaffoldTesting} from '../testing/index.js';
+import {scaffold as scaffoldLinting} from '../linting/index.js';
+import {scaffoldVerification} from './scaffolder.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/husky');
-vi.mock('../../testing/index.js');
-vi.mock('../../linting/index.js');
+vi.mock('../testing/index.js');
+vi.mock('../linting/index.js');
 
 describe('verification scaffolder', () => {
   it('should scaffold linting and testing', async () => {
