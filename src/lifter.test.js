@@ -18,7 +18,7 @@ import * as dialects from './dialects/index.js';
 import liftPackage from './package/lifter.js';
 import * as packageManagers from './package-managers/index.js';
 import {determineCurrent as packageManagerResolver} from './package-managers/index.js';
-import lift from './lift.js';
+import lift from './lifter.js';
 
 vi.mock('node:fs');
 vi.mock('@form8ion/core');
