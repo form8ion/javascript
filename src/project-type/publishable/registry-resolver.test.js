@@ -16,6 +16,25 @@ describe('registry resolver', () => {
     expect(resolveRegistry(any.word(), {registry})).toEqual(registry);
   });
 
+  it('should return the publish registry when defined', () => {
+    const publishRegistry = any.url();
+
+    expect(resolveRegistry(any.word(), {publish: publishRegistry})).toEqual(publishRegistry);
+  });
+
+  it('should prefer the publish registry over the main registry override', () => {
+    const publishRegistry = any.url();
+
+    expect(resolveRegistry(any.word(), {registry, publish: publishRegistry})).toEqual(publishRegistry);
+  });
+
+  it('should prefer the publish registry over the scoped registry', () => {
+    const publishRegistry = any.url();
+
+    expect(resolveRegistry(`@${scope}/${any.word()}`, {[scope]: scopedRegistry, publish: publishRegistry}))
+      .toEqual(publishRegistry);
+  });
+
   it('should return the scoped registry when the package is under a scope with a defined registry', () => {
     expect(resolveRegistry(`@${scope}/${any.word()}`, {[scope]: scopedRegistry})).toEqual(scopedRegistry);
   });

@@ -23,7 +23,9 @@ Given('an override is defined for the official registry', async function () {
 });
 
 Given('an alternative registry is defined for publishing', async function () {
-  this.registries = {...this.registries, publish: any.url()};
+  const registry = any.url();
+  this.registries = {...this.registries, publish: registry};
+  this.publishRegistry = registry;
 });
 
 Given('a registry is defined for the package\'s scope', async function () {

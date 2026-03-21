@@ -32,6 +32,19 @@ Feature: Lift Registries
     And the lockfile-lint config allows the "npm" registry
     And the lockfile-lint config allows the scoped registries
 
+  Scenario: npmrc exists, no registry defined, alternative publish registry provided
+    Given the npmrc does not define registry
+    And an "npm" lockfile exists
+    And lockfile-lint is configured
+    And the project is of type "Package"
+    And husky v5 is installed
+    And an alternative registry is defined for publishing
+    When the scaffolder results are processed
+    Then registry is defined as the official registry
+    And the lockfile-lint config allows the "npm" registry
+    And the registry configuration is defined
+    And the version badge references the custom registry
+
   Scenario: npmrc exists, no registry defined, registry defined for the package's scope
     Given the npmrc does not define registry
     And an "npm" lockfile exists
