@@ -8,22 +8,22 @@ import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import * as registriesPlugin from '../registries/index.js';
-import * as coveragePlugin from '../coverage/index.js';
-import * as codeStylePlugin from '../code-style/index.js';
-import * as npmConfigPlugin from '../npm-config/index.js';
-import * as enginesEnhancer from '../engines/index.js';
-import * as projectTypes from '../project-type/index.js';
-import * as dialects from '../dialects/index.js';
-import liftPackage from '../package/lifter.js';
-import * as packageManagers from '../package-managers/index.js';
-import {determineCurrent as packageManagerResolver} from '../package-managers/index.js';
+import * as registriesPlugin from './registries/index.js';
+import * as coveragePlugin from './coverage/index.js';
+import * as codeStylePlugin from './code-style/index.js';
+import * as npmConfigPlugin from './npm-config/index.js';
+import * as enginesEnhancer from './engines/index.js';
+import * as projectTypes from './project-type/index.js';
+import * as dialects from './dialects/index.js';
+import liftPackage from './package/lifter.js';
+import * as packageManagers from './package-managers/index.js';
+import {determineCurrent as packageManagerResolver} from './package-managers/index.js';
 import lift from './lift.js';
 
 vi.mock('node:fs');
 vi.mock('@form8ion/core');
-vi.mock('../package/lifter.js');
-vi.mock('../package-managers/index.js');
+vi.mock('./package/lifter.js');
+vi.mock('./package-managers/index.js');
 
 describe('lift', () => {
   const projectRoot = any.string();
