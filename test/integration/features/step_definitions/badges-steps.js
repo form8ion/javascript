@@ -5,5 +5,5 @@ Then('the version badge references the custom registry', async function () {
   const {consumer: {npm: npmBadge}} = this.results.badges;
   const {searchParams} = new URL(npmBadge.img);
 
-  assert.equal(searchParams.get('registry_uri'), this.registries.registry);
+  assert.equal(searchParams.get('registry_uri'), this.publishRegistry);
 });

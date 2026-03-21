@@ -2,22 +2,40 @@ import {promises as fs} from 'fs';
 import {fileTypes} from '@form8ion/core';
 import {write} from '@form8ion/config-file';
 
-import {Given, Then} from '@cucumber/cucumber';
+import {Given, Then, Before} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
 
 import {read as readNpmConfig} from '../../../../src/npm-config/index.js';
 
+Before(function () {
+  this.registries = {};
+});
+
 Given('registries are defined for scopes', async function () {
-  this.registries = any.objectWithKeys(any.listOf(any.word), {factory: any.url});
+  this.registries = {...this.registries, ...any.objectWithKeys(any.listOf(any.word), {factory: any.url})};
 });
 
 Given('an override is defined for the official registry', async function () {
-  this.registries = {registry: any.url()};
+  const registry = any.url();
+  this.registries = {...this.registries, registry};
+  this.publishRegistry = this.publishRegistry || registry;
 });
 
 Given('an alternative registry is defined for publishing', async function () {
-  this.registries = {publish: any.url()};
+  this.registries = {...this.registries, publish: any.url()};
+});
+
+Given('a registry is defined for the package\'s scope', async function () {
+  const scope = any.word();
+  const registry = any.url();
+  this.projectName = `@${scope}/${this.projectName}`;
+  this.registries = {...this.registries, [scope]: registry};
+  this.publishRegistry = registry;
+});
+
+Given('the package is published under a scope', async function () {
+  this.projectName = `@${any.word()}/${this.projectName}`;
 });
 
 Given('the npmrc does not define registry', async function () {

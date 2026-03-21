@@ -32,6 +32,44 @@ Feature: Lift Registries
     And the lockfile-lint config allows the "npm" registry
     And the lockfile-lint config allows the scoped registries
 
+  Scenario: npmrc exists, no registry defined, registry defined for the package's scope
+    Given the npmrc does not define registry
+    And an "npm" lockfile exists
+    And lockfile-lint is configured
+    And the project is of type "Package"
+    And husky v5 is installed
+    And a registry is defined for the package's scope
+    When the scaffolder results are processed
+    Then registry is defined as the official registry
+    And the lockfile-lint config allows the "npm" registry
+    And the version badge references the custom registry
+
+  Scenario: scoped package falls back to main registry override when no scope registry is defined
+    Given the npmrc does not define registry
+    And an "npm" lockfile exists
+    And lockfile-lint is configured
+    And the project is of type "Package"
+    And husky v5 is installed
+    And the package is published under a scope
+    And an override is defined for the official registry
+    When the scaffolder results are processed
+    Then registry is defined as an alternate registry
+    And the lockfile-lint config allows the custom registry
+    And the version badge references the custom registry
+
+  Scenario: scoped registry takes priority over main registry override
+    Given the npmrc does not define registry
+    And an "npm" lockfile exists
+    And lockfile-lint is configured
+    And the project is of type "Package"
+    And husky v5 is installed
+    And a registry is defined for the package's scope
+    And an override is defined for the official registry
+    When the scaffolder results are processed
+    Then registry is defined as an alternate registry
+    And the lockfile-lint config allows the custom registry
+    And the version badge references the custom registry
+
   Scenario: no npmrc or lockfile-lint config exists
     Given an "npm" lockfile exists
     And lockfile-lint is not configured

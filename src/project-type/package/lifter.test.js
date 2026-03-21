@@ -11,10 +11,10 @@ describe('package project-type lifter', () => {
   it('should leverage the publishable lifter', async () => {
     const projectRoot = any.string();
     const packageDetails = any.simpleObject();
-    const registry = any.url();
+    const configs = any.simpleObject();
     const publishableResults = any.simpleObject();
-    when(liftPublishable).calledWith({projectRoot, packageDetails, registry}).thenResolve(publishableResults);
+    when(liftPublishable).calledWith({projectRoot, packageDetails, configs}).thenResolve(publishableResults);
 
-    expect(await lift({projectRoot, packageDetails, registry})).toEqual(publishableResults);
+    expect(await lift({projectRoot, packageDetails, configs})).toEqual(publishableResults);
   });
 });
