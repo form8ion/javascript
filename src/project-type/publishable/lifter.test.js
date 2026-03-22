@@ -22,15 +22,17 @@ describe('publishable project-type lifter', () => {
     const packageName = any.word();
     const packageAccessLevel = any.word();
     const registries = any.simpleObject();
-    const registry = any.url();
+    const customRegistry = any.url();
     const packageDetails = {...any.simpleObject(), name: packageName, publishConfig: {access: packageAccessLevel}};
     const provenanceResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     const badgesResults = any.simpleObject();
     const homepage = `https://npm.im/${packageName}`;
-    when(resolveRegistry).calledWith(packageName, registries).thenReturn(registry);
-    when(liftProvenance).calledWith({packageDetails, projectRoot}).thenResolve(provenanceResults);
-    when(defineBadges).calledWith(packageName, packageAccessLevel, registry).thenReturn(badgesResults);
+    when(resolveRegistry).calledWith(packageName, registries).thenReturn(customRegistry);
+    when(liftProvenance).calledWith({packageDetails, projectRoot, customRegistry}).thenResolve(provenanceResults);
+    when(defineBadges)
+      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry})
+      .thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
       {

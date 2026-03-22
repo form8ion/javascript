@@ -16,14 +16,14 @@ describe('badges for publishable project types', async () => {
   });
 
   it('should return the npm badge for packages with a public access level', () => {
-    expect(defineBadges(packageName, 'public').consumer).toEqual({npm: npmBadgeDetails});
+    expect(defineBadges({packageName, accessLevel: 'public'}).consumer).toEqual({npm: npmBadgeDetails});
   });
 
   it('should include the registry_uri in the npm badge when a custom registry is provided', () => {
-    const registry = any.url();
+    const customRegistry = any.url();
 
-    const {searchParams} = new URL(defineBadges(packageName, 'public', registry).consumer.npm.img);
+    const {searchParams} = new URL(defineBadges({packageName, accessLevel: 'public', customRegistry}).consumer.npm.img);
 
-    expect(searchParams.get('registry_uri')).toEqual(registry);
+    expect(searchParams.get('registry_uri')).toEqual(customRegistry);
   });
 });

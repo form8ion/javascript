@@ -20,13 +20,12 @@ Feature: Package Provenance
     And provenance is enabled for publishing
     Then the SLSA badge is added to the status group
 
-  @wip
   Scenario: Public Package on registry that does not support provenance
     Given an "npm" lockfile exists
     And the project is of type "Publishable"
     And the package is published publicly
     And the package is published without provenance
-    And the package is published to an alternative registry
+    And an alternative registry is defined for publishing
     And husky v5 is installed
     When the scaffolder results are processed
     And provenance is not enabled for publishing

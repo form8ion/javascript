@@ -16,7 +16,7 @@ Given('the package is published with provenance', async function () {
 });
 
 Given('the package is published without provenance', async function () {
-  this.publishConfig.provenance = null;
+  delete this.publishConfig.provenance;
 });
 
 Then('publint is configured', async function () {

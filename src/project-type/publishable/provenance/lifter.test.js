@@ -29,6 +29,15 @@ describe('provenance lifter', () => {
     });
   });
 
+  it('should not configure provenance for a public package published to an alternative registry', async () => {
+    const packageDetails = {...any.simpleObject(), publishConfig: {access: 'public'}};
+    const customRegistry = any.url();
+
+    expect(await lift({packageDetails, projectRoot, customRegistry})).toEqual({});
+    expect(enhanceSlsa).not.toHaveBeenCalled();
+    expect(mergeIntoExistingPackageJson).not.toHaveBeenCalled();
+  });
+
   it('should not configure provenance for a restricted package', async () => {
     const packageDetails = {...any.simpleObject(), publishConfig: {access: 'restricted'}};
 
