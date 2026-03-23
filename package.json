@@ -30,7 +30,7 @@
     "lint:publish": "publint --strict",
     "lint:sensitive": "ban",
     "test:unit": "run-s 'test:unit:base -- --coverage'",
-    "test:unit:base": "DEBUG=any vitest run",
+    "test:unit:base": "NODE_ENV=test DEBUG=any vitest run src/",
     "test:integration": "run-s 'test:integration:base -- --profile noWip'",
     "pretest:integration:base": "run-s build",
     "test:integration:base": "NODE_OPTIONS=--enable-source-maps DEBUG=any cucumber-js test/integration",
