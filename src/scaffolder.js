@@ -89,7 +89,6 @@ export default async function scaffoldJavascript(options) {
   const verificationResults = await scaffoldVerification({
     projectRoot,
     dialect,
-    visibility,
     packageManager,
     vcs,
     registries: configs.registries,

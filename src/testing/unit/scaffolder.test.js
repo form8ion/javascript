@@ -19,27 +19,22 @@ vi.mock('./prompt.js');
 
 describe('unit testing scaffolder', () => {
   const projectRoot = any.string();
-  const vcs = any.simpleObject();
   const frameworks = any.simpleObject();
   const decisions = any.simpleObject();
   const chosenFramework = any.word();
   const dialect = any.word();
-  const pathWithinParent = any.string();
   const coverageResults = any.simpleObject();
   const unitTestFrameworkResults = any.simpleObject();
   const mergedResults = any.simpleObject();
 
   it('should scaffold the chosen framework', async () => {
-    const visibility = any.word();
     const validatedFrameworks = any.simpleObject();
     when(validateOptions).calledWith(pluginsSchema, frameworks).thenReturn(validatedFrameworks);
     when(prompt).calledWith({frameworks: validatedFrameworks, decisions}).thenResolve(chosenFramework);
     when(scaffoldChoice)
       .calledWith(validatedFrameworks, chosenFramework, {projectRoot, dialect})
       .thenResolve(unitTestFrameworkResults);
-    when(scaffoldCoverage)
-      .calledWith({projectRoot, vcs, visibility, pathWithinParent})
-      .thenResolve(coverageResults);
+    when(scaffoldCoverage).calledWith({projectRoot}).thenResolve(coverageResults);
     when(deepmerge.all)
       .calledWith([
         {scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'}},
@@ -48,7 +43,6 @@ describe('unit testing scaffolder', () => {
       ])
       .thenReturn(mergedResults);
 
-    expect(await scaffoldUnitTesting({projectRoot, frameworks, decisions, vcs, visibility, pathWithinParent, dialect}))
-      .toEqual(mergedResults);
+    expect(await scaffoldUnitTesting({projectRoot, frameworks, decisions, dialect})).toEqual(mergedResults);
   });
 });

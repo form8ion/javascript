@@ -4,24 +4,13 @@ import {scaffold as scaffoldUnitTesting} from './unit/index.js';
 
 export default async function scaffoldTesting({
   projectRoot,
-  visibility,
   tests: {unit, integration},
-  vcs,
   unitTestFrameworks,
   decisions,
-  dialect,
-  pathWithinParent
+  dialect
 }) {
   const unitResults = unit
-    ? await scaffoldUnitTesting({
-      projectRoot,
-      visibility,
-      vcs,
-      frameworks: unitTestFrameworks,
-      decisions,
-      dialect,
-      pathWithinParent
-    })
+    ? await scaffoldUnitTesting({projectRoot, frameworks: unitTestFrameworks, decisions, dialect})
     : {};
 
   return deepmerge(

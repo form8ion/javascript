@@ -17,7 +17,6 @@ vi.mock('../linting/index.js');
 describe('verification scaffolder', () => {
   it('should scaffold linting and testing', async () => {
     const projectRoot = any.string();
-    const visibility = any.string();
     const packageManager = any.string();
     const dialect = any.word();
     const vcs = any.simpleObject();
@@ -35,7 +34,7 @@ describe('verification scaffolder', () => {
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .thenResolve(lintingResults);
     when(scaffoldTesting)
-      .calledWith({projectRoot, tests, visibility, vcs, unitTestFrameworks, decisions, dialect, pathWithinParent})
+      .calledWith({projectRoot, tests, unitTestFrameworks, decisions, dialect})
       .thenResolve(testingResults);
     when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).thenResolve(huskyResults);
     when(deepmerge.all).calledWith([testingResults, lintingResults, huskyResults]).thenReturn(mergedResults);
@@ -45,7 +44,6 @@ describe('verification scaffolder', () => {
       vcs,
       dialect,
       tests,
-      visibility,
       decisions,
       unitTestFrameworks,
       packageManager,

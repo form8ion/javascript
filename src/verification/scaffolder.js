@@ -7,7 +7,6 @@ import {scaffold as scaffoldLinting} from '../linting/index.js';
 export async function scaffoldVerification({
   projectRoot,
   dialect,
-  visibility,
   packageManager,
   vcs,
   registries,
@@ -17,16 +16,7 @@ export async function scaffoldVerification({
   pathWithinParent
 }) {
   const [testingResults, lintingResults, huskyResults] = await Promise.all([
-    scaffoldTesting({
-      projectRoot,
-      tests,
-      visibility,
-      vcs,
-      unitTestFrameworks,
-      decisions,
-      dialect,
-      pathWithinParent
-    }),
+    scaffoldTesting({projectRoot, tests, unitTestFrameworks, decisions, dialect}),
     scaffoldLinting({projectRoot, packageManager, registries, vcs, pathWithinParent}),
     scaffoldHusky({projectRoot, packageManager, pathWithinParent})
   ]);

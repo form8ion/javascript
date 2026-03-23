@@ -9,21 +9,18 @@ vi.mock('./unit/index.js');
 
 describe('testing scaffolder', () => {
   const projectRoot = any.string();
-  const visibility = any.word();
   const dialect = any.word();
   const unitTestingDevDependencies = any.listOf(any.string);
   const unitTestNextSteps = any.listOf(any.simpleObject);
   const unitTestScripts = any.simpleObject();
   const unitTestFilesToIgnoreFromVcs = any.listOf(any.string);
   const unitTestDirectoriesToIgnoreFromVcs = any.listOf(any.string);
-  const vcs = any.simpleObject();
   const unitTestFrameworks = any.simpleObject();
   const decisions = any.simpleObject();
-  const pathWithinParent = any.string();
 
   beforeEach(() => {
     when(scaffoldUnitTesting)
-      .calledWith({projectRoot, visibility, vcs, frameworks: unitTestFrameworks, decisions, dialect, pathWithinParent})
+      .calledWith({projectRoot, frameworks: unitTestFrameworks, decisions, dialect})
       .thenResolve({
         dependencies: {javascript: {development: unitTestingDevDependencies}},
         scripts: unitTestScripts,
@@ -35,13 +32,10 @@ describe('testing scaffolder', () => {
   it('should scaffold unit testing if the project will be unit test', async () => {
     expect(await scaffoldTesting({
       projectRoot,
-      visibility,
       tests: {unit: true},
-      vcs,
       unitTestFrameworks,
       decisions,
-      dialect,
-      pathWithinParent
+      dialect
     })).toEqual({
       dependencies: {javascript: {development: ['@travi/any', ...unitTestingDevDependencies]}},
       scripts: unitTestScripts,
@@ -52,12 +46,12 @@ describe('testing scaffolder', () => {
   });
 
   it('should not scaffold unit testing if the project will not be unit tested', async () => {
-    expect(await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: true}, pathWithinParent}))
+    expect(await scaffoldTesting({projectRoot, tests: {unit: false, integration: true}}))
       .toEqual({dependencies: {javascript: {development: ['@travi/any']}}, eslint: {}});
   });
 
   it('should not scaffold testing if the project will not be tested', async () => {
-    expect(await scaffoldTesting({projectRoot, visibility, tests: {unit: false, integration: false}, pathWithinParent}))
+    expect(await scaffoldTesting({projectRoot, tests: {unit: false, integration: false}}))
       .toEqual({dependencies: {javascript: {development: []}}, eslint: {}});
   });
 });

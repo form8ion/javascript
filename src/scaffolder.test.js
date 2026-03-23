@@ -155,7 +155,6 @@ describe('javascript project scaffolder', () => {
       .calledWith({
         projectRoot,
         dialect,
-        visibility,
         packageManager,
         vcs,
         registries,
