@@ -52,7 +52,8 @@
   "files": [
     "example.js",
     "lib/",
-    "templates/"
+    "templates/",
+    "src/"
   ],
   "publishConfig": {
     "access": "public",
