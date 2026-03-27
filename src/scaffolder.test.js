@@ -82,6 +82,7 @@ describe('javascript project scaffolder', () => {
     const monorepoTypes = any.simpleObject();
     const packageBundlers = any.simpleObject();
     const unitTestFrameworks = any.simpleObject();
+    const integrationTestFrameworks = any.simpleObject();
     const testFilenamePattern = any.string();
     const buildDirectory = any.string();
     const packageResults = {...any.simpleObject(), packageName};
@@ -108,7 +109,16 @@ describe('javascript project scaffolder', () => {
         visibility,
         license,
         decisions,
-        plugins: {ciServices, hosts, applicationTypes, packageTypes, monorepoTypes, packageBundlers, unitTestFrameworks}
+        plugins: {
+          ciServices,
+          hosts,
+          applicationTypes,
+          packageTypes,
+          monorepoTypes,
+          packageBundlers,
+          unitTestFrameworks,
+          integrationTestFrameworks
+        }
       });
     when(prompt)
       .calledWith(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent)
@@ -161,7 +171,8 @@ describe('javascript project scaffolder', () => {
         tests,
         decisions,
         pathWithinParent,
-        unitTestFrameworks
+        unitTestFrameworks,
+        integrationTestFrameworks
       })
       .thenResolve(verificationResults);
     when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}).thenResolve(nodeVersionResults);

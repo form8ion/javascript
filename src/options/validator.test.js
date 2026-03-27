@@ -62,6 +62,7 @@ describe('options validator', () => {
         configs,
         plugins: {
           unitTestFrameworks: pluginsSchema,
+          integrationTestFrameworks: pluginsSchema,
           packageBundlers: pluginsSchema,
           applicationTypes: pluginsSchema,
           packageTypes: pluginsSchema,

@@ -32,6 +32,7 @@ export function validate(options) {
     }).default({registries: {}}),
     plugins: {
       unitTestFrameworks: pluginsSchema,
+      integrationTestFrameworks: pluginsSchema,
       packageBundlers: pluginsSchema,
       applicationTypes: pluginsSchema,
       packageTypes: pluginsSchema,

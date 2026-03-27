@@ -12,11 +12,12 @@ export async function scaffoldVerification({
   registries,
   tests,
   unitTestFrameworks,
+  integrationTestFrameworks,
   decisions,
   pathWithinParent
 }) {
   const [testingResults, lintingResults, huskyResults] = await Promise.all([
-    scaffoldTesting({projectRoot, tests, unitTestFrameworks, decisions, dialect}),
+    scaffoldTesting({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, decisions, dialect}),
     scaffoldLinting({projectRoot, packageManager, registries, vcs, pathWithinParent}),
     scaffoldHusky({projectRoot, packageManager, pathWithinParent})
   ]);

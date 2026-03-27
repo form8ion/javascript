@@ -22,6 +22,7 @@ describe('verification scaffolder', () => {
     const vcs = any.simpleObject();
     const tests = any.simpleObject();
     const unitTestFrameworks = any.simpleObject();
+    const integrationTestFrameworks = any.simpleObject();
     const decisions = any.simpleObject();
     const lintingResults = any.simpleObject();
     const huskyResults = any.simpleObject();
@@ -34,7 +35,7 @@ describe('verification scaffolder', () => {
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .thenResolve(lintingResults);
     when(scaffoldTesting)
-      .calledWith({projectRoot, tests, unitTestFrameworks, decisions, dialect})
+      .calledWith({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, decisions, dialect})
       .thenResolve(testingResults);
     when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).thenResolve(huskyResults);
     when(deepmerge.all).calledWith([testingResults, lintingResults, huskyResults]).thenReturn(mergedResults);
@@ -46,6 +47,7 @@ describe('verification scaffolder', () => {
       tests,
       decisions,
       unitTestFrameworks,
+      integrationTestFrameworks,
       packageManager,
       registries,
       pathWithinParent

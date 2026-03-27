@@ -37,6 +37,7 @@ export default async function scaffoldJavascript(options) {
       monorepoTypes,
       packageBundlers,
       unitTestFrameworks,
+      integrationTestFrameworks,
       hosts,
       ciServices
     }
@@ -94,6 +95,7 @@ export default async function scaffoldJavascript(options) {
     registries: configs.registries,
     tests,
     unitTestFrameworks,
+    integrationTestFrameworks,
     decisions,
     pathWithinParent
   });
