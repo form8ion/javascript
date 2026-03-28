@@ -1,5 +1,6 @@
 export const questionNames = {
   UNIT_TEST_FRAMEWORK: 'unitTestFramework',
+  INTEGRATION_TEST_FRAMEWORK: 'integrationTestFramework',
   NODE_VERSION_CATEGORY: 'nodeVersionCategory',
   PACKAGE_MANAGER: 'packageManager',
   PACKAGE_BUNDLER: 'packageBundler',

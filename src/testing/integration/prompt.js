@@ -5,11 +5,11 @@ export default async function gatherUnitTestingInput({frameworks, decisions}) {
   if (!Object.keys(frameworks).length) return 'Other';
 
   const answers = await prompt([{
-    name: questionNames.UNIT_TEST_FRAMEWORK,
+    name: questionNames.INTEGRATION_TEST_FRAMEWORK,
     type: 'list',
-    message: 'Which unit testing framework should be used?',
+    message: 'Which integration testing framework should be used?',
     choices: [...Object.keys(frameworks), 'Other']
   }], decisions);
 
-  return answers[questionNames.UNIT_TEST_FRAMEWORK];
+  return answers[questionNames.INTEGRATION_TEST_FRAMEWORK];
 }

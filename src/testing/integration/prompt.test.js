@@ -9,17 +9,17 @@ import prompt from './prompt.js';
 
 vi.mock('@form8ion/overridable-prompts');
 
-describe('unit-test framework prompts', () => {
-  it('should preset the choice of unit-test framework', async () => {
+describe('integration-test framework prompt', () => {
+  it('should preset the choice of integration-test framework', async () => {
     const chosenType = any.word();
     const decisions = any.simpleObject();
-    const answers = {...any.simpleObject(), [questionNames.UNIT_TEST_FRAMEWORK]: chosenType};
+    const answers = {...any.simpleObject(), [questionNames.INTEGRATION_TEST_FRAMEWORK]: chosenType};
     const frameworks = any.simpleObject();
     when(prompts.prompt)
       .calledWith([{
-        name: questionNames.UNIT_TEST_FRAMEWORK,
+        name: questionNames.INTEGRATION_TEST_FRAMEWORK,
         type: 'list',
-        message: 'Which unit testing framework should be used?',
+        message: 'Which integration testing framework should be used?',
         choices: [...Object.keys(frameworks), 'Other']
       }], decisions)
       .thenResolve(answers);
