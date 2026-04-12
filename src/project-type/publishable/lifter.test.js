@@ -27,11 +27,11 @@ describe('publishable project-type lifter', () => {
     const provenanceResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     const badgesResults = any.simpleObject();
-    const homepage = `https://npm.im/${packageName}`;
+    const registryPage = `https://www.npmjs.com/package/${packageName}`;
     when(resolveRegistry).calledWith(packageName, registries).thenReturn(customRegistry);
     when(liftProvenance).calledWith({packageDetails, projectRoot, customRegistry}).thenResolve(provenanceResults);
     when(defineBadges)
-      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry})
+      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry, registryPage})
       .thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
@@ -39,11 +39,11 @@ describe('publishable project-type lifter', () => {
         scripts: {'lint:publish': 'publint --strict'},
         dependencies: {javascript: {development: ['publint']}},
         badges: badgesResults,
-        homepage
+        homepage: registryPage
       }
     ).thenReturn(mergedResults);
 
     expect(await lift({projectRoot, packageDetails, configs: {registries}})).toEqual(mergedResults);
-    expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({projectRoot, config: {homepage}});
+    expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({projectRoot, config: {homepage: registryPage}});
   });
 });

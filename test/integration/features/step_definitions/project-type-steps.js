@@ -9,7 +9,7 @@ import any from '@travi/any';
 export function assertHomepageDefinedProperly(homepage, projectType, projectName, npmAccount, vcs) {
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(projectType)) {
     const packageName = `@${npmAccount}/${projectName}`;
-    assert.equal(homepage, `https://npm.im/${packageName}`);
+    assert.equal(homepage, `https://www.npmjs.com/package/${packageName}`);
   } else if (vcs && 'github' === vcs.host) {
     assert.equal(homepage, `https://github.com/${vcs.owner}/${vcs.name}#readme`);
   } else if (!vcs) {

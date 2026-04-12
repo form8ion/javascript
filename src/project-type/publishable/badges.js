@@ -4,14 +4,14 @@ function buildNpmBadgeImageUrl(packageName, customRegistry) {
   return `https://img.shields.io/npm/v/${packageName}?${params}`;
 }
 
-export default function scaffoldPublishableBadges({packageName, accessLevel, customRegistry}) {
+export default function scaffoldPublishableBadges({packageName, accessLevel, customRegistry, registryPage}) {
   return {
     consumer: {
       ...'public' === accessLevel && {
         npm: {
           img: buildNpmBadgeImageUrl(packageName, customRegistry),
           text: 'npm',
-          link: `https://www.npmjs.com/package/${packageName}`
+          link: registryPage
         }
       }
     },
