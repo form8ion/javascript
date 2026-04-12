@@ -32,7 +32,7 @@ export default async function scaffoldPackageProjectType({
       provideExample,
       decisions
     }),
-    scaffoldPublishable({packageName, packageAccessLevel}),
+    scaffoldPublishable(),
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {

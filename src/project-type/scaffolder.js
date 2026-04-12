@@ -38,7 +38,6 @@ export default async function scaffoldProjectType({
       return scaffoldApplicationType({projectRoot});
     case projectTypes.CLI:
       return scaffoldCliType({
-        packageName,
         visibility,
         projectRoot,
         dialect,

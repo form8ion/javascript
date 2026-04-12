@@ -43,11 +43,11 @@ describe('package project-type scaffolder', () => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .thenReturn(packageAccessLevel);
+    when(scaffoldPublishable).calledWith().thenReturn(publishableResults);
   });
 
   it('should scaffold details specific to a modern-js package', async () => {
     const dialect = dialects.BABEL;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -93,7 +93,6 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to an esm-only package', async () => {
     const dialect = dialects.ESM;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -134,7 +133,6 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a typescript package', async () => {
     const dialect = dialects.TYPESCRIPT;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -181,7 +179,6 @@ describe('package project-type scaffolder', () => {
 
   it('should not include build details when the project will not be scaffolded', async () => {
     const dialect = dialects.COMMON_JS;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,
@@ -221,7 +218,6 @@ describe('package project-type scaffolder', () => {
   it('should define the registry to publish to when provided', async () => {
     const publishRegistry = any.url();
     const dialect = dialects.BABEL;
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
     when(buildDetails.default).calledWith({
       projectRoot,
       projectName,

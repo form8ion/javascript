@@ -7,8 +7,8 @@ import {lift as liftProvenance} from './provenance/index.js';
 
 export default async function liftPublishable({projectRoot, packageDetails, configs}) {
   const {name: packageName, publishConfig: {access: packageAccessLevel}} = packageDetails;
-  const homepage = `https://npm.im/${packageName}`;
   const customRegistry = resolveRegistry(packageName, configs.registries);
+  const homepage = `https://npm.im/${packageName}`;
 
   await mergeIntoExistingPackageJson({projectRoot, config: {homepage}});
 

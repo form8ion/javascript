@@ -16,7 +16,6 @@ vi.mock('../publishable');
 
 describe('cli project-type scaffolder', () => {
   const projectRoot = any.string();
-  const packageName = any.word();
   const publishableResults = any.simpleObject();
   const configs = any.simpleObject();
   const visibility = any.word();
@@ -30,7 +29,7 @@ describe('cli project-type scaffolder', () => {
     when(determinePackageAccessLevelFromProjectVisibility)
       .calledWith({projectVisibility: visibility})
       .thenReturn(packageAccessLevel);
-    when(scaffoldPublishable).calledWith({packageName, packageAccessLevel}).thenReturn(publishableResults);
+    when(scaffoldPublishable).calledWith().thenReturn(publishableResults);
     when(scaffoldBundler)
       .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.CLI})
       .thenResolve(bundlerResults);
@@ -44,7 +43,6 @@ describe('cli project-type scaffolder', () => {
     const results = await scaffoldCli({
       projectRoot,
       configs,
-      packageName,
       visibility,
       dialect,
       decisions,
@@ -80,7 +78,6 @@ describe('cli project-type scaffolder', () => {
     await scaffoldCli({
       projectRoot,
       configs,
-      packageName,
       visibility,
       publishRegistry,
       dialect,

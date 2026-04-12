@@ -8,7 +8,6 @@ import {scaffold as scaffoldBundler} from '../publishable/bundler/index.js';
 const defaultBuildDirectory = 'bin';
 
 export default async function scaffoldCli({
-  packageName,
   visibility,
   projectRoot,
   dialect,
@@ -19,7 +18,7 @@ export default async function scaffoldCli({
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
   const [bundlerResults, publishableResults] = await Promise.all([
     scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.CLI}),
-    scaffoldPublishable({packageName, packageAccessLevel}),
+    scaffoldPublishable(),
     mergeIntoExistingPackageJson({
       projectRoot,
       config: {

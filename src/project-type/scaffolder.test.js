@@ -80,12 +80,11 @@ describe('project-type scaffolder', () => {
 
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
     when(scaffoldCliType)
-      .calledWith({packageName, visibility, projectRoot, dialect, publishRegistry, decisions, packageBundlers})
+      .calledWith({visibility, projectRoot, dialect, publishRegistry, decisions, packageBundlers})
       .thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.CLI,
-      packageName,
       visibility,
       projectRoot,
       dialect,
