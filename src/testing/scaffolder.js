@@ -11,12 +11,12 @@ export default async function scaffoldTesting({
   decisions,
   dialect
 }) {
-  const [unitResults, integrationResults] = await Promise.all([
-    unit ? scaffoldUnitTesting({projectRoot, frameworks: unitTestFrameworks, decisions, dialect}) : {},
-    integration
-      ? scaffoldIntegrationTesting({projectRoot, frameworks: integrationTestFrameworks, decisions, dialect})
-      : {}
-  ]);
+  const unitResults = unit
+    ? await scaffoldUnitTesting({projectRoot, frameworks: unitTestFrameworks, decisions, dialect})
+    : {};
+  const integrationResults = integration
+    ? await scaffoldIntegrationTesting({projectRoot, frameworks: integrationTestFrameworks, decisions, dialect})
+    : {};
 
   return deepmerge.all([
     {dependencies: {javascript: {development: [...(unit || integration) ? ['@travi/any'] : []]}}, eslint: {}},
