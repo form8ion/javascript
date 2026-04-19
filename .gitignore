@@ -3,9 +3,7 @@
 /coverage/
 
 .eslintcache
-
 .idea
 !.idea/
 .idea/*
 !.idea/runConfigurations/
-
