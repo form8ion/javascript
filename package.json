@@ -10,7 +10,7 @@
   "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "repository": "form8ion/javascript",
   "bugs": "https://github.com/form8ion/javascript/issues",
-  "homepage": "https://npm.im/@form8ion/javascript",
+  "homepage": "https://www.npmjs.com/package/@form8ion/javascript",
   "runkitExampleFilename": "./example.js",
   "exports": {
     "module": "./lib/index.js",
