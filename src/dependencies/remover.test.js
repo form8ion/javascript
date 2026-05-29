@@ -8,11 +8,13 @@ import removeDependencies from './remover.js';
 vi.mock('execa');
 
 describe('dependency remover', () => {
+  const logger = {info: () => undefined};
+
   it('should remove the dependencies using the named package manager', async () => {
     const packageManager = any.word();
     const dependencies = any.listOf(any.word);
 
-    await removeDependencies({packageManager, dependencies});
+    await removeDependencies({packageManager, dependencies}, {logger});
 
     expect(execa).toHaveBeenCalledWith(packageManager, ['remove', ...dependencies]);
   });
@@ -21,7 +23,7 @@ describe('dependency remover', () => {
     const packageManager = any.word();
     const dependencies = [];
 
-    await removeDependencies({packageManager, dependencies});
+    await removeDependencies({packageManager, dependencies}, {logger});
 
     expect(execa).not.toHaveBeenCalled();
   });

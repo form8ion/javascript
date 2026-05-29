@@ -1,6 +1,5 @@
 import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
-import {info} from '@travi/cli-messages';
 import {applyEnhancers} from '@form8ion/core';
 import * as huskyPlugin from '@form8ion/husky';
 import * as commitConventionPlugin from '@form8ion/commit-convention';
@@ -23,8 +22,8 @@ export default async function liftJavaScript({
   pathWithinParent,
   enhancers = {},
   configs = {}
-}) {
-  info('Lifting JavaScript-specific details');
+}, dependencies) {
+  dependencies.logger.info('Lifting JavaScript-specific details');
 
   const [packageManager, packageContents] = await Promise.all([
     resolvePackageManager({projectRoot, packageManager: results.packageManager}),
@@ -46,10 +45,14 @@ export default async function liftJavaScript({
       packageManagers,
       registriesPlugin
     },
-    options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs}
+    options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs},
+    dependencies
   });
 
-  await liftPackage(deepmerge.all([{projectRoot, packageManager, vcs, pathWithinParent}, enhancerResults]));
+  await liftPackage(
+    deepmerge.all([{projectRoot, packageManager, vcs, pathWithinParent}, enhancerResults]),
+    dependencies
+  );
 
   return enhancerResults;
 }

@@ -59,6 +59,7 @@ describe('prompts', () => {
     [questionNames.DIALECT]: dialect,
     [questionNames.PROVIDE_EXAMPLE]: provideExample
   };
+  const logger = {info: () => undefined, warn: () => undefined};
 
   beforeEach(() => {
     when(commonPrompts.questions)
@@ -166,7 +167,7 @@ describe('prompts', () => {
       ], decisions)
       .thenResolve({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
 
-    expect(await prompt(ciServices, hosts, visibility, vcs, decisions, configs)).toEqual({
+    expect(await prompt(ciServices, hosts, visibility, vcs, decisions, configs, undefined, {logger})).toEqual({
       tests,
       projectType,
       ci,
@@ -188,7 +189,7 @@ describe('prompts', () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: npmUser});
     prompts.prompt.mockResolvedValue({...answers, [questionNames.CONFIGURE_LINTING]: false});
 
-    expect(await prompt(ciServices, {}, visibility, vcs, decisions)).toEqual({
+    expect(await prompt(ciServices, {}, visibility, vcs, decisions, undefined, undefined, {logger})).toEqual({
       tests,
       projectType,
       ci,
@@ -211,7 +212,7 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
@@ -225,7 +226,7 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
@@ -239,7 +240,7 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Public', vcs, {}, null, pathWithinParent);
+    await prompt(ciServices, {}, 'Public', vcs, {}, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(1);

@@ -1,19 +1,18 @@
 import {promises as fs} from 'node:fs';
-import {info} from '@travi/cli-messages';
 
 import {determineLatestVersionOf, install as installNodeVersion} from './tasks.js';
 
-export default async function scaffoldNodeVersion({projectRoot, nodeVersionCategory}) {
+export default async function scaffoldNodeVersion({projectRoot, nodeVersionCategory}, {logger}) {
   if (!nodeVersionCategory) return undefined;
 
   const lowerCaseCategory = nodeVersionCategory.toLowerCase();
-  info(`Configuring ${lowerCaseCategory} version of node`);
+  logger.info(`Configuring ${lowerCaseCategory} version of node`);
 
-  const version = await determineLatestVersionOf(nodeVersionCategory);
+  const version = await determineLatestVersionOf(nodeVersionCategory, {logger});
 
   await fs.writeFile(`${projectRoot}/.nvmrc`, version);
 
-  await installNodeVersion(nodeVersionCategory);
+  await installNodeVersion(nodeVersionCategory, {logger});
 
   return version;
 }

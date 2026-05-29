@@ -1,5 +1,4 @@
-import {info, warn} from '@travi/cli-messages';
-import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
+import {DEV_DEPENDENCY_TYPE} from '@form8ion/javascript-core';
 
 import {execa} from 'execa';
 import {getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
@@ -8,10 +7,11 @@ export default async function installDependencies(
   dependencies,
   dependenciesType,
   projectRoot,
-  packageManager = packageManagers.NPM
+  packageManager,
+  {logger}
 ) {
   if (dependencies.length) {
-    info(`Installing ${dependenciesType} dependencies`, {level: 'secondary'});
+    logger.info(`Installing ${dependenciesType} dependencies`, {level: 'secondary'});
 
     await execa(
       `. ~/.nvm/nvm.sh && nvm use && ${packageManager} ${
@@ -21,5 +21,5 @@ export default async function installDependencies(
       }`,
       {shell: true, cwd: projectRoot}
     );
-  } else warn(`No ${dependenciesType} dependencies to install`);
+  } else logger.warn(`No ${dependenciesType} dependencies to install`);
 }

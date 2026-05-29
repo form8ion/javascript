@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge';
-import {info} from '@travi/cli-messages';
 import {dialects, mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
@@ -19,8 +18,8 @@ export default async function scaffoldPackageProjectType({
   dialect,
   provideExample,
   publishRegistry
-}) {
-  info('Scaffolding Package Details');
+}, {logger}) {
+  logger.info('Scaffolding Package Details');
 
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
   const [detailsForBuild, publishableResults] = await Promise.all([

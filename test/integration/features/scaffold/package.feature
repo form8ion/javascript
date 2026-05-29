@@ -4,7 +4,7 @@ Feature: Package Project Type
     Given the project will be a "Package"
     And the project will use the "babel" dialect
     And the project will not be versioned
-    And the project will have "Private" visibility
+    And the project will have "CS" visibility
     And the default answers are chosen
     And the npm cli is logged in
     And nvm is properly configured
@@ -20,7 +20,7 @@ Feature: Package Project Type
     Given the project will be a "Package"
     And the project will use the "babel" dialect
     And the project will be versioned on GitHub
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the default answers are chosen
     And the npm cli is logged in
     And nvm is properly configured
@@ -37,7 +37,7 @@ Feature: Package Project Type
     Given the project will be a "Package"
     And the project will use the "typescript" dialect
     And the project will be versioned on GitHub
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the default answers are chosen
     And the npm cli is logged in
     And nvm is properly configured
@@ -50,7 +50,7 @@ Feature: Package Project Type
     Given the project will be a "Package"
     And the project will use the "esm" dialect
     And the project will be versioned on GitHub
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the default answers are chosen
     And the npm cli is logged in
     And nvm is properly configured
@@ -81,7 +81,7 @@ Feature: Package Project Type
   Scenario: Common JS config package
     Given the project will be a "Package"
     And the project will use the "common-js" dialect
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the project will be versioned on GitHub
     And the npm cli is logged in
     And nvm is properly configured
@@ -101,7 +101,7 @@ Feature: Package Project Type
     And the project will use the "babel" dialect
     And a babel preset is provided
     And the project will be versioned on GitHub
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the default answers are chosen
     And the npm cli is logged in
     And nvm is properly configured

@@ -5,7 +5,7 @@ Feature: CLI Project Type
     And the project will use the "babel" dialect
     And the project will be versioned on GitHub
     And the default answers are chosen
-    And the project will have "Public" visibility
+    And the project will have "OSS" visibility
     And the npm cli is logged in
     And nvm is properly configured
     And a babel preset is provided

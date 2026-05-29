@@ -55,7 +55,7 @@ function assertThatPackageSpecificDetailsAreDefinedCorrectly(
     assert.isFalse(packageDetails.sideEffects);
   }
 
-  if ('Public' === visibility) {
+  if ('OSS' === visibility) {
     assert.equal(packageDetails.publishConfig.access, 'public');
   } else {
     assert.deepEqual(packageDetails.publishConfig.access, 'restricted');

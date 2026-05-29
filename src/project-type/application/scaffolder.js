@@ -1,10 +1,9 @@
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
-import {info} from '@travi/cli-messages';
 
 const defaultBuildDirectory = 'public';
 
-export default async function scaffoldApplication({projectRoot}) {
-  info('Scaffolding Application Details');
+export default async function scaffoldApplication({projectRoot}, {logger}) {
+  logger.info('Scaffolding Application Details');
 
   await mergeIntoExistingPackageJson({projectRoot, config: {private: true}});
 

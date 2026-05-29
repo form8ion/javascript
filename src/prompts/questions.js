@@ -1,7 +1,6 @@
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
 import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
-import {warn} from '@travi/cli-messages';
 
 import {execa} from 'execa';
 import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
@@ -43,7 +42,8 @@ export async function prompt(
   vcs,
   decisions,
   configs,
-  pathWithinParent
+  pathWithinParent,
+  {logger}
 ) {
   const npmConf = npmConfFactory();
 
@@ -52,7 +52,7 @@ export async function prompt(
     maybeLoggedInNpmUsername = (await execa('npm', ['whoami'])).stdout;
   } catch (failedExecutionResult) {
     if (!decisions[questionNames.SCOPE]) {
-      warn('No logged in user found with `npm whoami`. Login with `npm login` '
+      logger.warn('No logged in user found with `npm whoami`. Login with `npm login` '
         + 'to use your npm account name as the package scope default.');
     }
   }
