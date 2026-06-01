@@ -2,6 +2,7 @@ import {promises as fs} from 'node:fs';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import validateNpmPackageName from 'validate-npm-package-name';
+import {visibilityOptions} from '@form8ion/core';
 import {DEV_DEPENDENCY_TYPE, projectTypes, writePackageJson} from '@form8ion/javascript-core';
 
 import {After, Before, Given, Then, When} from '@cucumber/cucumber';
@@ -9,6 +10,7 @@ import stubbedFs from 'mock-fs';
 import any from '@travi/any';
 import * as td from 'testdouble';
 import {assert} from 'chai';
+import createDebugFor from 'debug';
 
 import {
   assertThatNpmConfigDetailsAreConfiguredCorrectlyFor,
@@ -30,6 +32,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));          // eslint-di
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
+const debug = createDebugFor('test:common-steps');
+const logger = {
+  success: debug,
+  info: debug,
+  warn: debug,
+  error: debug
+};
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
@@ -60,7 +69,7 @@ Before(async function () {
   this.configureLinting = true;
   this.provideExample = true;
   this.tested = true;
-  this.visibility = any.fromList(['Public', 'Private']);
+  this.visibility = any.fromList(Object.keys(visibilityOptions));
   this.eslintScope = `@${any.word()}`;
   this.barUnitTestFrameworkEslintConfigs = any.listOf(any.word);
   this.fooMonorepoScripts = any.simpleObject();
@@ -169,7 +178,7 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.DIALECT]: this.dialect,
         [questionNames.PACKAGE_BUNDLER]: this.packageBundler
       }
-    });
+    }, {logger});
 
     this.liftResult = await lift({
       projectRoot: this.projectRoot,
@@ -182,7 +191,7 @@ When(/^the project is scaffolded$/, async function () {
           registries: this.registries
         }
       }
-    });
+    }, {logger});
   } catch (e) {
     this.resultError = e;
   }
@@ -210,7 +219,7 @@ When('the scaffolder results are processed', async function () {
     }
   });
 
-  if (await test({projectRoot: this.projectRoot})) {
+  if (await test({projectRoot: this.projectRoot}, {logger})) {
     this.results = await lift({
       projectRoot: this.projectRoot,
       vcs: this.vcs,
@@ -226,7 +235,7 @@ When('the scaffolder results are processed', async function () {
           registries: this.registries
         }
       }
-    });
+    }, {logger});
   } else {
     this.isJavaScriptProject = false;
   }

@@ -34,6 +34,7 @@ describe('package.json lifter', () => {
   const config = any.simpleObject();
   const tags = any.listOf(any.word);
   const scriptDependencies = any.simpleObject();
+  const logger = {info: () => undefined};
 
   beforeEach(() => {
     when(defineVcsHostDetails).calledWith(vcs, pathWithinParent).thenReturn(vcsDetails);
@@ -53,7 +54,10 @@ describe('package.json lifter', () => {
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts})
       .thenReturn(config);
 
-    await liftPackage({dependencies, devDependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts});
+    await liftPackage(
+      {dependencies, devDependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts},
+      {logger}
+    );
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
     expect(processDependencies).toHaveBeenCalledWith({
@@ -61,7 +65,7 @@ describe('package.json lifter', () => {
       devDependencies,
       projectRoot,
       packageManager
-    });
+    }, {logger});
   });
 
   it('should update keywords if tags are provided', async () => {
@@ -73,7 +77,7 @@ describe('package.json lifter', () => {
       .calledWith({...existingPackageContents, ...vcsDetails, scripts: liftedScripts, keywords: tags})
       .thenReturn(config);
 
-    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
+    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags}, {logger});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
   });
@@ -93,7 +97,7 @@ describe('package.json lifter', () => {
       })
       .thenReturn(config);
 
-    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags});
+    await liftPackage({dependencies, projectRoot, packageManager, vcs, pathWithinParent, scripts, tags}, {logger});
 
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config});
   });

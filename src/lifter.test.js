@@ -29,13 +29,12 @@ describe('lift', () => {
   const projectRoot = any.string();
   const scripts = any.simpleObject();
   const tags = any.listOf(any.word);
-  const dependencies = any.simpleObject();
-  const devDependencies = any.simpleObject();
+  const dependencies = {...any.simpleObject(), logger: {info: () => undefined}};
   const packageManager = any.word();
   const manager = any.word();
   const enhancerResults = any.simpleObject();
   const vcsDetails = any.simpleObject();
-  const results = {...any.simpleObject(), scripts, tags, dependencies, devDependencies, packageManager: manager};
+  const results = {...any.simpleObject(), scripts, tags, packageManager: manager};
   const pathWithinParent = any.string();
   const packageDetails = any.simpleObject();
   const internalEnhancers = {
@@ -66,17 +65,18 @@ describe('lift', () => {
       .calledWith({
         results,
         enhancers: internalEnhancers,
-        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs}
+        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs},
+        dependencies
       })
       .thenResolve(enhancerResults);
 
-    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, configs});
+    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, configs}, dependencies);
 
     expect(liftResults).toEqual(enhancerResults);
-    expect(liftPackage).toHaveBeenCalledWith(deepmerge.all([
-      {projectRoot, packageManager, vcs: vcsDetails, pathWithinParent},
-      enhancerResults
-    ]));
+    expect(liftPackage).toHaveBeenCalledWith(
+      deepmerge.all([{projectRoot, packageManager, vcs: vcsDetails, pathWithinParent}, enhancerResults]),
+      dependencies
+    );
   });
 
   it('should apply provided enhancers', async () => {
@@ -85,11 +85,12 @@ describe('lift', () => {
       .calledWith({
         results,
         enhancers: {...enhancers, ...internalEnhancers},
-        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs: {}}
+        options: {projectRoot, packageManager, vcs: vcsDetails, packageDetails, configs: {}},
+        dependencies
       })
       .thenResolve(enhancerResults);
 
-    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, enhancers});
+    const liftResults = await lift({projectRoot, vcs: vcsDetails, results, pathWithinParent, enhancers}, dependencies);
 
     expect(liftResults).toEqual(enhancerResults);
   });

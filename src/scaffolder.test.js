@@ -62,6 +62,7 @@ describe('javascript project scaffolder', () => {
   const mergedVcsIgnore = any.simpleObject();
   const mergedNextSteps = any.listOf(any.simpleObject);
   const mergedResults = {...any.simpleObject(), vcsIgnore: mergedVcsIgnore, nextSteps: mergedNextSteps};
+  const logger = {info: () => undefined};
 
   beforeEach(() => {
     const projectName = any.word();
@@ -121,7 +122,7 @@ describe('javascript project scaffolder', () => {
         }
       });
     when(prompt)
-      .calledWith(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent)
+      .calledWith(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger})
       .thenResolve({
         packageManager,
         dialect,
@@ -138,7 +139,7 @@ describe('javascript project scaffolder', () => {
     when(scaffoldDocumentation).calledWith({packageManager, projectTypeResults}).thenReturn(documentation);
     when(buildDocumentationCommand).calledWith(packageManager).thenReturn(documentationCommand);
     when(scaffoldPackage)
-      .calledWith({projectRoot, projectName, scope, dialect, license, author, description})
+      .calledWith({projectRoot, projectName, scope, dialect, license, author, description}, {logger})
       .thenResolve(packageResults);
     when(scaffoldProjectType)
       .calledWith({
@@ -159,7 +160,7 @@ describe('javascript project scaffolder', () => {
         scope,
         tests,
         publishRegistry
-      })
+      }, {logger})
       .thenResolve(projectTypeResults);
     when(scaffoldVerification)
       .calledWith({
@@ -175,7 +176,7 @@ describe('javascript project scaffolder', () => {
         integrationTestFrameworks
       })
       .thenResolve(verificationResults);
-    when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}).thenResolve(nodeVersionResults);
+    when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}, {logger}).thenResolve(nodeVersionResults);
     when(scaffoldDialect)
       .calledWith({dialect, configs, projectRoot, projectType, testFilenamePattern})
       .thenResolve(dialectResults);
@@ -235,7 +236,7 @@ describe('javascript project scaffolder', () => {
   });
 
   it('should scaffold the javascript details', async () => {
-    const results = await scaffold(options);
+    const results = await scaffold(options, {logger});
 
     expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
     expect(results).toEqual({

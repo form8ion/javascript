@@ -1,4 +1,3 @@
-import {info} from '@travi/cli-messages';
 import {writePackageJson} from '@form8ion/javascript-core';
 
 import buildPackageName from './package-name.js';
@@ -12,8 +11,8 @@ export default async function scaffoldPackage({
   license,
   author,
   description
-}) {
-  info('Configuring package.json');
+}, {logger}) {
+  logger.info('Configuring package.json');
 
   const packageName = buildPackageName(projectName, scope);
 

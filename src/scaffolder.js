@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge';
-import {info} from '@travi/cli-messages';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
@@ -18,8 +17,8 @@ import buildDocumentationCommand from './documentation/generation-command.js';
 import {scaffold as scaffoldVerification} from './verification/index.js';
 import {scaffold as scaffoldCodeStyle} from './code-style/index.js';
 
-export default async function scaffoldJavascript(options) {
-  info('Initializing JavaScript project');
+export default async function scaffoldJavascript(options, {logger}) {
+  logger.info('Initializing JavaScript project');
 
   const {
     projectRoot,
@@ -55,9 +54,9 @@ export default async function scaffoldJavascript(options) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent);
+  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger});
 
-  info('Writing project files', {level: 'secondary'});
+  logger.info('Writing project files', {level: 'secondary'});
 
   const {packageName} = await scaffoldPackage({
     projectRoot,
@@ -67,7 +66,7 @@ export default async function scaffoldJavascript(options) {
     license,
     author,
     description
-  });
+  }, {logger});
   const projectTypeResults = await scaffoldProjectType({
     projectType,
     projectRoot,
@@ -86,7 +85,7 @@ export default async function scaffoldJavascript(options) {
     dialect,
     provideExample,
     publishRegistry: configs.registries.publish
-  });
+  }, {logger});
   const verificationResults = await scaffoldVerification({
     projectRoot,
     dialect,
@@ -100,7 +99,7 @@ export default async function scaffoldJavascript(options) {
     pathWithinParent
   });
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
-    scaffoldNodeVersion({projectRoot, nodeVersionCategory}),
+    scaffoldNodeVersion({projectRoot, nodeVersionCategory}, {logger}),
     scaffoldNpmConfig({projectType, projectRoot}),
     scaffoldDialect({
       dialect,

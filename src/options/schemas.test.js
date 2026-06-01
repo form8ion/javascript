@@ -104,21 +104,27 @@ describe('options schemas', () => {
       expect(() => validateOptions(visibilitySchema)).toThrowError('"value" is required');
     });
 
-    it('should allow `Public` as a valid value', () => {
-      const visibility = 'Public';
+    it('should allow "Open Source" as a valid value', () => {
+      const visibility = 'OSS';
 
       expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
     });
 
-    it('should allow `Private` as a valid value', () => {
-      const visibility = 'Private';
+    it('should allow "Inner Source" as a valid value', () => {
+      const visibility = 'ISS';
+
+      expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
+    });
+
+    it('should allow "Closed Source" as a valid value', () => {
+      const visibility = 'CS';
 
       expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
     });
 
     it('should consider values other than `Public` and `Private` as invalid', () => {
       expect(() => validateOptions(visibilitySchema, any.word()))
-        .toThrowError('"value" must be one of [Public, Private]');
+        .toThrowError('"value" must be one of [OSS, ISS, CS]');
     });
   });
 

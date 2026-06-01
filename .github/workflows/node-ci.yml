@@ -28,17 +28,19 @@ jobs:
       - run: npm install --global corepack@latest
       - run: corepack npm audit signatures
       - run: npm test
-      - uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
+      - name: Upload unit test coverage to Codecov
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit
+          report_type: coverage
   verify-matrix:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node:
-          - 20.19.0
-          - 22.14.0
-          - 24
+          - 22.21.0
+          - 24.12.0
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup node
@@ -57,7 +59,7 @@ jobs:
       id-token: write
       issues: write
       pull-requests: write
-    uses: form8ion/.github/.github/workflows/release-package.yml@359e2b0ae21cdfd6fd5766618b3077d1b7132f5e # master
+    uses: form8ion/semantic-release-workflow/.github/workflows/release.yml@37abf2f190d4a547ca35485a81c6c86d6bfef795 # v2.0.1
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
   workflow-result:

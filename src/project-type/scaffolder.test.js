@@ -1,6 +1,6 @@
 import {projectTypes} from '@form8ion/javascript-core';
 
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -27,10 +27,7 @@ describe('project-type scaffolder', () => {
   const dialect = any.word();
   const provideExample = any.boolean();
   const packageBundlers = any.simpleObject();
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  const logger = {info: () => undefined};
 
   it('should apply the package-type scaffolder when the project-type is `Package`', async () => {
     const scope = any.word();
@@ -46,7 +43,7 @@ describe('project-type scaffolder', () => {
       dialect,
       provideExample,
       publishRegistry
-    }).thenResolve(results);
+    }, {logger}).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.PACKAGE,
@@ -61,11 +58,11 @@ describe('project-type scaffolder', () => {
       dialect,
       provideExample,
       publishRegistry
-    })).toEqual(results);
+    }, {logger})).toEqual(results);
   });
 
   it('should apply the application-type scaffolder when the project-type is `Application`', async () => {
-    when(scaffoldApplicationType).calledWith({projectRoot}).thenResolve(results);
+    when(scaffoldApplicationType).calledWith({projectRoot}, {logger}).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.APPLICATION,
@@ -75,7 +72,7 @@ describe('project-type scaffolder', () => {
       packageManager,
       decisions,
       visibility
-    })).toEqual(results);
+    }, {logger})).toEqual(results);
   });
 
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
@@ -91,24 +88,26 @@ describe('project-type scaffolder', () => {
       publishRegistry,
       decisions,
       packageBundlers
-    })).toEqual(results);
+    }, {logger})).toEqual(results);
   });
 
   it('should apply the monorepo-type scaffolder when the project-type is `Monorepo`', async () => {
-    when(scaffoldMonorepoType).calledWith({projectRoot}).thenResolve(results);
+    when(scaffoldMonorepoType).calledWith({projectRoot}, {logger}).thenResolve(results);
 
-    expect(await projectTypeScaffolder({projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions}))
-      .toEqual(results);
+    expect(await projectTypeScaffolder(
+      {projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions},
+      {logger}
+    )).toEqual(results);
   });
 
   it('should not throw an error when the project-type is `Other`', async () => {
-    expect(await projectTypeScaffolder({projectType: 'Other'})).toEqual({});
+    expect(await projectTypeScaffolder({projectType: 'Other'}, {logger})).toEqual({});
   });
 
   it('should throw an error for an unknown project-type', async () => {
     const projectType = any.word();
 
-    await expect(() => projectTypeScaffolder({projectType}))
-      .rejects.toThrowError(`The project-type of ${projectType} is invalid`);
+    await expect(() => projectTypeScaffolder({projectType}, {logger}))
+      .rejects.toThrow(`The project-type of ${projectType} is invalid`);
   });
 });

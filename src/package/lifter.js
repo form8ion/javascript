@@ -1,6 +1,5 @@
 import {promises as fs} from 'node:fs';
 import deepmerge from 'deepmerge';
-import {info} from '@travi/cli-messages';
 import {writePackageJson} from '@form8ion/javascript-core';
 
 import sortPackageProperties from './property-sorter.js';
@@ -17,8 +16,8 @@ export default async function liftPackageJson({
   packageManager,
   vcs,
   pathWithinParent
-}) {
-  info('Updating `package.json`', {level: 'secondary'});
+}, {logger}) {
+  logger.info('Updating `package.json`', {level: 'secondary'});
 
   const existingPackageJsonContents = JSON.parse(await fs.readFile(`${projectRoot}/package.json`, 'utf-8'));
   const {scripts: liftedScripts, dependencies: scriptDependencies} = liftScripts({
@@ -43,5 +42,5 @@ export default async function liftPackageJson({
     devDependencies,
     projectRoot,
     packageManager
-  });
+  }, {logger});
 }

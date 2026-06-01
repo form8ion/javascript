@@ -35,6 +35,7 @@ describe('package project-type scaffolder', () => {
   const documentation = any.simpleObject();
   const decisions = any.simpleObject();
   const buildDetailsResults = any.simpleObject();
+  const logger = {info: () => undefined};
 
   beforeEach(() => {
     when(documentationScaffolder.default)
@@ -68,7 +69,7 @@ describe('package project-type scaffolder', () => {
       decisions,
       dialect,
       provideExample
-    })).toEqual({
+    }, {logger})).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -113,7 +114,7 @@ describe('package project-type scaffolder', () => {
       packageBundlers,
       decisions,
       provideExample
-    })).toEqual({
+    }, {logger})).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -153,7 +154,7 @@ describe('package project-type scaffolder', () => {
       decisions,
       dialect,
       provideExample
-    })).toEqual({
+    }, {logger})).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -199,7 +200,7 @@ describe('package project-type scaffolder', () => {
       packageBundlers,
       dialect,
       provideExample
-    })).toEqual({
+    }, {logger})).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -239,7 +240,7 @@ describe('package project-type scaffolder', () => {
       dialect,
       provideExample,
       packageBundlers
-    });
+    }, {logger});
 
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

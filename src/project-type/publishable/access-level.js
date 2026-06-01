@@ -1,3 +1,3 @@
 export default function mapProjectVisibility({projectVisibility}) {
-  return 'Public' === projectVisibility ? 'public' : 'restricted';
+  return 'OSS' === projectVisibility ? 'public' : 'restricted';
 }

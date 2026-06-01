@@ -13,6 +13,8 @@ vi.mock('./package-name.js');
 vi.mock('./details.js');
 
 describe('package scaffolder', () => {
+  const logger = {info: () => undefined};
+
   it('should create the package file', async () => {
     const projectName = any.string();
     const packageName = any.string();
@@ -40,7 +42,7 @@ describe('package scaffolder', () => {
       license,
       author,
       description
-    })).toEqual({packageName});
+    }, {logger})).toEqual({packageName});
     expect(writePackageJson).toHaveBeenCalledWith({projectRoot, config: packageDetails});
   });
 });

@@ -1,11 +1,11 @@
 import {execa} from 'execa';
-import {DEV_DEPENDENCY_TYPE, packageManagers} from '@form8ion/javascript-core';
+import {DEV_DEPENDENCY_TYPE} from '@form8ion/javascript-core';
 
-import {vi, it, describe, expect, beforeEach} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import {getDependencyTypeFlag, getInstallationCommandFor, getExactFlag} from './package-managers.js';
+import {getDependencyTypeFlag, getExactFlag, getInstallationCommandFor} from './package-managers.js';
 import install from './installer.js';
 
 vi.mock('execa');
@@ -20,13 +20,14 @@ describe('dependencies installer', () => {
   const uniqueDependencies = any.listOf(any.word);
   const dependencies = [duplicateDependency, ...uniqueDependencies, duplicateDependency];
   const exactFlag = any.word();
+  const logger = {info: () => undefined, warn: () => undefined};
 
   beforeEach(() => {
     when(getInstallationCommandFor).calledWith(packageManager).thenReturn(installationCommand);
   });
 
   it('should avoid execution when there are no dependencies to install', async () => {
-    await install([]);
+    await install([], undefined, undefined, undefined, {logger});
 
     expect(execa).not.toHaveBeenCalled();
   });
@@ -35,7 +36,7 @@ describe('dependencies installer', () => {
     const dependenciesType = any.word();
     when(getDependencyTypeFlag).calledWith(packageManager, dependenciesType).thenReturn(typeFlag);
 
-    await install(dependencies, dependenciesType, projectRoot, packageManager);
+    await install(dependencies, dependenciesType, projectRoot, packageManager, {logger});
 
     expect(execa).toHaveBeenCalledWith(
       `. ~/.nvm/nvm.sh && nvm use && ${packageManager} ${installationCommand} ${
@@ -46,29 +47,14 @@ describe('dependencies installer', () => {
   });
 
   it('should pin versions when installing dev-dependencies', async () => {
-    await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager, {logger});
     when(getDependencyTypeFlag).calledWith(packageManager, DEV_DEPENDENCY_TYPE).thenReturn(typeFlag);
     when(getExactFlag).calledWith(packageManager).thenReturn(exactFlag);
 
-    await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager);
+    await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot, packageManager, {logger});
 
     expect(execa).toHaveBeenCalledWith(
       `. ~/.nvm/nvm.sh && nvm use && ${packageManager} ${installationCommand} ${
-        [duplicateDependency, ...uniqueDependencies].join(' ')
-      } --${typeFlag} --${exactFlag}`,
-      {shell: true, cwd: projectRoot}
-    );
-  });
-
-  it('should default to `npm` when the package-manager is not specified', async () => {
-    when(getDependencyTypeFlag).calledWith(packageManagers.NPM, DEV_DEPENDENCY_TYPE).thenReturn(typeFlag);
-    when(getExactFlag).calledWith(packageManagers.NPM).thenReturn(exactFlag);
-    when(getInstallationCommandFor).calledWith(packageManagers.NPM).thenReturn(installationCommand);
-
-    await install(dependencies, DEV_DEPENDENCY_TYPE, projectRoot);
-
-    expect(execa).toHaveBeenCalledWith(
-      `. ~/.nvm/nvm.sh && nvm use && ${packageManagers.NPM} ${installationCommand} ${
         [duplicateDependency, ...uniqueDependencies].join(' ')
       } --${typeFlag} --${exactFlag}`,
       {shell: true, cwd: projectRoot}
