@@ -35,7 +35,7 @@ Answers for prompt questions so that the prompt is skipped at execution time
 
 ### `visibility` __string__ (_required_)
 
-visibility of the project (`Public` or `Private`)
+visibility of the project (`OSS`, `ISS`, or `CS`)
 
 ### `vcs` __object__ (_required_)
 

@@ -8,7 +8,7 @@ describe('package access level', () => {
     expect(determinePackageAccessLevelFromProjectVisibility({projectVisibility: 'OSS'})).toEqual('public');
   });
 
-  it('should return `restricted` when the project visibility is `Private`', () => {
+  it('should return `restricted` when the project visibility is `ISS` or `CS`', () => {
     expect(determinePackageAccessLevelFromProjectVisibility({projectVisibility: any.fromList(['ISS', 'CS'])}))
       .toEqual('restricted');
   });

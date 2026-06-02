@@ -16,7 +16,7 @@ export function projectIsApplication(answers) {
 }
 
 function packageShouldBeScoped(visibility, answers) {
-  return 'Private' === visibility || answers[questionNames.SHOULD_BE_SCOPED];
+  return ['ISS', 'CS'].includes(visibility) || answers[questionNames.SHOULD_BE_SCOPED];
 }
 
 function willBePublishedToNpm(answers) {

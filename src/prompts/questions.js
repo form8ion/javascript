@@ -101,7 +101,7 @@ export async function prompt(
       choices: [...Object.values(projectTypes), 'Other'],
       default: projectTypes.PACKAGE
     },
-    ...'Private' === visibility ? [] : [{
+    ...['ISS', 'CS'].includes(visibility) ? [] : [{
       name: questionNames.SHOULD_BE_SCOPED,
       message: 'Should this package be scoped?',
       type: 'confirm',

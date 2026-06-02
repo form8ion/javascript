@@ -65,7 +65,7 @@ const projectRoot = process.cwd();
 await scaffoldJavaScript({
   projectRoot,
   projectName: 'project-name',
-  visibility: 'Public',
+  visibility: 'OSS',
   license: 'MIT',
   configs: {
     eslint: {scope: `@${accountName}`},
@@ -121,7 +121,7 @@ await scaffoldUnitTesting({
     Mocha: {scaffold: options => options},
     Jest: {scaffold: options => options}
   },
-  visibility: 'Public',
+  visibility: 'OSS',
   vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
   decisions: {[questionNames.UNIT_TEST_FRAMEWORK]: 'Mocha'}
 });

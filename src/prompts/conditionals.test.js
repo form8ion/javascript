@@ -33,8 +33,15 @@ describe('javascript prompt conditionals', () => {
       })).toBe(true);
     });
 
-    it('should present a scope prompt when a package is private, because they must be scoped', () => {
-      expect(scopePromptShouldBePresentedFactory('Private')({
+    it('should present a scope prompt when a package is inner source, because they must be scoped', () => {
+      expect(scopePromptShouldBePresentedFactory('ISS')({
+        [questionNames.SHOULD_BE_SCOPED]: false,
+        [questionNames.PROJECT_TYPE]: projectTypes.PACKAGE
+      })).toBe(true);
+    });
+
+    it('should present a scope prompt when a package is closed source, because they must be scoped', () => {
+      expect(scopePromptShouldBePresentedFactory('CS')({
         [questionNames.SHOULD_BE_SCOPED]: false,
         [questionNames.PROJECT_TYPE]: projectTypes.PACKAGE
       })).toBe(true);
@@ -47,15 +54,29 @@ describe('javascript prompt conditionals', () => {
       })).toBe(true);
     });
 
-    it('should present a scope prompt when a CLI is private, because they must be scoped', () => {
-      expect(scopePromptShouldBePresentedFactory('Private')({
+    it('should present a scope prompt when a CLI is closed source, because they must be scoped', () => {
+      expect(scopePromptShouldBePresentedFactory('CS')({
         [questionNames.SHOULD_BE_SCOPED]: false,
         [questionNames.PROJECT_TYPE]: projectTypes.CLI
       })).toBe(true);
     });
 
-    it('should not present a scope prompt when an application is private', () => {
-      expect(scopePromptShouldBePresentedFactory('Private')({
+    it('should present a scope prompt when a CLI is inner source, because they must be scoped', () => {
+      expect(scopePromptShouldBePresentedFactory('ISS')({
+        [questionNames.SHOULD_BE_SCOPED]: false,
+        [questionNames.PROJECT_TYPE]: projectTypes.CLI
+      })).toBe(true);
+    });
+
+    it('should not present a scope prompt when an application is closed source', () => {
+      expect(scopePromptShouldBePresentedFactory('CS')({
+        [questionNames.SHOULD_BE_SCOPED]: false,
+        [questionNames.PROJECT_TYPE]: projectTypes.APPLICATION
+      })).toBe(false);
+    });
+
+    it('should not present a scope prompt when an application is inner source', () => {
+      expect(scopePromptShouldBePresentedFactory('ISS')({
         [questionNames.SHOULD_BE_SCOPED]: false,
         [questionNames.PROJECT_TYPE]: projectTypes.APPLICATION
       })).toBe(false);

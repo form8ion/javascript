@@ -122,7 +122,7 @@ describe('options schemas', () => {
       expect(validateOptions(visibilitySchema, visibility)).toEqual(visibility);
     });
 
-    it('should consider values other than `Public` and `Private` as invalid', () => {
+    it('should consider values other than `OSS`, `ISS` and `CS` as invalid', () => {
       expect(() => validateOptions(visibilitySchema, any.word()))
         .toThrowError('"value" must be one of [OSS, ISS, CS]');
     });

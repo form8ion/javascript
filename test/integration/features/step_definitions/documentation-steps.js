@@ -65,7 +65,7 @@ export function assertThatDocumentationResultsAreReturnedCorrectly(
   );
 
   if ('Package' === projectType) {
-    if ('Public' === visibility) {
+    if ('OSS' === visibility) {
       assert.equal(
         results.documentation.usage,
         `### Installation

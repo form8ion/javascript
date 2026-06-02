@@ -1,7 +1,12 @@
 export function scope(visibility) {
   return input => {
-    if (!input && 'Private' === visibility) {
-      return 'Private packages must be scoped (https://docs.npmjs.com/private-modules/intro#setting-up-your-package)';
+    if (!input) {
+      if ('CS' === visibility) {
+        return 'Closed source packages must be scoped';
+      }
+      if ('ISS' === visibility) {
+        return 'Inner source packages must be scoped';
+      }
     }
 
     return true;

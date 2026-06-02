@@ -212,13 +212,13 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent, {logger});
+    await prompt(ciServices, {}, 'CS', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
   });
 
-  it('should not ask whether private packages should be scoped', async () => {
+  it('should not ask whether closed source packages should be scoped', async () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
     when(commonPrompts.questions)
@@ -226,7 +226,21 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Private', vcs, null, null, pathWithinParent, {logger});
+    await prompt(ciServices, {}, 'CS', vcs, null, null, pathWithinParent, {logger});
+
+    const [questions] = prompts.prompt.mock.lastCall;
+    expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
+  });
+
+  it('should not ask whether inner source packages should be scoped', async () => {
+    when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
+    npmConfFactory.mockReturnValue({get: () => undefined});
+    when(commonPrompts.questions)
+      .calledWith({vcs, ciServices, pathWithinParent})
+      .thenReturn(commonQuestions);
+    prompts.prompt.mockResolvedValue(answers);
+
+    await prompt(ciServices, {}, 'ISS', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
@@ -240,7 +254,7 @@ describe('prompts', () => {
       .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'Public', vcs, {}, null, pathWithinParent, {logger});
+    await prompt(ciServices, {}, 'OSS', vcs, {}, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(1);

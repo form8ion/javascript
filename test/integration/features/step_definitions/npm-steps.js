@@ -77,7 +77,7 @@ function assertThatCliSpecificDetailsAreDefinedCorrectly(packageDetails, npmAcco
   assert.equal(packageDetails.version, '0.0.0-semantically-released');
   assert.deepEqual(packageDetails.bin, {});
   assert.deepEqual(packageDetails.files, ['bin/', 'src/']);
-  assert.deepEqual(packageDetails.publishConfig.access, 'Private' === visibility ? 'restricted' : 'public');
+  assert.deepEqual(packageDetails.publishConfig.access, ['ISS', 'CS'].includes(visibility) ? 'restricted' : 'public');
 }
 
 export async function assertThatPackageDetailsAreConfiguredCorrectlyFor({

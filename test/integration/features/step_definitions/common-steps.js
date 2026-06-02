@@ -291,7 +291,7 @@ Then('the expected results for a(n) {string} are returned to the project scaffol
     assertDevDependencyIsInstalled(this.execa, 'publint');
   }
 
-  if ('github' === this.vcs?.host && 'Public' === this.visibility && this.tested) {
+  if ('github' === this.vcs?.host && 'OSS' === this.visibility && this.tested) {
     assert.include(Object.keys(this.liftResult.badges.status), 'coverage');
   }
 
