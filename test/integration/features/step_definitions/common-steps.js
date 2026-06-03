@@ -151,7 +151,8 @@ When(/^the project is scaffolded$/, async function () {
             })
           }
         },
-        ciServices: {[any.word()]: {scaffold: foo => ({foo}), public: true}}
+        ciServices: {[any.word()]: {scaffold: foo => ({foo})}},
+        registries: {[any.word()]: {scaffold: foo => ({foo})}}
       },
       decisions: {
         [questionNames.NODE_VERSION_CATEGORY]: 'LTS',

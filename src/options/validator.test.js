@@ -68,7 +68,8 @@ describe('options validator', () => {
           packageTypes: pluginsSchema,
           monorepoTypes: pluginsSchema,
           hosts: pluginsSchema,
-          ciServices: pluginsSchema
+          ciServices: pluginsSchema,
+          registries: pluginsSchema
         }
       })
       .thenReturn({required: joiRequiredObject});

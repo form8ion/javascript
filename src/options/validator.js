@@ -38,7 +38,8 @@ export function validate(options) {
       packageTypes: pluginsSchema,
       monorepoTypes: pluginsSchema,
       hosts: pluginsSchema,
-      ciServices: pluginsSchema
+      ciServices: pluginsSchema,
+      registries: pluginsSchema
     }
   }).required();
 
