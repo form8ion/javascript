@@ -1,14 +1,13 @@
-import read from './reader.js';
-import write from './writer.js';
+import {loadNpmrc, writeNpmrc} from '@form8ion/javascript-core';
 
 export default async function liftNpmConfig({projectRoot}) {
   const {
     provenance,
     'engines-strict': enginesStrict,
     ...remainingProperties
-  } = await read({projectRoot});
+  } = await loadNpmrc({projectRoot});
 
-  await write({projectRoot, config: remainingProperties});
+  await writeNpmrc({projectRoot, config: remainingProperties});
 
   return {};
 }

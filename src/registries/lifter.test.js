@@ -1,3 +1,5 @@
+import {loadNpmrc, writeNpmrc} from '@form8ion/javascript-core';
+
 import any from '@travi/any';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
@@ -9,14 +11,13 @@ import {
   read as readLockfileLintConfig,
   write as writeLockfileLintConfig
 } from '../lockfile-lint/index.js';
-import {read as readNpmConfig, write as writeNpmConfig} from '../npm-config/index.js';
 import buildRegistriesConfig from './npm-config/list-builder.js';
 import liftRegistries from './lifter.js';
 
+vi.mock('@form8ion/javascript-core');
 vi.mock('../lockfile-lint/allowed-hosts-builder.js');
 vi.mock('../lockfile-lint/index.js');
 vi.mock('../registries/npm-config/list-builder.js');
-vi.mock('../npm-config/index.js');
 
 describe('registries lifter', () => {
   const projectRoot = any.string();
@@ -27,7 +28,7 @@ describe('registries lifter', () => {
   const existingNpmConfig = any.simpleObject();
 
   beforeEach(() => {
-    when(readNpmConfig).calledWith({projectRoot}).thenResolve(existingNpmConfig);
+    when(loadNpmrc).calledWith({projectRoot}).thenResolve(existingNpmConfig);
     when(buildRegistriesConfig).calledWith(registries).thenReturn(processedRegistryDetails);
   });
 
@@ -40,7 +41,7 @@ describe('registries lifter', () => {
 
     expect(await liftRegistries({projectRoot, packageManager, configs})).toEqual({});
 
-    expect(writeNpmConfig).toHaveBeenCalledWith({
+    expect(writeNpmrc).toHaveBeenCalledWith({
       projectRoot,
       config: {...existingNpmConfig, ...processedRegistryDetails}
     });

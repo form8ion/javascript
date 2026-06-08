@@ -1,12 +1,11 @@
 import {promises as fs} from 'fs';
 import {fileTypes} from '@form8ion/core';
+import {loadNpmrc} from '@form8ion/javascript-core';
 import {write} from '@form8ion/config-file';
 
 import {Given, Then, Before} from '@cucumber/cucumber';
 import any from '@travi/any';
 import {assert} from 'chai';
-
-import {read as readNpmConfig} from '../../../../src/npm-config/index.js';
 
 Before(function () {
   this.registries = {};
@@ -62,7 +61,7 @@ Given('lockfile-lint is not configured', async function () {
 
 Then('the registry configuration is defined', async function () {
   const [npmConfig, lockfileLintJson] = await Promise.all([
-    readNpmConfig({projectRoot: this.projectRoot}),
+    loadNpmrc({projectRoot: this.projectRoot}),
     fs.readFile(`${this.projectRoot}/.lockfile-lintrc.json`, 'utf-8')
   ]);
   const lockfileLintConfig = JSON.parse(lockfileLintJson);
@@ -90,13 +89,13 @@ Then('the publish registry is defined', async function () {
 });
 
 Then('registry is defined as the official registry', async function () {
-  const npmConfig = await readNpmConfig({projectRoot: this.projectRoot});
+  const npmConfig = await loadNpmrc({projectRoot: this.projectRoot});
 
   assert.equal(npmConfig.registry, 'https://registry.npmjs.org');
 });
 
 Then('registry is defined as an alternate registry', async function () {
-  const npmConfig = await readNpmConfig({projectRoot: this.projectRoot});
+  const npmConfig = await loadNpmrc({projectRoot: this.projectRoot});
 
   assert.equal(npmConfig.registry, this.registries.registry);
 });

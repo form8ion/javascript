@@ -1,13 +1,11 @@
-import {projectTypes} from '@form8ion/javascript-core';
-
-import write from './writer.js';
+import {projectTypes, writeNpmrc} from '@form8ion/javascript-core';
 
 function projectWillNotBeConsumed(projectType) {
   return projectTypes.APPLICATION === projectType || projectTypes.CLI === projectType;
 }
 
 export default async function scaffoldNpmConfiguration({projectRoot, projectType}) {
-  await write({
+  await writeNpmrc({
     projectRoot,
     config: {'update-notifier': false, ...projectWillNotBeConsumed(projectType) && {'save-exact': true}}
   });
