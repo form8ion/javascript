@@ -33,7 +33,6 @@ export default async function liftJavaScript({
   const enhancerResults = await applyEnhancers({
     results,
     enhancers: {
-      ...enhancers,
       huskyPlugin,
       enginesEnhancer,
       coveragePlugin,
@@ -43,7 +42,8 @@ export default async function liftJavaScript({
       npmConfigPlugin,
       projectTypes,
       packageManagers,
-      registriesPlugin
+      registriesPlugin,
+      ...enhancers
     },
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs},
     dependencies
