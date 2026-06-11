@@ -15,11 +15,11 @@ export async function scaffoldVerification({
   integrationTestFrameworks,
   decisions,
   pathWithinParent
-}) {
+}, dependencies) {
   const [testingResults, lintingResults, huskyResults] = await Promise.all([
     scaffoldTesting({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, decisions, dialect}),
     scaffoldLinting({projectRoot, packageManager, registries, vcs, pathWithinParent}),
-    scaffoldHusky({projectRoot, packageManager, pathWithinParent})
+    scaffoldHusky({projectRoot, packageManager, pathWithinParent}, dependencies)
   ]);
 
   return deepmerge.all([testingResults, lintingResults, huskyResults]);

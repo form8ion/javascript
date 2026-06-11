@@ -174,7 +174,7 @@ describe('javascript project scaffolder', () => {
         pathWithinParent,
         unitTestFrameworks,
         integrationTestFrameworks
-      })
+      }, {logger})
       .thenResolve(verificationResults);
     when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}, {logger}).thenResolve(nodeVersionResults);
     when(scaffoldDialect)

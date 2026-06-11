@@ -31,13 +31,16 @@ describe('verification scaffolder', () => {
     const testingResults = {...any.simpleObject(), eslint: testingEslintResults};
     const registries = any.simpleObject();
     const mergedResults = any.simpleObject();
+    const dependencies = any.simpleObject();
     when(scaffoldLinting)
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .thenResolve(lintingResults);
     when(scaffoldTesting)
       .calledWith({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, decisions, dialect})
       .thenResolve(testingResults);
-    when(scaffoldHusky).calledWith({projectRoot, packageManager, pathWithinParent}).thenResolve(huskyResults);
+    when(scaffoldHusky)
+      .calledWith({projectRoot, packageManager, pathWithinParent}, dependencies)
+      .thenResolve(huskyResults);
     when(deepmerge.all).calledWith([testingResults, lintingResults, huskyResults]).thenReturn(mergedResults);
 
     expect(await scaffoldVerification({
@@ -51,6 +54,6 @@ describe('verification scaffolder', () => {
       packageManager,
       registries,
       pathWithinParent
-    })).toEqual(mergedResults);
+    }, dependencies)).toEqual(mergedResults);
   });
 });

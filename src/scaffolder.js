@@ -97,7 +97,7 @@ export default async function scaffoldJavascript(options, {logger}) {
     integrationTestFrameworks,
     decisions,
     pathWithinParent
-  });
+  }, {logger});
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}, {logger}),
     scaffoldNpmConfig({projectType, projectRoot}),
