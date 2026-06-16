@@ -40,10 +40,10 @@ export default async function liftJavaScript({
       dialects,
       codeStylePlugin,
       npmConfigPlugin,
-      projectTypes,
       packageManagers,
       registriesPlugin,
-      ...enhancers
+      ...enhancers,
+      projectTypes
     },
     options: {packageManager, projectRoot, vcs, packageDetails: JSON.parse(packageContents), configs},
     dependencies

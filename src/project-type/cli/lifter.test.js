@@ -13,8 +13,11 @@ describe('cli project-type lifter', () => {
     const packageDetails = any.simpleObject();
     const configs = any.simpleObject();
     const publishableResults = any.simpleObject();
-    when(liftPublishable).calledWith({projectRoot, packageDetails, configs}).thenResolve(publishableResults);
+    const npmRegistry = any.simpleObject();
+    when(liftPublishable)
+      .calledWith({projectRoot, packageDetails, configs, npmRegistry})
+      .thenResolve(publishableResults);
 
-    expect(await lift({projectRoot, packageDetails, configs})).toEqual(publishableResults);
+    expect(await lift({projectRoot, packageDetails, configs, npmRegistry})).toEqual(publishableResults);
   });
 });

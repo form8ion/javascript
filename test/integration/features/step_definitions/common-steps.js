@@ -235,6 +235,9 @@ When('the scaffolder results are processed', async function () {
           eslint: {scope: this.eslintConfigScope},
           registries: this.registries
         }
+      },
+      enhancers: {
+        ...this.registryPlugin && {'test registry': this.registryPlugin}
       }
     }, {logger});
   } else {

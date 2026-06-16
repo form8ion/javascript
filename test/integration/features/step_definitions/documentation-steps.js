@@ -1,9 +1,9 @@
 import {promises as fs} from 'node:fs';
 import {fileExists} from '@form8ion/core';
-import {dialects, packageManagers, projectTypes} from '@form8ion/javascript-core';
+import {dialects, packageManagers, projectTypes, loadPackageJson} from '@form8ion/javascript-core';
 
 import {assert} from 'chai';
-import {Given} from '@cucumber/cucumber';
+import {Given, Then} from '@cucumber/cucumber';
 
 export async function assertThatDocumentationIsDefinedAppropriately(
   projectRoot,
@@ -124,4 +124,10 @@ run \`${
 
 Given('an example should not be provided', async function () {
   this.provideExample = false;
+});
+
+Then('the homepage is updated to the package details page for the registry', async function () {
+  assert.equal(this.results.homepage, this.registryPackageDetailsPage);
+  assert.equal((await loadPackageJson({projectRoot: this.projectRoot})).homepage, this.registryPackageDetailsPage);
+  assert.equal(this.results.badges.consumer.npm.link, this.registryPackageDetailsPage);
 });

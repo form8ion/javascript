@@ -1,4 +1,4 @@
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
@@ -13,18 +13,18 @@ vi.mock('./cli/index.js');
 describe('lift project-type', () => {
   const projectRoot = any.string();
   const packageDetails = any.simpleObject();
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  const npmRegistryResults = any.simpleObject();
+  const results = {...any.simpleObject(), npmRegistry: npmRegistryResults};
 
   it('should lift a package project-type', async () => {
     const configs = any.simpleObject();
     const liftPackageResults = any.simpleObject();
     when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
-    when(liftPackage).calledWith({projectRoot, packageDetails, configs}).thenResolve(liftPackageResults);
+    when(liftPackage)
+      .calledWith({projectRoot, packageDetails, configs, npmRegistry: npmRegistryResults})
+      .thenResolve(liftPackageResults);
 
-    expect(await lift({projectRoot, packageDetails, configs})).toEqual(liftPackageResults);
+    expect(await lift({projectRoot, packageDetails, configs, results})).toEqual(liftPackageResults);
   });
 
   it('should lift a cli project-type', async () => {
@@ -32,9 +32,11 @@ describe('lift project-type', () => {
     const liftCliResults = any.simpleObject();
     when(cliPredicate).calledWith({projectRoot, packageDetails}).thenResolve(true);
     when(packagePredicate).calledWith({projectRoot, packageDetails}).thenResolve(false);
-    when(liftCli).calledWith({projectRoot, packageDetails, configs}).thenResolve(liftCliResults);
+    when(liftCli)
+      .calledWith({projectRoot, packageDetails, configs, npmRegistry: npmRegistryResults})
+      .thenResolve(liftCliResults);
 
-    expect(await lift({projectRoot, packageDetails, configs})).toEqual(liftCliResults);
+    expect(await lift({projectRoot, packageDetails, configs, results})).toEqual(liftCliResults);
   });
 
   it('should define the repository as the homepage if the available project-type lifters do not apply', async () => {

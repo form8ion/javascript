@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import {mergeIntoExistingPackageJson} from '@form8ion/javascript-core';
 
-import {describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -17,19 +17,23 @@ vi.mock('./badges');
 vi.mock('./registry-resolver.js');
 
 describe('publishable project-type lifter', () => {
-  it('should lift the details of the package project', async () => {
-    const projectRoot = any.string();
-    const packageName = any.word();
-    const packageAccessLevel = any.word();
-    const registries = any.simpleObject();
-    const customRegistry = any.url();
-    const packageDetails = {...any.simpleObject(), name: packageName, publishConfig: {access: packageAccessLevel}};
-    const provenanceResults = any.simpleObject();
-    const mergedResults = any.simpleObject();
-    const badgesResults = any.simpleObject();
-    const registryPage = `https://www.npmjs.com/package/${packageName}`;
+  const projectRoot = any.string();
+  const packageName = any.word();
+  const packageAccessLevel = any.word();
+  const packageDetails = {...any.simpleObject(), name: packageName, publishConfig: {access: packageAccessLevel}};
+  const registries = any.simpleObject();
+  const customRegistry = any.url();
+  const provenanceResults = any.simpleObject();
+  const badgesResults = any.simpleObject();
+  const mergedResults = any.simpleObject();
+
+  beforeEach(() => {
     when(resolveRegistry).calledWith(packageName, registries).thenReturn(customRegistry);
     when(liftProvenance).calledWith({packageDetails, projectRoot, customRegistry}).thenResolve(provenanceResults);
+  });
+
+  it('should lift the details of the publishable project', async () => {
+    const registryPage = `https://www.npmjs.com/package/${packageName}`;
     when(defineBadges)
       .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry, registryPage})
       .thenReturn(badgesResults);
@@ -45,5 +49,28 @@ describe('publishable project-type lifter', () => {
 
     expect(await lift({projectRoot, packageDetails, configs: {registries}})).toEqual(mergedResults);
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({projectRoot, config: {homepage: registryPage}});
+  });
+
+  it('should set the homepage based on the registry-specific package-details page', async () => {
+    const packageDetailsPage = any.url();
+    when(defineBadges)
+      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry, registryPage: packageDetailsPage})
+      .thenReturn(badgesResults);
+    when(deepmerge).calledWith(
+      provenanceResults,
+      {
+        scripts: {'lint:publish': 'publint --strict'},
+        dependencies: {javascript: {development: ['publint']}},
+        badges: badgesResults,
+        homepage: packageDetailsPage
+      }
+    ).thenReturn(mergedResults);
+
+    expect(await lift({
+      projectRoot,
+      packageDetails,
+      configs: {registries},
+      npmRegistry: {packageDetailsPage}
+    })).toEqual(mergedResults);
   });
 });

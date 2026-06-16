@@ -1,5 +1,5 @@
 import {lift as liftPublishable} from '../publishable/index.js';
 
-export default function liftPackage({projectRoot, packageDetails, configs}) {
-  return liftPublishable({projectRoot, packageDetails, configs});
+export default function liftPackage({projectRoot, packageDetails, configs, npmRegistry}) {
+  return liftPublishable({projectRoot, packageDetails, configs, npmRegistry});
 }

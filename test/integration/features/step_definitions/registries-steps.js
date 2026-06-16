@@ -59,6 +59,17 @@ Given('lockfile-lint is not configured', async function () {
   return undefined;
 });
 
+Given('the registry plugin defines the package details page as {string}', async function (packageDetailsPage) {
+  this.registryPackageDetailsPage = packageDetailsPage;
+  this.registryPlugin = {
+    test: () => true,
+    lift: () => ({
+      npmRegistry: {packageDetailsPage},
+      badges: {consumer: {npm: {link: packageDetailsPage}}}
+    })
+  };
+});
+
 Then('the registry configuration is defined', async function () {
   const [npmConfig, lockfileLintJson] = await Promise.all([
     loadNpmrc({projectRoot: this.projectRoot}),

@@ -5,10 +5,10 @@ import resolveRegistry from './registry-resolver.js';
 import defineBadges from './badges.js';
 import {lift as liftProvenance} from './provenance/index.js';
 
-export default async function liftPublishable({projectRoot, packageDetails, configs}) {
+export default async function liftPublishable({projectRoot, packageDetails, configs, npmRegistry}) {
   const {name: packageName, publishConfig: {access: packageAccessLevel}} = packageDetails;
   const customRegistry = resolveRegistry(packageName, configs.registries);
-  const registryPage = `https://www.npmjs.com/package/${packageName}`;
+  const registryPage = npmRegistry?.packageDetailsPage || `https://www.npmjs.com/package/${packageName}`;
 
   await mergeIntoExistingPackageJson({projectRoot, config: {homepage: registryPage}});
 

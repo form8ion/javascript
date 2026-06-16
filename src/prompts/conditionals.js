@@ -19,16 +19,16 @@ function packageShouldBeScoped(visibility, answers) {
   return ['ISS', 'CS'].includes(visibility) || answers[questionNames.SHOULD_BE_SCOPED];
 }
 
-function willBePublishedToNpm(answers) {
+function willBePublishedToRegistry(answers) {
   return projectIsPackage(answers) || projectIsCLI(answers);
 }
 
 export function shouldBeScopedPromptShouldBePresented(answers) {
-  return willBePublishedToNpm(answers);
+  return willBePublishedToRegistry(answers);
 }
 
 export function scopePromptShouldBePresentedFactory(visibility) {
-  return answers => willBePublishedToNpm(answers) && packageShouldBeScoped(visibility, answers);
+  return answers => willBePublishedToRegistry(answers) && packageShouldBeScoped(visibility, answers);
 }
 
 export function lintingPromptShouldBePresented({

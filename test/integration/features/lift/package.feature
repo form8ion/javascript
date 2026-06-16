@@ -32,3 +32,10 @@ Feature: Lift a package-type project
     And husky v5 is installed
     When the scaffolder results are processed
     Then repository details will be defined using the shorthand
+
+  Scenario: incorrect homepage
+    Given an "npm" lockfile exists
+    And the project is of type "Package"
+    And the registry plugin defines the package details page as "https://registry.test/packages/foo"
+    When the scaffolder results are processed
+    Then the homepage is updated to the package details page for the registry
