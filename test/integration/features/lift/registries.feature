@@ -19,7 +19,6 @@ Feature: Lift Registries
     When the scaffolder results are processed
     Then registry is defined as an alternate registry
     And the lockfile-lint config allows the custom registry
-    And the version badge references the custom registry
 
   Scenario: npmrc exists, no registry defined, custom scoped registry provided
     Given the npmrc does not define registry
@@ -43,7 +42,6 @@ Feature: Lift Registries
     Then registry is defined as the official registry
     And the lockfile-lint config allows the "npm" registry
     And the registry configuration is defined
-    And the version badge references the custom registry
 
   Scenario: npmrc exists, no registry defined, registry defined for the package's scope
     Given the npmrc does not define registry
@@ -55,7 +53,6 @@ Feature: Lift Registries
     When the scaffolder results are processed
     Then registry is defined as the official registry
     And the lockfile-lint config allows the "npm" registry
-    And the version badge references the custom registry
 
   Scenario: scoped package falls back to main registry override when no scope registry is defined
     Given the npmrc does not define registry
@@ -68,7 +65,6 @@ Feature: Lift Registries
     When the scaffolder results are processed
     Then registry is defined as an alternate registry
     And the lockfile-lint config allows the custom registry
-    And the version badge references the custom registry
 
   Scenario: scoped registry takes priority over main registry override
     Given the npmrc does not define registry
@@ -81,7 +77,6 @@ Feature: Lift Registries
     When the scaffolder results are processed
     Then registry is defined as an alternate registry
     And the lockfile-lint config allows the custom registry
-    And the version badge references the custom registry
 
   Scenario: no npmrc or lockfile-lint config exists
     Given an "npm" lockfile exists

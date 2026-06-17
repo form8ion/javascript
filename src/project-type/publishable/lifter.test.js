@@ -6,7 +6,6 @@ import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import resolveRegistry from './registry-resolver.js';
-import defineBadges from './badges.js';
 import {lift as liftProvenance} from './provenance/index.js';
 import lift from './lifter.js';
 
@@ -24,7 +23,6 @@ describe('publishable project-type lifter', () => {
   const registries = any.simpleObject();
   const customRegistry = any.url();
   const provenanceResults = any.simpleObject();
-  const badgesResults = any.simpleObject();
   const mergedResults = any.simpleObject();
 
   beforeEach(() => {
@@ -34,15 +32,11 @@ describe('publishable project-type lifter', () => {
 
   it('should lift the details of the publishable project', async () => {
     const registryPage = `https://www.npmjs.com/package/${packageName}`;
-    when(defineBadges)
-      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry, registryPage})
-      .thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
       {
         scripts: {'lint:publish': 'publint --strict'},
         dependencies: {javascript: {development: ['publint']}},
-        badges: badgesResults,
         homepage: registryPage
       }
     ).thenReturn(mergedResults);
@@ -53,15 +47,11 @@ describe('publishable project-type lifter', () => {
 
   it('should set the homepage based on the registry-specific package-details page', async () => {
     const packageDetailsPage = any.url();
-    when(defineBadges)
-      .calledWith({packageName, accessLevel: packageAccessLevel, customRegistry, registryPage: packageDetailsPage})
-      .thenReturn(badgesResults);
     when(deepmerge).calledWith(
       provenanceResults,
       {
         scripts: {'lint:publish': 'publint --strict'},
         dependencies: {javascript: {development: ['publint']}},
-        badges: badgesResults,
         homepage: packageDetailsPage
       }
     ).thenReturn(mergedResults);
