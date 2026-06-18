@@ -112,6 +112,17 @@ describe('script name comparator', () => {
     expect(compareScriptNames('test:integration', 'test:unit:base')).toEqual(A_AFTER_B);
   });
 
+  it('should sort `test:e2e` scripts after `test:unit` and `test:integration` sections', async () => {
+    expect(compareScriptNames('test:unit', 'test:e2e')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:e2e', 'test:unit')).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames('test:integration', 'test:e2e')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:e2e', 'test:integration')).toEqual(A_AFTER_B);
+
+    expect(compareScriptNames('test:integration:base', 'test:e2e:base')).toEqual(A_BEFORE_B);
+    expect(compareScriptNames('test:e2e:base', 'test:integration:base')).toEqual(A_AFTER_B);
+  });
+
   it('should sort uncategorized scripts below `test:` scripts', async () => {
     expect(compareScriptNames(any.word(), `test:${any.word()}`)).toEqual(A_AFTER_B);
     expect(compareScriptNames(`test:${any.word()}`, any.word())).toEqual(A_BEFORE_B);

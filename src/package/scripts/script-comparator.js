@@ -22,9 +22,10 @@ function getCategoryOrder(script) {
   if (base.startsWith('lint:')) return 1;
   if (base.startsWith('test:unit')) return 2;
   if (base.startsWith('test:integration')) return 3;
+  if (base.startsWith('test:e2e')) return 4;
   if (base.startsWith('test:')) return 2;
 
-  return 4;
+  return 5;
 }
 
 export default function compareScriptNames(a, b) {
