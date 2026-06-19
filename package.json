@@ -63,7 +63,7 @@
   "dependencies": {
     "@form8ion/c8": "^1.0.0-beta.2",
     "@form8ion/codecov": "^7.0.0-beta.1",
-    "@form8ion/commit-convention": "^8.0.0-beta.6",
+    "@form8ion/commit-convention": "^9.0.0-beta.2",
     "@form8ion/config-file": "^1.1.1",
     "@form8ion/core": "^5.0.0-beta.15",
     "@form8ion/eslint": "^7.0.0-beta.1",
