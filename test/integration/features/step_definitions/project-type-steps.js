@@ -10,7 +10,7 @@ export function assertHomepageDefinedProperly(homepage, projectType, projectName
   if ([projectTypes.PACKAGE, projectTypes.CLI].includes(projectType)) {
     const packageName = `@${npmAccount}/${projectName}`;
     assert.equal(homepage, `https://www.npmjs.com/package/${packageName}`);
-  } else if (vcs && 'github' === vcs.host) {
+  } else if (vcs && 'github.com' === vcs.host) {
     assert.equal(homepage, `https://github.com/${vcs.owner}/${vcs.name}#readme`);
   } else if (!vcs) {
     assert.isUndefined(homepage);

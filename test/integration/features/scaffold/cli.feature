@@ -10,7 +10,7 @@ Feature: CLI Project Type
     And nvm is properly configured
     And a babel preset is provided
     When the project is scaffolded
-    Then repository details will be defined using the shorthand
+    Then repository details will be defined using the full object format
     And the expected details are provided for a root-level project
     And the expected files for a "CLI" are generated
     And the package is bundled

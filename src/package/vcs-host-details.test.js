@@ -4,13 +4,27 @@ import any from '@travi/any';
 import defineVcsHostDetails from './vcs-host-details.js';
 
 describe('vcs host details', () => {
-  it('should define the repository details when the host is github', () => {
-    const owner = any.word();
-    const name = any.word();
+  const owner = any.word();
+  const name = any.word();
+  const host = any.word();
 
-    expect(defineVcsHostDetails({host: 'github', owner, name})).toEqual({
-      repository: `${owner}/${name}`,
-      bugs: `https://github.com/${owner}/${name}/issues`
+  it('should define the repository details', () => {
+    expect(defineVcsHostDetails({host, owner, name})).toEqual({
+      repository: {
+        type: 'git',
+        url: `git+https://${host}/${owner}/${name}.git`
+      },
+      bugs: `https://${host}/${owner}/${name}/issues`
+    });
+  });
+
+  it('should define the path within a monorepo', () => {
+    const pathWithinParent = any.string();
+
+    expect(defineVcsHostDetails({host, owner, name}, pathWithinParent).repository).toEqual({
+      type: 'git',
+      url: `git+https://${host}/${owner}/${name}.git`,
+      directory: pathWithinParent
     });
   });
 });

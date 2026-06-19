@@ -31,7 +31,7 @@ Feature: Lift a package-type project
     And the project is of type "Package" but without repository details defined
     And husky v5 is installed
     When the scaffolder results are processed
-    Then repository details will be defined using the shorthand
+    Then repository details will be defined using the full object format
 
   Scenario: incorrect homepage
     Given an "npm" lockfile exists

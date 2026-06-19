@@ -1,12 +1,10 @@
 export default function scaffoldVcsHostDetails(vcs, pathWithinParent) {
-  return vcs && 'github' === vcs.host && {
-    repository: pathWithinParent
-      ? {
-        type: 'git',
-        url: `https://github.com/${vcs.owner}/${vcs.name}.git`,
-        directory: pathWithinParent
-      }
-      : `${vcs.owner}/${vcs.name}`,
-    bugs: `https://github.com/${vcs.owner}/${vcs.name}/issues`
+  return vcs && {
+    repository: {
+      type: 'git',
+      url: `git+https://${vcs.host}/${vcs.owner}/${vcs.name}.git`,
+      ...pathWithinParent && {directory: pathWithinParent}
+    },
+    bugs: `https://${vcs.host}/${vcs.owner}/${vcs.name}/issues`
   };
 }

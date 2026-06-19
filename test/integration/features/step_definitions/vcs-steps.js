@@ -32,11 +32,11 @@ Given(/^the project will not be versioned$/, async function () {
 });
 
 Given(/^the project will be versioned on GitHub$/, async function () {
-  this.vcs = {host: 'github', owner: repoOwner, name: repoName};
+  this.vcs = {host: 'github.com', owner: repoOwner, name: repoName};
 });
 
 Given('the project is versioned on GitHub', async function () {
-  this.vcs = {host: 'github', owner: repoOwner, name: repoName};
+  this.vcs = {host: 'github.com', owner: repoOwner, name: repoName};
 });
 
 Then('no repository details will be defined', async function () {
@@ -45,10 +45,16 @@ Then('no repository details will be defined', async function () {
   assert.isUndefined(repository);
 });
 
-Then('repository details will be defined using the shorthand', async function () {
+Then('repository details will be defined using the full object format', async function () {
   const {repository} = JSON.parse(await fs.readFile(`${this.projectRoot}/package.json`));
 
-  assert.equal(repository, `${repoOwner}/${repoName}`);
+  assert.deepEqual(
+    repository,
+    {
+      type: 'git',
+      url: `git+https://github.com/${repoOwner}/${repoName}.git`
+    }
+  );
 });
 
 Then('the repository details include the path within the parent project', async function () {
@@ -58,7 +64,7 @@ Then('the repository details include the path within the parent project', async 
     repository,
     {
       type: 'git',
-      url: `https://github.com/${repoOwner}/${repoName}.git`,
+      url: `git+https://github.com/${repoOwner}/${repoName}.git`,
       directory: this.pathWithinParent
     }
   );

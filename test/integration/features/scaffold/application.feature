@@ -14,7 +14,7 @@ Feature: Application Project Type
     And the expected details are provided for a root-level project
     And the expected files for an "Application" are generated
     And the "babel" dialect is configured
-    And repository details will be defined using the shorthand
+    And repository details will be defined using the full object format
     And the expected results for an "Application" are returned to the project scaffolder
 
   Scenario: Application with application-type plugin applied
