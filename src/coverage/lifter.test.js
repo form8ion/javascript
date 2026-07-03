@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge';
-import {lift as liftCodecov} from '@form8ion/codecov';
 import {scaffold as scaffoldC8} from '@form8ion/c8';
 
 import {describe, expect, it, vi} from 'vitest';
@@ -20,7 +19,6 @@ describe('coverage lifter', () => {
   const projectRoot = any.string();
   const vcs = any.simpleObject();
   const c8Results = any.simpleObject();
-  const codecovResults = any.simpleObject();
   const packageManager = any.word();
 
   it('should replace `nyc` with `c8` if nyc config exists', async () => {
@@ -29,11 +27,9 @@ describe('coverage lifter', () => {
     when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
     when(testForNyc).calledWith({projectRoot}).thenResolve(true);
     when(removeNyc).calledWith({projectRoot}).thenResolve(nycResults);
-    when(liftCodecov).calledWith({projectRoot, packageManager, vcs}).thenResolve(codecovResults);
     when(deepmerge.all).calledWith([
       c8Results,
       nycResults,
-      codecovResults,
       {
         scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},
         nextSteps: [{
@@ -49,9 +45,8 @@ describe('coverage lifter', () => {
   it('should not replace `nyc` with `c8` if nyc config does not exist', async () => {
     when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
     when(testForNyc).calledWith({projectRoot}).thenResolve(false);
-    when(liftCodecov).calledWith({projectRoot, packageManager}).thenResolve(codecovResults);
 
-    expect(await lift({projectRoot, packageManager})).toEqual(codecovResults);
+    expect(await lift({projectRoot})).toEqual({});
 
     expect(scaffoldC8).not.toHaveBeenCalled();
   });

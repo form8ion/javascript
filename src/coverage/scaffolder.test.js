@@ -1,4 +1,3 @@
-import {scaffold as scaffoldCodecov} from '@form8ion/codecov';
 import {scaffold as scaffoldC8} from '@form8ion/c8';
 
 import {describe, expect, it, vi} from 'vitest';
@@ -14,12 +13,10 @@ describe('coverage scaffolder', () => {
   it('should scaffold coverage measurement and reporting', async () => {
     const projectRoot = any.string();
     const c8Results = any.simpleObject();
-    const codecovResults = any.simpleObject();
     when(scaffoldC8).calledWith({projectRoot}).thenResolve(c8Results);
-    when(scaffoldCodecov).calledWith({projectRoot}).thenResolve(codecovResults);
 
     const results = await scaffold({projectRoot});
 
-    expect(results).toEqual({...c8Results, ...codecovResults});
+    expect(results).toEqual(c8Results);
   });
 });

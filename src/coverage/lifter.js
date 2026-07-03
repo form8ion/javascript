@@ -1,12 +1,9 @@
 import deepmerge from 'deepmerge';
-import {lift as liftCodecov} from '@form8ion/codecov';
 import {scaffold as scaffoldC8} from '@form8ion/c8';
 
 import {test as nycIsConfigured, remove as removeNyc} from './nyc/index.js';
 
-export async function lift({projectRoot, packageManager, vcs}) {
-  const codecovResults = await liftCodecov({projectRoot, packageManager, vcs});
-
+export async function lift({projectRoot}) {
   if (await nycIsConfigured({projectRoot})) {
     const [c8Results, nycResults] = await Promise.all([
       scaffoldC8({projectRoot}),
@@ -16,7 +13,6 @@ export async function lift({projectRoot, packageManager, vcs}) {
     return deepmerge.all([
       c8Results,
       nycResults,
-      codecovResults,
       {
         scripts: {'test:unit': 'cross-env NODE_ENV=test c8 run-s test:unit:base'},
         nextSteps: [{
@@ -27,5 +23,5 @@ export async function lift({projectRoot, packageManager, vcs}) {
     ]);
   }
 
-  return codecovResults;
+  return {};
 }
