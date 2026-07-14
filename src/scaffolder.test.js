@@ -1,5 +1,6 @@
 import deepmerge from 'deepmerge';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
+import {scaffold as scaffoldPlugins} from '@form8ion/plugins-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import {beforeEach, describe, expect, it, vi} from 'vitest';
@@ -24,6 +25,7 @@ import scaffold from './scaffolder.js';
 
 vi.mock('deepmerge');
 vi.mock('@form8ion/javascript-core');
+vi.mock('@form8ion/plugins-core');
 vi.mock('@form8ion/commit-convention');
 vi.mock('./package/index.js');
 vi.mock('./code-style/index.js');
@@ -122,7 +124,7 @@ describe('javascript project scaffolder', () => {
         }
       });
     when(prompt)
-      .calledWith(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger})
+      .calledWith(hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger})
       .thenResolve({
         packageManager,
         dialect,
@@ -184,10 +186,9 @@ describe('javascript project scaffolder', () => {
     when(scaffoldCodeStyle)
       .calledWith({projectRoot, projectType, configs, vcs, configureLinting})
       .thenResolve(codeStyleResults);
-    when(scaffoldChoice)
+    when(scaffoldPlugins.qualifiedOption)
       .calledWith(
         ciServices,
-        ciChoice,
         {projectRoot, vcs, visibility, projectType, projectName, nodeVersion: nodeVersionResults, tests}
       )
       .thenResolve(ciServiceResults);

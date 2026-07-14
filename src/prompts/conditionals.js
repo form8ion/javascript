@@ -1,5 +1,4 @@
 import {projectTypes} from '@form8ion/javascript-core';
-import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
 
 import {questionNames} from './question-names.js';
 
@@ -32,8 +31,8 @@ export function scopePromptShouldBePresentedFactory(visibility) {
 }
 
 export function lintingPromptShouldBePresented({
-  [commonQuestionNames.UNIT_TESTS]: unitTested,
-  [commonQuestionNames.INTEGRATION_TESTS]: integrationTested
+  [questionNames.UNIT_TESTS]: unitTested,
+  [questionNames.INTEGRATION_TESTS]: integrationTested
 }) {
   return !unitTested && !integrationTested;
 }

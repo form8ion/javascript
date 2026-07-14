@@ -151,7 +151,7 @@ When(/^the project is scaffolded$/, async function () {
             })
           }
         },
-        ciServices: {[any.word()]: {scaffold: foo => ({foo})}},
+        ciServices: this.ciServicePlugins || {[any.word()]: {scaffold: foo => ({foo})}},
         registries: {[any.word()]: {scaffold: foo => ({foo})}}
       },
       decisions: {
@@ -163,7 +163,6 @@ When(/^the project is scaffolded$/, async function () {
         [questionNames.UNIT_TESTS]: this.unitTestAnswer,
         ...this.unitTestAnswer && {[questionNames.UNIT_TEST_FRAMEWORK]: this.unitTestFrameworkAnswer},
         [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
-        ...null !== this.ciAnswer && {[questionNames.CI_SERVICE]: this.ciAnswer || 'Other'},
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.PROVIDE_EXAMPLE]: this.provideExample,
         [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer
@@ -195,6 +194,8 @@ When(/^the project is scaffolded$/, async function () {
     }, {logger});
   } catch (e) {
     this.resultError = e;
+
+    debug(e);
   }
 });
 

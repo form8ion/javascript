@@ -1,5 +1,6 @@
 import deepmerge from 'deepmerge';
 import {projectTypes, scaffoldChoice} from '@form8ion/javascript-core';
+import {scaffold as scaffoldPlugins} from '@form8ion/plugins-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import {validate} from './options/validator.js';
@@ -45,7 +46,6 @@ export default async function scaffoldJavascript(options, {logger}) {
   const {
     tests,
     projectType,
-    ci,
     chosenHost,
     scope,
     nodeVersionCategory,
@@ -54,7 +54,7 @@ export default async function scaffoldJavascript(options, {logger}) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(ciServices, hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger});
+  } = await prompt(hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger});
 
   logger.info('Writing project files', {level: 'secondary'});
 
@@ -134,7 +134,10 @@ export default async function scaffoldJavascript(options, {logger}) {
         chosenHost,
         {buildDirectory: `./${projectTypeResults.buildDirectory}`, projectRoot, projectName, nodeVersion}
       ),
-      scaffoldChoice(ciServices, ci, {projectRoot, vcs, visibility, projectType, projectName, nodeVersion, tests}),
+      scaffoldPlugins.qualifiedOption(
+        ciServices,
+        {projectRoot, vcs, visibility, projectType, projectName, nodeVersion, tests}
+      ),
       scaffoldCommitConvention({projectRoot, projectType, configs, pathWithinParent})
     ])),
     projectTypeResults,

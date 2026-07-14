@@ -1,9 +1,8 @@
 import {execa} from 'execa';
-import * as commonPrompts from '@travi/language-scaffolder-prompts';
 import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 
-import {expect, describe, it, vi, beforeEach} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -15,7 +14,6 @@ import {prompt} from './questions.js';
 import * as validators from './validators.js';
 
 vi.mock('execa');
-vi.mock('@travi/language-scaffolder-prompts');
 vi.mock('@form8ion/overridable-prompts');
 vi.mock('../../thirdparty-wrappers/npm-conf.js');
 vi.mock('../dialects/prompt-choices.js');
@@ -23,11 +21,9 @@ vi.mock('./validators.js');
 vi.mock('./conditionals.js');
 
 describe('prompts', () => {
-  const commonQuestions = any.listOf(any.simpleObject);
   const decisions = any.simpleObject();
   const vcs = any.simpleObject();
   const pathWithinParent = any.string();
-  const ciServices = any.simpleObject();
   const visibility = any.word();
   const integrationTested = any.boolean();
   const unitTested = any.boolean();
@@ -45,10 +41,10 @@ describe('prompts', () => {
   const scope = any.word();
   const provideExample = any.boolean();
   const answers = {
-    [commonPrompts.questionNames.UNIT_TESTS]: unitTested,
-    [commonPrompts.questionNames.INTEGRATION_TESTS]: integrationTested,
+    [questionNames.UNIT_TESTS]: unitTested,
+    [questionNames.INTEGRATION_TESTS]: integrationTested,
     [questionNames.PROJECT_TYPE]: projectType,
-    [commonPrompts.questionNames.CI_SERVICE]: ci,
+    [questionNames.CI_SERVICE]: ci,
     [questionNames.HOST]: chosenHost,
     [questionNames.SCOPE]: scope,
     [questionNames.NODE_VERSION_CATEGORY]: nodeVersionCategory,
@@ -60,12 +56,6 @@ describe('prompts', () => {
     [questionNames.PROVIDE_EXAMPLE]: provideExample
   };
   const logger = {info: () => undefined, warn: () => undefined};
-
-  beforeEach(() => {
-    when(commonPrompts.questions)
-      .calledWith({vcs, ciServices, pathWithinParent: undefined})
-      .thenReturn(commonQuestions);
-  });
 
   it('should prompt the user for the necessary details', async () => {
     const npmUser = any.word();
@@ -144,7 +134,18 @@ describe('prompts', () => {
           message: 'What is the author\'s website url?',
           default: authorUrl
         },
-        ...commonQuestions,
+        {
+          name: questionNames.UNIT_TESTS,
+          message: 'Will this project be unit tested?',
+          type: 'confirm',
+          default: true
+        },
+        {
+          name: questionNames.INTEGRATION_TESTS,
+          message: 'Will this project be integration tested?',
+          type: 'confirm',
+          default: true
+        },
         {
           name: questionNames.CONFIGURE_LINTING,
           message: 'Will there be source code that should be linted?',
@@ -167,10 +168,9 @@ describe('prompts', () => {
       ], decisions)
       .thenResolve({...answers, [questionNames.CONFIGURE_LINTING]: any.word()});
 
-    expect(await prompt(ciServices, hosts, visibility, vcs, decisions, configs, undefined, {logger})).toEqual({
+    expect(await prompt(hosts, visibility, vcs, decisions, configs, undefined, {logger})).toEqual({
       tests,
       projectType,
-      ci,
       chosenHost,
       scope,
       nodeVersionCategory,
@@ -189,10 +189,9 @@ describe('prompts', () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: npmUser});
     prompts.prompt.mockResolvedValue({...answers, [questionNames.CONFIGURE_LINTING]: false});
 
-    expect(await prompt(ciServices, {}, visibility, vcs, decisions, undefined, undefined, {logger})).toEqual({
+    expect(await prompt({}, visibility, vcs, decisions, undefined, undefined, {logger})).toEqual({
       tests,
       projectType,
-      ci,
       chosenHost,
       scope,
       nodeVersionCategory,
@@ -207,12 +206,9 @@ describe('prompts', () => {
   it('should not ask about node version for sub-projects since the parent project already defines', async () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    when(commonPrompts.questions)
-      .calledWith({vcs, ciServices, pathWithinParent})
-      .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'CS', vcs, null, null, pathWithinParent, {logger});
+    await prompt({}, 'CS', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
@@ -221,12 +217,9 @@ describe('prompts', () => {
   it('should not ask whether closed source packages should be scoped', async () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    when(commonPrompts.questions)
-      .calledWith({vcs, ciServices, pathWithinParent})
-      .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'CS', vcs, null, null, pathWithinParent, {logger});
+    await prompt({}, 'CS', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
@@ -235,12 +228,9 @@ describe('prompts', () => {
   it('should not ask whether inner source packages should be scoped', async () => {
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    when(commonPrompts.questions)
-      .calledWith({vcs, ciServices, pathWithinParent})
-      .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'ISS', vcs, null, null, pathWithinParent, {logger});
+    await prompt({}, 'ISS', vcs, null, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
@@ -249,12 +239,9 @@ describe('prompts', () => {
   it('should handle a non-logged-in user gracefully', async () => {
     when(execa).calledWith('npm', ['whoami']).thenReject(new Error());
     npmConfFactory.mockReturnValue({get: () => undefined});
-    when(commonPrompts.questions)
-      .calledWith({vcs, ciServices, pathWithinParent})
-      .thenReturn(commonQuestions);
     prompts.prompt.mockResolvedValue(answers);
 
-    await prompt(ciServices, {}, 'OSS', vcs, {}, null, pathWithinParent, {logger});
+    await prompt({}, 'OSS', vcs, {}, null, pathWithinParent, {logger});
 
     const [questions] = prompts.prompt.mock.lastCall;
     expect(questions.filter(question => questionNames.SHOULD_BE_SCOPED === question.name).length).toEqual(1);

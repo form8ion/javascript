@@ -1,6 +1,5 @@
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 import {prompt as promptWithInquirer} from '@form8ion/overridable-prompts';
-import {questionNames as commonQuestionNames, questions as commonQuestions} from '@travi/language-scaffolder-prompts';
 
 import {execa} from 'execa';
 import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
@@ -36,7 +35,6 @@ function authorQuestions({name, email, url}) {
 }
 
 export async function prompt(
-  ciServices,
   hosts,
   visibility,
   vcs,
@@ -58,10 +56,9 @@ export async function prompt(
   }
 
   const {
-    [commonQuestionNames.UNIT_TESTS]: unitTested,
-    [commonQuestionNames.INTEGRATION_TESTS]: integrationTested,
+    [questionNames.UNIT_TESTS]: unitTested,
+    [questionNames.INTEGRATION_TESTS]: integrationTested,
     [questionNames.PROJECT_TYPE]: projectType,
-    [commonQuestionNames.CI_SERVICE]: ci,
     [questionNames.HOST]: chosenHost,
     [questionNames.SCOPE]: scope,
     [questionNames.NODE_VERSION_CATEGORY]: nodeVersionCategory,
@@ -120,7 +117,18 @@ export async function prompt(
       email: npmConf.get('init.author.email'),
       url: npmConf.get('init.author.url')
     }),
-    ...commonQuestions(({vcs, ciServices, pathWithinParent})),
+    {
+      name: questionNames.UNIT_TESTS,
+      message: 'Will this project be unit tested?',
+      type: 'confirm',
+      default: true
+    },
+    {
+      name: questionNames.INTEGRATION_TESTS,
+      message: 'Will this project be integration tested?',
+      type: 'confirm',
+      default: true
+    },
     {
       name: questionNames.CONFIGURE_LINTING,
       message: 'Will there be source code that should be linted?',
@@ -145,7 +153,6 @@ export async function prompt(
   return {
     tests: {unit: unitTested, integration: integrationTested},
     projectType,
-    ci,
     chosenHost,
     scope,
     nodeVersionCategory,

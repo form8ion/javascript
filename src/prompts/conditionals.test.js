@@ -1,4 +1,3 @@
-import {questionNames as commonQuestionNames} from '@travi/language-scaffolder-prompts';
 import {projectTypes} from '@form8ion/javascript-core';
 
 import {describe, expect, it} from 'vitest';
@@ -99,17 +98,17 @@ describe('javascript prompt conditionals', () => {
 
   describe('transpilation/linting', () => {
     it('should not show the prompt if the project is unit tested ', () => {
-      expect(lintingPromptShouldBePresented({[commonQuestionNames.UNIT_TESTS]: true})).toBe(false);
+      expect(lintingPromptShouldBePresented({[questionNames.UNIT_TESTS]: true})).toBe(false);
     });
 
     it('should not show the prompt if the project is integration tested', () => {
-      expect(lintingPromptShouldBePresented({[commonQuestionNames.INTEGRATION_TESTS]: true})).toBe(false);
+      expect(lintingPromptShouldBePresented({[questionNames.INTEGRATION_TESTS]: true})).toBe(false);
     });
 
     it('should show the prompt if the project is not tested', () => {
       expect(lintingPromptShouldBePresented({
-        [commonQuestionNames.INTEGRATION_TESTS]: false,
-        [commonQuestionNames.UNIT_TESTS]: false
+        [questionNames.INTEGRATION_TESTS]: false,
+        [questionNames.UNIT_TESTS]: false
       })).toBe(true);
     });
   });

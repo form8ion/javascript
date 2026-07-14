@@ -7,7 +7,6 @@ import {assert} from 'chai';
 Given('the package will be added to an existing monorepo', async function () {
   this.pathWithinParent = `${any.word()}/${this.projectName}`;
   this.projectRoot = `${this.projectRoot}/${this.pathWithinParent}`;
-  this.ciAnswer = null;
 
   await fs.mkdir(this.projectRoot, {recursive: true});
 });
