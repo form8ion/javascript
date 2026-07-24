@@ -66,7 +66,7 @@
     "@form8ion/config-file": "^1.1.1",
     "@form8ion/core": "^5.0.0-beta.15",
     "@form8ion/eslint": "^7.0.0-beta.1",
-    "@form8ion/husky": "^8.0.0-beta.3",
+    "@form8ion/husky": "^8.0.0-beta.4",
     "@form8ion/javascript-core": "^13.0.0",
     "@form8ion/overridable-prompts": "^1.2.0",
     "@form8ion/plugins-core": "^1.0.0-beta.1",
