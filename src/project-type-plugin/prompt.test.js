@@ -11,15 +11,16 @@ vi.mock('@form8ion/overridable-prompts');
 
 describe('project-type prompts', () => {
   it('should present the choice of project-type', async () => {
+    const {PROJECT_TYPE_CHOICE} = questionNames.PROJECT_TYPE_PLUGIN;
     const chosenType = any.word();
     const projectType = any.word();
     const decisions = any.simpleObject();
-    const answers = {...any.simpleObject(), [questionNames.PROJECT_TYPE_CHOICE]: chosenType};
+    const answers = {...any.simpleObject(), [PROJECT_TYPE_CHOICE]: chosenType};
     const types = any.simpleObject();
     when(prompts.prompt)
       .calledWith(
         [{
-          name: questionNames.PROJECT_TYPE_CHOICE,
+          name: PROJECT_TYPE_CHOICE,
           type: 'list',
           message: `What type of ${projectType} is this?`,
           choices: [...Object.keys(types), 'Other']

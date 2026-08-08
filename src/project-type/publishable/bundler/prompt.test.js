@@ -15,12 +15,13 @@ describe('bundler prompt', () => {
   });
 
   it('should present the choice of package bundlers', async () => {
+    const {PACKAGE_BUNDLER} = questionNames.PACKAGE_BUNDLER;
     const chosenType = any.word();
     const decisions = any.simpleObject();
-    const answers = {...any.simpleObject(), [questionNames.PACKAGE_BUNDLER]: chosenType};
+    const answers = {...any.simpleObject(), [PACKAGE_BUNDLER]: chosenType};
     const bundlers = any.simpleObject();
     when(prompts.prompt).calledWith([{
-      name: questionNames.PACKAGE_BUNDLER,
+      name: PACKAGE_BUNDLER,
       type: 'list',
       message: 'Which bundler should be used?',
       choices: [...Object.keys(bundlers), 'Other']

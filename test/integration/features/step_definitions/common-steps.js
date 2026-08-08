@@ -27,7 +27,7 @@ import {
 import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.js';
 import {assertHomepageDefinedProperly} from './project-type-steps.js';
 
-let scaffold, lift, test, questionNames;
+let scaffold, lift, test, promptConstants;
 const __dirname = dirname(fileURLToPath(import.meta.url));          // eslint-disable-line no-underscore-dangle
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
@@ -60,7 +60,7 @@ Before(async function () {
   this.projectRoot = process.cwd();
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  ({scaffold, lift, test, questionNames} = await import('@form8ion/javascript'));
+  ({scaffold, lift, test, promptConstants} = await import('@form8ion/javascript'));
 
   stubbedFs({
     node_modules: stubbedNodeModules
@@ -155,28 +155,30 @@ When(/^the project is scaffolded$/, async function () {
         registries: {[any.word()]: {scaffold: foo => ({foo})}}
       },
       decisions: {
-        [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
-        [questionNames.PROJECT_TYPE]: this.projectType,
-        [questionNames.AUTHOR_NAME]: any.word(),
-        [questionNames.AUTHOR_EMAIL]: any.email(),
-        [questionNames.AUTHOR_URL]: any.url(),
-        [questionNames.UNIT_TESTS]: this.unitTestAnswer,
-        ...this.unitTestAnswer && {[questionNames.UNIT_TEST_FRAMEWORK]: this.unitTestFrameworkAnswer},
-        [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
-        [questionNames.CONFIGURE_LINTING]: this.configureLinting,
-        [questionNames.PROVIDE_EXAMPLE]: this.provideExample,
-        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer
+        [promptConstants.questionNames.BASE_DETAILS.NODE_VERSION_CATEGORY]: 'LTS',
+        [promptConstants.questionNames.BASE_DETAILS.PROJECT_TYPE]: this.projectType,
+        [promptConstants.questionNames.BASE_DETAILS.AUTHOR_NAME]: any.word(),
+        [promptConstants.questionNames.BASE_DETAILS.AUTHOR_EMAIL]: any.email(),
+        [promptConstants.questionNames.BASE_DETAILS.AUTHOR_URL]: any.url(),
+        [promptConstants.questionNames.BASE_DETAILS.UNIT_TESTS]: this.unitTestAnswer,
+        ...this.unitTestAnswer && {
+          [promptConstants.questionNames.UNIT_TESTING.UNIT_TEST_FRAMEWORK]: this.unitTestFrameworkAnswer
+        },
+        [promptConstants.questionNames.BASE_DETAILS.INTEGRATION_TESTS]: this.integrationTestAnswer,
+        [promptConstants.questionNames.BASE_DETAILS.CONFIGURE_LINTING]: this.configureLinting,
+        [promptConstants.questionNames.BASE_DETAILS.PROVIDE_EXAMPLE]: this.provideExample,
+        [promptConstants.questionNames.PROJECT_TYPE_PLUGIN.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer
           || this.packageTypeChoiceAnswer
           || this.applicationTypeChoiceAnswer
           || 'Other',
-        [questionNames.HOST]: 'Other',
+        [promptConstants.questionNames.BASE_DETAILS.HOST]: 'Other',
         ...['Package', 'CLI'].includes(this.projectType) && {
-          [questionNames.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,
-          ...shouldBeScopedAnswer && {[questionNames.SCOPE]: this.npmAccount}
+          [promptConstants.questionNames.BASE_DETAILS.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,
+          ...shouldBeScopedAnswer && {[promptConstants.questionNames.BASE_DETAILS.SCOPE]: this.npmAccount}
         },
-        ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
-        [questionNames.DIALECT]: this.dialect,
-        [questionNames.PACKAGE_BUNDLER]: this.packageBundler
+        ...this.packageManager && {[promptConstants.questionNames.BASE_DETAILS.PACKAGE_MANAGER]: this.packageManager},
+        [promptConstants.questionNames.BASE_DETAILS.DIALECT]: this.dialect,
+        [promptConstants.questionNames.PACKAGE_BUNDLER.PACKAGE_BUNDLER]: this.packageBundler
       }
     }, {logger});
 

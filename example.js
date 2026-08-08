@@ -27,6 +27,11 @@ const {
   questionNames
 } = await import('./lib/index.js');
 
+const {
+  BASE_DETAILS,
+  UNIT_TESTING
+} = questionNames;
+
 // #### Execute
 const accountName = 'form8ion';
 const projectRoot = process.cwd();
@@ -50,18 +55,18 @@ await scaffoldJavaScript({
     ciServices: {}
   },
   decisions: {
-    [questionNames.DIALECT]: dialects.BABEL,
-    [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
-    [questionNames.PACKAGE_MANAGER]: 'npm',
-    [questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-    [questionNames.SHOULD_BE_SCOPED]: true,
-    [questionNames.SCOPE]: accountName,
-    [questionNames.AUTHOR_NAME]: 'Your Name',
-    [questionNames.AUTHOR_EMAIL]: 'you@domain.tld',
-    [questionNames.AUTHOR_URL]: 'https://your.website.tld',
-    [questionNames.UNIT_TESTS]: true,
-    [questionNames.INTEGRATION_TESTS]: true,
-    [questionNames.PROVIDE_EXAMPLE]: true
+    [BASE_DETAILS.DIALECT]: dialects.BABEL,
+    [BASE_DETAILS.NODE_VERSION_CATEGORY]: 'LTS',
+    [BASE_DETAILS.PACKAGE_MANAGER]: 'npm',
+    [BASE_DETAILS.PROJECT_TYPE]: projectTypes.PACKAGE,
+    [BASE_DETAILS.SHOULD_BE_SCOPED]: true,
+    [BASE_DETAILS.SCOPE]: accountName,
+    [BASE_DETAILS.AUTHOR_NAME]: 'Your Name',
+    [BASE_DETAILS.AUTHOR_EMAIL]: 'you@domain.tld',
+    [BASE_DETAILS.AUTHOR_URL]: 'https://your.website.tld',
+    [BASE_DETAILS.UNIT_TESTS]: true,
+    [BASE_DETAILS.INTEGRATION_TESTS]: true,
+    [BASE_DETAILS.PROVIDE_EXAMPLE]: true
   }
 });
 
@@ -92,5 +97,5 @@ await scaffoldUnitTesting({
   },
   visibility: 'OSS',
   vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
-  decisions: {[questionNames.UNIT_TEST_FRAMEWORK]: 'Mocha'}
+  decisions: {[UNIT_TESTING.UNIT_TEST_FRAMEWORK]: 'Mocha'}
 });
