@@ -27,7 +27,7 @@ import {
 import {assertThatProperDirectoriesAreIgnoredFromEslint} from './eslint-steps.js';
 import {assertHomepageDefinedProperly} from './project-type-steps.js';
 
-let scaffold, lift, test, questionNames;
+let scaffold, lift, test, promptConstants;
 const __dirname = dirname(fileURLToPath(import.meta.url));          // eslint-disable-line no-underscore-dangle
 const pathToProjectRoot = [__dirname, '..', '..', '..', '..'];
 const pathToNodeModules = [...pathToProjectRoot, 'node_modules'];
@@ -42,6 +42,58 @@ const logger = {
 
 function escapeSpecialCharacters(string) {
   return string.replace(/[.*+?^$\-{}()|[\]\\]/g, '\\$&');
+}
+
+function buildScaffoldingDecisions(context, shouldBeScopedAnswer) {
+  const {questionNames} = promptConstants;
+  const {
+    NODE_VERSION_CATEGORY,
+    PROJECT_TYPE,
+    AUTHOR_NAME,
+    AUTHOR_EMAIL,
+    AUTHOR_URL,
+    UNIT_TESTS,
+    INTEGRATION_TESTS,
+    CONFIGURE_LINTING,
+    PROVIDE_EXAMPLE,
+    HOST,
+    SHOULD_BE_SCOPED,
+    SCOPE,
+    PACKAGE_MANAGER,
+    DIALECT
+  } = questionNames.BASE_DETAILS;
+  const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
+  const {INTEGRATION_TEST_FRAMEWORK} = questionNames.INTEGRATION_TESTING;
+  const {PROJECT_TYPE_CHOICE} = questionNames.PROJECT_TYPE_PLUGIN;
+  const {PACKAGE_BUNDLER} = questionNames.PACKAGE_BUNDLER;
+
+  return {
+    [NODE_VERSION_CATEGORY]: 'LTS',
+    [PROJECT_TYPE]: context.projectType,
+    [AUTHOR_NAME]: any.word(),
+    [AUTHOR_EMAIL]: any.email(),
+    [AUTHOR_URL]: any.url(),
+    [UNIT_TESTS]: context.unitTestAnswer,
+    ...context.unitTestAnswer && {[UNIT_TEST_FRAMEWORK]: context.unitTestFrameworkAnswer},
+    [INTEGRATION_TESTS]: context.integrationTestAnswer,
+    ...context.integrationTestAnswer && context.integrationTestFrameworkAnswer && {
+      [INTEGRATION_TEST_FRAMEWORK]: context.integrationTestFrameworkAnswer
+    },
+    [CONFIGURE_LINTING]: context.configureLinting,
+    [PROVIDE_EXAMPLE]: context.provideExample,
+    [PROJECT_TYPE_CHOICE]: context.projectTypeChoiceAnswer
+      || context.packageTypeChoiceAnswer
+      || context.applicationTypeChoiceAnswer
+      || 'Other',
+    [HOST]: 'Other',
+    ...['Package', 'CLI'].includes(context.projectType) && {
+      [SHOULD_BE_SCOPED]: shouldBeScopedAnswer,
+      ...shouldBeScopedAnswer && {[SCOPE]: context.npmAccount}
+    },
+    ...context.packageManager && {[PACKAGE_MANAGER]: context.packageManager},
+    [DIALECT]: context.dialect,
+    [PACKAGE_BUNDLER]: context.packageBundler
+  };
 }
 
 export function assertDevDependencyIsInstalled(execa, dependencyName) {
@@ -60,7 +112,7 @@ Before(async function () {
   this.projectRoot = process.cwd();
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  ({scaffold, lift, test, questionNames} = await import('@form8ion/javascript'));
+  ({scaffold, lift, test, promptConstants} = await import('@form8ion/javascript'));
 
   stubbedFs({
     node_modules: stubbedNodeModules
@@ -154,30 +206,7 @@ When(/^the project is scaffolded$/, async function () {
         ciServices: this.ciServicePlugins || {[any.word()]: {scaffold: foo => ({foo})}},
         registries: {[any.word()]: {scaffold: foo => ({foo})}}
       },
-      decisions: {
-        [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
-        [questionNames.PROJECT_TYPE]: this.projectType,
-        [questionNames.AUTHOR_NAME]: any.word(),
-        [questionNames.AUTHOR_EMAIL]: any.email(),
-        [questionNames.AUTHOR_URL]: any.url(),
-        [questionNames.UNIT_TESTS]: this.unitTestAnswer,
-        ...this.unitTestAnswer && {[questionNames.UNIT_TEST_FRAMEWORK]: this.unitTestFrameworkAnswer},
-        [questionNames.INTEGRATION_TESTS]: this.integrationTestAnswer,
-        [questionNames.CONFIGURE_LINTING]: this.configureLinting,
-        [questionNames.PROVIDE_EXAMPLE]: this.provideExample,
-        [questionNames.PROJECT_TYPE_CHOICE]: this.projectTypeChoiceAnswer
-          || this.packageTypeChoiceAnswer
-          || this.applicationTypeChoiceAnswer
-          || 'Other',
-        [questionNames.HOST]: 'Other',
-        ...['Package', 'CLI'].includes(this.projectType) && {
-          [questionNames.SHOULD_BE_SCOPED]: shouldBeScopedAnswer,
-          ...shouldBeScopedAnswer && {[questionNames.SCOPE]: this.npmAccount}
-        },
-        ...this.packageManager && {[questionNames.PACKAGE_MANAGER]: this.packageManager},
-        [questionNames.DIALECT]: this.dialect,
-        [questionNames.PACKAGE_BUNDLER]: this.packageBundler
-      }
+      decisions: buildScaffoldingDecisions(this, shouldBeScopedAnswer)
     }, {logger});
 
     this.liftResult = await lift({

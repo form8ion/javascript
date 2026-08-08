@@ -11,13 +11,14 @@ vi.mock('@form8ion/overridable-prompts');
 
 describe('unit-test framework prompts', () => {
   it('should preset the choice of unit-test framework', async () => {
+    const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
     const chosenType = any.word();
     const decisions = any.simpleObject();
-    const answers = {...any.simpleObject(), [questionNames.UNIT_TEST_FRAMEWORK]: chosenType};
+    const answers = {...any.simpleObject(), [UNIT_TEST_FRAMEWORK]: chosenType};
     const frameworks = any.simpleObject();
     when(prompts.prompt)
       .calledWith([{
-        name: questionNames.UNIT_TEST_FRAMEWORK,
+        name: UNIT_TEST_FRAMEWORK,
         type: 'list',
         message: 'Which unit testing framework should be used?',
         choices: [...Object.keys(frameworks), 'Other']

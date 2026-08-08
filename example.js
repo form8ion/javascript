@@ -1,6 +1,7 @@
 // #### Import
 // remark-usage-ignore-next 4
 import {resolve} from 'path';
+import {existsSync} from 'fs';
 import stubbedFs from 'mock-fs';
 import * as td from 'testdouble';
 import 'validate-npm-package-name';
@@ -10,7 +11,7 @@ stubbedFs({
   node_modules: stubbedFs.load(resolve('node_modules')),
   '.nvmrc': 'v1.2.3',
   lib: stubbedFs.load(resolve('lib')),
-  templates: stubbedFs.load(resolve('templates'))
+  ...existsSync(resolve('templates')) && {templates: stubbedFs.load(resolve('templates'))}
 });
 const {execa} = await td.replaceEsm('execa');
 td.when(execa('. ~/.nvm/nvm.sh && nvm ls-remote --lts', {shell: true}))
@@ -24,12 +25,24 @@ const {
   lift: liftJavascript,
   test: thisIsAJavaScriptProject,
   scaffoldUnitTesting,
-  questionNames
+  promptConstants
 } = await import('./lib/index.js');
+
+const {
+  questionNames
+} = promptConstants;
+const {BASE_DETAILS} = questionNames;
+const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
 
 // #### Execute
 const accountName = 'form8ion';
 const projectRoot = process.cwd();
+const logger = {
+  info: () => undefined,
+  warn: () => undefined,
+  error: () => undefined,
+  success: () => undefined
+};
 
 await scaffoldJavaScript({
   projectRoot,
@@ -50,22 +63,22 @@ await scaffoldJavaScript({
     ciServices: {}
   },
   decisions: {
-    [questionNames.DIALECT]: dialects.BABEL,
-    [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
-    [questionNames.PACKAGE_MANAGER]: 'npm',
-    [questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-    [questionNames.SHOULD_BE_SCOPED]: true,
-    [questionNames.SCOPE]: accountName,
-    [questionNames.AUTHOR_NAME]: 'Your Name',
-    [questionNames.AUTHOR_EMAIL]: 'you@domain.tld',
-    [questionNames.AUTHOR_URL]: 'https://your.website.tld',
-    [questionNames.UNIT_TESTS]: true,
-    [questionNames.INTEGRATION_TESTS]: true,
-    [questionNames.PROVIDE_EXAMPLE]: true
+    [BASE_DETAILS.DIALECT]: dialects.BABEL,
+    [BASE_DETAILS.NODE_VERSION_CATEGORY]: 'LTS',
+    [BASE_DETAILS.PACKAGE_MANAGER]: 'npm',
+    [BASE_DETAILS.PROJECT_TYPE]: projectTypes.PACKAGE,
+    [BASE_DETAILS.SHOULD_BE_SCOPED]: true,
+    [BASE_DETAILS.SCOPE]: accountName,
+    [BASE_DETAILS.AUTHOR_NAME]: 'Your Name',
+    [BASE_DETAILS.AUTHOR_EMAIL]: 'you@domain.tld',
+    [BASE_DETAILS.AUTHOR_URL]: 'https://your.website.tld',
+    [BASE_DETAILS.UNIT_TESTS]: true,
+    [BASE_DETAILS.INTEGRATION_TESTS]: true,
+    [BASE_DETAILS.PROVIDE_EXAMPLE]: true
   }
-});
+}, {logger});
 
-if (await thisIsAJavaScriptProject({projectRoot})) {
+if (await thisIsAJavaScriptProject({projectRoot}, {logger})) {
   await liftJavascript({
     projectRoot,
     configs: {eslint: {scope: '@foo'}},
@@ -81,7 +94,7 @@ if (await thisIsAJavaScriptProject({projectRoot})) {
         lift: () => ({})
       }
     }
-  });
+  }, {logger});
 }
 
 await scaffoldUnitTesting({
@@ -92,5 +105,5 @@ await scaffoldUnitTesting({
   },
   visibility: 'OSS',
   vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
-  decisions: {[questionNames.UNIT_TEST_FRAMEWORK]: 'Mocha'}
-});
+  decisions: {[UNIT_TEST_FRAMEWORK]: 'Mocha'}
+}, {logger});

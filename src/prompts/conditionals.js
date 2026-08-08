@@ -2,20 +2,22 @@ import {projectTypes} from '@form8ion/javascript-core';
 
 import {questionNames} from './question-names.js';
 
+const {BASE_DETAILS} = questionNames;
+
 function projectIsCLI(answers) {
-  return projectTypes.CLI === answers[questionNames.PROJECT_TYPE];
+  return projectTypes.CLI === answers[BASE_DETAILS.PROJECT_TYPE];
 }
 
 export function projectIsPackage(answers) {
-  return projectTypes.PACKAGE === answers[questionNames.PROJECT_TYPE];
+  return projectTypes.PACKAGE === answers[BASE_DETAILS.PROJECT_TYPE];
 }
 
 export function projectIsApplication(answers) {
-  return projectTypes.APPLICATION === answers[questionNames.PROJECT_TYPE];
+  return projectTypes.APPLICATION === answers[BASE_DETAILS.PROJECT_TYPE];
 }
 
 function packageShouldBeScoped(visibility, answers) {
-  return ['ISS', 'CS'].includes(visibility) || answers[questionNames.SHOULD_BE_SCOPED];
+  return ['ISS', 'CS'].includes(visibility) || answers[BASE_DETAILS.SHOULD_BE_SCOPED];
 }
 
 function willBePublishedToRegistry(answers) {
@@ -31,8 +33,8 @@ export function scopePromptShouldBePresentedFactory(visibility) {
 }
 
 export function lintingPromptShouldBePresented({
-  [questionNames.UNIT_TESTS]: unitTested,
-  [questionNames.INTEGRATION_TESTS]: integrationTested
+  [BASE_DETAILS.UNIT_TESTS]: unitTested,
+  [BASE_DETAILS.INTEGRATION_TESTS]: integrationTested
 }) {
   return !unitTested && !integrationTested;
 }

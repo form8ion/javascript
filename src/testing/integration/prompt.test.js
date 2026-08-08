@@ -11,13 +11,14 @@ vi.mock('@form8ion/overridable-prompts');
 
 describe('integration-test framework prompt', () => {
   it('should preset the choice of integration-test framework', async () => {
+    const {INTEGRATION_TEST_FRAMEWORK} = questionNames.INTEGRATION_TESTING;
     const chosenType = any.word();
     const decisions = any.simpleObject();
-    const answers = {...any.simpleObject(), [questionNames.INTEGRATION_TEST_FRAMEWORK]: chosenType};
+    const answers = {...any.simpleObject(), [INTEGRATION_TEST_FRAMEWORK]: chosenType};
     const frameworks = any.simpleObject();
     when(prompts.prompt)
       .calledWith([{
-        name: questionNames.INTEGRATION_TEST_FRAMEWORK,
+        name: INTEGRATION_TEST_FRAMEWORK,
         type: 'list',
         message: 'Which integration testing framework should be used?',
         choices: [...Object.keys(frameworks), 'Other']
