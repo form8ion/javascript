@@ -1,6 +1,7 @@
 // #### Import
 // remark-usage-ignore-next 4
 import {resolve} from 'path';
+import {existsSync} from 'fs';
 import stubbedFs from 'mock-fs';
 import * as td from 'testdouble';
 import 'validate-npm-package-name';
@@ -10,7 +11,7 @@ stubbedFs({
   node_modules: stubbedFs.load(resolve('node_modules')),
   '.nvmrc': 'v1.2.3',
   lib: stubbedFs.load(resolve('lib')),
-  templates: stubbedFs.load(resolve('templates'))
+  ...existsSync(resolve('templates')) && {templates: stubbedFs.load(resolve('templates'))}
 });
 const {execa} = await td.replaceEsm('execa');
 td.when(execa('. ~/.nvm/nvm.sh && nvm ls-remote --lts', {shell: true}))
@@ -24,17 +25,24 @@ const {
   lift: liftJavascript,
   test: thisIsAJavaScriptProject,
   scaffoldUnitTesting,
-  questionNames
+  promptConstants
 } = await import('./lib/index.js');
 
 const {
-  BASE_DETAILS,
-  UNIT_TESTING
-} = questionNames;
+  questionNames
+} = promptConstants;
+const {BASE_DETAILS} = questionNames;
+const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
 
 // #### Execute
 const accountName = 'form8ion';
 const projectRoot = process.cwd();
+const logger = {
+  info: () => undefined,
+  warn: () => undefined,
+  error: () => undefined,
+  success: () => undefined
+};
 
 await scaffoldJavaScript({
   projectRoot,
@@ -68,9 +76,9 @@ await scaffoldJavaScript({
     [BASE_DETAILS.INTEGRATION_TESTS]: true,
     [BASE_DETAILS.PROVIDE_EXAMPLE]: true
   }
-});
+}, {logger});
 
-if (await thisIsAJavaScriptProject({projectRoot})) {
+if (await thisIsAJavaScriptProject({projectRoot}, {logger})) {
   await liftJavascript({
     projectRoot,
     configs: {eslint: {scope: '@foo'}},
@@ -86,7 +94,7 @@ if (await thisIsAJavaScriptProject({projectRoot})) {
         lift: () => ({})
       }
     }
-  });
+  }, {logger});
 }
 
 await scaffoldUnitTesting({
@@ -97,5 +105,5 @@ await scaffoldUnitTesting({
   },
   visibility: 'OSS',
   vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
-  decisions: {[UNIT_TESTING.UNIT_TEST_FRAMEWORK]: 'Mocha'}
-});
+  decisions: {[UNIT_TEST_FRAMEWORK]: 'Mocha'}
+}, {logger});
