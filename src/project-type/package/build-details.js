@@ -26,14 +26,13 @@ export default async function buildDetails({
   projectName,
   packageBundlers,
   dialect,
-  provideExample,
-  decisions
-}) {
+  provideExample
+}, dependencies) {
   if (dialects.COMMON_JS === dialect) return buildDetailsForCommonJsProject({projectRoot, provideExample});
 
   await fs.mkdir(`${projectRoot}/src`, {recursive: true});
   const [bundlerResults] = await Promise.all([
-    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.PACKAGE}),
+    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, projectType: projectTypes.PACKAGE}, dependencies),
     provideExample ? await createExample(projectRoot, projectName, dialect) : Promise.resolve,
     touch(`${projectRoot}/src/index.js`)
   ]);

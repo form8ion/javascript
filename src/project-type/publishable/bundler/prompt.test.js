@@ -1,36 +1,35 @@
-import * as prompts from '@form8ion/overridable-prompts';
-
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import {questionNames} from '../../../prompts/question-names.js';
-import prompt from './prompt.js';
+import gatherBundlerInput, {PACKAGE_BUNDLER_PROMPT_ID} from './prompt.js';
 
 vi.mock('@form8ion/overridable-prompts');
 
 describe('bundler prompt', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should present the choice of package bundlers', async () => {
     const {PACKAGE_BUNDLER} = questionNames.PACKAGE_BUNDLER;
     const chosenType = any.word();
-    const decisions = any.simpleObject();
     const answers = {...any.simpleObject(), [PACKAGE_BUNDLER]: chosenType};
     const bundlers = any.simpleObject();
-    when(prompts.prompt).calledWith([{
-      name: PACKAGE_BUNDLER,
-      type: 'list',
-      message: 'Which bundler should be used?',
-      choices: [...Object.keys(bundlers), 'Other']
-    }], decisions).thenResolve(answers);
+    const prompt = vi.fn();
+    when(prompt).calledWith({
+      id: PACKAGE_BUNDLER_PROMPT_ID,
+      questions: [{
+        name: PACKAGE_BUNDLER,
+        type: 'list',
+        message: 'Which bundler should be used?',
+        choices: [...Object.keys(bundlers), 'Other']
+      }]
+    }).thenResolve(answers);
 
-    expect(await prompt({bundlers, decisions})).toEqual(chosenType);
+    expect(await gatherBundlerInput({bundlers}, {prompt})).toEqual(chosenType);
   });
 
   it('should skip the prompt and return `Other` when no options are provided', async () => {
-    expect(await prompt({bundlers: {}})).toEqual('Other');
+    const prompt = vi.fn();
+
+    expect(await gatherBundlerInput({bundlers: {}}, {prompt})).toEqual('Other');
   });
 });

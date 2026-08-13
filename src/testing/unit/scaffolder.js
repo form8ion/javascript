@@ -6,10 +6,10 @@ import {scaffold as scaffoldCoverage} from '../../coverage/index.js';
 import chooseFramework from './prompt.js';
 import {pluginsSchema} from '../../plugins-schemas.js';
 
-export default async function scaffoldUnitTesting({projectRoot, frameworks, decisions, dialect}) {
+export default async function scaffoldUnitTesting({projectRoot, frameworks, dialect}, {prompt}) {
   const validatedFrameworks = validateOptions(pluginsSchema, frameworks);
   const [framework, coverage] = await Promise.all([
-    chooseFramework({frameworks: validatedFrameworks, decisions})
+    chooseFramework({frameworks: validatedFrameworks, prompt})
       .then(chosenFramework => scaffoldFrameworkChoice(validatedFrameworks, chosenFramework, {projectRoot, dialect})),
     scaffoldCoverage({projectRoot})
   ]);

@@ -1,6 +1,6 @@
 import {mergeIntoExistingPackageJson, projectTypes} from '@form8ion/javascript-core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
@@ -22,8 +22,8 @@ describe('cli project-type scaffolder', () => {
   const packageAccessLevel = any.word();
   const bundlerResults = any.simpleObject();
   const dialect = any.word();
-  const decisions = any.simpleObject();
   const packageBundlers = any.simpleObject();
+  const dependencies = any.simpleObject();
 
   beforeEach(() => {
     when(determinePackageAccessLevelFromProjectVisibility)
@@ -31,12 +31,8 @@ describe('cli project-type scaffolder', () => {
       .thenReturn(packageAccessLevel);
     when(scaffoldPublishable).calledWith().thenReturn(publishableResults);
     when(scaffoldBundler)
-      .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.CLI})
+      .calledWith({bundlers: packageBundlers, projectRoot, dialect, projectType: projectTypes.CLI}, dependencies)
       .thenResolve(bundlerResults);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
   });
 
   it('should scaffold the cli project-type details', async () => {
@@ -45,9 +41,8 @@ describe('cli project-type scaffolder', () => {
       configs,
       visibility,
       dialect,
-      decisions,
       packageBundlers
-    });
+    }, dependencies);
 
     expect(results).toEqual({
       ...publishableResults,
@@ -81,9 +76,8 @@ describe('cli project-type scaffolder', () => {
       visibility,
       publishRegistry,
       dialect,
-      decisions,
       packageBundlers
-    });
+    }, dependencies);
 
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

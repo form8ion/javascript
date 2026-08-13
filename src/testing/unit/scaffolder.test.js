@@ -7,7 +7,7 @@ import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import scaffoldCoverage from '../../coverage/scaffolder.js';
-import prompt from './prompt.js';
+import chooseFramework from './prompt.js';
 import scaffoldUnitTesting from './scaffolder.js';
 import {pluginsSchema} from '../../plugins-schemas.js';
 
@@ -20,17 +20,17 @@ vi.mock('./prompt.js');
 describe('unit testing scaffolder', () => {
   const projectRoot = any.string();
   const frameworks = any.simpleObject();
-  const decisions = any.simpleObject();
   const chosenFramework = any.word();
   const dialect = any.word();
   const coverageResults = any.simpleObject();
   const unitTestFrameworkResults = any.simpleObject();
   const mergedResults = any.simpleObject();
+  const prompt = vi.fn();
 
   it('should scaffold the chosen framework', async () => {
     const validatedFrameworks = any.simpleObject();
     when(validateOptions).calledWith(pluginsSchema, frameworks).thenReturn(validatedFrameworks);
-    when(prompt).calledWith({frameworks: validatedFrameworks, decisions}).thenResolve(chosenFramework);
+    when(chooseFramework).calledWith({frameworks: validatedFrameworks, prompt}).thenResolve(chosenFramework);
     when(scaffoldChoice)
       .calledWith(validatedFrameworks, chosenFramework, {projectRoot, dialect})
       .thenResolve(unitTestFrameworkResults);
@@ -43,6 +43,6 @@ describe('unit testing scaffolder', () => {
       ])
       .thenReturn(mergedResults);
 
-    expect(await scaffoldUnitTesting({projectRoot, frameworks, decisions, dialect})).toEqual(mergedResults);
+    expect(await scaffoldUnitTesting({projectRoot, frameworks, dialect}, {prompt})).toEqual(mergedResults);
   });
 });

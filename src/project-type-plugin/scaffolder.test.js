@@ -19,7 +19,7 @@ describe('chosen project-type plugin scaffolder', () => {
   const projectType = any.word();
   const scope = any.word();
   const tests = any.simpleObject();
-  const decisions = any.simpleObject();
+  const prompt = () => undefined;
 
   it('should enable choosing a plugin and scaffolding the choice', async () => {
     const typeScaffoldingResults = any.simpleObject();
@@ -27,7 +27,7 @@ describe('chosen project-type plugin scaffolder', () => {
     const dialect = any.word();
     const plugins = {...any.simpleObject(), [projectType]: pluginsForProjectType};
     when(chooseProjectTypePlugin)
-      .calledWith({types: pluginsForProjectType, decisions, projectType})
+      .calledWith({types: pluginsForProjectType, projectType}, {prompt})
       .thenReturn(chosenType);
     when(scaffoldChoice)
       .calledWith(
@@ -46,9 +46,8 @@ describe('chosen project-type plugin scaffolder', () => {
       tests,
       scope,
       dialect,
-      decisions,
       plugins
-    })).toEqual(typeScaffoldingResults);
+    }, {prompt})).toEqual(typeScaffoldingResults);
   });
 
   it('should not scaffold a plugin if none are defined for the project type', async () => {
@@ -60,9 +59,8 @@ describe('chosen project-type plugin scaffolder', () => {
       packageManager,
       tests,
       scope,
-      decisions,
       plugins: any.simpleObject()
-    });
+    }, {prompt});
 
     expect(chooseProjectTypePlugin).not.toHaveBeenCalled();
     expect(results).toEqual({});

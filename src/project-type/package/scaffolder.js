@@ -14,11 +14,11 @@ export default async function scaffoldPackageProjectType({
   visibility,
   scope,
   packageBundlers,
-  decisions,
   dialect,
   provideExample,
   publishRegistry
-}, {logger}) {
+}, dependencies) {
+  const {logger} = dependencies;
   logger.info('Scaffolding Package Details');
 
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
@@ -28,9 +28,8 @@ export default async function scaffoldPackageProjectType({
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }),
+      provideExample
+    }, dependencies),
     scaffoldPublishable(),
     mergeIntoExistingPackageJson({
       projectRoot,

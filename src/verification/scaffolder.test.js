@@ -36,7 +36,7 @@ describe('verification scaffolder', () => {
       .calledWith({projectRoot, vcs, packageManager, registries, pathWithinParent})
       .thenResolve(lintingResults);
     when(scaffoldTesting)
-      .calledWith({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, decisions, dialect})
+      .calledWith({projectRoot, tests, unitTestFrameworks, integrationTestFrameworks, dialect}, dependencies)
       .thenResolve(testingResults);
     when(scaffoldHusky)
       .calledWith({projectRoot, packageManager, pathWithinParent}, dependencies)

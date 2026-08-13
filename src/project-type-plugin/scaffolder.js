@@ -11,14 +11,13 @@ export default async function scaffoldProjectTypePlugin({
   scope,
   dialect,
   tests,
-  decisions,
   plugins
-}) {
+}, {prompt}) {
   const pluginsForProjectType = plugins[projectType];
 
   if (!pluginsForProjectType) return {};
 
-  const chosenType = await chooseProjectTypePlugin({types: pluginsForProjectType, decisions, projectType});
+  const chosenType = await chooseProjectTypePlugin({types: pluginsForProjectType, projectType}, {prompt});
 
   return scaffoldChoice(
     pluginsForProjectType,

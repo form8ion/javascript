@@ -1,5 +1,4 @@
 import {execa} from 'execa';
-import * as prompts from '@form8ion/overridable-prompts';
 import {packageManagers, projectTypes} from '@form8ion/javascript-core';
 
 import {describe, expect, it, vi} from 'vitest';
@@ -10,20 +9,18 @@ import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
 import buildDialectChoices from '../dialects/prompt-choices.js';
 import {questionNames} from './question-names.js';
 import * as conditionals from './conditionals.js';
-import {prompt} from './questions.js';
+import {gatherBaseDetailsInput, BASE_DETAILS_PROMPT_ID} from './questions.js';
 import * as validators from './validators.js';
 
 const {BASE_DETAILS} = questionNames;
 
 vi.mock('execa');
-vi.mock('@form8ion/overridable-prompts');
 vi.mock('../../thirdparty-wrappers/npm-conf.js');
 vi.mock('../dialects/prompt-choices.js');
 vi.mock('./validators.js');
 vi.mock('./conditionals.js');
 
 describe('prompts', () => {
-  const decisions = any.simpleObject();
   const vcs = any.simpleObject();
   const pathWithinParent = any.string();
   const visibility = any.word();
@@ -60,6 +57,7 @@ describe('prompts', () => {
   const logger = {info: () => undefined, warn: () => undefined};
 
   it('should prompt the user for the necessary details', async () => {
+    const prompt = vi.fn();
     const npmUser = any.word();
     const get = vi.fn();
     const hosts = any.simpleObject();
@@ -77,100 +75,103 @@ describe('prompts', () => {
       .calledWith(visibility)
       .thenReturn(scopePromptShouldBePresented);
     when(buildDialectChoices).calledWith(configs).thenReturn(dialects);
-    when(prompts.prompt)
-      .calledWith([
-        {
-          name: BASE_DETAILS.DIALECT,
-          message: 'Which JavaScript dialect should this project follow?',
-          type: 'list',
-          choices: dialects,
-          default: 'babel'
-        },
-        {
-          name: BASE_DETAILS.NODE_VERSION_CATEGORY,
-          message: 'What node.js version should be used?',
-          type: 'list',
-          choices: ['LTS', 'Latest'],
-          default: 'LTS'
-        },
-        {
-          name: BASE_DETAILS.PACKAGE_MANAGER,
-          message: 'Which package manager will be used with this project?',
-          type: 'list',
-          choices: Object.values(packageManagers),
-          default: packageManagers.NPM
-        },
-        {
-          name: BASE_DETAILS.PROJECT_TYPE,
-          message: 'What type of JavaScript project is this?',
-          type: 'list',
-          choices: [...Object.values(projectTypes), 'Other'],
-          default: projectTypes.PACKAGE
-        },
-        {
-          name: BASE_DETAILS.SHOULD_BE_SCOPED,
-          message: 'Should this package be scoped?',
-          type: 'confirm',
-          when: conditionals.shouldBeScopedPromptShouldBePresented,
-          default: true
-        },
-        {
-          name: BASE_DETAILS.SCOPE,
-          message: 'What is the scope?',
-          when: scopePromptShouldBePresented,
-          validate: scopeValidator,
-          default: npmUser
-        },
-        {
-          name: BASE_DETAILS.AUTHOR_NAME,
-          message: 'What is the author\'s name?',
-          default: authorName
-        },
-        {
-          name: BASE_DETAILS.AUTHOR_EMAIL,
-          message: 'What is the author\'s email?',
-          default: authorEmail
-        },
-        {
-          name: BASE_DETAILS.AUTHOR_URL,
-          message: 'What is the author\'s website url?',
-          default: authorUrl
-        },
-        {
-          name: BASE_DETAILS.UNIT_TESTS,
-          message: 'Will this project be unit tested?',
-          type: 'confirm',
-          default: true
-        },
-        {
-          name: BASE_DETAILS.INTEGRATION_TESTS,
-          message: 'Will this project be integration tested?',
-          type: 'confirm',
-          default: true
-        },
-        {
-          name: BASE_DETAILS.CONFIGURE_LINTING,
-          message: 'Will there be source code that should be linted?',
-          type: 'confirm',
-          when: conditionals.lintingPromptShouldBePresented
-        },
-        {
-          name: BASE_DETAILS.PROVIDE_EXAMPLE,
-          message: 'Should an example be provided in the README?',
-          type: 'confirm',
-          when: conditionals.projectIsPackage
-        },
-        {
-          name: BASE_DETAILS.HOST,
-          type: 'list',
-          message: 'Where will the application be hosted?',
-          when: conditionals.projectIsApplication,
-          choices: [...Object.keys(hosts), 'Other']
-        }
-      ], decisions)
+    when(prompt)
+      .calledWith({
+        id: BASE_DETAILS_PROMPT_ID,
+        questions: [
+          {
+            name: BASE_DETAILS.DIALECT,
+            message: 'Which JavaScript dialect should this project follow?',
+            type: 'list',
+            choices: dialects,
+            default: 'babel'
+          },
+          {
+            name: BASE_DETAILS.NODE_VERSION_CATEGORY,
+            message: 'What node.js version should be used?',
+            type: 'list',
+            choices: ['LTS', 'Latest'],
+            default: 'LTS'
+          },
+          {
+            name: BASE_DETAILS.PACKAGE_MANAGER,
+            message: 'Which package manager will be used with this project?',
+            type: 'list',
+            choices: Object.values(packageManagers),
+            default: packageManagers.NPM
+          },
+          {
+            name: BASE_DETAILS.PROJECT_TYPE,
+            message: 'What type of JavaScript project is this?',
+            type: 'list',
+            choices: [...Object.values(projectTypes), 'Other'],
+            default: projectTypes.PACKAGE
+          },
+          {
+            name: BASE_DETAILS.SHOULD_BE_SCOPED,
+            message: 'Should this package be scoped?',
+            type: 'confirm',
+            when: conditionals.shouldBeScopedPromptShouldBePresented,
+            default: true
+          },
+          {
+            name: BASE_DETAILS.SCOPE,
+            message: 'What is the scope?',
+            when: scopePromptShouldBePresented,
+            validate: scopeValidator,
+            default: npmUser
+          },
+          {
+            name: BASE_DETAILS.AUTHOR_NAME,
+            message: 'What is the author\'s name?',
+            default: authorName
+          },
+          {
+            name: BASE_DETAILS.AUTHOR_EMAIL,
+            message: 'What is the author\'s email?',
+            default: authorEmail
+          },
+          {
+            name: BASE_DETAILS.AUTHOR_URL,
+            message: 'What is the author\'s website url?',
+            default: authorUrl
+          },
+          {
+            name: BASE_DETAILS.UNIT_TESTS,
+            message: 'Will this project be unit tested?',
+            type: 'confirm',
+            default: true
+          },
+          {
+            name: BASE_DETAILS.INTEGRATION_TESTS,
+            message: 'Will this project be integration tested?',
+            type: 'confirm',
+            default: true
+          },
+          {
+            name: BASE_DETAILS.CONFIGURE_LINTING,
+            message: 'Will there be source code that should be linted?',
+            type: 'confirm',
+            when: conditionals.lintingPromptShouldBePresented
+          },
+          {
+            name: BASE_DETAILS.PROVIDE_EXAMPLE,
+            message: 'Should an example be provided in the README?',
+            type: 'confirm',
+            when: conditionals.projectIsPackage
+          },
+          {
+            name: BASE_DETAILS.HOST,
+            type: 'list',
+            message: 'Where will the application be hosted?',
+            when: conditionals.projectIsApplication,
+            choices: [...Object.keys(hosts), 'Other']
+          }
+        ]
+      })
       .thenResolve({...answers, [BASE_DETAILS.CONFIGURE_LINTING]: any.word()});
 
-    expect(await prompt(hosts, visibility, vcs, decisions, configs, undefined, {logger})).toEqual({
+    expect(await gatherBaseDetailsInput(hosts, visibility, vcs, configs, undefined, {logger, prompt})).toEqual({
       tests,
       projectType,
       chosenHost,
@@ -185,13 +186,14 @@ describe('prompts', () => {
   });
 
   it('should not override the transpile/lint value when set to `false`', async () => {
+    const prompt = vi.fn();
     const npmUser = any.word();
     const get = vi.fn();
     npmConfFactory.mockReturnValue({get});
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: npmUser});
-    prompts.prompt.mockResolvedValue({...answers, [BASE_DETAILS.CONFIGURE_LINTING]: false});
+    prompt.mockResolvedValue({...answers, [BASE_DETAILS.CONFIGURE_LINTING]: false});
 
-    expect(await prompt({}, visibility, vcs, decisions, undefined, undefined, {logger})).toEqual({
+    expect(await gatherBaseDetailsInput({}, visibility, vcs, undefined, undefined, {logger, prompt})).toEqual({
       tests,
       projectType,
       chosenHost,
@@ -206,46 +208,50 @@ describe('prompts', () => {
   });
 
   it('should not ask about node version for sub-projects since the parent project already defines', async () => {
+    const prompt = vi.fn();
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    prompts.prompt.mockResolvedValue(answers);
+    prompt.mockResolvedValue(answers);
 
-    await prompt({}, 'CS', vcs, null, null, pathWithinParent, {logger});
+    await gatherBaseDetailsInput({}, 'CS', vcs, null, pathWithinParent, {logger, prompt});
 
-    const [questions] = prompts.prompt.mock.lastCall;
+    const {questions} = prompt.mock.lastCall[0];
     expect(questions.filter(question => BASE_DETAILS.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
   });
 
   it('should not ask whether closed source packages should be scoped', async () => {
+    const prompt = vi.fn();
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    prompts.prompt.mockResolvedValue(answers);
+    prompt.mockResolvedValue(answers);
 
-    await prompt({}, 'CS', vcs, null, null, pathWithinParent, {logger});
+    await gatherBaseDetailsInput({}, 'CS', vcs, null, pathWithinParent, {logger, prompt});
 
-    const [questions] = prompts.prompt.mock.lastCall;
+    const {questions} = prompt.mock.lastCall[0];
     expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
   });
 
   it('should not ask whether inner source packages should be scoped', async () => {
+    const prompt = vi.fn();
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: any.word()});
     npmConfFactory.mockReturnValue({get: () => undefined});
-    prompts.prompt.mockResolvedValue(answers);
+    prompt.mockResolvedValue(answers);
 
-    await prompt({}, 'ISS', vcs, null, null, pathWithinParent, {logger});
+    await gatherBaseDetailsInput({}, 'ISS', vcs, null, pathWithinParent, {logger, prompt});
 
-    const [questions] = prompts.prompt.mock.lastCall;
+    const {questions} = prompt.mock.lastCall[0];
     expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
   });
 
   it('should handle a non-logged-in user gracefully', async () => {
+    const prompt = vi.fn();
     when(execa).calledWith('npm', ['whoami']).thenReject(new Error());
     npmConfFactory.mockReturnValue({get: () => undefined});
-    prompts.prompt.mockResolvedValue(answers);
+    prompt.mockResolvedValue(answers);
 
-    await prompt({}, 'OSS', vcs, {}, null, pathWithinParent, {logger});
+    await gatherBaseDetailsInput({}, 'OSS', vcs, null, pathWithinParent, {logger, prompt});
 
-    const [questions] = prompts.prompt.mock.lastCall;
+    const {questions} = prompt.mock.lastCall[0];
     expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(1);
   });
 });

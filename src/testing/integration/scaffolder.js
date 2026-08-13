@@ -5,10 +5,9 @@ import chooseFramework from './prompt.js';
 export default async function scaffoldIntegrationTesting({
   projectRoot,
   frameworks: integrationTestFrameworks,
-  decisions,
   dialect
-}) {
-  const chosenFramework = await chooseFramework({frameworks: integrationTestFrameworks, decisions});
+}, {prompt}) {
+  const chosenFramework = await chooseFramework({frameworks: integrationTestFrameworks, prompt});
 
   return scaffoldFrameworkChoice(integrationTestFrameworks, chosenFramework, {projectRoot, dialect});
 }

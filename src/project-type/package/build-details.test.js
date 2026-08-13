@@ -20,7 +20,7 @@ describe('package build details', () => {
   const pathToExample = `${projectRoot}/example.js`;
   const bundlerResults = any.simpleObject();
   const packageBundlers = any.simpleObject();
-  const decisions = any.simpleObject();
+  const prompt = () => undefined;
 
   it('should correctly define a common-js project', async () => {
     const results = await buildDetails({
@@ -28,7 +28,7 @@ describe('package build details', () => {
       projectRoot,
       projectName,
       provideExample: true
-    });
+    }, {prompt});
 
     expect(results).toEqual({});
     expect(fs.writeFile).toHaveBeenCalledWith(pathToExample, "const {} = require('.');\n");
@@ -41,7 +41,7 @@ describe('package build details', () => {
       projectRoot,
       projectName,
       provideExample: false
-    });
+    }, {prompt});
 
     expect(fs.writeFile).not.toHaveBeenCalled();
   });
@@ -49,7 +49,7 @@ describe('package build details', () => {
   it('should define a modern-js project correctly', async () => {
     const dialect = dialects.BABEL;
     when(scaffoldBundler)
-      .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
+      .calledWith({bundlers: packageBundlers, projectRoot, dialect, projectType: projectTypes.PACKAGE}, {prompt})
       .thenResolve(bundlerResults);
 
     const results = await buildDetails({
@@ -57,9 +57,8 @@ describe('package build details', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      decisions,
       provideExample: true
-    });
+    }, {prompt});
 
     expect(results).toEqual({
       ...bundlerResults,
@@ -82,7 +81,7 @@ describe('package build details', () => {
   it('should not create the example file for a modern-js project when `provideExample` is `false`', async () => {
     const dialect = dialects.BABEL;
     when(scaffoldBundler)
-      .calledWith({bundlers: packageBundlers, decisions, projectRoot, dialect, projectType: projectTypes.PACKAGE})
+      .calledWith({bundlers: packageBundlers, projectRoot, dialect, projectType: projectTypes.PACKAGE}, {prompt})
       .thenResolve(bundlerResults);
 
     const results = await buildDetails({
@@ -90,9 +89,8 @@ describe('package build details', () => {
       projectRoot,
       projectName,
       packageBundlers,
-      decisions,
       provideExample: false
-    });
+    }, {prompt});
 
     expect(results).toEqual({
       ...bundlerResults,

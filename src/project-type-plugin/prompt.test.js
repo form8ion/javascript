@@ -1,13 +1,9 @@
-import * as prompts from '@form8ion/overridable-prompts';
-
 import any from '@travi/any';
 import {when} from 'vitest-when';
 import {describe, expect, it, vi} from 'vitest';
 
 import {questionNames} from '../prompts/question-names.js';
-import prompt from './prompt.js';
-
-vi.mock('@form8ion/overridable-prompts');
+import gatherProjectTypePluginInput, {PROJECT_TYPE_PLUGIN_PROMPT_ID} from './prompt.js';
 
 describe('project-type prompts', () => {
   it('should present the choice of project-type', async () => {
@@ -17,24 +13,27 @@ describe('project-type prompts', () => {
     const decisions = any.simpleObject();
     const answers = {...any.simpleObject(), [PROJECT_TYPE_CHOICE]: chosenType};
     const types = any.simpleObject();
-    when(prompts.prompt)
-      .calledWith(
-        [{
+    const prompt = vi.fn();
+    when(prompt)
+      .calledWith({
+        id: PROJECT_TYPE_PLUGIN_PROMPT_ID,
+        questions: [{
           name: PROJECT_TYPE_CHOICE,
           type: 'list',
           message: `What type of ${projectType} is this?`,
           choices: [...Object.keys(types), 'Other']
-        }],
-        decisions
-      )
+        }]
+      })
       .thenResolve(answers);
 
-    expect(await prompt({types, projectType, decisions})).toEqual(chosenType);
+    expect(await gatherProjectTypePluginInput({types, projectType, decisions}, {prompt})).toEqual(chosenType);
   });
 
   it('should skip the prompt and return `Other` when no options are provided', async () => {
-    expect(await prompt({types: {}, projectType: any.word()})).toEqual('Other');
+    const prompt = vi.fn();
 
-    expect(prompts.prompt).not.toHaveBeenCalled();
+    expect(await gatherProjectTypePluginInput({types: {}, projectType: any.word()}, {prompt})).toEqual('Other');
+
+    expect(prompt).not.toHaveBeenCalled();
   });
 });

@@ -20,14 +20,14 @@ describe('package bundler scaffolder', () => {
     const dialect = any.word();
     const projectType = any.word();
     const bundlers = any.simpleObject();
-    const decisions = any.simpleObject();
+    const prompt = vi.fn();
     const bundlerResults = any.simpleObject();
     const chosenBundler = any.word();
-    when(chooseBundler).calledWith({bundlers, decisions}).thenResolve(chosenBundler);
+    when(chooseBundler).calledWith({bundlers}, {prompt}).thenResolve(chosenBundler);
     when(scaffoldChosenBundler)
       .calledWith(bundlers, chosenBundler, {projectRoot, dialect, projectType})
       .thenResolve(bundlerResults);
 
-    expect(await scaffoldBundler({bundlers, projectRoot, projectType, dialect, decisions})).toEqual(bundlerResults);
+    expect(await scaffoldBundler({bundlers, projectRoot, projectType, dialect}, {prompt})).toEqual(bundlerResults);
   });
 });

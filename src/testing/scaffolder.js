@@ -8,14 +8,13 @@ export default async function scaffoldTesting({
   tests: {unit, integration},
   unitTestFrameworks,
   integrationTestFrameworks,
-  decisions,
   dialect
-}) {
+}, {prompt}) {
   const unitResults = unit
-    ? await scaffoldUnitTesting({projectRoot, frameworks: unitTestFrameworks, decisions, dialect})
+    ? await scaffoldUnitTesting({projectRoot, frameworks: unitTestFrameworks, dialect}, {prompt})
     : {};
   const integrationResults = integration
-    ? await scaffoldIntegrationTesting({projectRoot, frameworks: integrationTestFrameworks, decisions, dialect})
+    ? await scaffoldIntegrationTesting({projectRoot, frameworks: integrationTestFrameworks, dialect}, {prompt})
     : {};
 
   return deepmerge.all([

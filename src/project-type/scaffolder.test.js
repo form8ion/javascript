@@ -22,12 +22,11 @@ describe('project-type scaffolder', () => {
   const packageName = any.word();
   const packageManager = any.word();
   const visibility = any.word();
-  const decisions = any.simpleObject();
   const publishRegistry = any.url();
   const dialect = any.word();
   const provideExample = any.boolean();
   const packageBundlers = any.simpleObject();
-  const logger = {info: () => undefined};
+  const dependencies = any.simpleObject();
 
   it('should apply the package-type scaffolder when the project-type is `Package`', async () => {
     const scope = any.word();
@@ -39,11 +38,10 @@ describe('project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      decisions,
       dialect,
       provideExample,
       publishRegistry
-    }, {logger}).thenResolve(results);
+    }, dependencies).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.PACKAGE,
@@ -54,15 +52,14 @@ describe('project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      decisions,
       dialect,
       provideExample,
       publishRegistry
-    }, {logger})).toEqual(results);
+    }, dependencies)).toEqual(results);
   });
 
   it('should apply the application-type scaffolder when the project-type is `Application`', async () => {
-    when(scaffoldApplicationType).calledWith({projectRoot}, {logger}).thenResolve(results);
+    when(scaffoldApplicationType).calledWith({projectRoot}, dependencies).thenResolve(results);
 
     expect(await projectTypeScaffolder({
       projectType: projectTypes.APPLICATION,
@@ -70,14 +67,13 @@ describe('project-type scaffolder', () => {
       projectName,
       packageName,
       packageManager,
-      decisions,
       visibility
-    }, {logger})).toEqual(results);
+    }, dependencies)).toEqual(results);
   });
 
   it('should apply the cli-type scaffolder when the project-type is `CLI`', async () => {
     when(scaffoldCliType)
-      .calledWith({visibility, projectRoot, dialect, publishRegistry, decisions, packageBundlers})
+      .calledWith({visibility, projectRoot, dialect, publishRegistry, packageBundlers}, dependencies)
       .thenResolve(results);
 
     expect(await projectTypeScaffolder({
@@ -86,28 +82,25 @@ describe('project-type scaffolder', () => {
       projectRoot,
       dialect,
       publishRegistry,
-      decisions,
       packageBundlers
-    }, {logger})).toEqual(results);
+    }, dependencies)).toEqual(results);
   });
 
   it('should apply the monorepo-type scaffolder when the project-type is `Monorepo`', async () => {
-    when(scaffoldMonorepoType).calledWith({projectRoot}, {logger}).thenResolve(results);
+    when(scaffoldMonorepoType).calledWith({projectRoot}, dependencies).thenResolve(results);
 
-    expect(await projectTypeScaffolder(
-      {projectRoot, projectType: projectTypes.MONOREPO, packageManager, decisions},
-      {logger}
-    )).toEqual(results);
+    expect(await projectTypeScaffolder({projectRoot, projectType: projectTypes.MONOREPO, packageManager}, dependencies))
+      .toEqual(results);
   });
 
   it('should not throw an error when the project-type is `Other`', async () => {
-    expect(await projectTypeScaffolder({projectType: 'Other'}, {logger})).toEqual({});
+    expect(await projectTypeScaffolder({projectType: 'Other'}, dependencies)).toEqual({});
   });
 
   it('should throw an error for an unknown project-type', async () => {
     const projectType = any.word();
 
-    await expect(() => projectTypeScaffolder({projectType}, {logger}))
+    await expect(() => projectTypeScaffolder({projectType}, dependencies))
       .rejects.toThrow(`The project-type of ${projectType} is invalid`);
   });
 });

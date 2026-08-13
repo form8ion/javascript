@@ -6,7 +6,7 @@ import {when} from 'vitest-when';
 
 import determinePackageAccessLevelFromProjectVisibility from '../publishable/access-level.js';
 import {scaffold as scaffoldPublishable} from '../publishable/index.js';
-import * as buildDetails from './build-details.js';
+import buildDetails from './build-details.js';
 import * as documentationScaffolder from './documentation.js';
 import scaffoldPackage from './scaffolder.js';
 
@@ -33,9 +33,9 @@ describe('package project-type scaffolder', () => {
     {summary: 'Publish pre-release versions to npm until package is stable enough to publish v1.0.0'}
   ];
   const documentation = any.simpleObject();
-  const decisions = any.simpleObject();
   const buildDetailsResults = any.simpleObject();
   const logger = {info: () => undefined};
+  const dependencies = {...any.simpleObject(), logger};
 
   beforeEach(() => {
     when(documentationScaffolder.default)
@@ -49,14 +49,13 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a modern-js package', async () => {
     const dialect = dialects.BABEL;
-    when(buildDetails.default).calledWith({
+    when(buildDetails).calledWith({
       projectRoot,
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }).thenResolve(buildDetailsResults);
+      provideExample
+    }, dependencies).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -66,10 +65,9 @@ describe('package project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      decisions,
       dialect,
       provideExample
-    }, {logger})).toEqual({
+    }, dependencies)).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -94,14 +92,13 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to an esm-only package', async () => {
     const dialect = dialects.ESM;
-    when(buildDetails.default).calledWith({
+    when(buildDetails).calledWith({
       projectRoot,
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }).thenResolve(buildDetailsResults);
+      provideExample
+    }, dependencies).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -112,9 +109,8 @@ describe('package project-type scaffolder', () => {
       scope,
       packageManager,
       packageBundlers,
-      decisions,
       provideExample
-    }, {logger})).toEqual({
+    }, dependencies)).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -134,14 +130,13 @@ describe('package project-type scaffolder', () => {
 
   it('should scaffold details specific to a typescript package', async () => {
     const dialect = dialects.TYPESCRIPT;
-    when(buildDetails.default).calledWith({
+    when(buildDetails).calledWith({
       projectRoot,
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }).thenResolve(buildDetailsResults);
+      provideExample
+    }, dependencies).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -151,10 +146,9 @@ describe('package project-type scaffolder', () => {
       visibility,
       scope,
       packageBundlers,
-      decisions,
       dialect,
       provideExample
-    }, {logger})).toEqual({
+    }, dependencies)).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -180,14 +174,13 @@ describe('package project-type scaffolder', () => {
 
   it('should not include build details when the project will not be scaffolded', async () => {
     const dialect = dialects.COMMON_JS;
-    when(buildDetails.default).calledWith({
+    when(buildDetails).calledWith({
       projectRoot,
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }).thenResolve(buildDetailsResults);
+      provideExample
+    }, dependencies).thenResolve(buildDetailsResults);
 
     expect(await scaffoldPackage({
       projectRoot,
@@ -196,11 +189,10 @@ describe('package project-type scaffolder', () => {
       packageManager,
       visibility,
       scope,
-      decisions,
       packageBundlers,
       dialect,
       provideExample
-    }, {logger})).toEqual({
+    }, dependencies)).toEqual({
       ...publishableResults,
       ...buildDetailsResults,
       documentation,
@@ -219,14 +211,13 @@ describe('package project-type scaffolder', () => {
   it('should define the registry to publish to when provided', async () => {
     const publishRegistry = any.url();
     const dialect = dialects.BABEL;
-    when(buildDetails.default).calledWith({
+    when(buildDetails).calledWith({
       projectRoot,
       projectName,
       packageBundlers,
       dialect,
-      provideExample,
-      decisions
-    }).thenResolve(buildDetailsResults);
+      provideExample
+    }, dependencies).thenResolve(buildDetailsResults);
 
     await scaffoldPackage({
       projectRoot,
@@ -235,12 +226,11 @@ describe('package project-type scaffolder', () => {
       packageManager,
       visibility,
       scope,
-      decisions,
       publishRegistry,
       dialect,
       provideExample,
       packageBundlers
-    }, {logger});
+    }, dependencies);
 
     expect(mergeIntoExistingPackageJson).toHaveBeenCalledWith({
       projectRoot,

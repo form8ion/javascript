@@ -4,7 +4,7 @@ import {scaffold as scaffoldPlugins} from '@form8ion/plugins-core';
 import {scaffold as scaffoldCommitConvention} from '@form8ion/commit-convention';
 
 import {validate} from './options/validator.js';
-import {prompt} from './prompts/questions.js';
+import {gatherBaseDetailsInput} from './prompts/questions.js';
 import {scaffold as scaffoldDialect} from './dialects/index.js';
 import {scaffold as scaffoldNpmConfig} from './npm-config/index.js';
 import {scaffold as scaffoldPackageManager} from './package-managers/index.js';
@@ -18,7 +18,8 @@ import buildDocumentationCommand from './documentation/generation-command.js';
 import {scaffold as scaffoldVerification} from './verification/index.js';
 import {scaffold as scaffoldCodeStyle} from './code-style/index.js';
 
-export default async function scaffoldJavascript(options, {logger}) {
+export default async function scaffoldJavascript(options, dependencies) {
+  const {logger, prompt} = dependencies;
   logger.info('Initializing JavaScript project');
 
   const {
@@ -29,7 +30,6 @@ export default async function scaffoldJavascript(options, {logger}) {
     vcs,
     description,
     configs,
-    decisions,
     pathWithinParent,
     plugins: {
       applicationTypes,
@@ -54,7 +54,7 @@ export default async function scaffoldJavascript(options, {logger}) {
     provideExample,
     packageManager,
     dialect
-  } = await prompt(hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger});
+  } = await gatherBaseDetailsInput(hosts, visibility, vcs, configs, pathWithinParent, dependencies);
 
   logger.info('Writing project files', {level: 'secondary'});
 
@@ -81,11 +81,10 @@ export default async function scaffoldJavascript(options, {logger}) {
     scope,
     tests,
     vcs,
-    decisions,
     dialect,
     provideExample,
     publishRegistry: configs.registries.publish
-  }, {logger});
+  }, {logger, prompt});
   const verificationResults = await scaffoldVerification({
     projectRoot,
     dialect,
@@ -95,9 +94,8 @@ export default async function scaffoldJavascript(options, {logger}) {
     tests,
     unitTestFrameworks,
     integrationTestFrameworks,
-    decisions,
     pathWithinParent
-  }, {logger});
+  }, {logger, prompt});
   const [nodeVersion, npmResults, dialectResults, codeStyleResults] = await Promise.all([
     scaffoldNodeVersion({projectRoot, nodeVersionCategory}, {logger}),
     scaffoldNpmConfig({projectType, projectRoot}),
@@ -120,13 +118,12 @@ export default async function scaffoldJavascript(options, {logger}) {
     scope,
     dialect,
     tests,
-    decisions,
     plugins: {
       [projectTypes.PACKAGE]: packageTypes,
       [projectTypes.APPLICATION]: applicationTypes,
       [projectTypes.MONOREPO]: monorepoTypes
     }
-  });
+  }, {prompt});
   const mergedContributions = deepmerge.all([
     ...(await Promise.all([
       scaffoldChoice(

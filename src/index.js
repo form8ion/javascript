@@ -1,4 +1,3 @@
-export {questionNames} from './prompts/index.js';
 export {constants as promptConstants} from './prompts/index.js';
 export {scaffold as scaffoldUnitTesting} from './testing/unit/index.js';
 export {default as scaffold} from './scaffolder.js';

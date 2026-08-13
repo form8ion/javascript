@@ -12,12 +12,11 @@ export default async function scaffoldCli({
   projectRoot,
   dialect,
   publishRegistry,
-  decisions,
   packageBundlers
-}) {
+}, dependencies) {
   const packageAccessLevel = determinePackageAccessLevelFromProjectVisibility({projectVisibility: visibility});
   const [bundlerResults, publishableResults] = await Promise.all([
-    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, decisions, projectType: projectTypes.CLI}),
+    scaffoldBundler({bundlers: packageBundlers, projectRoot, dialect, projectType: projectTypes.CLI}, dependencies),
     scaffoldPublishable(),
     mergeIntoExistingPackageJson({
       projectRoot,

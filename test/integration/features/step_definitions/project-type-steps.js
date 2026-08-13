@@ -87,10 +87,10 @@ Given('the project is of type {string} but without repository details defined', 
 });
 
 Then('the expected details are provided for a root-level project', async function () {
-  const nvmRc = await fs.readFile(`${process.cwd()}/.nvmrc`);
+  const nvmRc = await fs.readFile(`${this.projectRoot}/.nvmrc`);
 
   assert.equal(nvmRc.toString(), `v${this.latestLtsMajorVersion}`);
-  assert.isTrue(await fileExists(`${process.cwd()}/.czrc`));
-  assert.isTrue(await fileExists(`${process.cwd()}/.commitlintrc.json`));
+  assert.isTrue(await fileExists(`${this.projectRoot}/.czrc`));
+  assert.isTrue(await fileExists(`${this.projectRoot}/.commitlintrc.json`));
   assert.containsAllKeys(this.scaffoldResult.badges.contribution, ['commit-convention', 'commitizen']);
 });

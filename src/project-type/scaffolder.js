@@ -14,11 +14,10 @@ export default async function scaffoldProjectType({
   visibility,
   packageBundlers,
   scope,
-  decisions,
   dialect,
   provideExample,
   publishRegistry
-}, {logger}) {
+}, dependencies) {
   switch (projectType) {
     case projectTypes.PACKAGE:
       return scaffoldPackageType({
@@ -29,24 +28,22 @@ export default async function scaffoldProjectType({
         visibility,
         scope,
         packageBundlers,
-        decisions,
         dialect,
         provideExample,
         publishRegistry
-      }, {logger});
+      }, dependencies);
     case projectTypes.APPLICATION:
-      return scaffoldApplicationType({projectRoot}, {logger});
+      return scaffoldApplicationType({projectRoot}, dependencies);
     case projectTypes.CLI:
       return scaffoldCliType({
         visibility,
         projectRoot,
         dialect,
         publishRegistry,
-        decisions,
         packageBundlers
-      });
+      }, dependencies);
     case projectTypes.MONOREPO:
-      return scaffoldMonorepoType({projectRoot}, {logger});
+      return scaffoldMonorepoType({projectRoot}, dependencies);
     case 'Other':
       return {};
     default:

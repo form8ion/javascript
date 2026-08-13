@@ -17,17 +17,17 @@ describe('testing scaffolder', () => {
   const dialect = any.word();
   const unitTestFrameworks = any.simpleObject();
   const integrationTestFrameworks = any.simpleObject();
-  const decisions = any.simpleObject();
+  const prompt = vi.fn();
   const unitTestScaffoldResults = any.simpleObject();
   const integrationTestScaffoldResults = any.simpleObject();
   const mergedResults = any.simpleObject();
 
   beforeEach(() => {
     when(scaffoldUnitTesting)
-      .calledWith({projectRoot, frameworks: unitTestFrameworks, decisions, dialect})
+      .calledWith({projectRoot, frameworks: unitTestFrameworks, dialect}, {prompt})
       .thenResolve(unitTestScaffoldResults);
     when(scaffoldIntegrationTesting)
-      .calledWith({projectRoot, frameworks: integrationTestFrameworks, decisions, dialect})
+      .calledWith({projectRoot, frameworks: integrationTestFrameworks, dialect}, {prompt})
       .thenResolve(integrationTestScaffoldResults);
   });
 
@@ -45,9 +45,8 @@ describe('testing scaffolder', () => {
       tests: {unit: true, integration: false},
       unitTestFrameworks,
       integrationTestFrameworks,
-      decisions,
       dialect
-    })).toEqual(mergedResults);
+    }, {prompt})).toEqual(mergedResults);
   });
 
   it('should scaffold integration testing if the project will be integration tested', async () => {
@@ -64,9 +63,8 @@ describe('testing scaffolder', () => {
       tests: {unit: false, integration: true},
       unitTestFrameworks,
       integrationTestFrameworks,
-      decisions,
       dialect
-    })).toEqual(mergedResults);
+    }, {prompt})).toEqual(mergedResults);
   });
 
   it('should scaffold both unit testing and integration testing if both layers are planned', async () => {
@@ -83,9 +81,8 @@ describe('testing scaffolder', () => {
       tests: {unit: true, integration: true},
       unitTestFrameworks,
       integrationTestFrameworks,
-      decisions,
       dialect
-    })).toEqual(mergedResults);
+    }, {prompt})).toEqual(mergedResults);
   });
 
   it('should not scaffold testing if the project will not be tested', async () => {
@@ -93,7 +90,7 @@ describe('testing scaffolder', () => {
       .calledWith([{dependencies: {javascript: {development: []}}, eslint: {}}, {}, {}])
       .thenReturn(mergedResults);
 
-    expect(await scaffoldTesting({projectRoot, tests: {unit: false, integration: false}}))
+    expect(await scaffoldTesting({projectRoot, tests: {unit: false, integration: false}}, {prompt: vi.fn()}))
       .toEqual(mergedResults);
   });
 });

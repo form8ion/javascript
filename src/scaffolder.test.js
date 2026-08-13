@@ -20,7 +20,7 @@ import {scaffold as scaffoldProjectType} from './project-type/index.js';
 import buildDocumentationCommand from './documentation/generation-command.js';
 import scaffoldDocumentation from './documentation/index.js';
 import {validate} from './options/validator.js';
-import {prompt} from './prompts/questions.js';
+import {gatherBaseDetailsInput} from './prompts/questions.js';
 import scaffold from './scaffolder.js';
 
 vi.mock('deepmerge');
@@ -65,6 +65,7 @@ describe('javascript project scaffolder', () => {
   const mergedNextSteps = any.listOf(any.simpleObject);
   const mergedResults = {...any.simpleObject(), vcsIgnore: mergedVcsIgnore, nextSteps: mergedNextSteps};
   const logger = {info: () => undefined};
+  const prompt = vi.fn();
 
   beforeEach(() => {
     const projectName = any.word();
@@ -123,8 +124,8 @@ describe('javascript project scaffolder', () => {
           integrationTestFrameworks
         }
       });
-    when(prompt)
-      .calledWith(hosts, visibility, vcs, decisions, configs, pathWithinParent, {logger})
+    when(gatherBaseDetailsInput)
+      .calledWith(hosts, visibility, vcs, configs, pathWithinParent, {logger, prompt})
       .thenResolve({
         packageManager,
         dialect,
@@ -152,7 +153,6 @@ describe('javascript project scaffolder', () => {
         packageManager,
         visibility,
         vcs,
-        decisions,
         applicationTypes,
         packageTypes,
         monorepoTypes,
@@ -162,7 +162,7 @@ describe('javascript project scaffolder', () => {
         scope,
         tests,
         publishRegistry
-      }, {logger})
+      }, {logger, prompt})
       .thenResolve(projectTypeResults);
     when(scaffoldVerification)
       .calledWith({
@@ -172,11 +172,10 @@ describe('javascript project scaffolder', () => {
         vcs,
         registries,
         tests,
-        decisions,
         pathWithinParent,
         unitTestFrameworks,
         integrationTestFrameworks
-      }, {logger})
+      }, {logger, prompt})
       .thenResolve(verificationResults);
     when(scaffoldNodeVersion).calledWith({projectRoot, nodeVersionCategory}, {logger}).thenResolve(nodeVersionResults);
     when(scaffoldDialect)
@@ -212,13 +211,12 @@ describe('javascript project scaffolder', () => {
         scope,
         dialect,
         tests,
-        decisions,
         plugins: {
           [projectTypes.PACKAGE]: packageTypes,
           [projectTypes.APPLICATION]: applicationTypes,
           [projectTypes.MONOREPO]: monorepoTypes
         }
-      })
+      }, {prompt})
       .thenResolve(projectTypePluginResults);
     when(buildVcsIgnoreLists).calledWith(mergedVcsIgnore).thenReturn(vcsIgnore);
     when(deepmerge.all)
@@ -237,7 +235,7 @@ describe('javascript project scaffolder', () => {
   });
 
   it('should scaffold the javascript details', async () => {
-    const results = await scaffold(options, {logger});
+    const results = await scaffold(options, {logger, prompt});
 
     expect(scaffoldPackageManager).toHaveBeenCalledWith({projectRoot, packageManager});
     expect(results).toEqual({
