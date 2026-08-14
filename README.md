@@ -58,12 +58,6 @@ const {
   scaffoldUnitTesting,
   promptConstants
 } = await import('./lib/index.js');
-
-const {
-  questionNames
-} = promptConstants;
-const {BASE_DETAILS} = questionNames;
-const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
 ```
 
 #### Execute
@@ -78,39 +72,76 @@ const logger = {
   success: () => undefined
 };
 
-await scaffoldJavaScript({
-  projectRoot,
-  projectName: 'project-name',
-  visibility: 'OSS',
-  license: 'MIT',
-  configs: {
-    eslint: {scope: `@${accountName}`},
-    remark: `@${accountName}/remark-lint-preset`,
-    babelPreset: {name: `@${accountName}`, packageName: `@${accountName}/babel-preset`},
-    commitlint: {name: `@${accountName}`, packageName: `@${accountName}/commitlint-config`}
+await scaffoldJavaScript(
+  {
+    projectRoot,
+    projectName: 'project-name',
+    visibility: 'OSS',
+    license: 'MIT',
+    configs: {
+      eslint: {scope: `@${accountName}`},
+      remark: `@${accountName}/remark-lint-preset`,
+      babelPreset: {
+        name: `@${accountName}`,
+        packageName: `@${accountName}/babel-preset`
+      },
+      commitlint: {
+        name: `@${accountName}`,
+        packageName: `@${accountName}/commitlint-config`
+      }
+    },
+    plugins: {
+      unitTestFrameworks: {},
+      applicationTypes: {},
+      packageTypes: {},
+      packageBundlers: {},
+      ciServices: {}
+    }
   },
-  plugins: {
-    unitTestFrameworks: {},
-    applicationTypes: {},
-    packageTypes: {},
-    packageBundlers: {},
-    ciServices: {}
-  },
-  decisions: {
-    [BASE_DETAILS.DIALECT]: dialects.BABEL,
-    [BASE_DETAILS.NODE_VERSION_CATEGORY]: 'LTS',
-    [BASE_DETAILS.PACKAGE_MANAGER]: 'npm',
-    [BASE_DETAILS.PROJECT_TYPE]: projectTypes.PACKAGE,
-    [BASE_DETAILS.SHOULD_BE_SCOPED]: true,
-    [BASE_DETAILS.SCOPE]: accountName,
-    [BASE_DETAILS.AUTHOR_NAME]: 'Your Name',
-    [BASE_DETAILS.AUTHOR_EMAIL]: 'you@domain.tld',
-    [BASE_DETAILS.AUTHOR_URL]: 'https://your.website.tld',
-    [BASE_DETAILS.UNIT_TESTS]: true,
-    [BASE_DETAILS.INTEGRATION_TESTS]: true,
-    [BASE_DETAILS.PROVIDE_EXAMPLE]: true
+  {
+    logger,
+    prompt: ({id}) => {
+      const {questionNames, ids} = promptConstants;
+      const {BASE_DETAILS: baseDetailsPromptId} = ids;
+
+      switch (id) {
+        case baseDetailsPromptId: {
+          const {
+            DIALECT,
+            NODE_VERSION_CATEGORY,
+            PACKAGE_MANAGER,
+            PROJECT_TYPE,
+            SHOULD_BE_SCOPED,
+            SCOPE,
+            AUTHOR_NAME,
+            AUTHOR_EMAIL,
+            AUTHOR_URL,
+            UNIT_TESTS,
+            INTEGRATION_TESTS,
+            PROVIDE_EXAMPLE
+          } = questionNames[baseDetailsPromptId];
+
+          return {
+            [DIALECT]: dialects.ESM,
+            [NODE_VERSION_CATEGORY]: 'LTS',
+            [PACKAGE_MANAGER]: 'npm',
+            [PROJECT_TYPE]: projectTypes.PACKAGE,
+            [SHOULD_BE_SCOPED]: true,
+            [SCOPE]: accountName,
+            [AUTHOR_NAME]: 'Your Name',
+            [AUTHOR_EMAIL]: 'you@domain.tld',
+            [AUTHOR_URL]: 'https://your.website.tld',
+            [UNIT_TESTS]: true,
+            [INTEGRATION_TESTS]: true,
+            [PROVIDE_EXAMPLE]: true
+          };
+        }
+        default:
+          throw new Error(`Unknown prompt with ID: ${id}`);
+      }
+    }
   }
-}, {logger});
+);
 
 if (await thisIsAJavaScriptProject({projectRoot}, {logger})) {
   await liftJavascript({
@@ -131,16 +162,38 @@ if (await thisIsAJavaScriptProject({projectRoot}, {logger})) {
   }, {logger});
 }
 
-await scaffoldUnitTesting({
-  projectRoot: process.cwd(),
-  frameworks: {
-    Mocha: {scaffold: options => options},
-    Jest: {scaffold: options => options}
+await scaffoldUnitTesting(
+  {
+    projectRoot: process.cwd(),
+    frameworks: {
+      Mocha: {scaffold: options => options},
+      Jest: {scaffold: options => options}
+    },
+    visibility: 'OSS',
+    vcs: {
+      host: 'GitHub',
+      owner: 'foo',
+      name: 'bar'
+    }
   },
-  visibility: 'OSS',
-  vcs: {host: 'GitHub', owner: 'foo', name: 'bar'},
-  decisions: {[UNIT_TEST_FRAMEWORK]: 'Mocha'}
-}, {logger});
+  {
+    logger,
+    prompt: ({id}) => {
+      const {questionNames, ids} = promptConstants;
+      const {UNIT_TESTING: unitTestingPromptId} = ids;
+
+      switch (id) {
+        case unitTestingPromptId: {
+          const {UNIT_TEST_FRAMEWORK} = questionNames[unitTestingPromptId];
+
+          return {[UNIT_TEST_FRAMEWORK]: 'Vitest'};
+        }
+        default:
+          throw new Error(`Unknown prompt with ID: ${id}`);
+      }
+    }
+  }
+);
 ```
 
 ### Documentation
