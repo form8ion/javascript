@@ -1,9 +1,9 @@
 import {questionNames} from '../../../prompts/question-names.js';
 
-export const PACKAGE_BUNDLER_PROMPT_ID = 'package-bundler';
+export const PACKAGE_BUNDLER_PROMPT_ID = 'PACKAGE_BUNDLER';
 
 export default async function gatherBundlerInput({bundlers}, {prompt}) {
-  const {PACKAGE_BUNDLER} = questionNames.PACKAGE_BUNDLER;
+  const {PACKAGE_BUNDLER} = questionNames[PACKAGE_BUNDLER_PROMPT_ID];
 
   if (!Object.keys(bundlers).length) return 'Other';
 

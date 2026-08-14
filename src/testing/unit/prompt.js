@@ -1,9 +1,9 @@
 import {questionNames} from '../../prompts/question-names.js';
 
-export const UNIT_TESTING_PROMPT_ID = 'unit-testing';
+export const UNIT_TESTING_PROMPT_ID = 'UNIT_TESTING';
 
 export default async function gatherUnitTestingInput({frameworks, prompt}) {
-  const {UNIT_TEST_FRAMEWORK} = questionNames.UNIT_TESTING;
+  const {UNIT_TEST_FRAMEWORK} = questionNames[UNIT_TESTING_PROMPT_ID];
 
   if (!Object.keys(frameworks).length) return 'Other';
 

@@ -1,9 +1,9 @@
 import {questionNames} from '../../prompts/question-names.js';
 
-export const INTEGRATION_TESTING_PROMPT_ID = 'integration-testing';
+export const INTEGRATION_TESTING_PROMPT_ID = 'INTEGRATION_TESTING';
 
 export default async function gatherIntegrationTestingInput({frameworks, prompt}) {
-  const {INTEGRATION_TEST_FRAMEWORK} = questionNames.INTEGRATION_TESTING;
+  const {INTEGRATION_TEST_FRAMEWORK} = questionNames[INTEGRATION_TESTING_PROMPT_ID];
 
   if (!Object.keys(frameworks).length) return 'Other';
 

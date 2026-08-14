@@ -13,24 +13,39 @@ import {
 import {questionNames} from './question-names.js';
 import {scope as validateScope} from './validators.js';
 
-export const BASE_DETAILS_PROMPT_ID = 'base-details';
+export const BASE_DETAILS_PROMPT_ID = 'BASE_DETAILS';
 
-const {BASE_DETAILS} = questionNames;
+const {
+  AUTHOR_NAME,
+  AUTHOR_EMAIL,
+  AUTHOR_URL,
+  UNIT_TESTS,
+  INTEGRATION_TESTS,
+  PROVIDE_EXAMPLE,
+  PROJECT_TYPE,
+  HOST,
+  SHOULD_BE_SCOPED,
+  SCOPE,
+  NODE_VERSION_CATEGORY,
+  CONFIGURE_LINTING,
+  PACKAGE_MANAGER,
+  DIALECT
+} = questionNames[BASE_DETAILS_PROMPT_ID];
 
 function authorQuestions({name, email, url}) {
   return [
     {
-      name: BASE_DETAILS.AUTHOR_NAME,
+      name: AUTHOR_NAME,
       message: 'What is the author\'s name?',
       default: name
     },
     {
-      name: BASE_DETAILS.AUTHOR_EMAIL,
+      name: AUTHOR_EMAIL,
       message: 'What is the author\'s email?',
       default: email
     },
     {
-      name: BASE_DETAILS.AUTHOR_URL,
+      name: AUTHOR_URL,
       message: 'What is the author\'s website url?',
       default: url
     }
@@ -56,59 +71,59 @@ export async function gatherBaseDetailsInput(
   }
 
   const {
-    [BASE_DETAILS.UNIT_TESTS]: unitTested,
-    [BASE_DETAILS.INTEGRATION_TESTS]: integrationTested,
-    [BASE_DETAILS.PROJECT_TYPE]: projectType,
-    [BASE_DETAILS.HOST]: chosenHost,
-    [BASE_DETAILS.SCOPE]: scope,
-    [BASE_DETAILS.NODE_VERSION_CATEGORY]: nodeVersionCategory,
-    [BASE_DETAILS.AUTHOR_NAME]: authorName,
-    [BASE_DETAILS.AUTHOR_EMAIL]: authorEmail,
-    [BASE_DETAILS.AUTHOR_URL]: authorUrl,
-    [BASE_DETAILS.CONFIGURE_LINTING]: configureLinting,
-    [BASE_DETAILS.PROVIDE_EXAMPLE]: provideExample,
-    [BASE_DETAILS.PACKAGE_MANAGER]: packageManager,
-    [BASE_DETAILS.DIALECT]: dialect
+    [UNIT_TESTS]: unitTested,
+    [INTEGRATION_TESTS]: integrationTested,
+    [PROJECT_TYPE]: projectType,
+    [HOST]: chosenHost,
+    [SCOPE]: scope,
+    [NODE_VERSION_CATEGORY]: nodeVersionCategory,
+    [AUTHOR_NAME]: authorName,
+    [AUTHOR_EMAIL]: authorEmail,
+    [AUTHOR_URL]: authorUrl,
+    [CONFIGURE_LINTING]: configureLinting,
+    [PROVIDE_EXAMPLE]: provideExample,
+    [PACKAGE_MANAGER]: packageManager,
+    [DIALECT]: dialect
   } = await prompt({
     id: BASE_DETAILS_PROMPT_ID,
     questions: [
       {
-        name: BASE_DETAILS.DIALECT,
+        name: DIALECT,
         message: 'Which JavaScript dialect should this project follow?',
         type: 'list',
         choices: buildDialectChoices(configs),
         default: 'babel'
       },
       ...pathWithinParent ? [] : [{
-        name: BASE_DETAILS.NODE_VERSION_CATEGORY,
+        name: NODE_VERSION_CATEGORY,
         message: 'What node.js version should be used?',
         type: 'list',
         choices: ['LTS', 'Latest'],
         default: 'LTS'
       }],
       {
-        name: BASE_DETAILS.PACKAGE_MANAGER,
+        name: PACKAGE_MANAGER,
         message: 'Which package manager will be used with this project?',
         type: 'list',
         choices: Object.values(packageManagers),
         default: packageManagers.NPM
       },
       {
-        name: BASE_DETAILS.PROJECT_TYPE,
+        name: PROJECT_TYPE,
         message: 'What type of JavaScript project is this?',
         type: 'list',
         choices: [...Object.values(projectTypes), 'Other'],
         default: projectTypes.PACKAGE
       },
       ...['ISS', 'CS'].includes(visibility) ? [] : [{
-        name: BASE_DETAILS.SHOULD_BE_SCOPED,
+        name: SHOULD_BE_SCOPED,
         message: 'Should this package be scoped?',
         type: 'confirm',
         when: shouldBeScopedPromptShouldBePresented,
         default: true
       }],
       {
-        name: BASE_DETAILS.SCOPE,
+        name: SCOPE,
         message: 'What is the scope?',
         when: scopePromptShouldBePresentedFactory(visibility),
         validate: validateScope(visibility),
@@ -120,31 +135,31 @@ export async function gatherBaseDetailsInput(
         url: npmConf.get('init.author.url')
       }),
       {
-        name: BASE_DETAILS.UNIT_TESTS,
+        name: UNIT_TESTS,
         message: 'Will this project be unit tested?',
         type: 'confirm',
         default: true
       },
       {
-        name: BASE_DETAILS.INTEGRATION_TESTS,
+        name: INTEGRATION_TESTS,
         message: 'Will this project be integration tested?',
         type: 'confirm',
         default: true
       },
       {
-        name: BASE_DETAILS.CONFIGURE_LINTING,
+        name: CONFIGURE_LINTING,
         message: 'Will there be source code that should be linted?',
         type: 'confirm',
         when: lintingPromptShouldBePresented
       },
       {
-        name: BASE_DETAILS.PROVIDE_EXAMPLE,
+        name: PROVIDE_EXAMPLE,
         message: 'Should an example be provided in the README?',
         type: 'confirm',
         when: projectIsPackage
       },
       {
-        name: BASE_DETAILS.HOST,
+        name: HOST,
         type: 'list',
         message: 'Where will the application be hosted?',
         when: projectIsApplication,
