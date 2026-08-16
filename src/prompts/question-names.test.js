@@ -5,7 +5,7 @@ import {questionNames} from './question-names.js';
 describe('question names', () => {
   it('should group question names by prompt area', () => {
     expect(questionNames).toEqual({
-      BASE_DETAILS: {
+      JAVASCRIPT_BASE_DETAILS: {
         UNIT_TESTS: 'unitTests',
         INTEGRATION_TESTS: 'integrationTests',
         NODE_VERSION_CATEGORY: 'nodeVersionCategory',

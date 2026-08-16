@@ -1,5 +1,5 @@
 export const questionNames = {
-  BASE_DETAILS: {
+  JAVASCRIPT_BASE_DETAILS: {
     UNIT_TESTS: 'unitTests',
     INTEGRATION_TESTS: 'integrationTests',
     NODE_VERSION_CATEGORY: 'nodeVersionCategory',

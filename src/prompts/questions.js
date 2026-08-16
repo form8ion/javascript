@@ -13,7 +13,7 @@ import {
 import {questionNames} from './question-names.js';
 import {scope as validateScope} from './validators.js';
 
-export const BASE_DETAILS_PROMPT_ID = 'BASE_DETAILS';
+export const JAVASCRIPT_BASE_DETAILS_PROMPT_ID = 'JAVASCRIPT_BASE_DETAILS';
 
 const {
   AUTHOR_NAME,
@@ -30,7 +30,7 @@ const {
   CONFIGURE_LINTING,
   PACKAGE_MANAGER,
   DIALECT
-} = questionNames[BASE_DETAILS_PROMPT_ID];
+} = questionNames[JAVASCRIPT_BASE_DETAILS_PROMPT_ID];
 
 function authorQuestions({name, email, url}) {
   return [
@@ -85,7 +85,7 @@ export async function gatherBaseDetailsInput(
     [PACKAGE_MANAGER]: packageManager,
     [DIALECT]: dialect
   } = await prompt({
-    id: BASE_DETAILS_PROMPT_ID,
+    id: JAVASCRIPT_BASE_DETAILS_PROMPT_ID,
     questions: [
       {
         name: DIALECT,

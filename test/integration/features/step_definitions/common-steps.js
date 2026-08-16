@@ -160,7 +160,7 @@ When(/^the project is scaffolded$/, async function () {
         // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
         const {promptConstants: {ids, questionNames}} = await import('@form8ion/javascript');
         const {
-          BASE_DETAILS: baseDetailsPromptId,
+          JAVASCRIPT_BASE_DETAILS: baseDetailsPromptId,
           UNIT_TESTING: unitTestingPromptId,
           PROJECT_TYPE_PLUGIN: projectTypePluginPromptId,
           PACKAGE_BUNDLER: packageBundlerPromptId
@@ -183,7 +183,7 @@ When(/^the project is scaffolded$/, async function () {
               SCOPE,
               PACKAGE_MANAGER,
               DIALECT
-            } = questionNames.BASE_DETAILS;
+            } = questionNames.JAVASCRIPT_BASE_DETAILS;
 
             return {
               [UNIT_TESTS]: this.unitTestAnswer,
