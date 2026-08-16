@@ -9,10 +9,10 @@ import npmConfFactory from '../../thirdparty-wrappers/npm-conf.js';
 import buildDialectChoices from '../dialects/prompt-choices.js';
 import {questionNames} from './question-names.js';
 import * as conditionals from './conditionals.js';
-import {gatherBaseDetailsInput, BASE_DETAILS_PROMPT_ID} from './questions.js';
+import {gatherBaseDetailsInput, JAVASCRIPT_BASE_DETAILS_PROMPT_ID} from './questions.js';
 import * as validators from './validators.js';
 
-const {BASE_DETAILS} = questionNames;
+const {JAVASCRIPT_BASE_DETAILS} = questionNames;
 
 vi.mock('execa');
 vi.mock('../../thirdparty-wrappers/npm-conf.js');
@@ -40,19 +40,19 @@ describe('prompts', () => {
   const scope = any.word();
   const provideExample = any.boolean();
   const answers = {
-    [BASE_DETAILS.UNIT_TESTS]: unitTested,
-    [BASE_DETAILS.INTEGRATION_TESTS]: integrationTested,
-    [BASE_DETAILS.PROJECT_TYPE]: projectType,
+    [JAVASCRIPT_BASE_DETAILS.UNIT_TESTS]: unitTested,
+    [JAVASCRIPT_BASE_DETAILS.INTEGRATION_TESTS]: integrationTested,
+    [JAVASCRIPT_BASE_DETAILS.PROJECT_TYPE]: projectType,
     [ci]: ci,
-    [BASE_DETAILS.HOST]: chosenHost,
-    [BASE_DETAILS.SCOPE]: scope,
-    [BASE_DETAILS.NODE_VERSION_CATEGORY]: nodeVersionCategory,
-    [BASE_DETAILS.AUTHOR_NAME]: authorName,
-    [BASE_DETAILS.AUTHOR_EMAIL]: authorEmail,
-    [BASE_DETAILS.AUTHOR_URL]: authorUrl,
-    [BASE_DETAILS.PACKAGE_MANAGER]: packageManager,
-    [BASE_DETAILS.DIALECT]: dialect,
-    [BASE_DETAILS.PROVIDE_EXAMPLE]: provideExample
+    [JAVASCRIPT_BASE_DETAILS.HOST]: chosenHost,
+    [JAVASCRIPT_BASE_DETAILS.SCOPE]: scope,
+    [JAVASCRIPT_BASE_DETAILS.NODE_VERSION_CATEGORY]: nodeVersionCategory,
+    [JAVASCRIPT_BASE_DETAILS.AUTHOR_NAME]: authorName,
+    [JAVASCRIPT_BASE_DETAILS.AUTHOR_EMAIL]: authorEmail,
+    [JAVASCRIPT_BASE_DETAILS.AUTHOR_URL]: authorUrl,
+    [JAVASCRIPT_BASE_DETAILS.PACKAGE_MANAGER]: packageManager,
+    [JAVASCRIPT_BASE_DETAILS.DIALECT]: dialect,
+    [JAVASCRIPT_BASE_DETAILS.PROVIDE_EXAMPLE]: provideExample
   };
   const logger = {info: () => undefined, warn: () => undefined};
 
@@ -77,91 +77,91 @@ describe('prompts', () => {
     when(buildDialectChoices).calledWith(configs).thenReturn(dialects);
     when(prompt)
       .calledWith({
-        id: BASE_DETAILS_PROMPT_ID,
+        id: JAVASCRIPT_BASE_DETAILS_PROMPT_ID,
         questions: [
           {
-            name: BASE_DETAILS.DIALECT,
+            name: JAVASCRIPT_BASE_DETAILS.DIALECT,
             message: 'Which JavaScript dialect should this project follow?',
             type: 'list',
             choices: dialects,
             default: 'babel'
           },
           {
-            name: BASE_DETAILS.NODE_VERSION_CATEGORY,
+            name: JAVASCRIPT_BASE_DETAILS.NODE_VERSION_CATEGORY,
             message: 'What node.js version should be used?',
             type: 'list',
             choices: ['LTS', 'Latest'],
             default: 'LTS'
           },
           {
-            name: BASE_DETAILS.PACKAGE_MANAGER,
+            name: JAVASCRIPT_BASE_DETAILS.PACKAGE_MANAGER,
             message: 'Which package manager will be used with this project?',
             type: 'list',
             choices: Object.values(packageManagers),
             default: packageManagers.NPM
           },
           {
-            name: BASE_DETAILS.PROJECT_TYPE,
+            name: JAVASCRIPT_BASE_DETAILS.PROJECT_TYPE,
             message: 'What type of JavaScript project is this?',
             type: 'list',
             choices: [...Object.values(projectTypes), 'Other'],
             default: projectTypes.PACKAGE
           },
           {
-            name: BASE_DETAILS.SHOULD_BE_SCOPED,
+            name: JAVASCRIPT_BASE_DETAILS.SHOULD_BE_SCOPED,
             message: 'Should this package be scoped?',
             type: 'confirm',
             when: conditionals.shouldBeScopedPromptShouldBePresented,
             default: true
           },
           {
-            name: BASE_DETAILS.SCOPE,
+            name: JAVASCRIPT_BASE_DETAILS.SCOPE,
             message: 'What is the scope?',
             when: scopePromptShouldBePresented,
             validate: scopeValidator,
             default: npmUser
           },
           {
-            name: BASE_DETAILS.AUTHOR_NAME,
+            name: JAVASCRIPT_BASE_DETAILS.AUTHOR_NAME,
             message: 'What is the author\'s name?',
             default: authorName
           },
           {
-            name: BASE_DETAILS.AUTHOR_EMAIL,
+            name: JAVASCRIPT_BASE_DETAILS.AUTHOR_EMAIL,
             message: 'What is the author\'s email?',
             default: authorEmail
           },
           {
-            name: BASE_DETAILS.AUTHOR_URL,
+            name: JAVASCRIPT_BASE_DETAILS.AUTHOR_URL,
             message: 'What is the author\'s website url?',
             default: authorUrl
           },
           {
-            name: BASE_DETAILS.UNIT_TESTS,
+            name: JAVASCRIPT_BASE_DETAILS.UNIT_TESTS,
             message: 'Will this project be unit tested?',
             type: 'confirm',
             default: true
           },
           {
-            name: BASE_DETAILS.INTEGRATION_TESTS,
+            name: JAVASCRIPT_BASE_DETAILS.INTEGRATION_TESTS,
             message: 'Will this project be integration tested?',
             type: 'confirm',
             default: true
           },
           {
-            name: BASE_DETAILS.CONFIGURE_LINTING,
+            name: JAVASCRIPT_BASE_DETAILS.CONFIGURE_LINTING,
             message: 'Will there be source code that should be linted?',
             type: 'confirm',
             when: conditionals.lintingPromptShouldBePresented
           },
           {
-            name: BASE_DETAILS.PROVIDE_EXAMPLE,
+            name: JAVASCRIPT_BASE_DETAILS.PROVIDE_EXAMPLE,
             message: 'Should an example be provided in the README?',
             type: 'confirm',
             when: conditionals.projectIsPackage
           },
           {
-            name: BASE_DETAILS.HOST,
+            name: JAVASCRIPT_BASE_DETAILS.HOST,
             type: 'list',
             message: 'Where will the application be hosted?',
             when: conditionals.projectIsApplication,
@@ -169,7 +169,7 @@ describe('prompts', () => {
           }
         ]
       })
-      .thenResolve({...answers, [BASE_DETAILS.CONFIGURE_LINTING]: any.word()});
+      .thenResolve({...answers, [JAVASCRIPT_BASE_DETAILS.CONFIGURE_LINTING]: any.word()});
 
     expect(await gatherBaseDetailsInput(hosts, visibility, vcs, configs, undefined, {logger, prompt})).toEqual({
       tests,
@@ -191,7 +191,7 @@ describe('prompts', () => {
     const get = vi.fn();
     npmConfFactory.mockReturnValue({get});
     when(execa).calledWith('npm', ['whoami']).thenResolve({stdout: npmUser});
-    prompt.mockResolvedValue({...answers, [BASE_DETAILS.CONFIGURE_LINTING]: false});
+    prompt.mockResolvedValue({...answers, [JAVASCRIPT_BASE_DETAILS.CONFIGURE_LINTING]: false});
 
     expect(await gatherBaseDetailsInput({}, visibility, vcs, undefined, undefined, {logger, prompt})).toEqual({
       tests,
@@ -216,7 +216,8 @@ describe('prompts', () => {
     await gatherBaseDetailsInput({}, 'CS', vcs, null, pathWithinParent, {logger, prompt});
 
     const {questions} = prompt.mock.lastCall[0];
-    expect(questions.filter(question => BASE_DETAILS.NODE_VERSION_CATEGORY === question.name).length).toEqual(0);
+    expect(questions.filter(question => JAVASCRIPT_BASE_DETAILS.NODE_VERSION_CATEGORY === question.name).length)
+      .toEqual(0);
   });
 
   it('should not ask whether closed source packages should be scoped', async () => {
@@ -228,7 +229,7 @@ describe('prompts', () => {
     await gatherBaseDetailsInput({}, 'CS', vcs, null, pathWithinParent, {logger, prompt});
 
     const {questions} = prompt.mock.lastCall[0];
-    expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
+    expect(questions.filter(question => JAVASCRIPT_BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
   });
 
   it('should not ask whether inner source packages should be scoped', async () => {
@@ -240,7 +241,7 @@ describe('prompts', () => {
     await gatherBaseDetailsInput({}, 'ISS', vcs, null, pathWithinParent, {logger, prompt});
 
     const {questions} = prompt.mock.lastCall[0];
-    expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
+    expect(questions.filter(question => JAVASCRIPT_BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(0);
   });
 
   it('should handle a non-logged-in user gracefully', async () => {
@@ -252,6 +253,6 @@ describe('prompts', () => {
     await gatherBaseDetailsInput({}, 'OSS', vcs, null, pathWithinParent, {logger, prompt});
 
     const {questions} = prompt.mock.lastCall[0];
-    expect(questions.filter(question => BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(1);
+    expect(questions.filter(question => JAVASCRIPT_BASE_DETAILS.SHOULD_BE_SCOPED === question.name).length).toEqual(1);
   });
 });

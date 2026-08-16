@@ -102,7 +102,7 @@ await scaffoldJavaScript(
     logger,
     prompt: ({id}) => {
       const {questionNames, ids} = promptConstants;
-      const {BASE_DETAILS: baseDetailsPromptId} = ids;
+      const {JAVASCRIPT_BASE_DETAILS: baseDetailsPromptId} = ids;
 
       switch (id) {
         case baseDetailsPromptId: {
